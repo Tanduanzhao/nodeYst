@@ -1,0 +1,134 @@
+body {
+  color: #666;
+  border-radius: 3px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 0.7rem; }
+  body .name {
+    color: 'red'; }
+
+.text.red {
+  color: red; }
+
+.text.zb {
+  font-size: 0.8rem; }
+
+.text.fzb {
+  font-size: 0.8rem;
+  margin: 0 0.5rem; }
+
+.text.green {
+  color: green; }
+
+.scroll-content {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: #f1f1f1; }
+
+h1, h2, h3, h4, h5 {
+  margin: 0;
+  line-height: 1.5;
+  color: #666; }
+
+h3 {
+  font-size: .7rem;
+  font-weight: normal;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box; }
+
+.row.horizontal {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+              -ms-grid-row-align: flex-start;
+          align-items: flex-start; }
+  .row.horizontal > .col {
+    width: 33.33%;
+    -webkit-box-flex: 1;
+        -ms-flex: auto;
+            flex: auto;
+    padding-bottom: 0.75rem;
+    padding-top: 0.75rem; }
+  .row.horizontal:after {
+    content: '';
+    display: table;
+    clear: both; }
+
+.row {
+  background-color: #fff;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+              -ms-grid-row-align: center;
+          align-items: center; }
+  .row + .row {
+    margin-top: inherit;
+    padding: inherit; }
+
+.list:last-child.card {
+  margin-bottom: 0; }
+
+.card {
+  margin-left: 0;
+  margin-right: 0; }
+
+.breed .row {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+              -ms-grid-row-align: center;
+          align-items: center; }
+
+.footer-row {
+  padding: 0; }
+  .footer-row .col {
+    padding: 0; }
+
+.col {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+              -ms-grid-row-align: center;
+          align-items: center; }
+  .col.lg {
+    width: 10rem; }
+
+.list {
+  margin-bottom: 0; }
+
+.list-line {
+  font-size: .7rem; }
+  .list-line h4 {
+    font-weight: normal;
+    font-size: .7rem; }
+
+.tag {
+  font-size: .5rem;
+  background-color: red;
+  color: #fff;
+  vertical-align: 10%;
+  border-radius: 0.15rem;
+  padding: 0 0.1rem;
+  margin-right: 0.1rem;
+  margin-left: 0.1rem;
+  border: 1px solid red;
+  font-weight: normal; }
+
+.list-horizontal-block:after {
+  clear: both;
+  content: '';
+  display: table; }
+
+.list-horizontal-block li {
+  float: left;
+  display: inline-block;
+  margin: 0.5rem;
+  padding: 0.15rem 0.25rem; }
+
+.list-horizontal-title {
+  margin-top: 0.5rem;
+  font-weight: 500;
+  line-height: 2;
+  border-bottom: 1px solid #EFEFEF; }

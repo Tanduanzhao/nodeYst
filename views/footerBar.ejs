@@ -1,0 +1,35 @@
+<% var menus = [{
+					uri:'index',
+					title:'首页',
+					icon:'fa'
+				},
+				{
+					uri:'produce',
+					title:'产品',
+					icon:'sd'
+				},
+				{
+					uri:'',
+					title:'行情',
+					icon:'as'
+				},
+				{
+					uri:'hospital',
+					title:'医院',
+					icon:'sd'
+				},
+				{
+					uri:'center',
+					title:'个人中心',
+					icon:'vc'
+				}]
+%>
+
+<div class="footerBar">
+<% for(var i=0;i<menus.length;i++){ %>
+	<a href="/<%= menus[i].uri %>" class="<%= (uri == menus[i].uri) ? 'active' : null %>">
+		<span class="<%= menus[i].icon %>"><%= menus[i].icon %></span>
+		<span><%= menus[i].title %></span>
+	</a>
+<% }%>
+</div>

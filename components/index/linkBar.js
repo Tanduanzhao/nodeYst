@@ -1,0 +1,19 @@
+import React,{Component} from 'react';
+import {Link} from 'react-router';
+export default class LinkBar extends Component{
+	render(){
+		return(
+                <div className="item">
+                    <strong>{this.props.title}</strong>
+                    <Link style={styles.more} to="/more"><i className="icon ion-android-more-horizontal"></i></Link>
+                </div>
+        )
+	}
+}
+const styles ={
+    more:{
+        position:'absolute',
+        right:'1rem',
+        fontSize:'1.2rem'
+    }
+}

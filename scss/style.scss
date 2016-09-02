@@ -1,0 +1,135 @@
+@function pxTorem($px,$base:20){
+	@return ($px / $base ) * 1rem;
+}
+body{
+	color:#666;
+	border-radius:3px;
+	display:flex;
+    font-size: pxTorem(14);
+    
+	.name{
+		color:'red';
+	}
+}
+.text{
+	&.red{
+		color:red;
+	}
+	&.zb{
+		font-size: pxTorem(16);
+	}
+	&.fzb{
+		font-size: pxTorem(16);
+		margin:0 pxTorem(10);
+	}
+	&.green{
+		color:green;
+	}
+}
+.scroll-content{
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: #f1f1f1;
+}
+h1,h2,h3,h4,h5{
+    margin: 0;
+    line-height: 1.5;
+    color: #666;
+}
+h3{
+    font-size: .7rem;
+    font-weight: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+}
+.row.horizontal{
+    flex-wrap: wrap;
+    align-items: flex-start;
+    >.col{
+        width: 33.33%;
+        flex: auto;
+        padding-bottom: pxTorem(15);
+        padding-top: pxTorem(15);
+    }
+    &:after{
+        content:'';
+        display: table;
+        clear: both;
+    }
+}
+.row{
+    background-color: #fff;
+    align-items: center;
+    +.row{
+        margin-top:inherit;
+        padding: inherit
+    }
+}
+.list:last-child.card{
+    margin-bottom: 0;
+}
+.card{
+    margin-left: 0;
+    margin-right: 0;
+}
+.breed{
+    .row{
+        align-items: center;
+    }
+}
+.footer-row{
+    padding: 0;
+    .col{
+        padding: 0;
+    }
+}
+.col{
+    &.lg{
+        width: pxTorem(200);
+    }
+    align-items: center;
+}
+.list{
+    margin-bottom: 0;
+}
+.list-line{
+    font-size: .7rem;
+    h4{
+        font-weight: normal;
+        font-size: .7rem;
+    }
+}
+.tag{
+    font-size: .5rem;
+    background-color: red;
+    color: #fff;
+    vertical-align: 10%;
+    border-radius:0.15rem;
+    padding:0 pxTorem(2);
+    margin-right: pxTorem(2);
+    margin-left: pxTorem(2);
+    border:1px solid red;
+    font-weight: normal;
+}
+.list-horizontal-block{
+    &:after{
+        clear:both;
+        content:'';
+        display: table;
+    }
+    li{
+        float:left;
+        display: inline-block;
+        margin:pxTorem(10);
+        padding:pxTorem(3) pxTorem(5);
+    }
+}
+.list-horizontal-title{
+    margin-top: pxTorem(10);
+    font-weight: 500;
+    line-height: 2;
+    border-bottom: 1px solid #EFEFEF;
+}
