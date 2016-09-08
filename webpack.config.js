@@ -17,8 +17,7 @@ module.exports = {
 		{
 			test:/\.scss$/,
 			loader:ExtractTextPlugin.extract('style','css!postcss!sass')
-		}
-		]
+		}]
 	},
 	postcss:function(){
 		return [require('autoprefixer'),require('precss')];

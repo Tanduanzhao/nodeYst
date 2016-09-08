@@ -12,6 +12,9 @@ default class FooterBar extends Component {
 			router:e
 		})
 	}
+    componentDidMount(){
+        console.log(this.props);
+    }
 	render() {
 		var menus = [{
 			uri: 'home',
@@ -19,15 +22,15 @@ default class FooterBar extends Component {
 			icon: 'ios-home'
 		}, {
 			uri: 'produce',
-			title: '产品',
+			title: '报告',
 			icon: 'cube'
 		}, {
 			uri: 'index',
 			title: '行情',
 			icon: 'earth'
 		}, {
-			uri: 'hospital',
-			title: '医院',
+			uri: 'datas',
+			title: '数据',
 			icon: 'erlenmeyer-flask'
 		}, {
 			uri: 'center',
@@ -39,7 +42,7 @@ default class FooterBar extends Component {
 					{
 						menus.map((ele) => {
 							return (
-								<FooterBarIcon fn={this._footerBarHandle.bind(this,ele.uri)} style={ele.uri == this.props.uri ? styles.active : null} key={ele.title} icon={ele.icon} title={ele.title}/>
+								<FooterBarIcon fn={this._footerBarHandle.bind(this,ele.uri)} style={ele.uri == this.props.uri ? styles.active : null} key={ele.title}  {...ele}/>
 							)
 						})
 					}

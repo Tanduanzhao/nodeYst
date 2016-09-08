@@ -15,6 +15,7 @@ body {
 }
 #app{
 	height: 100%;
+    width: 100%;
 }
 .root{
 	display: flex;
@@ -28,7 +29,10 @@ body {
 }
 
 a {
-  color: #00B7FF;
+    text-decoration: none;
+}
+a.row{
+    color: inherit;
 }
 .sliderBar{
 	position: absolute;

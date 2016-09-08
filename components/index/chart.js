@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 
-import ClassifySingle from './classifySingle.js';
+import ChartSingle from './chartSingle.js';
 export default class Chart extends Component{
 	render(){
         if(this.props.dataSources){
@@ -9,7 +9,7 @@ export default class Chart extends Component{
                     {
                         this.props.dataSources.map((ele) => {
                             return (
-                                <ClassifySingle data = {ele} key={ele.cwmName}/>
+                                <ChartSingle data = {ele} key={ele.cwmName}/>
                             )
                         })
                     }

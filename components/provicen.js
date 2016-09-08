@@ -20,18 +20,7 @@ export default class Provicen extends Component{
 			areaId:this.state.areaId,
             searchAreaType:this.state.searchAreaType
 		});
-        console.log(this.state.searchAreaType);
-        loadIndex(this.props.dispatch,{
-            yearMonth:this.props.yearMonth,
-            areaId:this.state.areaId,
-            searchAreaType:this.state.searchAreaType,
-            callBack:(res)=>{
-                this.props.dispatch({
-                     type:'LOADDATA',
-                     data:res.datas
-                });
-            }
-        })
+        this.props.fn();
 	}
 	_cancelButton(){
 		this.props.dispatch({

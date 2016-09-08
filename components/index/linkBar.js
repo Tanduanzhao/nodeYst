@@ -5,7 +5,7 @@ export default class LinkBar extends Component{
 		return(
                 <div className="item">
                     <strong>{this.props.title}</strong>
-                    <Link style={styles.more} to="/more"><i className="icon ion-android-more-horizontal"></i></Link>
+                    <Link style={styles.more} to={this.props.link}><i className="icon ion-android-more-horizontal"></i></Link>
                 </div>
         )
 	}

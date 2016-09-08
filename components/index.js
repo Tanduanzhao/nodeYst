@@ -12,24 +12,70 @@ import {loadIndex,loadProvince} from './function/ajax.js';
 class Index extends Component{
 	constructor(props) {
 	  super(props);
-        console.log(loadIndex);
-	}
-	_closeLay(){
-		this.props.dispatch({
-			type:'UNSHOW'
-		});
 	}
     componentDidMount(){
         loadProvince(this.props.dispatch)
     }
+    
+	_increaseHandle(){
+        var yearMonth = this.props.yearMonth;
+		this.props.dispatch((dispatch)=>{
+            loadIndex(dispatch,{
+                yearMonth:++yearMonth,
+                areaId:this.props.areaId,
+                searchAreaType:this.props.searchAreaType,
+                callBack:function(res){
+                    dispatch({
+                         type:'LOADDATA',
+                         data:res.datas
+                    });
+                    dispatch({
+                        type:'INCREASE'
+                    });
+                }
+            })
+        })
+	}
+	_decreaseHandle(){
+		var yearMonth = this.props.yearMonth;
+		this.props.dispatch((dispatch)=>{
+            loadIndex(dispatch,{
+                yearMonth:--yearMonth,
+                areaId:this.props.areaId,
+                searchAreaType:this.props.searchAreaType,
+                callBack:function(res){
+                    dispatch({
+                         type:'LOADDATA',
+                         data:res.datas
+                    });
+                    dispatch({
+                        type:'DECREASE'
+                    });
+                }
+            })
+        })
+	}
+    _fn(arg){
+        loadIndex(this.props.dispatch,{
+            yearMonth:this.props.yearMonth,
+            areaId:arg.areaId,
+            searchAreaType:arg.searchAreaType,
+            callBack:(res)=>{
+                this.props.dispatch({
+                     type:'LOADDATA',
+                     data:res.datas
+                });
+            }
+        })
+    }
 	render(){
 		return(
 			<div className="root">
-                <HeaderBar {...this.props}/>
+                <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
                 <Main {...this.props} data={this.props.initData}/>
                 <FooterBar uri={this.props.uri} dispatch={this.props.dispatch}/>
 				{
-					this.props.showProvicen ? <Provicen {...this.props} dataSources={this.props.provicenData} fn={this._closeLay.bind(this)}/> :null
+					this.props.showProvicen ? <Provicen fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
 				}
 			</div>
 		)

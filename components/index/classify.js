@@ -6,7 +6,7 @@ export default class Classify extends Component{
         if(this.props.dataSources){
             return(
                 <div className="list card">
-                    <LinkBar title="分类涨幅榜"/>
+                    <LinkBar link="rise/classify" title="分类涨幅榜"/>
                     <div className="row horizontal">
                         {
                             this.props.dataSources.map((ele)=>{
