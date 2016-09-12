@@ -135,3 +135,20 @@ export const loadListBreedProduct = function(dispatch,args){
         }
     })
 }
+
+//医院列表
+export const loadListHospital = function(dispatch,args){
+    ajaxFn({
+        url:'getBusinessHospitalInfo',
+        data:{
+            searchName:args.searchName || null,
+            yearMonth:args.yearMonth || null,
+            areaId:args.areaId || null,
+            pageNo:args.pageNo || null,
+            hosLevel:args.hospitalLevel || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}

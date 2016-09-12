@@ -61,12 +61,41 @@ function router(state={uri:'index'},action){
 		default : return state;
 	}
 }
+
+//医院列表信息
+var defaultHospital={
+    isShowFilter:false,
+    areaName:defaultProvicen.areaName,
+    areaId:defaultProvicen.areaId,
+    searchAreaType:defaultProvicen.searchAreaType,
+    yearMonth:defaultData.yearMonth,
+    hospitalLevel:null,
+    searchName:null,
+    pageNo:1,
+    data:[],
+    infinite:false
+    
+}
+function hospital(state=defaultHospital,action){
+    switch(action.type){
+        case 'CHANGEHOSPITALFILTER' : return Object.assign({},state,{areaName:action.areaName,areaId:action.areaId,searchAreaType:action.searchAreaType,yearMonth:action.yearMonth,hospitalLevel:action.hospitalLevel});
+        case 'SHOWFILTER' : return Object.assign({},state,{isShowFilter:true});
+        case 'UNSHOWFILTER' : return Object.assign({},state,{isShowFilter:false});
+        case 'CHANGEHOSPITALSEARCHNAME' : return Object.assign({},state,{searchName:action.searchName});
+        case 'CLEARHOSPITALSEARCHNAME' : return Object.assign({},state,{searchName:null});
+        case 'LOADHOSPITALDATA' : return Object.assign({},state,{data:action.data,pageNo:action.pageNo});
+        case 'INFINITE' : return Object.assign({},state,{infinite:false});
+        case 'UNINFINITE' : return Object.assign({},state,{infinite:true});
+        default : return state;
+    }
+}
 //合并仓库
 const ystReducers = combineReducers({
 	index,
 	provicen,
 	data,
-	router
+	router,
+    hospital
 })
 
 export default ystReducers;
