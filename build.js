@@ -22,6 +22,7 @@ import RiseBreed from './components/riseBreed.js';
 
 import Datas from './components/datas.js';
 import HospitalList from './components/datas/hospitalList';
+import drugList from './components/datas/drugList';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
 var _router = (
@@ -40,6 +41,7 @@ var _router = (
             <Route path="datas">
                 <IndexRoute component={Datas}/>
                 <Route path="hospitalList" component={HospitalList}/>
+                <Route path="drugList" component={drugList}/>
             </Route>
 		</Router>
 	</Provider>
