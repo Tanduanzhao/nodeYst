@@ -22,6 +22,7 @@ import RiseBreed from './components/riseBreed.js';
 
 import Datas from './components/datas.js';
 import HospitalList from './components/datas/hospitalList';
+import drugList from './components/datas/drugList';
 
 import Center from './components/center';
 import FeedBack from './components/feedBack';
@@ -43,6 +44,7 @@ var _router = (
             <Route path="datas">
                 <IndexRoute component={Datas}/>
                 <Route path="hospitalList" component={HospitalList}/>
+                <Route path="drugList" component={drugList}/>
             </Route>
             <Route path="center">
                <IndexRoute component={Center}/>
