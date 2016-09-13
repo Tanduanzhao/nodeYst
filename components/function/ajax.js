@@ -152,3 +152,25 @@ export const loadListHospital = function(dispatch,args){
         }
     })
 }
+
+//返回建议
+export const loadFeedBack = function(dispatch,args){
+    ajaxFn({
+        url:'getBusinessFeedBackInfo',
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//发送反馈信息
+export const sendFeedBackMessage = function(dispatch,args){
+    ajaxFn({
+        url:'insertBusinessFeedBackInfo',
+        data:{
+            feedContent:args.feedContent
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}

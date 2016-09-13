@@ -157,3 +157,70 @@ h3{
         }
     }
 }
+.dialog-feedBack{
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    &:after{
+        display: table;
+        content: '';
+        clear: both;
+    }
+    img{
+        width: 40px;
+        border-radius: 50%;
+        float: left;
+        
+    }
+    &.left{
+        img{
+            float: right;
+            margin-right: 15px;
+            margin-left: 10px;
+        }
+        span{
+            &:before{
+                left: -8px;
+                border-width: 4px 8px 4px 0px;
+                border-color: transparent #fff transparent #fff;
+            }
+        }
+    }
+    &.right{
+        text-align: right;
+        img{
+            float: left;
+            margin-right: 10px;
+        margin-left: 15px;
+        }
+        span{
+            &:before{
+                right: -8px;
+                border-width: 4px 0px 4px 8px;
+                border-color: transparent #fff transparent #fff;
+            }
+        }
+    }
+    .dialog-content{
+        flex: 1;
+        span{
+            text-align: left;
+            background-color: #fff;
+            border-radius: 8px;
+            display: inline-block;
+            padding: 8px;
+            position: relative;
+            &:before{
+                position: absolute;
+                display: block;
+                width: 0;
+                height: 0;
+                content: '';
+                border-style: solid;
+                top: 50%;
+                margin-top: -4px;
+                
+            }
+        }
+    }
+}
