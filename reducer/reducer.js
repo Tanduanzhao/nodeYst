@@ -89,14 +89,12 @@ function hospital(state=defaultHospital,action){
         default : return state;
     }
 }
-
-<<<<<<< HEAD
 function feedBack(state={data:[{isReplay:1,feedContent:'您好，请问有什么能帮助您的？'}]},action){
     switch(action.type){
         case 'LOADFEEDBACK' : return Object.assign({},state,{data:state.data.concat(action.message)}); 
         default : return state;
     }
-=======
+}
 // 药品列表信息
 var defaultDrug={
   isShowFilter:false,
@@ -123,7 +121,6 @@ function drug(state=defaultDrug,action){
     case 'UNINFINITE' : return Object.assign({},state,{infinite:true});
     default : return state;
   }
->>>>>>> ea4208970b0c075841829e9fa2b52e458a5f78c1
 }
 //合并仓库
 const ystReducers = combineReducers({
@@ -132,11 +129,8 @@ const ystReducers = combineReducers({
 	data,
 	router,
     hospital,
-<<<<<<< HEAD
-    feedBack
-=======
+    feedBack,
     drug
->>>>>>> ea4208970b0c075841829e9fa2b52e458a5f78c1
 })
 
 export default ystReducers;
