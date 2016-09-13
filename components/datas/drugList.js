@@ -1,12 +1,12 @@
 /*
-    医院列表
-*/
+ 药品列表
+ */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import {loadListHospital} from '../function/ajax';
+import {loadListDrug} from '../function/ajax';
 import Provicen from '../provicen';
 import Filter from '../filter';
-class HospitalList extends Component{
+class drugList extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -25,7 +25,7 @@ class HospitalList extends Component{
     _fn(args){
         this.props.dispatch((dispatch) => {
             dispatch({
-                type:'LOADHOSPITALDATA',
+                type:'LOADDRUGDATA',
                 data:[],
                 pageNo:1
             });
@@ -47,7 +47,7 @@ class HospitalList extends Component{
     }
     _loadData(){
         this.props.dispatch((dispatch,getState)=>{
-            loadListHospital(dispatch,{
+            loadListDrug(dispatch,{
                 searchName:this.props.hospitalFilter.searchName,
                 yearMonth:this.props.hospitalFilter.yearMonth,
                 areaId:this.props.hospitalFilter.areaId,
@@ -55,7 +55,7 @@ class HospitalList extends Component{
                 hospitalLevel:this.props.hospitalFilter.hospitalLevel,
                 callBack:(res)=>{
                     dispatch({
-                        type:'LOADHOSPITALDATA',
+                        type:'LOADDRUGDATA',
                         data:this.props.hospitalFilter.data.concat(res.datas),
                         pageNo:this.props.hospitalFilter.pageNo+1
                     });
@@ -82,7 +82,6 @@ class HospitalList extends Component{
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
         this._loadData();
-
     }
     componentWillUnMount(){
         this.ele.removeEventListener('scroll',this._infiniteScroll);
@@ -90,19 +89,19 @@ class HospitalList extends Component{
 
     render(){
         return(
-            <div className="root">
-                <HeaderBar fn={this._loadData} {...this.props}/>
-                <div ref="content" className="scroll-content has-header">
-                    <ul className="list">
-                        {
-                            this.props.hospitalFilter.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                        }
-                    </ul>
-                </div>
-                {
-                    this.props.hospitalFilter.isShowFilter ? <Filter fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
-				}
-            </div>
+          <div className="root">
+              <HeaderBar fn={this._loadData} {...this.props}/>
+              <div ref="content" className="scroll-content has-header">
+                  <ul className="list">
+                      {
+                          this.props.hospitalFilter.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                      }
+                  </ul>
+              </div>
+              {
+                  this.props.hospitalFilter.isShowFilter ? <Filter fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
+              }
+          </div>
         )
     }
 }
@@ -110,32 +109,64 @@ class HospitalList extends Component{
 class List extends Component{
     render(){
         var string = null;
-        var tag = (()=>{
-            if(this.props.dataSources.hosLevel){
-                string = <span className= 'tag' >{this.props.dataSources.hosLevel}</span>;
-            }else{
+        var type = (()=>{
+            if(this.props.dataSources.specAttr!= "无"  || this.props.dataSources.wrapName != "空"){
                 string = "";
+                string += "(";
+                if(this.props.dataSources.specAttr != "无"){
+                    string +=this.props.dataSources.specAttr;
+                    string += " ";
+                }
+                if(this.props.dataSources.wrapName != "空"){
+                    string +=this.props.dataSources.wrapName;
+                }
+                string += ")";
             }
             return string;
         })();
+        var ybypFlag = (()=>{
+            if(this.props.dataSources.ybypFlag == 1){
+                var children=<span className="tag">医</span>;
+            }
+            return children;
+        })();
+        var jbywFlag = (()=>{
+            if(this.props.dataSources.jbywFlag == 1){
+                var children=<span className="tag">基</span>;
+            }
+            return children;
+        })();
+        var djypFlag = (()=>{
+            if(this.props.dataSources.djypFlag == 1){
+                var children=<span className="tag">低</span>;
+            }
+            return children;
+        })();
         return(
-            <li className="item">
-                <h2>
-                    {this.props.dataSources.hosName}
-                    {tag}
-                </h2>
-                <p><span>床位数：{this.props.dataSources.bedCount || '未知'}</span><span style={{marginLeft:'1rem'}}>年门诊量： {this.props.dataSources.yearCount || '未知'}</span></p>
-            </li>
+          <li className="item">
+              <h2>
+                  {this.props.dataSources.prodName}
+                  {ybypFlag}{jbywFlag}{djypFlag}
+              </h2>
+              <p>
+                  <span>{this.props.dataSources.dosSname}</span>
+                    <span style={{marginLeft:'1rem'}}>
+                        {this.props.dataSources.spec || ' '}*{this.props.dataSources.standConvert}
+                        {type}
+                    </span>
+              </p>
+              <p>{this.props.dataSources.scqy}</p>
+          </li>
         )
     }
 }
 
 class HeaderBar extends Component{
     _showProvicenHandle(){
-		this.props.dispatch({
-			type:'SHOWFILTER'
-		});
-	}
+        this.props.dispatch({
+            type:'SHOWFILTER'
+        });
+    }
     _changeHandle(){
         this.props.dispatch({
             type:'CHANGEHOSPITALSEARCHNAME',
@@ -144,10 +175,10 @@ class HeaderBar extends Component{
     }
     _searchHandle(){
         this.props.dispatch({
-                type:'LOADHOSPITALDATA',
-                data:[],
-                pageNo:1
-            });
+            type:'LOADDRUGDATA',
+            data:[],
+            pageNo:1
+        });
         setTimeout(()=> this.props.fn(),100);
     }
     componentUnMount(){
@@ -157,18 +188,18 @@ class HeaderBar extends Component{
     }
     render(){
         return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons">
-                    <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-map-marker"></i><span style={{paddingLeft:'5px'}}>{this.props.hospitalFilter.areaName}</span></button>
-                </div>
-                <label className="item-input-wrapper">
-                    <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
-                </label>
-                <button className="button button-clear" onClick={this._searchHandle.bind(this)}>
-                    搜索
-                </button>
-            </div>
+          <div className="bar bar-header bar-positive item-input-inset">
+              <div className="buttons">
+                  <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-map-marker"></i><span style={{paddingLeft:'5px'}}>{this.props.hospitalFilter.areaName}</span></button>
+              </div>
+              <label className="item-input-wrapper">
+                  <i className="icon ion-ios-search placeholder-icon"></i>
+                  <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
+              </label>
+              <button className="button button-clear" onClick={this._searchHandle.bind(this)}>
+                  搜索
+              </button>
+          </div>
         )
     }
 }
@@ -176,14 +207,14 @@ class HeaderBar extends Component{
 function select(state){
     return{
         showProvicen:state.index.showProvicen,
-		areaId:state.provicen.areaId,
-		areaName:state.provicen.areaName,
+        areaId:state.provicen.areaId,
+        areaName:state.provicen.areaName,
         provicenData:state.provicen.data,
-		yearMonth:state.data.yearMonth,
-		uri:state.router.uri,
-        hospitalFilter:state.hospital,
+        yearMonth:state.data.yearMonth,
+        uri:state.router.uri,
+        hospitalFilter:state.drug,
         searchAreaType:state.provicen.searchAreaType
     }
 }
 
-export default connect(select)(HospitalList);
+export default connect(select)(drugList);

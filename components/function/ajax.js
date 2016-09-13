@@ -152,3 +152,20 @@ export const loadListHospital = function(dispatch,args){
         }
     })
 }
+
+//药品列表
+export const loadListDrug = function(dispatch,args){
+    ajaxFn({
+        url:'getProductAreaSimpleInfo',
+        data:{
+            searchName:args.searchName || null,
+            yearMonth:args.yearMonth || null,
+            areaId:args.areaId || null,
+            pageNo:args.pageNo || null,
+            hosLevel:args.hospitalLevel || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}

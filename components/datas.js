@@ -17,7 +17,7 @@ class Datas extends Component{
                         </Link>
                     </div>
                     <div className="col-50">
-                        <Link to="/">
+                        <Link to="/datas/drugList">
                             <i className="fa fa-book"></i>
                             用药目录
                         </Link>
