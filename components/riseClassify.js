@@ -82,9 +82,8 @@ class RiseClassify extends Component{
     render(){
         return(
             <div className="root">
-                <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
-                <SubHeader/>
-                <div ref="content" className="scroll-content has-subheader">
+                <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>s
+                <div ref="content" className="scroll-content  has-header">
                     <div className="list">
                         {
                             this.state.data.map((ele,index)=> <List dataSources={ele} key={ele.id+Math.random(1)}/>)
@@ -98,30 +97,18 @@ class RiseClassify extends Component{
         )
     }
 }
-/*
-    二级标题栏
-*/
-class SubHeader extends Component{
-    render(){
-        return(
-            <div ref="sub" className="bar bar-subheader row">
-              <div className="col">二级分类</div>
-              <div className="col-20">市场规模</div>
-              <div className="col-20">市场份额</div>
-              <div className="col-25">涨跌幅</div>
-            </div>
-        )
-    }
-}
+
 
 class List extends Component{
     render(){
         return(
-            <Link to={`/optional/classify/${this.props.dataSources.salesId}`} className="row item">
-                <div className="col">{this.props.dataSources.salesName}<span className="tag">{this.props.dataSources.icoType}</span></div>
-                <div className="col-20">{this.props.dataSources.sales}</div>
-                <div className="col-20">{this.props.dataSources.marketMth}</div>
-                <div className="col-25">{this.props.dataSources.change}%</div>
+            <Link to={`/optional/classify/${this.props.dataSources.salesId}`} className="item">
+                <div>{this.props.dataSources.salesName}<span className="tag">{this.props.dataSources.icoType}</span></div>
+                <p>
+                    <span>市场规模：{this.props.dataSources.sales}</span>
+                    <span style={{marginLeft:'1rem'}}>市场份额： {this.props.dataSources.marketMth}</span>
+                    <span style={{marginLeft:'1rem'}}>涨跌幅：{this.props.dataSources.change}%</span>
+                </p>
             </Link>
         )
     }

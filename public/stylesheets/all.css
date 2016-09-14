@@ -217,3 +217,170 @@ h3 {
         border-style: solid;
         top: 50%;
         margin-top: -4px; }
+
+.produce-header-tab button {
+  text-align: center; }
+
+.produce-cards {
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  -ms-grid-row-align: flex-start;
+      align-items: flex-start;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  background-color: #eee;
+  padding: .3rem; }
+  .produce-cards .col-50 {
+    padding: .3rem; }
+  .produce-cards h3 {
+    padding: .3rem 0;
+    height: 52px; }
+  .produce-cards a {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: .5rem; }
+  .produce-cards .produce-card-price {
+    text-align: left;
+    color: red; }
+  .produce-cards .produce-card-footer {
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: center;
+    text-align: left;
+    display: -webkit-flex;
+    font-size: .6rem;
+    color: #888; }
+  .produce-cards .produce-card-icon {
+    font-size: .5rem;
+    background: #0894ec;
+    padding: .2rem;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 5px; }
+
+.free-views {
+  overflow: auto; }
+  .free-views img {
+    float: left;
+    width: 100%; }
+
+.charge-views {
+  overflow: auto;
+  padding-bottom: 2.5rem; }
+
+.charge-header {
+  position: relative; }
+  .charge-header img {
+    width: 100%; }
+  .charge-header .title-bar {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    font-weight: 900;
+    color: white;
+    width: 100%;
+    height: 42px;
+    position: absolute;
+    z-index: 1;
+    bottom: 19px;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .charge-header .title-bar .title-text {
+      opacity: 1;
+      line-height: 42px;
+      margin-right: 10px; }
+    .charge-header .title-bar .title-logo {
+      width: 1.8rem;
+      height: 1.8rem; }
+
+.charge-main .item {
+  padding-left: 1.5rem; }
+
+.charge-main .item:before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #0a8ddf;
+  margin-right: 10px; }
+
+.charge-main-p {
+  text-indent: 25px;
+  margin: 1em 0;
+  padding: 0rem 1.5rem;
+  line-height: 1.7;
+  font-size: .75rem; }
+
+.charge-main-content {
+  font-size: .75rem;
+  padding: .6rem 1.5rem 0 1.5rem; }
+  .charge-main-content i {
+    color: #0a8ddf;
+    margin-right: 10px; }
+
+.charge-footer {
+  height: 2.5rem;
+  line-height: 2.5rem; }
+  .charge-footer a {
+    display: block;
+    font-size: .9rem;
+    text-align: center;
+    color: red;
+    border: 2px solid red;
+    background: #fff; }
+  .charge-footer .buy {
+    background: red;
+    color: #fff; }
+
+.drugContent-header {
+  width: 59%;
+  margin: 0 auto;
+  margin-bottom: 9px; }
+  .drugContent-header img {
+    width: 100%;
+    margin-top: 1.25rem; }
+
+.drugContent-main {
+  padding-left: 1.5rem; }
+
+.drugContent-main-title {
+  font-size: .80rem;
+  font-weight: 600;
+  margin: 5px 0;
+  color: #0a8ddf; }
+
+.message {
+  line-height: 25px; }
+
+.drugContent-main-btn {
+  margin-top: 10px; }
+  .drugContent-main-btn span {
+    font-size: .7rem;
+    color: white;
+    padding: .3rem .4rem;
+    font-weight: 800;
+    border-radius: 5px;
+    margin-right: 5px;
+    background-color: #0a8ddf; }

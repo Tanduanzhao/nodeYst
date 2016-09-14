@@ -111,6 +111,27 @@ var defaultDrug={
 }
 function drug(state=defaultDrug,action){
   switch(action.type){
+    case 'LOADDRUGDATA' : return Object.assign({},state,{data:action.data,pageNo:action.pageNo});
+    default : return state;
+  }
+}
+// 报告信息
+var defaultProduce={
+  isShowFilter:false,
+  subscribe:0,
+  areaName:defaultProvicen.areaName,
+  areaId:defaultProvicen.areaId,
+  searchAreaType:defaultProvicen.searchAreaType,
+  yearMonth:defaultData.yearMonth,
+  hospitalLevel:null,
+  searchName:null,
+  pageNo:1,
+  data:[],
+  infinite:false
+
+}
+function Produce(state=defaultProduce,action) {
+  switch(action.type){
     case 'CHANGEHOSPITALFILTER' : return Object.assign({},state,{areaName:action.areaName,areaId:action.areaId,searchAreaType:action.searchAreaType,yearMonth:action.yearMonth,hospitalLevel:action.hospitalLevel});
     case 'SHOWFILTER' : return Object.assign({},state,{isShowFilter:true});
     case 'UNSHOWFILTER' : return Object.assign({},state,{isShowFilter:false});
@@ -119,6 +140,7 @@ function drug(state=defaultDrug,action){
     case 'LOADDRUGDATA' : return Object.assign({},state,{data:action.data,pageNo:action.pageNo});
     case 'INFINITE' : return Object.assign({},state,{infinite:false});
     case 'UNINFINITE' : return Object.assign({},state,{infinite:true});
+    case 'CHANGE' : return Object.assign({},state,{subscribe:action.subscribe});
     default : return state;
   }
 }
@@ -128,6 +150,7 @@ const ystReducers = combineReducers({
 	provicen,
 	data,
 	router,
+  Produce,
     hospital,
     feedBack,
     drug
