@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {loadListDrug} from '../function/ajax';
 import Provicen from '../provicen';
 import Filter from '../filter';
+import {Link} from 'react-router';
 class drugList extends Component{
     constructor(props){
         super(props);
@@ -143,7 +144,7 @@ class List extends Component{
             return children;
         })();
         return(
-          <li className="item">
+          <Link to={`/drugContent/${this.props.dataSources.id}`} className="item">
               <h2>
                   {this.props.dataSources.prodName}
                   {ybypFlag}{jbywFlag}{djypFlag}
@@ -156,7 +157,7 @@ class List extends Component{
                     </span>
               </p>
               <p>{this.props.dataSources.scqy}</p>
-          </li>
+          </Link>
         )
     }
 }

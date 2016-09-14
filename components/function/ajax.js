@@ -153,7 +153,6 @@ export const loadListHospital = function(dispatch,args){
     })
 }
 
-<<<<<<< HEAD
 //返回建议
 export const loadFeedBack = function(dispatch,args){
     ajaxFn({
@@ -164,12 +163,12 @@ export const loadFeedBack = function(dispatch,args){
     })
 }
 //发送反馈信息
-export const sendFeedBackMessage = function(dispatch,args){
-    ajaxFn({
-        url:'insertBusinessFeedBackInfo',
-        data:{
-            feedContent:args.feedContent
-=======
+//export const sendFeedBackMessage = function(dispatch,args){
+//    ajaxFn({
+//        url:'insertBusinessFeedBackInfo',
+//        data: {
+//            feedContent: args.feedContent
+//        }})}
 //药品列表
 export const loadListDrug = function(dispatch,args){
     ajaxFn({
@@ -180,7 +179,6 @@ export const loadListDrug = function(dispatch,args){
             areaId:args.areaId || null,
             pageNo:args.pageNo || null,
             hosLevel:args.hospitalLevel || null
->>>>>>> ea4208970b0c075841829e9fa2b52e458a5f78c1
         },
         callBack:(res)=>{
             args.callBack(res);
