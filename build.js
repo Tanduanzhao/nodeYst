@@ -23,9 +23,14 @@ import RiseBreed from './components/riseBreed.js';
 import Datas from './components/datas.js';
 import HospitalList from './components/datas/hospitalList';
 import drugList from './components/datas/drugList';
+import drugContent from './components/datas/drugContent';
 
 import Center from './components/center';
 import FeedBack from './components/feedBack';
+
+import produce from './components/produce';
+import free from './components/produce/free';
+import charge from './components/produce/charge';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
 var _router = (
@@ -46,9 +51,17 @@ var _router = (
                 <Route path="hospitalList" component={HospitalList}/>
                 <Route path="drugList" component={drugList}/>
             </Route>
+            <Route path="drugContent/:sid">
+              <IndexRoute component={drugContent}/>
+            </Route>
             <Route path="center">
                <IndexRoute component={Center}/>
                <Route path="feedback" component={FeedBack}/>
+            </Route>
+            <Route path="produce">
+              <IndexRoute component={produce}/>
+              <Route path="free" component={free}/>
+              <Route path="charge" component={charge}/>
             </Route>
 		</Router>
 	</Provider>
