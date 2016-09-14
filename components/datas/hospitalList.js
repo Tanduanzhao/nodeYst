@@ -40,9 +40,6 @@ class HospitalList extends Component{
                 yearMonth:args.yearMonth,
                 hospitalLevel:args.hospitalLevel
             });
-            setTimeout(()=>{
-                this._loadData();
-            },100);
         })
     }
     _loadData(){

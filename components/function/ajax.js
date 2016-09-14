@@ -152,8 +152,6 @@ export const loadListHospital = function(dispatch,args){
         }
     })
 }
-
-<<<<<<< HEAD
 //返回建议
 export const loadFeedBack = function(dispatch,args){
     ajaxFn({
@@ -169,7 +167,12 @@ export const sendFeedBackMessage = function(dispatch,args){
         url:'insertBusinessFeedBackInfo',
         data:{
             feedContent:args.feedContent
-=======
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
 //药品列表
 export const loadListDrug = function(dispatch,args){
     ajaxFn({
@@ -180,10 +183,16 @@ export const loadListDrug = function(dispatch,args){
             areaId:args.areaId || null,
             pageNo:args.pageNo || null,
             hosLevel:args.hospitalLevel || null
->>>>>>> ea4208970b0c075841829e9fa2b52e458a5f78c1
         },
         callBack:(res)=>{
             args.callBack(res);
         }
+    })
+}
+//获取用户信息
+export const loadUserInfo = function(arg){
+    ajaxFn({
+        url:'getWxUserInfo',
+        callBack:args.callBack(res)
     })
 }

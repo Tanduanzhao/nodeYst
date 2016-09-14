@@ -23,7 +23,7 @@ class Datas extends Component{
                         </Link>
                     </div>
                 </div>
-                <FooterBar uri={this.props.route.path} dispatch={this.props.dispatch}/>
+                <FooterBar {...this.props}/>
             </div>
         )
     }

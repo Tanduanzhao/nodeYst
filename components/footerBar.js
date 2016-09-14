@@ -1,5 +1,6 @@
 import React, {
-	Component
+	Component,
+    propsTypes
 }
 from 'react';
 
@@ -13,7 +14,7 @@ default class FooterBar extends Component {
 		})
 	}
     componentDidMount(){
-        console.log(this.props);
+        console.log(this.props.routes[0].path);
     }
 	render() {
 		var menus = [{
@@ -25,7 +26,7 @@ default class FooterBar extends Component {
 			title: '报告',
 			icon: 'cube'
 		}, {
-			uri: 'index',
+			uri: '/',
 			title: '行情',
 			icon: 'earth'
 		}, {
@@ -42,7 +43,7 @@ default class FooterBar extends Component {
 					{
 						menus.map((ele) => {
 							return (
-								<FooterBarIcon fn={this._footerBarHandle.bind(this,ele.uri)} style={ele.uri == this.props.uri ? styles.active : null} key={ele.title}  {...ele}/>
+								<FooterBarIcon fn={this._footerBarHandle.bind(this,ele.uri)} style={ele.uri == this.props.routes[0].path ? styles.active : null} key={ele.title}  {...ele}/>
 							)
 						})
 					}
@@ -50,6 +51,9 @@ default class FooterBar extends Component {
 		)
 
 	}
+}
+FooterBar.propTypes = {
+    routes:React.PropTypes.array.isRequired
 }
 const styles = {
 	active:{

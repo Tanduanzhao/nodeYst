@@ -4,6 +4,7 @@
 import React,{Component} from 'react';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
+import {loadUserInfo} from './function/ajax';
 export default class Center extends Component{
     render(){
         return(

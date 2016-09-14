@@ -73,7 +73,7 @@ class Index extends Component{
 			<div className="root">
                 <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
                 <Main {...this.props} data={this.props.initData}/>
-                <FooterBar uri={this.props.uri} dispatch={this.props.dispatch}/>
+                <FooterBar {...this.props}/>
 				{
 					this.props.showProvicen ? <Provicen fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
 				}
