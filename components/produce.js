@@ -5,9 +5,13 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
-import Provicen from './provicen';
 import FilterProduce from './filterProduce';
 class Produce extends Component {
+  _fn(args) {
+    this.props.dispatch({
+      type:'UNSHOWFILTERPRODUCE'
+    })
+  }
   render() {
     return (
       <div className="root">
@@ -15,8 +19,8 @@ class Produce extends Component {
         <Main {...this.props}/>
         <FooterBar {...this.props}/>
         {
-          this.props.hospitalFilter.isShowFilter ?
-            <FilterProduce {...this.props} dataSources={this.props.provicenData}/> : null
+          this.props.produceFilter.isShowFilter ?
+            <FilterProduce fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.provicenData}/> : null
         }
       </div>
     )
@@ -25,7 +29,7 @@ class Produce extends Component {
 class HeaderBar extends Component{
   _showProvicenHandle(){
     this.props.dispatch({
-      type:'SHOWFILTER'
+      type:'SHOWFILTERPRODUCE'
     });
   }
   render(){
@@ -46,11 +50,9 @@ class HeaderBar extends Component{
   }
 }
 class Main extends Component{
-  _subscribe() {
-    this.props.dispatch({
-      type: 'CHANGE',
-      subscribe:this.props.subscribe+1
-    })
+  _subscribe(event) {
+    event.target.innerHTML = parseInt(event.target.innerHTML)+1+"人订阅"
+    event.preventDefault();
   }
   render(){
     return(
@@ -62,7 +64,7 @@ class Main extends Component{
               <h3>慢阻肺患者的用药图谱.</h3>
               <div className="produce-card-price">¥200</div>
               <p className="produce-card-footer">
-                <span style={{textAlign:'left'}} onclick={this._subscribe.bind(this)}>{this.props.subscribe}人订阅</span>
+                <span style={{textAlign:'left'}} onClick={this._subscribe.bind(this)}>1231人订阅</span>
                 <i className="produce-card-icon">点击进入</i>
               </p>
             </Link>
@@ -73,7 +75,7 @@ class Main extends Component{
               <h3>广东省药械政策变化和市场机遇.</h3>
               <div className="produce-card-price">¥0</div>
               <p  className="produce-card-footer">
-                <span style={{textAlign:'left'}}>4322人订阅</span>
+                <span style={{textAlign:'left'}} onClick={this._subscribe.bind(this)}>3453人订阅</span>
                 <i className="produce-card-icon">点击进入</i>
               </p>
             </Link>
@@ -86,13 +88,14 @@ class Main extends Component{
 function select(state){
   return{
     subscribe:state.Produce.subscribe,
+    subscribeTwo:state.Produce.subscribeTwo,
     showProvicen:state.index.showProvicen,
     areaId:state.provicen.areaId,
     areaName:state.provicen.areaName,
     provicenData:state.provicen.data,
     yearMonth:state.data.yearMonth,
     uri:state.router.uri,
-    hospitalFilter:state.Produce,
+    produceFilter:state.Produce,
     searchAreaType:state.provicen.searchAreaType
   }
 }
