@@ -1,6 +1,6 @@
 /*
-    医院列表
-*/
+ 医院列表
+ */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {loadListHospital} from '../function/ajax';
@@ -40,6 +40,9 @@ class HospitalList extends Component{
                 yearMonth:args.yearMonth,
                 hospitalLevel:args.hospitalLevel
             });
+            setTimeout(()=>{
+                this._loadData();
+            },100);
         })
     }
     _loadData(){
@@ -87,19 +90,19 @@ class HospitalList extends Component{
 
     render(){
         return(
-            <div className="root">
-                <HeaderBar fn={this._loadData} {...this.props}/>
-                <div ref="content" className="scroll-content has-header">
-                    <ul className="list">
-                        {
-                            this.props.hospitalFilter.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                        }
-                    </ul>
-                </div>
-                {
-                    this.props.hospitalFilter.isShowFilter ? <Filter fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
-				}
-            </div>
+          <div className="root">
+              <HeaderBar fn={this._loadData} {...this.props}/>
+              <div ref="content" className="scroll-content has-header">
+                  <ul className="list">
+                      {
+                          this.props.hospitalFilter.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                      }
+                  </ul>
+              </div>
+              {
+                  this.props.hospitalFilter.isShowFilter ? <Filter fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
+              }
+          </div>
         )
     }
 }
@@ -116,23 +119,23 @@ class List extends Component{
             return string;
         })();
         return(
-            <li className="item">
-                <h2>
-                    {this.props.dataSources.hosName}
-                    {tag}
-                </h2>
-                <p><span>床位数：{this.props.dataSources.bedCount || '未知'}</span><span style={{marginLeft:'1rem'}}>年门诊量： {this.props.dataSources.yearCount || '未知'}</span></p>
-            </li>
+          <li className="item">
+              <h2>
+                  {this.props.dataSources.hosName}
+                  {tag}
+              </h2>
+              <p><span>床位数：{this.props.dataSources.bedCount || '未知'}</span><span style={{marginLeft:'1rem'}}>年门诊量： {this.props.dataSources.yearCount || '未知'}</span></p>
+          </li>
         )
     }
 }
 
 class HeaderBar extends Component{
     _showProvicenHandle(){
-		this.props.dispatch({
-			type:'SHOWFILTER'
-		});
-	}
+        this.props.dispatch({
+            type:'SHOWFILTER'
+        });
+    }
     _changeHandle(){
         this.props.dispatch({
             type:'CHANGEHOSPITALSEARCHNAME',
@@ -141,10 +144,10 @@ class HeaderBar extends Component{
     }
     _searchHandle(){
         this.props.dispatch({
-                type:'LOADHOSPITALDATA',
-                data:[],
-                pageNo:1
-            });
+            type:'LOADHOSPITALDATA',
+            data:[],
+            pageNo:1
+        });
         setTimeout(()=> this.props.fn(),100);
     }
     componentUnMount(){
@@ -154,18 +157,18 @@ class HeaderBar extends Component{
     }
     render(){
         return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons">
-                    <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-map-marker"></i><span style={{paddingLeft:'5px'}}>{this.props.hospitalFilter.areaName}</span></button>
-                </div>
-                <label className="item-input-wrapper">
-                    <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
-                </label>
-                <button className="button button-clear" onClick={this._searchHandle.bind(this)}>
-                    搜索
-                </button>
-            </div>
+          <div className="bar bar-header bar-positive item-input-inset">
+              <div className="buttons">
+                  <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-map-marker"></i><span style={{paddingLeft:'5px'}}>{this.props.hospitalFilter.areaName}</span></button>
+              </div>
+              <label className="item-input-wrapper">
+                  <i className="icon ion-ios-search placeholder-icon"></i>
+                  <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
+              </label>
+              <button className="button button-clear" onClick={this._searchHandle.bind(this)}>
+                  搜索
+              </button>
+          </div>
         )
     }
 }
@@ -173,11 +176,11 @@ class HeaderBar extends Component{
 function select(state){
     return{
         showProvicen:state.index.showProvicen,
-		areaId:state.provicen.areaId,
-		areaName:state.provicen.areaName,
+        areaId:state.provicen.areaId,
+        areaName:state.provicen.areaName,
         provicenData:state.provicen.data,
-		yearMonth:state.data.yearMonth,
-		uri:state.router.uri,
+        yearMonth:state.data.yearMonth,
+        uri:state.router.uri,
         hospitalFilter:state.hospital,
         searchAreaType:state.provicen.searchAreaType
     }

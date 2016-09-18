@@ -310,17 +310,31 @@ h3 {
     .charge-header .title-bar .title-text {
       opacity: 1;
       line-height: 42px;
-      margin-right: 10px; }
+      margin-right: 10px;
+      font-size: .8rem; }
     .charge-header .title-bar .title-logo {
       width: 1.8rem;
       height: 1.8rem; }
 
 .charge-main .item {
-  padding-left: 1.5rem; }
+  padding-left: 1.5rem;
+  color: #0a8ddf;
+  font-weight: 600;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
 
 .charge-main .item:before {
-  content: "";
   display: inline-block;
+  content: "";
   width: 10px;
   height: 10px;
   background: #0a8ddf;
@@ -341,8 +355,8 @@ h3 {
     margin-right: 10px; }
 
 .charge-footer {
-  height: 2.5rem;
-  line-height: 2.5rem; }
+  height: 2rem;
+  line-height: 2rem; }
   .charge-footer a {
     display: block;
     font-size: .9rem;

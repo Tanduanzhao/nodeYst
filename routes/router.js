@@ -6,7 +6,9 @@ module.exports = function(app) {
         res.end('');
     });
     app.get('/rise/*',index);
-    app.get('optional',index);
+    app.get('/optional',index);
+    app.get('/produce',index);
+    app.get('/produce/*',index);
 	app.get('/center', index);
     app.get('/datas', index);
     app.get('/datas/*', index);

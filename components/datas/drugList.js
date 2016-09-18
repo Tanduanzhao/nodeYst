@@ -10,16 +10,6 @@ import {Link} from 'react-router';
 class drugList extends Component{
     constructor(props){
         super(props);
-        this.state={
-            searchName:this.props.hospitalFilter.searchName,
-            data:this.props.hospitalFilter.data,
-            pageNo:this.props.hospitalFilter.pageNo,
-            infinite:this.props.hospitalFilter.infinite,
-            yearMonth:this.props.hospitalFilter.yearMonth,
-            areaId:this.props.hospitalFilter.areaId,
-            areaName:this.props.hospitalFilter.areaName,
-            searchAreaType:this.props.hospitalFilter.searchAreaType
-        };
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
@@ -34,13 +24,16 @@ class drugList extends Component{
                 type:'UNSHOWFILTER'
             });
             dispatch({
-                type:'CHANGEHOSPITALFILTER',
+                type:'CHANGEDRUGFILTER',
                 areaId:args.areaId,
                 areaName:args.areaName,
                 searchAreaType:args.searchType,
                 yearMonth:args.yearMonth,
                 hospitalLevel:args.hospitalLevel
             });
+            setTimeout(()=>{
+                this._loadData();
+            },100);
         })
     }
     _loadData(){
@@ -59,11 +52,11 @@ class drugList extends Component{
                     });
                     if(res.totalSize <= this.props.hospitalFilter.data.length){
                         dispatch({
-                            type:'UNINFINITE'
+                            type:'UNINFINITEDRUG'
                         });
                     }else{
                         dispatch({
-                            type:'INFINITE'
+                            type:'INFINITEDRUG'
                         });
                     }
                 }
@@ -162,12 +155,12 @@ class List extends Component{
 class HeaderBar extends Component{
     _showProvicenHandle(){
         this.props.dispatch({
-            type:'SHOWFILTER'
+            type:'SHOWFILTERDRUG'
         });
     }
     _changeHandle(){
         this.props.dispatch({
-            type:'CHANGEHOSPITALSEARCHNAME',
+            type:'CHANGEDRUGSEARCHNAME',
             searchName:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
         })
     }
@@ -181,7 +174,7 @@ class HeaderBar extends Component{
     }
     componentUnMount(){
         this.props.dispatch({
-            type:'CLEARHOSPITALSEARCHNAME'
+            type:'CLEADRUGSEARCHNAME'
         })
     }
     render(){

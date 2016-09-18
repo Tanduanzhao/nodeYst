@@ -314,6 +314,7 @@ h3{
             opacity: 1;
             line-height: 42px;
             margin-right: 10px;
+            font-size: .8rem;
         }
         .title-logo{
             width: 1.8rem;
@@ -324,10 +325,20 @@ h3{
 }
 .charge-main .item{
     padding-left: 1.5rem;
+    color: #0a8ddf;
+    font-weight: 600;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
 }
 .charge-main .item:before {
-    content: "";
     display: inline-block;
+    content: "";
     width: 10px;
     height: 10px;
     background: #0a8ddf;
@@ -349,8 +360,8 @@ h3{
     }
 }
 .charge-footer {
-    height: 2.5rem;
-    line-height:2.5rem;
+    height: 2rem;
+    line-height:2rem;
     a{
         display: block;
         font-size: .9rem;
