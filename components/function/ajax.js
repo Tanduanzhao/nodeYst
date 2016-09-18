@@ -173,18 +173,6 @@ export const sendFeedBackMessage = function(dispatch,args){
         }
     })
 }
-export const sendFeedBackMessage = function(dispatch,args){
-    ajaxFn({
-        url:'insertBusinessFeedBackInfo',
-        data: {
-            feedContent: args.feedContent
-        },
-        callBack:(res)=>{
-            args.callBack(res);
-        }
-    })
-}
-
 //药品列表
 export const loadListDrug = function(dispatch,args){
     ajaxFn({
@@ -198,6 +186,18 @@ export const loadListDrug = function(dispatch,args){
         },
         callBack:(res)=>{
             args.callBack(res);
+        }
+    })
+}
+//药品内容
+export const loadDrugContent = function(dispatch,args){
+    ajaxFn({
+        url:'getProductAreaDetailInfo',
+        data:{
+            id:args.salesId || null,
+        },
+        callBack:(res)=>{
+            args.callBack(res)
         }
     })
 }
