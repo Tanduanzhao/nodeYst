@@ -62,7 +62,7 @@ class Main extends Component{
               <h3>慢阻肺患者的用药图谱.</h3>
               <div className="produce-card-price">¥200</div>
               <p className="produce-card-footer">
-                <span style={{textAlign:'left'}} onclick={this._subscribe.bind(this)}>{this.props.subscribe}人订阅</span>
+                <span style={{textAlign:'left'}} onClick={this._subscribe.bind(this)}>{this.props.subscribe}人订阅</span>
                 <i className="produce-card-icon">点击进入</i>
               </p>
             </Link>

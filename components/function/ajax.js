@@ -173,17 +173,6 @@ export const sendFeedBackMessage = function(dispatch,args){
         }
     })
 }
-export const sendFeedBackMessage = function(dispatch,args){
-    ajaxFn({
-        url:'insertBusinessFeedBackInfo',
-        data: {
-            feedContent: args.feedContent
-        },
-        callBack:(res)=>{
-            args.callBack(res);
-        }
-    })
-}
 
 //药品列表
 export const loadListDrug = function(dispatch,args){

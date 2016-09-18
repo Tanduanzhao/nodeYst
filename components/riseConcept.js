@@ -102,11 +102,10 @@ class List extends Component{
     render(){
         return(
             <Link to={`/optional/concept/${this.props.dataSources.conceptId}`} className="item">
-                <div>{this.props.dataSources.conceptName}</div>
+                <div>{this.props.dataSources.conceptName}<span className="item-note assertive">{this.props.dataSources.change}%</span></div>
                 <p>
                     <span>市场规模：{this.props.dataSources.sales}</span>
                     <span style={{marginLeft:'1rem'}}>市场份额： {this.props.dataSources.marketMth}</span>
-                    <span style={{marginLeft:'1rem'}}>涨跌幅：{this.props.dataSources.change}%</span>
                 </p>
             </Link>
         )

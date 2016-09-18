@@ -46,7 +46,7 @@ class FeedBack extends Component{
                 </div>
                 <div className="bar bar-footer item-input-inset">
                     <label className="item-input-wrapper">
-                        <i className="icon ion-ios-search placeholder-icon"></i>
+                        <i className="icon ion-ios-compose-outline placeholder-icon"></i>
                         <input type="text" ref="feedBackInput" placeholder="说点什么吧"/>
                     </label>
                     <button onClick={this._sendMessage.bind(this)} className="button button-clear">

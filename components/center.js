@@ -24,24 +24,24 @@ class Main extends Component{
                     <div className="item item-avatar">
                         <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1926125421,997183280&fm=116&gp=0.jpg" width="80"/>
                         <h2>Venkman</h2>
-                        <p>cashely.shi</p>
+                        <p>cashely.shi <span className="tag bg-assertive">VIP1</span></p>
                     </div>
                 </div>
                 <div className="list padding-top">
                     <div className="item item-icon-left">
-                        <i className="icon ion-email"></i>
+                        <i className="icon ion-ios-cloud-upload-outline"></i>
                         我要投稿
                     </div>
                     <div className="item item-icon-left">
-                        <i className="icon ion-email"></i>
+                        <i className="icon ion-ios-cart-outline"></i>
                         已购报告
                     </div>
                     <Link to="center/feedback" className="item item-icon-left">
-                        <i className="icon ion-email"></i>
+                        <i className="icon ion-ios-chatboxes-outline"></i>
                         意见反馈
                     </Link>
                     <div className="item item-icon-left">
-                        <i className="icon ion-email"></i>
+                        <i className="icon ion-ios-help-outline"></i>
                         帮助中心
                     </div>
                 </div>
