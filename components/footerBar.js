@@ -7,15 +7,6 @@ from 'react';
 import FooterBarIcon from './footerBarIcon.js';
 export
 default class FooterBar extends Component {
-	_footerBarHandle(e){
-		this.props.dispatch({
-			type:'ROUTER',
-			router:e
-		})
-	}
-    componentDidMount(){
-        console.log(this.props.routes[0].path);
-    }
 	render() {
 		var menus = [{
 			uri: 'home',
@@ -43,7 +34,7 @@ default class FooterBar extends Component {
 					{
 						menus.map((ele) => {
 							return (
-								<FooterBarIcon fn={this._footerBarHandle.bind(this,ele.uri)} style={ele.uri == this.props.routes[0].path ? styles.active : null} key={ele.title}  {...ele}/>
+								<FooterBarIcon style={ele.uri == this.props.routes[0].path ? styles.active : null} key={ele.title}  {...ele}/>
 							)
 						})
 					}

@@ -4,6 +4,7 @@ module.exports = {
 	entry: {
 		index: './build.js'
 	},
+    devtool:false,
 	output: {
 		path: __dirname + '/public/javascripts/',
 		filename: 'build.min.js'

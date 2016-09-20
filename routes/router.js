@@ -1,5 +1,6 @@
 var index = require('./index.js');
 var post = require('./post.js');
+var getToken = require('./getToken');
 module.exports = function(app) {
 	app.get('/', index);
     app.get('/favicon.ico', function(req,res){
@@ -13,5 +14,6 @@ module.exports = function(app) {
     app.get('/datas', index);
     app.get('/datas/*', index);
     app.get('/center/*',index);
-    app.post('/:id', post);
+    
+    app.post('/getToken',getToken);
 }

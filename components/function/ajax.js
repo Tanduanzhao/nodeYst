@@ -152,15 +152,6 @@ export const loadListHospital = function(dispatch,args){
         }
     })
 }
-//返回建议
-export const loadFeedBack = function(dispatch,args){
-    ajaxFn({
-        url:'getBusinessFeedBackInfo',
-        callBack:(res)=>{
-            args.callBack(res);
-        }
-    })
-}
 //发送反馈信息
 export const sendFeedBackMessage = function(dispatch,args){
     ajaxFn({
@@ -201,10 +192,76 @@ export const loadDrugContent = function(dispatch,args){
         }
     })
 }
+
+//JS-SDK授权
+export const loadJssdk = function(args){
+    ajaxFn({
+        url:'getJsSdkInfo',
+        data:{
+            strBackUrl:encodeURI(encodeURI(args.uri))
+        },
+        callBack:(res)=>{
+            args.callBack(res)
+        }
+    })
+}
+
+//初始化用户
+export const loadWx = function(args){
+    ajaxFn({
+        url:'getInitWxUser',
+        data:{
+            code:args.code
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
 //获取用户信息
-export const loadUserInfo = function(arg){
+export const loadUserInfo = function(args){
     ajaxFn({
         url:'getWxUserInfo',
-        callBack:args.callBack(res)
+        callBack:(res) =>{
+            args.callBack(res);
+        }
+    })
+}
+
+
+//获取用户反馈列表
+export const getBusinessFeedBackInfo = function(args){
+    ajaxFn({
+        url:'getBusinessFeedBackInfo',
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//发送反馈建议
+export const insertBusinessFeedBackInfo = function(args){
+    ajaxFn({
+        url:'insertBusinessFeedBackInfo',
+        data:{
+            feedContent:args.feedContent
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//获取地理位置信息
+export const getUserAreaInfo = function(args){
+    ajaxFn({
+        url:'getUserAreaInfo',
+        data:{
+            latitude:args.latitude,
+            longitude:args.longitude
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
     })
 }

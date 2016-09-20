@@ -1,7 +1,9 @@
-import React from 'react';
+import {Token} from './components/function/token';
+import React,{Component} from 'react';
 
 import ReactDOM from 'react/lib/ReactDOM';
 
+//var token  = require('./function/token');
 
 import {Router,Route,Link,browserHistory,IndexRoute} from 'react-router';
 import {createStore,applyMiddleware} from 'redux';
@@ -33,39 +35,60 @@ import free from './components/produce/free';
 import charge from './components/produce/charge';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
+Token((res) => {
+    store.dispatch({
+        type:'CHANGE',
+        areaName:res.datas.areaName,
+        areaId:res.datas.areaId,
+        searchAreaType:res.datas.searchAreaType
+    });
+    store.dispatch({
+        type:'CHANGEDATA',
+        yearMonth:res.datas.yearMonth
+    });
+    ReactDOM.render(_router, ele, null);
+});
+class II extends Component{
+    render(){
+        return(
+            <Index pp="11"/>
+        )
+    }
+}
 var _router = (
 	<Provider store={store}>
 		<Router history={browserHistory}>
-			<Route path='/' component={Index}/>
-            <Route path='optional'>
-                <Route path='classify/:sid' component={Optional}/>
-                <Route path='concept/:cid' component={Concept}/>
-            </Route>
-            <Route path="rise">
-                <Route path="classify" component={RiseClassify}/>
-                <Route path="concept" component={RiseConcept}/>
-                <Route path="breed" component={RiseBreed}/>
-            </Route>
-            <Route path="datas">
-                <IndexRoute component={Datas}/>
-                <Route path="hospitalList" component={HospitalList}/>
-                <Route path="drugList" component={drugList}/>
-            </Route>
-            <Route path="drugContent/:sid">
-              <IndexRoute component={drugContent}/>
-            </Route>
-            <Route path="center">
-               <IndexRoute component={Center}/>
-               <Route path="feedback" component={FeedBack}/>
-            </Route>
-            <Route path="produce">
-              <IndexRoute component={produce}/>
-              <Route path="free" component={free}/>
-              <Route path="charge" component={charge}/>
+			<Route path='/'>
+                <IndexRoute component={Index}/>
+                <Route path='optional'>
+                    <Route path='classify/:sid' component={Optional}/>
+                    <Route path='concept/:cid' component={Concept}/>
+                </Route>
+                <Route path="rise">
+                    <Route path="classify" component={RiseClassify}/>
+                    <Route path="concept" component={RiseConcept}/>
+                    <Route path="breed" component={RiseBreed}/>
+                </Route>
+                <Route path="datas">
+                    <IndexRoute component={Datas}/>
+                    <Route path="hospitalList" component={HospitalList}/>
+                    <Route path="drugList" component={drugList}/>
+                </Route>
+                <Route path="drugContent/:sid">
+                  <IndexRoute component={drugContent}/>
+                </Route>
+                <Route path="center">
+                   <IndexRoute component={Center}/>
+                   <Route path="feedback" component={FeedBack}/>
+                </Route>
+                <Route path="produce">
+                  <IndexRoute component={produce}/>
+                  <Route path="free" component={free}/>
+                  <Route path="charge" component={charge}/>
+                </Route>
             </Route>
 		</Router>
 	</Provider>
 );
 var ele = document.getElementById('app');
 
-ReactDOM.render(_router, ele, null);

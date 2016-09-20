@@ -3,10 +3,10 @@
 */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import {loadFeedBack,sendFeedBackMessage} from './function/ajax';
+import {getBusinessFeedBackInfo,insertBusinessFeedBackInfo} from './function/ajax';
 class FeedBack extends Component{
     componentDidMount(){
-        loadFeedBack(this.props.dispatch,{
+        getBusinessFeedBackInfo({
             callBack:(res)=>{
                 if((typeof res.datas) != 'undefined'){
                     this.props.dispatch({
@@ -18,7 +18,7 @@ class FeedBack extends Component{
         });
     }
     _sendMessage(){
-        sendFeedBackMessage(this.props.dispatch,{
+        insertBusinessFeedBackInfo({
             feedContent:this.refs.feedBackInput.value,
             callBack:(res)=>{
                 if(res.state == 1){
@@ -40,7 +40,7 @@ class FeedBack extends Component{
                 <div className="scroll-content">
                     {
                         this.props.feedBack.data.map((ele)=>{
-                          return (ele.isReplay != 0) ? (<Dialog key={Math.random(1)} feedContent = {ele.feedContent}/>) : (<Dialog key={Math.random(1)} feedContent ={ele.feedContent} dir="right" imgUrl={ele.headImageUrl}/>)
+                          return (ele.isReplay == 1) ? (<Dialog key={Math.random(1)} feedContent = {ele.feedContent}/>) : (<Dialog key={Math.random(1)} feedContent ={ele.feedContent} dir="right" imgUrl={ele.headImageUrl}/>)
                         })
                     }
                 </div>

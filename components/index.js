@@ -6,15 +6,19 @@ import Provicen from './provicen.js';
 
 import {connect} from 'react-redux';
 import {httpAddress} from './config.js';
-import $ from 'jquery';
-import {loadIndex,loadProvince} from './function/ajax.js';
+import {loadIndex,loadProvince,loadWx,loadJssdk} from './function/ajax.js';
+import {url2obj} from './function/common';
 
 class Index extends Component{
 	constructor(props) {
 	  super(props);
 	}
+    
+    
+    
+    
     componentDidMount(){
-        loadProvince(this.props.dispatch)
+        loadProvince(this.props.dispatch);
     }
     
 	_increaseHandle(){
@@ -90,7 +94,8 @@ import Breed from './index/breed.js';
 
 class Main extends Component{
     constructor(props){
-        super(props)
+        super(props);
+        console.log(this.props,'props');
     }
     componentDidMount(){
         loadIndex(this.props.dispatch,{

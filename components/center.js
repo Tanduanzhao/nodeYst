@@ -2,10 +2,21 @@
     个人中心模块
 */
 import React,{Component} from 'react';
+import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
 import {loadUserInfo} from './function/ajax';
-export default class Center extends Component{
+class Center extends Component{
+    componentDidMount(){
+        loadUserInfo({
+            callBack:(res)=>{
+                this.props.dispatch({
+                    type:'LOADUSERINFO',
+                    datas:res.datas
+                });
+            }
+        })
+    }
     render(){
         return(
             <div className="root">
@@ -22,9 +33,9 @@ class Main extends Component{
             <div className="scroll-content">
                 <div className="list">
                     <div className="item item-avatar">
-                        <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1926125421,997183280&fm=116&gp=0.jpg" width="80"/>
-                        <h2>Venkman</h2>
-                        <p>cashely.shi <span className="tag bg-assertive">VIP1</span></p>
+                        <img src={this.props.userInfo.imgUrl} width="80"/>
+                        <h2>微信用户</h2>
+                        <p>{this.props.userInfo.userName} <span className="tag bg-assertive">VIP</span></p>
                     </div>
                 </div>
                 <div className="list padding-top">
@@ -49,3 +60,10 @@ class Main extends Component{
         )
     }
 }
+
+function select(state){
+    return{
+        userInfo:state.userInfo
+    }
+}
+export default connect(select)(Center);

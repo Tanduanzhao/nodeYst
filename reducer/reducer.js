@@ -157,17 +157,39 @@ function Produce(state=defaultProduce,action) {
     default : return state;
   }
 }
+
+
+
+//用户信息仓库
+
+var defaultUserInfo = {
+    id:null,
+    userName:null,
+    imgUrl:null,
+    level:true,
+    isLogin:false
+}
+
+function userInfo(state = defaultUserInfo,action){
+    switch(action.type){
+        case 'LOGIN' : return Object.assign({},state,{isLogin:true});
+        case 'LOADUSERINFO' : return Object.assign({},state,{imgUrl:action.datas.imgUrl,id:action.datas.id,userName:action.datas.userName});
+            default : return state;
+    }
+    
+}
 //合并仓库
 const ystReducers = combineReducers({
 	index,
 	provicen,
 	data,
 	router,
-  Produce,
+    Produce,
     hospital,
     feedBack,
     drug,
-      drugContent
+    userInfo,
+    drugContent
 })
 
 export default ystReducers;
