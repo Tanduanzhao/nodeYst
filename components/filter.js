@@ -8,7 +8,8 @@ export default class Filter extends Component{
 	  	areaName:this.props.hospitalFilter.areaName,
         searchAreaType:this.props.hospitalFilter.searchAreaType,
         yearMonth:this.props.hospitalFilter.yearMonth,
-        hospitalLevel:this.props.hospitalFilter.hospitalLevel
+        hospitalLevel:this.props.hospitalFilter.hospitalLevel,
+        drug:this.props.hospitalFilter.drug
 	  };
 	}
     _cancelButton(){
@@ -57,18 +58,26 @@ export default class Filter extends Component{
                        <div className="list padding"> 
                             {
                                 this.props.dataSources.map((ele)=>{
+                                  if(true){
                                     return(
                                         <div key={ele.id}>
                                             <h3 className="list-horizontal-title"><span>{ele.areaName}</span></h3>
                                             <ul className="list-horizontal-block">
                                                 {
                                                     ele.children.map((v)=>{
-                                                        return	<li style={(v.id == this.state.areaId) ? styles.active : null} onClick={this._spanhandleClick.bind(this,v.id,v.areaName,v.searchAreaType)} key={v.id}>{v.areaName}</li> 
+                                                      if (this.state.drug != 1){
+                                                        if( v.municipality != null && v.municipality != undefined){
+                                                          return <li style={(v.id == this.state.areaId) ? styles.active : null} onClick={this._spanhandleClick.bind(this,v.id,v.areaName,v.searchAreaType)} key={v.id}>{v.areaName}</li>
+                                                        }
+                                                      }else{
+                                                        return <li style={(v.id == this.state.areaId) ? styles.active : null} onClick={this._spanhandleClick.bind(this,v.id,v.areaName,v.searchAreaType)} key={v.id}>{v.areaName}</li>
+                                                      }
                                                     })
                                                 }
                                             </ul>
                                         </div>
                                     )
+                                  }
                                 })
                             }
                        </div>

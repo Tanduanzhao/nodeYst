@@ -92,7 +92,7 @@ class HospitalList extends Component{
         return(
           <div className="root">
               <HeaderBar fn={this._loadData} {...this.props}/>
-              <div ref="content" className="scroll-content has-header">
+              <div ref="content" className="scroll-content has-header hl-content">
                   <ul className="list">
                       {
                           this.props.hospitalFilter.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
@@ -124,7 +124,6 @@ class List extends Component{
                   {this.props.dataSources.hosName}
                   {tag}
               </h2>
-              <p><span>床位数：{this.props.dataSources.bedCount || '未知'}</span><span style={{marginLeft:'1rem'}}>年门诊量： {this.props.dataSources.yearCount || '未知'}</span></p>
           </li>
         )
     }

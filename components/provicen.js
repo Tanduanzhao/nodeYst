@@ -20,7 +20,7 @@ export default class Provicen extends Component{
 			areaId:this.state.areaId,
             searchAreaType:this.state.searchAreaType
 		});
-        this.props.fn();
+        this.props.fn(this.state);
 	}
 	_cancelButton(){
 		this.props.dispatch({
