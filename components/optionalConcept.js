@@ -107,7 +107,9 @@ class List extends Component{
     render(){
         var string = null;
         var change = (()=>{
-            if (this.props.dataSources.change >= 0 ) {
+            if (this.props.dataSources.change == "" ) {
+                string=""
+            }else if(this.props.dataSources.change >= 0 ) {
                 string= <span className="item-note assertive">{this.props.dataSources.change}%</span>
             } else {
                 string= <span className="item-note balanced">{this.props.dataSources.change}%</span>
