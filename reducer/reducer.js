@@ -69,6 +69,7 @@ var defaultHospital={
     yearMonth:defaultData.yearMonth,
     hospitalLevel:null,
     searchName:null,
+    hospital:true,
     pageNo:1,
     data:[],
     infinite:false
