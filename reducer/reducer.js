@@ -99,6 +99,7 @@ function feedBack(state={data:[{isReplay:1,feedContent:'您好，请问有什么
 // 药品列表信息
 var defaultDrug={
   isShowFilter:false,
+  drug:1,
   areaName:defaultProvicen.areaName,
   areaId:defaultProvicen.areaId,
   searchAreaType:defaultProvicen.searchAreaType,
