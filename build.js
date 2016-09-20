@@ -3,8 +3,6 @@ import React,{Component} from 'react';
 
 import ReactDOM from 'react/lib/ReactDOM';
 
-//var token  = require('./function/token');
-
 import {Router,Route,Link,browserHistory,IndexRoute} from 'react-router';
 import {createStore,applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
