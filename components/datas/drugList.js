@@ -90,7 +90,7 @@ class drugList extends Component{
                   </ul>
               </div>
               {
-                  this.props.hospitalFilter.isShowFilter ? <Filter fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
+                  this.props.hospitalFilter.isShowFilter ? <Filter fn={this._fn.bind(this)} {...this.props}  dataSources={this.props.provicenData}/> :null
               }
           </div>
         )
