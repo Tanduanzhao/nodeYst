@@ -7,6 +7,9 @@ from 'react';
 import FooterBarIcon from './footerBarIcon.js';
 export
 default class FooterBar extends Component {
+    componentDidMount(){
+        console.dir(this.props.routes);
+    }
 	render() {
 		var menus = [{
 			uri: 'home',
@@ -34,7 +37,7 @@ default class FooterBar extends Component {
 					{
 						menus.map((ele) => {
 							return (
-								<FooterBarIcon style={ele.uri == this.props.routes[0].path ? styles.active : null} key={ele.title}  {...ele}/>
+								<FooterBarIcon style={ele.uri == this.props.routes[1].path ? styles.active : null} key={ele.title}  {...ele}/>
 							)
 						})
 					}

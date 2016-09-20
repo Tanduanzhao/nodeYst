@@ -48,18 +48,12 @@ Token((res) => {
     });
     ReactDOM.render(_router, ele, null);
 });
-class II extends Component{
-    render(){
-        return(
-            <Index pp="11"/>
-        )
-    }
-}
+
 var _router = (
 	<Provider store={store}>
 		<Router history={browserHistory}>
-			<Route path='/'>
-                <IndexRoute component={Index}/>
+			<Route>
+                <Route path='/' component={Index}/>
                 <Route path='optional'>
                     <Route path='classify/:sid' component={Optional}/>
                     <Route path='concept/:cid' component={Concept}/>
@@ -91,4 +85,3 @@ var _router = (
 	</Provider>
 );
 var ele = document.getElementById('app');
-

@@ -1,7 +1,5 @@
 import React from 'react';
-import {combineReducers} from 'redux';
-
-
+import {dispatch,combineReducers} from 'redux';
 //首页默认数据仓库
 var defaultIndex = {
 	showProvicen:false,
@@ -13,7 +11,6 @@ var defaultIndex = {
         
     }
 }
-
 function index(state=defaultIndex,action){
 	switch(action.type){
 		case 'SHOW' : return Object.assign({},state,{showProvicen:true});
@@ -46,6 +43,7 @@ var defaultData = {
 	yearMonth:2015
 };
 function data(state = defaultData,action){
+    
 	switch(action.type){
 		case 'INCREASE' : return Object.assign({},state,{yearMonth:++state.yearMonth});
 		case 'DECREASE' : return Object.assign({},state,{yearMonth:--state.yearMonth});
@@ -180,6 +178,7 @@ function userInfo(state = defaultUserInfo,action){
     
 }
 //合并仓库
+
 const ystReducers = combineReducers({
 	index,
 	provicen,
@@ -192,5 +191,4 @@ const ystReducers = combineReducers({
     userInfo,
     drugContent
 })
-
 export default ystReducers;

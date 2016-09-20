@@ -49,7 +49,7 @@ export default class Provicen extends Component{
                                             <ul className="list-horizontal-block">
                                             {
                                                 ele.children.map((v)=>{
-                                                    return	<li style={(v.id == this.state.areaId) ? styles.active : null} onClick={this._spanhandleClick.bind(this,v.id,v.areaName,v.searchAreaType)} key={v.id}>{v.areaName}</li> 
+                                                    return	<li style={(v.id == this.state.areaId) ? styles.active : null} onClick={this._spanhandleClick.bind(this,v.id,v.showAreaName,v.searchAreaType)} key={v.id}>{v.areaName}</li> 
                                                 })
                                             }
                                             </ul>
