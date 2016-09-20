@@ -4,17 +4,26 @@
 
 import React,{Component} from 'react';
 
-
 import {Link} from 'react-router';
 export default class ConceptSingle extends Component{
 	render(){
-        
+    var string = null;
+    var tag = (()=>{
+      if(this.props.data.icoType){
+        string = <span className= 'tag' >{this.props.data.icoType}</span>;
+      }else{
+        string = "";
+      }
+      return string;
+    })();
         if(this.props.data){
             const cid = this.props.data.conceptId;
             return(
-                
                 <Link to={`/optional/concept/${cid}`} className="col text-center">
-                    <h3><span className="tag">{this.props.data.icoType}</span>{this.props.data.conceptName}</h3>
+                    <h3>
+                      {tag}
+                      {this.props.data.conceptName}
+                    </h3>
                     <h5 className="text zb">{this.props.data.sales}万</h5>
                     <div className="row footer-row">
                         <span className="col balanced">{this.props.data.changeCost}</span>

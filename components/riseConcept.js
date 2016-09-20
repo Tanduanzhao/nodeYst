@@ -100,9 +100,21 @@ class RiseConcept extends Component{
 
 class List extends Component{
     render(){
+        var string = null;
+        var change = (()=>{
+            if (this.props.dataSources.change >= 0 ) {
+                string= <span className="item-note assertive">{this.props.dataSources.change}%</span>
+            } else {
+                string= <span className="item-note balanced">{this.props.dataSources.change}%</span>
+            }
+            return string;
+        })();
         return(
             <Link to={`/optional/concept/${this.props.dataSources.conceptId}`} className="item">
-                <div>{this.props.dataSources.conceptName}<span className="item-note assertive">{this.props.dataSources.change}%</span></div>
+                <div>
+                    {this.props.dataSources.conceptName}
+                    {change}
+                </div>
                 <p>
                     <span>市场规模：{this.props.dataSources.sales}</span>
                     <span style={{marginLeft:'1rem'}}>市场份额： {this.props.dataSources.marketMth}</span>
