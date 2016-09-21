@@ -1,9 +1,10 @@
 import React,{Component} from 'react';
 
 import ChartSingle from './chartSingle.js';
+import EmptyComponent from '../emptyComponent'
 export default class Chart extends Component{
 	render(){
-        if(this.props.dataSources){
+        if(this.props.dataSources.length != 0){
             return(
                 <div className="row">
                     {
@@ -16,7 +17,7 @@ export default class Chart extends Component{
                 </div>
             )
         }else{
-            return (<div>null</div>)
+            return (<EmptyComponent/>)
         }
 		
 	}

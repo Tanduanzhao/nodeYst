@@ -5,10 +5,10 @@ import React,{Component} from 'react';
 
 import List from '../common/list.js';
 import LinkBar from './linkBar.js';
-
+import EmptyComponent from '../emptyComponent';
 export default class Breed extends Component{
 	render(){
-        if(this.props.dataSources){
+        if(this.props.dataSources.length != 0){
             return(
                 <div className="list card">
                     <LinkBar link="/rise/breed" title="品种影响力排行榜"/>
@@ -24,8 +24,8 @@ export default class Breed extends Component{
         }else{
             return(
                 <div className="list card">
-                    <LinkBar title="品种影响力排行榜"/>
-                    <div>null</div>
+                    <LinkBar link="/rise/breed" title="品种影响力排行榜"/>
+                    <EmptyComponent/>
                 </div>
             )
         }

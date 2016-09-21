@@ -400,3 +400,13 @@ h3 {
 
 .hl-content .list .item {
   padding: 20px 16px; }
+
+.noDataTip {
+  text-align: center;
+  line-height: 2;
+  font-size: .7rem;
+  padding-top: 2rem;
+  color: #a6a6a6; }
+  .noDataTip > i {
+    display: block;
+    color: #bfbfbf; }

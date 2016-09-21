@@ -24,5 +24,7 @@
          routes:React.PropTypes.array.isRequired
      }
 ```  
-
+##2016-09-21
+####* 新增emptyComponent组件作为没有数据的时候显示的界面
+* 参数：message  默认为：没有数据
 

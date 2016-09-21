@@ -1,3 +1,4 @@
+var ObjectAssign = require('object-assign');
 import {CHANGEHOSPITALFILTER,SHOWFILTER,UNSHOWFILTER,CHANGEHOSPITALSEARCHNAME,CLEARHOSPITALSEARCHNAME,LOADHOSPITALDATA,INFINITE,UNINFINITE} from '../components/config/variable';
 //省份信息
 var defaultProvicen = {
@@ -26,14 +27,14 @@ var defaultHospital={
 }
 export default function hospital(state=defaultHospital,action){
   switch(action.type){
-    case CHANGEHOSPITALFILTER : return Object.assign({},state,{areaName:action.areaName,areaId:action.areaId,searchAreaType:action.searchAreaType,yearMonth:action.yearMonth,hospitalLevel:action.hospitalLevel});
-    case SHOWFILTER : return Object.assign({},state,{isShowFilter:true});
-    case UNSHOWFILTER : return Object.assign({},state,{isShowFilter:false});
-    case CHANGEHOSPITALSEARCHNAME : return Object.assign({},state,{searchName:action.searchName});
-    case CLEARHOSPITALSEARCHNAME : return Object.assign({},state,{searchName:null});
-    case LOADHOSPITALDATA : return Object.assign({},state,{data:action.data,pageNo:action.pageNo});
-    case INFINITE : return Object.assign({},state,{infinite:false});
-    case UNINFINITE : return Object.assign({},state,{infinite:true});
+    case CHANGEHOSPITALFILTER : return ObjectAssign({},state,{areaName:action.areaName,areaId:action.areaId,searchAreaType:action.searchAreaType,yearMonth:action.yearMonth,hospitalLevel:action.hospitalLevel});
+    case SHOWFILTER : return ObjectAssign({},state,{isShowFilter:true});
+    case UNSHOWFILTER : return ObjectAssign({},state,{isShowFilter:false});
+    case CHANGEHOSPITALSEARCHNAME : return ObjectAssign({},state,{searchName:action.searchName});
+    case CLEARHOSPITALSEARCHNAME : return ObjectAssign({},state,{searchName:null});
+    case LOADHOSPITALDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
+    case INFINITE : return ObjectAssign({},state,{infinite:false});
+    case UNINFINITE : return ObjectAssign({},state,{infinite:true});
     default : return state;
   }
 }

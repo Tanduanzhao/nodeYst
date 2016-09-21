@@ -19,6 +19,7 @@ class Index extends Component{
       }
 	}
     componentDidMount(){
+        
         loadProvince(this.props.dispatch);
         
         loadIndex(this.props.dispatch,{
@@ -107,6 +108,7 @@ class Index extends Component{
         })
     }
 	render(){
+        
 		return(
 			<div className="root">
                 <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>

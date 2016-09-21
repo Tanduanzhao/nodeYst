@@ -1,3 +1,4 @@
+var ObjectAssign = require('object-assign');
 import {CHANGE,LOADPROVICEN} from '../components/config/variable';
 //省份信息
 var defaultProvicen = {
@@ -9,8 +10,8 @@ var defaultProvicen = {
 
 export default function provicen(state=defaultProvicen,action){
 	switch(action.type){
-		case CHANGE : return Object.assign({},state,{areaName:action.areaName,areaId:action.areaId,searchAreaType:action.searchAreaType});
-        case LOADPROVICEN : return Object.assign({},state,{data:action.data});
+		case CHANGE : return ObjectAssign({},state,{areaName:action.areaName,areaId:action.areaId,searchAreaType:action.searchAreaType});
+        case LOADPROVICEN : return ObjectAssign({},state,{data:action.data});
 		default : return state;
 	}
 }

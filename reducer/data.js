@@ -1,3 +1,4 @@
+var ObjectAssign = require('object-assign');
 import {INCREASE,DECREASE,CHANGEDATA} from '../components/config/variable';
 //时间信息
 
@@ -7,9 +8,9 @@ var defaultData = {
 export default function data(state = defaultData,action){
     
 	switch(action.type){
-		case INCREASE : return Object.assign({},state,{yearMonth:++state.yearMonth});
-		case DECREASE : return Object.assign({},state,{yearMonth:--state.yearMonth});
-		case CHANGEDATA : return Object.assign({},state,{yearMonth:action.yearMonth});
+		case INCREASE : return ObjectAssign({},state,{yearMonth:++state.yearMonth});
+		case DECREASE : return ObjectAssign({},state,{yearMonth:--state.yearMonth});
+		case CHANGEDATA : return ObjectAssign({},state,{yearMonth:action.yearMonth});
 		default : return state;
 	}
 }

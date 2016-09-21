@@ -1,3 +1,4 @@
+var ObjectAssign = require('object-assign');
 import {SHOW,UNSHOW,LOADDATA} from '../components/config/variable';
 //首页默认数据仓库
 var defaultIndex = {
@@ -12,9 +13,9 @@ var defaultIndex = {
 }
 export default function index(state=defaultIndex,action){
 	switch(action.type){
-		case SHOW : return Object.assign({},state,{showProvicen:true});
-		case UNSHOW : return Object.assign({},state,{showProvicen:false});
-        case LOADDATA : return Object.assign({},state,{data:action.data});
+		case SHOW : return ObjectAssign({},state,{showProvicen:true});
+		case UNSHOW : return ObjectAssign({},state,{showProvicen:false});
+        case LOADDATA : return ObjectAssign({},state,{data:action.data});
 		default : return state;
 	}
 }
