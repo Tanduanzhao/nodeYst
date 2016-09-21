@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {loadListHospital} from '../function/ajax';
 import Provicen from '../provicen';
 import Filter from '../filter';
+import Loading from '../loading';
 class HospitalList extends Component{
     constructor(props){
         super(props);
@@ -17,7 +18,8 @@ class HospitalList extends Component{
             yearMonth:this.props.hospitalFilter.yearMonth,
             areaId:this.props.hospitalFilter.areaId,
             areaName:this.props.hospitalFilter.areaName,
-            searchAreaType:this.props.hospitalFilter.searchAreaType
+            searchAreaType:this.props.hospitalFilter.searchAreaType,
+            loading:true
         };
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -68,6 +70,9 @@ class HospitalList extends Component{
                             type:'INFINITE'
                         });
                     }
+                    this.setState({
+                        loading:false
+                    });
                 }
             });
         })
@@ -93,11 +98,7 @@ class HospitalList extends Component{
           <div className="root">
               <HeaderBar fn={this._loadData} {...this.props}/>
               <div ref="content" className="scroll-content has-header hl-content">
-                  <ul className="list">
-                      {
-                          this.props.hospitalFilter.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                      }
-                  </ul>
+                  <Main data={this.props.hospitalFilter.data} loading={this.state.loading}/>
               </div>
               {
                   this.props.hospitalFilter.isShowFilter ? <Filter fn={this._fn.bind(this)} {...this.props}dataSources={this.props.provicenData}/> :null
@@ -106,7 +107,24 @@ class HospitalList extends Component{
         )
     }
 }
-
+class Main extends Component{
+    constructor(props){
+        super(props);
+    }
+    render(){
+        if(this.props.loading) {
+            return <Loading/>
+        }else{
+            return(
+                <ul className="list">
+                    {
+                        this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                    }
+                </ul>
+            )
+        }
+    }
+}
 class List extends Component{
     render(){
         var string = null;

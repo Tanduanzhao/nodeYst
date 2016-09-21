@@ -4,6 +4,8 @@ import HeaderBar from './headerBar.js';
 import Provicen from './provicen.js';
 import {loadListBreedProduct} from './function/ajax.js';
 
+import Loading from './loading';
+
 import {Link} from 'react-router';
 class RiseBreed extends Component{
     constructor(props){
@@ -11,7 +13,8 @@ class RiseBreed extends Component{
         this.state={
             data:[],
             pageNo:1,
-            infinite:false
+            infinite:false,
+            loading:true
         };
         this._reSet = this._reSet.bind(this);
         this._loadData = this._loadData.bind(this);
@@ -60,6 +63,9 @@ class RiseBreed extends Component{
                     if(res.totalSize <= this.state.data.length){
                         this.ele.removeEventListener('scroll',this._infiniteScroll);
                     }
+                    this.setState({
+                        loading:false
+                    });
                 }
             });
         })
@@ -84,17 +90,32 @@ class RiseBreed extends Component{
             <div className="root">
                 <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
                 <div ref="content" className="scroll-content has-header">
-                    <div className="list">
-                        {
-                            this.state.data.map((ele,index)=> <List dataSources={ele} key={ele.id+Math.random(1)}/>)
-                        }
-                    </div>
+                    <Main data={this.state.data} loading={this.state.loading}/>
                 </div>
                 {
 					this.props.showProvicen ? <Provicen fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
 				}
             </div>
         )
+    }
+}
+
+class Main extends Component{
+    constructor(props){
+        super(props);
+    }
+    render(){
+        if(this.props.loading) {
+            return <Loading/>
+        }else{
+            return(
+                <div className="list">
+                    {
+                        this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id+Math.random(1)}/>)
+                    }
+                </div>
+            )
+        }
     }
 }
 
