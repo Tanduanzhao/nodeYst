@@ -7,9 +7,13 @@ import {loadListDrug} from '../function/ajax';
 import Provicen from '../provicen';
 import Filter from '../filter';
 import {Link} from 'react-router';
+import Loading from '../loading';
 class drugList extends Component{
     constructor(props){
         super(props);
+        this.state={
+            loading:true
+        };
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
@@ -59,6 +63,9 @@ class drugList extends Component{
                             type:'INFINITEDRUG'
                         });
                     }
+                    this.setState({
+                        loading:false
+                    });
                 }
             });
         })
@@ -83,17 +90,31 @@ class drugList extends Component{
           <div className="root">
               <HeaderBar fn={this._loadData} {...this.props}/>
               <div ref="content" className="scroll-content has-header">
-                  <ul className="list">
-                      {
-                          this.props.hospitalFilter.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                      }
-                  </ul>
+                  <Main data={this.props.hospitalFilter.data} loading={this.state.loading}/>
               </div>
               {
                   this.props.hospitalFilter.isShowFilter ? <Filter fn={this._fn.bind(this)} {...this.props}  dataSources={this.props.provicenData}/> :null
               }
           </div>
         )
+    }
+}
+class Main extends Component{
+    constructor(props){
+        super(props);
+    }
+    render(){
+        if(this.props.loading) {
+            return <Loading/>
+        }else{
+            return(
+                <ul className="list">
+                    {
+                        this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                    }
+                </ul>
+            )
+        }
     }
 }
 

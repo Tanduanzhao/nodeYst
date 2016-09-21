@@ -32,20 +32,22 @@ import produce from './components/produce';
 import free from './components/produce/free';
 import charge from './components/produce/charge';
 
+import Home from './components/home';
+
 var store = createStore(ystReducers,applyMiddleware(thunk));
-Token((res) => {
-    store.dispatch({
-        type:'CHANGE',
-        areaName:res.datas.areaName,
-        areaId:res.datas.areaId,
-        searchAreaType:res.datas.searchAreaType
-    });
-    store.dispatch({
-        type:'CHANGEDATA',
-        yearMonth:res.datas.yearMonth
-    });
-    ReactDOM.render(_router, ele, null);
-});
+//Token((res) => {
+//    store.dispatch({
+//        type:'CHANGE',
+//        areaName:res.datas.areaName,
+//        areaId:res.datas.areaId,
+//        searchAreaType:res.datas.searchAreaType
+//    });
+//    store.dispatch({
+//        type:'CHANGEDATA',
+//        yearMonth:res.datas.yearMonth
+//    });
+//    ReactDOM.render(_router, ele, null);
+//});
 
 var _router = (
 	<Provider store={store}>
@@ -78,8 +80,12 @@ var _router = (
                   <Route path="free" component={free}/>
                   <Route path="charge" component={charge}/>
                 </Route>
+                <Route path="home">
+                    <IndexRoute component={Home}/>
+                </Route>
             </Route>
 		</Router>
 	</Provider>
 );
 var ele = document.getElementById('app');
+ReactDOM.render(_router, ele, null);
