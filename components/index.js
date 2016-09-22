@@ -19,7 +19,6 @@ class Index extends Component{
       }
 	}
     componentDidMount(){
-        
         loadProvince(this.props.dispatch);
         
         loadIndex(this.props.dispatch,{

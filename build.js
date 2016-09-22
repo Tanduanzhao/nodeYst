@@ -34,6 +34,8 @@ import charge from './components/produce/charge';
 
 import Home from './components/home';
 
+import vip from './components/vip';
+
 var store = createStore(ystReducers,applyMiddleware(thunk));
 Token((res) => {
     store.dispatch({
@@ -79,6 +81,7 @@ var _router = (
                   <IndexRoute component={produce}/>
                   <Route path="free" component={free}/>
                   <Route path="charge" component={charge}/>
+                    <Route path="vip" component={vip}></Route>
                 </Route>
                 <Route path="home">
                     <IndexRoute component={Home}/>
