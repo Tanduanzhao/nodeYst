@@ -99,6 +99,7 @@ class drugList extends Component{
         )
     }
 }
+
 class Main extends Component{
     constructor(props){
         super(props);
@@ -107,13 +108,17 @@ class Main extends Component{
         if(this.props.loading) {
             return <Loading/>
         }else{
-            return(
-                <ul className="list">
-                    {
-                        this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                    }
-                </ul>
-            )
+            if(this.props.data.length != 0){
+                return(
+                    <ul className="list">
+                        {
+                            this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                        }
+                    </ul>
+                )
+            }else{
+                return <EmptyComponent/>
+            }
         }
     }
 }

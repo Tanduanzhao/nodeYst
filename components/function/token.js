@@ -29,6 +29,7 @@ export const Token = function(fn){
                         type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
                         success: function(res) {
                             //获取地理位置信息接口
+                            alert(res);
                             getUserAreaInfo({
                                 latitude:res.latitude,
                                 longitude: res.longitude,
@@ -36,8 +37,43 @@ export const Token = function(fn){
                                     fn(res);
                                 }
                             })
-                        }
+                        },
+                        cancel:function(res){
+                            alert(res);
+                        },
+                         error:function(res){
+                             alert('error');
+                         }
                      })
+                     
+                     
+                     // 分享
+                        var info = {
+                            title: '药市通-医药圈的「股市」神器',
+                            link: 'http://yst-test.immortalshealth.com',
+                            imgUrl: 'http://yst.immortalshealth.com/yst/src/images/logo.jpg',
+                            desc: '通过市场行情引导，进行产品自选和医院绑定，辅助销售人员管理自己的重点客户和重要信息，以达成销售目标'
+                        };
+                        wx.onMenuShareTimeline({
+                            title: info.title, // 分享标题
+                            link: info.link, // 分享链接
+                            imgUrl: info.imgUrl, // 分享图标
+                            success: function() {
+//                                $.toast('分享成功！');
+                            }
+                        });
+                        wx.onMenuShareAppMessage({
+                            title: info.title,
+                            desc: info.desc, // 分享描述
+                            link: info.link, // 分享链接
+                            imgUrl: info.imgUrl, // 分享图标
+                            type: '', // 分享类型,music、video或link，不填默认为link
+                            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                            success: function() {
+                                // 用户确认分享后执行的回调函数
+//                                $.toast('分享成功！');
+                            }
+                        });
                 });
             }
         })

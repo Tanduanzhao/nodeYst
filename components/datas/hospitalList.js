@@ -7,6 +7,7 @@ import {loadListHospital} from '../function/ajax';
 import Provicen from '../provicen';
 import Filter from '../filter';
 import Loading from '../loading';
+import EmptyComponent from '../emptyComponent';
 class HospitalList extends Component{
     constructor(props){
         super(props);
@@ -115,13 +116,17 @@ class Main extends Component{
         if(this.props.loading) {
             return <Loading/>
         }else{
-            return(
-                <ul className="list">
-                    {
-                        this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                    }
-                </ul>
-            )
+            if(this.props.data.length != 0){
+                return(
+                    <ul className="list">
+                        {
+                            this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                        }
+                    </ul>
+                )
+            }else{
+                return <EmptyComponent/>
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {loadDrugContent} from '../function/ajax.js';
 import Loading from '../loading';
+import EmptyComponent from '../emptyComponent'
 class drugContent extends Component{
     constructor(props){
         super(props);

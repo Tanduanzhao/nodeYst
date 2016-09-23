@@ -5,7 +5,7 @@ import Provicen from './provicen.js';
 import {loadListClassifyProduct} from './function/ajax.js';
 
 import Loading from './loading';
-
+import EmptyComponent from './emptyComponent';
 import {Link} from 'react-router';
 class RiseClassify extends Component{
     constructor(props){
@@ -108,13 +108,17 @@ class Main extends Component{
         if(this.props.loading) {
             return <Loading/>
         }else{
-            return(
-                <div className="list">
-                    {
-                        this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id+Math.random(1)}/>)
-                    }
-                </div>
-            )
+            if(this.props.data.length != 0){
+                return(
+                    <div className="list">
+                        {
+                            this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id+Math.random(1)}/>)
+                        }
+                    </div>
+                )
+            }else{
+                return <EmptyComponent/>
+            }
         }
     }
 }

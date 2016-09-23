@@ -35,6 +35,7 @@ import charge from './components/produce/charge';
 import Home from './components/home';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
+//alert(Token);
 Token((res) => {
     store.dispatch({
         type:'CHANGE',
@@ -46,9 +47,9 @@ Token((res) => {
         type:'CHANGEDATA',
         yearMonth:res.datas.yearMonth
     });
+    
     ReactDOM.render(_router, ele, null);
 });
-
 var _router = (
 	<Provider store={store}>
 		<Router history={browserHistory}>

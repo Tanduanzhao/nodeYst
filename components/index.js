@@ -19,8 +19,9 @@ class Index extends Component{
       }
 	}
     componentDidMount(){
-        
-        loadProvince(this.props.dispatch);
+        if(this.props.provicenData.length == 0){
+            loadProvince(this.props.dispatch);
+        }
         
         loadIndex(this.props.dispatch,{
             yearMonth:this.props.yearMonth,
