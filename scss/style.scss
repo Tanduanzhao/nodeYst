@@ -240,6 +240,7 @@ h3{
         padding: .3rem;
     }
     h3{
+        font-size: .6rem;
         padding: .3rem 0;
         height: 52px;
     }
@@ -270,10 +271,9 @@ h3{
     }
     .produce-card-icon{
         font-size: .5rem;
-        background: #0894ec;
-        padding: .2rem;
-        color: #fff;
-        font-weight: 600;
+        background: #eee;
+        padding: .2rem .3rem;
+        color: #0894ec;
         border-radius: 5px;
     }
 }
@@ -420,4 +420,124 @@ h3{
     display: block;
     color: lighten(#000,75%);
   }
+}
+//home
+.home{
+    overflow: auto;
+}
+.main{
+    overflow-x: hidden;
+    margin-bottom: 52px;
+}
+.slick-slide img{
+    width: 100%;
+}
+.slick-dots li{
+    top: -25px;
+}
+.slick-dots li button:before{
+    font-size:.5rem
+}
+.new_report{
+    a{
+        display: flex;
+        padding: .6rem;
+    }
+}
+.item-left{
+    float: left;
+    img{
+        display: block;
+        width: 7.5rem;
+    }
+}
+.item-right{
+    float: left;
+    width: 9.2rem;
+    margin-left: 16px;
+    h3{
+        font-size: .6rem;
+        margin-top: 14px;
+        -webkit-line-clamp: 1;
+        white-space: initial;
+    }
+    p{
+        font-size: .6rem;
+        line-height: 2.5;
+        color:#ef473a;
+    }
+    .item-right-footer{
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: center;
+        text-align: left;
+        display: -webkit-flex;
+        font-size: .6rem;
+        color: #888;
+        .item-icon{
+            font-size: .45rem;
+            background: #eee;
+            padding: .2rem .3rem;
+            color: #0894ec;
+            border-radius: 5px;
+        }
+    }
+}
+.column{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding:9px 12px 12px 12px;
+    li{
+        float: left;
+        font-size: .55rem;
+    }
+    img{
+        display: block;
+        width: 44px;
+        height: 44px;
+        margin: 0 auto 8px auto;
+    }
+}
+.home-item-title{
+    font-size: .6rem;
+    color: #0894ec;
+    strong{
+        font-weight: 200;
+    }
+    img{
+        width: 11px;
+        vertical-align: -2px;
+        margin-left: 3px;
+    }
+    .hot-title{
+        width: 0.95rem;
+    }
+}
+.bg-fff{
+    background: #fff;
+    a{
+        border:1px solid #eee;
+    }
+    img{
+        width: 100%
+    }
+}
+
+//vip
+.vip{
+    overflow: auto;
+   img{
+       width: 100%;
+       margin-bottom: 35px;
+   }
+    .close{
+        position: fixed;
+        top: 5px;
+        right: 16px;
+        width: 19px;
+    }
 }
