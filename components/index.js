@@ -22,21 +22,6 @@ class Index extends Component{
         if(this.props.provicenData.length == 0){
             loadProvince(this.props.dispatch);
         }
-        
-        loadIndex(this.props.dispatch,{
-            yearMonth:this.props.yearMonth,
-            areaId:this.props.areaId,
-            searchAreaType:this.props.searchAreaType,
-            callBack:(res)=>{
-                this.props.dispatch({
-                     type:'LOADDATA',
-                     data:res.datas
-                });
-                this.setState({
-                    loading:false
-                });
-            }
-        });
     }
     
 	_increaseHandle(){

@@ -265,3 +265,8 @@ export const getUserAreaInfo = function(args){
         }
     })
 }
+
+//首页数据加载
+export const loadHome = function(dispatch,args){
+
+}
