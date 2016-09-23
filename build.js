@@ -24,6 +24,8 @@ import Datas from './components/datas.js';
 import HospitalList from './components/datas/hospitalList';
 import drugList from './components/datas/drugList';
 import drugContent from './components/datas/drugContent';
+import  bidList from './components/datas/bidList';
+import bidListContent from './components/datas/bidListContent';
 
 import Center from './components/center';
 import FeedBack from './components/feedBack';
@@ -49,7 +51,7 @@ Token((res) => {
         type:'CHANGEDATA',
         yearMonth:res.datas.yearMonth
     });
-    
+
     ReactDOM.render(_router, ele, null);
 });
 var _router = (
@@ -70,9 +72,13 @@ var _router = (
                     <IndexRoute component={Datas}/>
                     <Route path="hospitalList" component={HospitalList}/>
                     <Route path="drugList" component={drugList}/>
+                    <Route path="bidList" component={bidList}/>
                 </Route>
                 <Route path="drugContent/:sid">
                   <IndexRoute component={drugContent}/>
+                </Route>
+                <Route path="bidListContent/:sid">
+                    <IndexRoute component={bidListContent}/>
                 </Route>
                 <Route path="center">
                    <IndexRoute component={Center}/>

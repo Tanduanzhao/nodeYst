@@ -10,6 +10,9 @@ import drugContent from './drugContent';
 import Produce from './Produce';
 import userInfo from './userInfo';
 import defaultArea from './defaultArea';
+import home from './home';
+import bidList from './bidList';
+import bidDataContent from './bidDataContent';
 //合并仓库
 
 const ystReducers = combineReducers({
@@ -23,6 +26,9 @@ const ystReducers = combineReducers({
     drug,
     userInfo,
     drugContent,
-    defaultArea
+    defaultArea,
+    home,
+    bidList,
+    bidDataContent
 })
 export default ystReducers;
