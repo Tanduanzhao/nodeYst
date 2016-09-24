@@ -187,7 +187,7 @@ class Hotrepor extends Component{
 	render(){
 		return(
 			<div className="col-50">
-				<a>
+				<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}>
 					<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
 					<h3> {this.props.dataSources.title}</h3>
 					<div className="produce-card-price">¥{this.props.dataSources.price}</div>

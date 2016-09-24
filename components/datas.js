@@ -36,6 +36,12 @@ class Datas extends Component{
                             中标数据
                         </Link>
                     </div>
+                    <div className="col-50">
+                        <Link to="/datas/bidList">
+                            <i className="fa fa-calculator"></i>
+                            入市价
+                        </Link>
+                    </div>
                 </div>
                 <FooterBar {...this.props}/>
             </div>
