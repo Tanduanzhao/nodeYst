@@ -22,6 +22,12 @@ class Datas extends Component{
                             用药目录
                         </Link>
                     </div>
+                    <div className="col-50">
+                        <Link to="/datas/bidList">
+                            <i className="fa fa-line-chart"></i>
+                            中标数据
+                        </Link>
+                    </div>
                 </div>
                 <FooterBar {...this.props}/>
             </div>

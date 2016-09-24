@@ -9,7 +9,7 @@ export default class Filter extends Component{
         searchAreaType:this.props.hospitalFilter.searchAreaType,
         yearMonth:this.props.hospitalFilter.yearMonth,
         hospitalLevel:this.props.hospitalFilter.hospitalLevel,
-        drug:this.props.hospitalFilter.drug,
+          municipality:this.props.hospitalFilter.municipality,
           hospital:this.props.hospitalFilter.hospital
 	  };
 	}
@@ -56,7 +56,7 @@ export default class Filter extends Component{
                                             <ul className="list-horizontal-block">
                                                 {
                                                     ele.children.map((v)=>{
-                                                      if (this.state.drug != 1){
+                                                      if (this.state.municipality == 1){
                                                         if( v.municipality != null && v.municipality != undefined){
                                                           return <li style={(v.id == this.state.areaId) ? styles.active : null} onClick={this._spanhandleClick.bind(this,v.id,v.areaName,v.searchAreaType)} key={v.id}>{v.areaName}</li>
                                                         }
