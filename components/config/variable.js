@@ -61,7 +61,12 @@ export const DRUGCONTENTDATA = 'DRUGCONTENTDATA';
 
 export const SHOWFILTERPRODUCE = 'SHOWFILTERPRODUCE';
 //显示报告过滤层
+export const UNSHOWFILTERPRODUCE = 'UNSHOWFILTERPRODUCE';
+//隐藏报告过滤层
 export const LOGIN = 'LOGIN';
 //用户登录
 export const LOADUSERINFO = 'LOADUSERINFO';
 //加载用户数据  参数:imgUrl、id、userName
+
+export const CHANGEVIP = 'CHANGEVIP';
+//改变数据加载中的vip状态

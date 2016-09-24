@@ -38,20 +38,20 @@ import vip from './components/vip';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
 //alert(Token);
-Token((res) => {
-    store.dispatch({
-        type:'CHANGE',
-        areaName:res.datas.areaName,
-        areaId:res.datas.areaId,
-        searchAreaType:res.datas.searchAreaType
-    });
-    store.dispatch({
-        type:'CHANGEDATA',
-        yearMonth:res.datas.yearMonth
-    });
-    
-    ReactDOM.render(_router, ele, null);
-});
+//Token((res) => {
+//    store.dispatch({
+//        type:'CHANGE',
+//        areaName:res.datas.areaName,
+//        areaId:res.datas.areaId,
+//        searchAreaType:res.datas.searchAreaType
+//    });
+//    store.dispatch({
+//        type:'CHANGEDATA',
+//        yearMonth:res.datas.yearMonth
+//    });
+//    
+//    ReactDOM.render(_router, ele, null);
+//});
 var _router = (
 	<Provider store={store}>
 		<Router history={browserHistory}>
@@ -82,14 +82,14 @@ var _router = (
                   <IndexRoute component={produce}/>
                   <Route path="free" component={free}/>
                   <Route path="charge" component={charge}/>
-                    <Route path="vip" component={vip}></Route>
                 </Route>
                 <Route path="home">
                     <IndexRoute component={Home}/>
                 </Route>
+                <Route path="vip" component={vip}></Route>
             </Route>
 		</Router>
 	</Provider>
 );
 var ele = document.getElementById('app');
-//ReactDOM.render(_router, ele, null);
+ReactDOM.render(_router, ele, null);

@@ -235,6 +235,7 @@ h3 {
   .produce-cards .col-50 {
     padding: .3rem; }
   .produce-cards h3 {
+    font-size: .6rem;
     padding: .3rem 0;
     height: 52px; }
   .produce-cards a {
@@ -263,10 +264,9 @@ h3 {
     color: #888; }
   .produce-cards .produce-card-icon {
     font-size: .5rem;
-    background: #0894ec;
-    padding: .2rem;
-    color: #fff;
-    font-weight: 600;
+    background: #eee;
+    padding: .2rem .3rem;
+    color: #0894ec;
     border-radius: 5px; }
 
 .free-views {
@@ -410,3 +410,158 @@ h3 {
   .noDataTip > i {
     display: block;
     color: #bfbfbf; }
+
+.home {
+  overflow: auto; }
+
+.main {
+  overflow-x: hidden;
+  margin-bottom: 52px; }
+
+.slick-slide img {
+  width: 100%; }
+
+.slick-dots li {
+  top: -25px; }
+
+.slick-dots li button:before {
+  font-size: .5rem; }
+
+.new_report a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: .6rem; }
+
+.item-left {
+  float: left; }
+  .item-left img {
+    display: block;
+    width: 7.5rem; }
+
+.item-right {
+  float: left;
+  width: 9.2rem;
+  margin-left: 16px; }
+  .item-right h3 {
+    font-size: .6rem;
+    margin-top: 14px;
+    -webkit-line-clamp: 1;
+    white-space: initial; }
+  .item-right p {
+    font-size: .6rem;
+    line-height: 2.5;
+    color: #ef473a; }
+  .item-right .item-right-footer {
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: center;
+    text-align: left;
+    display: -webkit-flex;
+    font-size: .6rem;
+    color: #888; }
+    .item-right .item-right-footer .item-icon {
+      font-size: .45rem;
+      background: #eee;
+      padding: .2rem .3rem;
+      color: #0894ec;
+      border-radius: 5px; }
+
+.column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 9px 12px 12px 12px; }
+  .column li {
+    float: left;
+    font-size: .55rem; }
+  .column img {
+    display: block;
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 8px auto; }
+
+.home-item-title {
+  font-size: .6rem;
+  color: #0894ec; }
+  .home-item-title strong {
+    font-weight: 200; }
+  .home-item-title img {
+    width: 11px;
+    vertical-align: -2px;
+    margin-left: 3px; }
+  .home-item-title .hot-title {
+    width: 0.95rem; }
+
+.bg-fff {
+  background: #fff; }
+  .bg-fff a {
+    border: 1px solid #eee; }
+  .bg-fff img {
+    width: 100%; }
+
+.vip {
+  overflow: auto; }
+  .vip img {
+    width: 100%;
+    display: block; }
+  .vip .banner {
+    width: 100%;
+    position: relative;
+    height: 8.25rem;
+    display: block;
+    overflow: hidden; }
+    .vip .banner img {
+      height: inherit; }
+    .vip .banner .close {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 1;
+      width: 1.3rem;
+      height: 1.3rem;
+      border-width: 0;
+      background: url(/images/icon_close_vip.png) center center no-repeat;
+      background-size: contain; }
+  .vip .level {
+    padding: 0 1.8rem;
+    font-size: 1.2rem;
+    padding-top: 1rem;
+    background-color: #fff;
+    text-align: center;
+    padding-bottom: 2rem; }
+    .vip .level h3 {
+      color: #f6a416;
+      font-weight: 600;
+      margin-bottom: 1rem; }
+    .vip .level .buttons {
+      text-align: left;
+      margin-top: .5rem;
+      position: relative; }
+      .vip .level .buttons button {
+        text-align: center;
+        background-color: #f6a416;
+        color: #fff;
+        border-width: 0;
+        padding: 0.1rem 0.2rem;
+        font-size: 0.7rem;
+        position: relative; }
+        .vip .level .buttons button.level_1 {
+          margin-left: 0.9rem; }
+        .vip .level .buttons button.level_2 {
+          margin-left: 2rem;
+          top: -1.25rem; }
+        .vip .level .buttons button.level_3 {
+          margin-left: 2rem;
+          top: -2.5rem; }
+  .vip .pk {
+    padding: 0 1rem;
+    background-color: #fff; }

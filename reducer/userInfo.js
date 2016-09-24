@@ -7,7 +7,8 @@ var defaultUserInfo = {
     userName:null,
     imgUrl:'/images/logo.jpg',
     level:true,
-    isLogin:false
+    isLogin:false,
+    isVip:false
 }
 export default function userInfo(state = defaultUserInfo,action){
     switch(action.type){

@@ -12,9 +12,10 @@ export default class FilterProduce extends Component{
     };
   }
   _cancelButton(){
+      console.log('canel');
     this.props.dispatch({
       type:'UNSHOWFILTERPRODUCE'
-    })
+    });
   }
   _sureButton(){
     this.props.fn(this.state);

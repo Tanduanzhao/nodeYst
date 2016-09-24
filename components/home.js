@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
 import {loadHome} from './function/ajax';
-import $ from 'jquery';
 
 var Slider = require('react-slick');
  class Home extends Component{
@@ -46,7 +45,8 @@ var Slider = require('react-slick');
 			infinite: true,
 			slidesToShow: 1,
 			slidesToScroll: 1,
-			adaptiveHeight: false
+			adaptiveHeight:false,
+            autoplay:true
 		};
 		return(
 			<div className="root home">

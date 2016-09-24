@@ -56,11 +56,9 @@ class HeaderBar extends Component{
           <i className="icon ion-ios-search placeholder-icon"></i>
           <input ref="hospitalSearchName" type="search" placeholder="请输入搜索关键词"/>
         </label>
-        <Link to={'/produce/vip'}>
-          <button className="button button-clear">
-            搜索
-          </button>
-        </Link>
+        <button className="button button-clear">
+           搜索
+        </button>
       </div>
     )
   }

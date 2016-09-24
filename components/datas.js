@@ -1,11 +1,19 @@
 /*
     数据模块datas
 */
-import React,{Component} from 'react';
+import React,{Component,PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import FooterBar from './footerBar.js';
 class Datas extends Component{
+    componentWillMount(){
+        if(!this.props.datas.isVip){
+            this.props.dispatch({
+                type:'CHANGEVIP'
+            });
+            this.context.router.push('/vip');
+        }
+    }
     render(){
         return(
             <div className="root">
@@ -31,7 +39,11 @@ class Datas extends Component{
 
 function select(state){
     return{
-        uri:state.router.uri
+        uri:state.router.uri,
+        datas:state.data
     }
+}
+Datas.contextTypes = {
+    router:React.PropTypes.object.isRequired
 }
 export default connect(select)(Datas);

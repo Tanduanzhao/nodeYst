@@ -532,12 +532,69 @@ h3{
     overflow: auto;
    img{
        width: 100%;
-       margin-bottom: 35px;
+       display: block;
    }
-    .close{
-        position: fixed;
-        top: 5px;
-        right: 16px;
-        width: 19px;
+    .banner{
+        width: 100%;
+        position: relative;
+        height: 8.25rem;
+        display: block;
+        overflow: hidden;
+        img{
+            height: inherit;
+        }
+        .close{
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 1;
+            width: 1.3rem;
+            height: 1.3rem;
+            border-width: 0;
+            background: url(/images/icon_close_vip.png) center center no-repeat;
+            background-size: contain;
+        }
+    }
+    .level{
+        padding: 0 1.8rem;
+        font-size: 1.2rem;
+        padding-top: 1rem;
+        background-color: #fff;
+        text-align: center;
+        padding-bottom: 2rem;
+        h3{
+            color:#f6a416;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .buttons{
+            text-align: left;
+            margin-top: .5rem;
+            position: relative;
+            button{
+                text-align: center;
+                background-color: #f6a416;
+                color: #fff;
+                border-width: 0;
+                padding: 0.1rem 0.2rem;
+                font-size: 0.7rem;
+                position: relative;
+                &.level_1{
+                    margin-left: 0.9rem;
+                }
+                &.level_2{
+                    margin-left: 2rem;
+                    top: -1.25rem;
+                }
+                &.level_3{
+                    margin-left: 2rem;
+                    top: -2.5rem;
+                }
+            }
+        }
+    }
+    .pk{
+        padding: 0 1rem;
+        background-color: #fff;
     }
 }

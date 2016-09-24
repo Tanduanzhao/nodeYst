@@ -15,6 +15,7 @@ module.exports = function(app) {
     app.get('/datas/*', index);
     app.get('/center/*',index);
     app.get('/home/',index);
-    
+    app.get('/vip',index);
+    app.get('/vip/*',index);
     app.post('/getToken',getToken);
 }
