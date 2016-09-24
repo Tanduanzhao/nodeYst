@@ -8,6 +8,8 @@ import {Link} from 'react-router';
 import FilterProduce from './filterProduce';
 import Loading from './loading';
 
+import {loadReportList} from './function/ajax';
+
 class Produce extends Component {
   constructor(props){
     super(props);
@@ -18,6 +20,20 @@ class Produce extends Component {
       ],
       loading:true
     };
+  }
+  componentDidMount(){
+    loadReportList({
+      yearMonth:this.props.yearMonth,
+      areaId:this.props.areaId,
+      searchAreaType:this.props.searchAreaType,
+      callBack:(res)=>{
+        console.log(res.datas)
+        this.props.dispatch({
+          type:'LOADPRODUCEDATA',
+          data: res.datas
+        });
+      }
+    });
   }
   _fn(args) {
     this.props.dispatch({

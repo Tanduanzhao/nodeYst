@@ -55,18 +55,29 @@ export const UNINFINITEDRUG = 'UNINFINITEDRUG';
 
 export const LOADDRUGDATA = 'LOADDRUGDATA';
 //加载用药目录数据 参数:pageNo、data
-
 export const DRUGCONTENTDATA = 'DRUGCONTENTDATA';
 //加载用药目录药品页面详细数据 参数:drugContentData
+
+export const LOADBIFLISTDATA = 'LOADBIFLISTDATA';
+//加载中标数据
+export const LOADBIFLISTCONTENTDATA = 'LOADBIFLISTCONTENTDATA';
+//加载中标详情数据
+export const UNSHOWFILTERPBIDLIST = 'UNSHOWFILTERPBIDLIST';
+//隐藏中标详情数据过滤层
 
 export const SHOWFILTERPRODUCE = 'SHOWFILTERPRODUCE';
 //显示报告过滤层
 export const UNSHOWFILTERPRODUCE = 'UNSHOWFILTERPRODUCE';
 //隐藏报告过滤层
+export const LOADPRODUCEDATA = 'LOADPRODUCEDATA';
+//加载报告数据
 export const LOGIN = 'LOGIN';
 //用户登录
 export const LOADUSERINFO = 'LOADUSERINFO';
 //加载用户数据  参数:imgUrl、id、userName
-
 export const CHANGEVIP = 'CHANGEVIP';
 //改变数据加载中的vip状态
+export const LOADHOMEDATA = 'LOADHOMEDATA';
+//加载home数据
+export const LOADHOMEIMG = 'LOADHOMEIMG';
+//加载home图片

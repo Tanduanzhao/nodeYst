@@ -31,7 +31,7 @@ export const loadIndex = function(dispatch,args){
         callBack:args.callBack || function(){}
     }
     ajaxFn({
-        url:'getMarketInfo',
+        url:'business/getMarketInfo',
         data:{
             yearMonth:params.yearMonth,
             areaId:params.areaId,
@@ -49,7 +49,7 @@ export const loadIndex = function(dispatch,args){
 //省份加载
 export const loadProvince = function(dispatch){
     ajaxFn({
-        url:'getProvinceAreaAllInfo',
+        url:'business/getProvinceAreaAllInfo',
         callBack:(res)=>{
             dispatch({
                 type:'LOADPROVICEN',
@@ -62,7 +62,7 @@ export const loadProvince = function(dispatch){
 //分类涨幅榜品种详情
 export const loadSingleClassifyProduct = function(dispatch,args){
     ajaxFn({
-        url:'getSalesBreedInfo',
+        url:'business/getSalesBreedInfo',
         data:{
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
@@ -78,7 +78,7 @@ export const loadSingleClassifyProduct = function(dispatch,args){
 //分类涨幅榜品种列表
 export const loadListClassifyProduct = function(dispatch,args){
     ajaxFn({
-        url:'getBusinessSalesInfo',
+        url:'business/getBusinessSalesInfo',
         data:{
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
@@ -93,7 +93,7 @@ export const loadListClassifyProduct = function(dispatch,args){
 //概念涨幅榜品种详情
 export const loadSingleConceptProduct = function(dispatch,args){
     ajaxFn({
-        url:'getConceptBreedInfo',
+        url:'business/getConceptBreedInfo',
         data:{
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
@@ -108,7 +108,7 @@ export const loadSingleConceptProduct = function(dispatch,args){
 //概念涨幅榜品种列表
 export const loadListConceptProduct = function(dispatch,args){
     ajaxFn({
-        url:'getBusinessConceptInfo',
+        url:'business/getBusinessConceptInfo',
         data:{
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
@@ -123,7 +123,7 @@ export const loadListConceptProduct = function(dispatch,args){
 //影响力排行榜列表
 export const loadListBreedProduct = function(dispatch,args){
     ajaxFn({
-        url:'getBusinessBreedByUpInfo',
+        url:'business/getBusinessBreedByUpInfo',
         data:{
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
@@ -139,7 +139,7 @@ export const loadListBreedProduct = function(dispatch,args){
 //医院列表
 export const loadListHospital = function(dispatch,args){
     ajaxFn({
-        url:'getBusinessHospitalInfo',
+        url:'business/getBusinessHospitalInfo',
         data:{
             searchName:args.searchName || null,
             yearMonth:args.yearMonth || null,
@@ -155,7 +155,7 @@ export const loadListHospital = function(dispatch,args){
 //发送反馈信息
 export const sendFeedBackMessage = function(dispatch,args){
     ajaxFn({
-        url:'insertBusinessFeedBackInfo',
+        url:'business/insertBusinessFeedBackInfo',
         data:{
             feedContent:args.feedContent
         },
@@ -167,7 +167,7 @@ export const sendFeedBackMessage = function(dispatch,args){
 //药品列表
 export const loadListDrug = function(dispatch,args){
     ajaxFn({
-        url:'getProductAreaSimpleInfo',
+        url:'business/getProductAreaSimpleInfo',
         data:{
             searchName:args.searchName || null,
             yearMonth:args.yearMonth || null,
@@ -183,7 +183,7 @@ export const loadListDrug = function(dispatch,args){
 //药品内容
 export const loadDrugContent = function(dispatch,args){
     ajaxFn({
-        url:'getProductAreaDetailInfo',
+        url:'business/getProductAreaDetailInfo',
         data:{
             id:args.salesId || null,
         },
@@ -196,7 +196,7 @@ export const loadDrugContent = function(dispatch,args){
 //JS-SDK授权
 export const loadJssdk = function(args){
     ajaxFn({
-        url:'getJsSdkInfo',
+        url:'business/getJsSdkInfo',
         data:{
             strBackUrl:encodeURI(encodeURI(args.uri))
         },
@@ -209,7 +209,7 @@ export const loadJssdk = function(args){
 //初始化用户
 export const loadWx = function(args){
     ajaxFn({
-        url:'getInitWxUser',
+        url:'business/getInitWxUser',
         data:{
             code:args.code
         },
@@ -222,7 +222,7 @@ export const loadWx = function(args){
 //获取用户信息
 export const loadUserInfo = function(args){
     ajaxFn({
-        url:'getWxUserInfo',
+        url:'business/getWxUserInfo',
         callBack:(res) =>{
             args.callBack(res);
         }
@@ -233,7 +233,7 @@ export const loadUserInfo = function(args){
 //获取用户反馈列表
 export const getBusinessFeedBackInfo = function(args){
     ajaxFn({
-        url:'getBusinessFeedBackInfo',
+        url:'business/getBusinessFeedBackInfo',
         callBack:(res)=>{
             args.callBack(res);
         }
@@ -242,7 +242,7 @@ export const getBusinessFeedBackInfo = function(args){
 //发送反馈建议
 export const insertBusinessFeedBackInfo = function(args){
     ajaxFn({
-        url:'insertBusinessFeedBackInfo',
+        url:'business/insertBusinessFeedBackInfo',
         data:{
             feedContent:args.feedContent
         },
@@ -255,7 +255,7 @@ export const insertBusinessFeedBackInfo = function(args){
 //获取地理位置信息
 export const getUserAreaInfo = function(args){
     ajaxFn({
-        url:'getUserAreaInfo',
+        url:'business/getUserAreaInfo',
         data:{
             latitude:args.latitude,
             longitude:args.longitude
@@ -267,6 +267,83 @@ export const getUserAreaInfo = function(args){
 }
 
 //首页数据加载
-export const loadHome = function(dispatch,args){
+export const loadNewrepor = function(args){
+    ajaxFn({
+        url:'business/firstPage',
+        data:{
+            searchName:args.searchName || null,
+            yearMonth:args.yearMonth || null,
+            areaId:args.areaId || null,
+            pageNo:args.pageNo || null,
+            hosLevel:args.hospitalLevel || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//图片
+export const loadPicture = function(args){
+    ajaxFn({
+        url:'advertisement/getPicture',
+        data:{
+            searchName:args.searchName || null,
+            yearMonth:args.yearMonth || null,
+            areaId:args.areaId || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
 
+//报告列表数据加载
+export const loadReportList = function(args){
+    ajaxFn({
+        url:'business/getReportList',
+        data:{
+            searchName:args.searchName || null,
+            yearMonth:args.yearMonth || null,
+            areaId:args.areaId || null,
+            pageNo:args.pageNo || null,
+            hosLevel:args.hospitalLevel || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//中标数据加载
+export const loadBidList = function(args){
+    ajaxFn({
+        url:'business/getBidList',
+        data:{
+            searchName:args.searchName || null,
+            yearMonth:args.yearMonth || null,
+            areaId:args.areaId || null,
+            pageNo:args.pageNo || null,
+            hosLevel:args.hospitalLevel || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//中标详情页数据加载
+export const loadBidListContent = function(args){
+    ajaxFn({
+        url:'business/getBidDetail',
+        data:{
+            searchName:args.searchName || null,
+            yearMonth:args.yearMonth || null,
+            areaId:args.areaId || null,
+            pageNo:args.pageNo || null,
+            hosLevel:args.hospitalLevel || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
 }

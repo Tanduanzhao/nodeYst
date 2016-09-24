@@ -1,5 +1,5 @@
 var ObjectAssign = require('object-assign');
-import {SHOWFILTERPRODUCE,UNSHOWFILTERPRODUCE} from '../components/config/variable';
+import {SHOWFILTERPRODUCE,UNSHOWFILTERPRODUCE,LOADPRODUCEDATA} from '../components/config/variable';
 //省份信息
 var defaultProvicen = {
 	areaName:'广州市',
@@ -31,6 +31,7 @@ export default function Produce(state=defaultProduce,action) {
   switch(action.type){
     case SHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:false});
+    case LOADPRODUCEDATA : return ObjectAssign({},state,{data:action.data});
     default : return state;
   }
 }

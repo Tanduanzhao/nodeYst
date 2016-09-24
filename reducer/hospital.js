@@ -20,6 +20,7 @@ var defaultHospital={
     hospitalLevel:null,
     searchName:null,
     hospital:true,
+    municipality:1,
     pageNo:1,
     data:[],
     infinite:false
