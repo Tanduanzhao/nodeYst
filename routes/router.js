@@ -1,6 +1,7 @@
 var index = require('./index.js');
 var post = require('./post.js');
 var getToken = require('./getToken');
+var pdf = require('./pdf');
 module.exports = function(app) {
 	app.get('/', index);
     app.get('/favicon.ico', function(req,res){
@@ -17,5 +18,6 @@ module.exports = function(app) {
     app.get('/home/',index);
     app.get('/vip',index);
     app.get('/vip/*',index);
+    app.get('/pdf',pdf);
     app.post('/getToken',getToken);
 }
