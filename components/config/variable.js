@@ -81,3 +81,5 @@ export const LOADHOMEDATA = 'LOADHOMEDATA';
 //加载home数据
 export const LOADHOMEIMG = 'LOADHOMEIMG';
 //加载home图片
+
+export const CHANGETYPE = 'CHANGETYPE';

@@ -607,12 +607,18 @@ h3{
         background-color: #fff;
     }
 }
-.parameters{
+.bid-list{
+    .item{
+        white-space: inherit;
+    }
+}
+.market-list{
     overflow: hidden;
-    .parameters-left{
+    .list-left{
+        font-size: .6rem;
         float: left;
     }
-    .parameters-right{
+    .list-right{
         float: right;
     }
     .btn{
@@ -626,10 +632,23 @@ h3{
 }
 .market-price{
     height: 40px;
-    border-color: #f8f8f8;
+    border-color: #eee;
     border-style: solid;
     border-width: 1px 0;
+    color: #387ef5;
     .col-50{
         font-size: .6rem;
+    }
+}
+.price-list{
+    .list-left {
+        width: 50%;
+        p{
+            font-size: .5rem;
+        }
+    }
+    .list-right{
+        width: 50%;
+        font-size: .5rem;
     }
 }

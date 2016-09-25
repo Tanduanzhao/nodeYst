@@ -89,7 +89,6 @@ var _router = (
                   <IndexRoute component={produce}/>
                   <Route path="free" component={free}/>
                   <Route path="charge" component={charge}/>
-                  <Route path=":id" component={ReportContent}/>
                 </Route>
                 <Route path="home">
                     <IndexRoute component={Home}/>

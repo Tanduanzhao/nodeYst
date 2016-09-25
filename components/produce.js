@@ -13,19 +13,16 @@ import {loadReportList} from './function/ajax';
 class Produce extends Component {
   constructor(props){
     super(props);
+    console.log(this.props.params.id)
     this.state={
-      data:[
-        {id:"1",prodName:"慢阻肺患者的用药图谱.",dosSname:"200",nub:1211,icon:"报告试读",url:"charge",img:"produce_Item01"},
-        {id:"2",prodName:"广东省药械政策变化和市场机遇.",dosSname:"0",nub:3211,icon:"点击查看",url:"free",img:"produce_Item02"}
-      ],
+      searchType:this.props.produceFilter.searchType,
       loading:true
     };
   }
   componentDidMount(){
+    console.log(this.state.searchType)
     loadReportList({
-      yearMonth:this.props.yearMonth,
-      areaId:this.props.areaId,
-      searchAreaType:this.props.searchAreaType,
+      searchType:this.state.searchType,
       callBack:(res)=>{
         console.log(res.datas)
         this.props.dispatch({
@@ -33,6 +30,12 @@ class Produce extends Component {
           data: res.datas
         });
       }
+    });
+  }
+  componentWillUnmount(){
+    this.props.dispatch({
+      type:'CHANGETYPE',
+      searchType: 0
     });
   }
   _fn(args) {
@@ -44,7 +47,7 @@ class Produce extends Component {
     return (
       <div className="root">
         <HeaderBar {...this.props}/>
-        <Main {...this.props} data={this.state.data} loading={this.state.loading}/>
+        <Main {...this.props} data={this.props.produceFilter.data} loading={this.state.loading}/>
         <FooterBar {...this.props}/>
         {
           this.props.produceFilter.isShowFilter ?
@@ -98,28 +101,45 @@ class Main extends Component{
 class List extends Component{
   constructor(props){
     super(props);
-    this.state= {
-      nub: this.props.dataSources.nub
-      }
     };
-  _subscribe(event) {
-    this.setState({
-      nub:this.state.nub * 1+1
-    })
-    event.preventDefault();
-  }
   render(){
+    var string = null;
+    var tag = (()=>{
+      if(this.props.dataSources.costStatus == "1"){
+        string = <i className="produce-card-icon">报告试读</i>;
+      }else{
+        string = <i className="produce-card-icon">点击查看</i>;
+      }
+      return string;
+    })();
+    var number = (()=>{
+      if(this.props.dataSources.costStatus == "1"){
+        string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人购买</span>;
+      }else{
+        string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人查看</span>;
+      }
+      return string;
+    })();
+    if(this.props.dataSources.costStatus == "1"){
+      this.state= {
+        price: this.props.dataSources.price
+      }
+    }else{
+      this.state= {
+        price: 0
+      }
+    }
     return(
         <div className="col-50">
-          <Link to={`/produce/${this.props.dataSources.url}`}>
-            <img src={`/images/${this.props.dataSources.img}.jpg`} style={{display:'block',width: "100%"}}/>
-            <h3> {this.props.dataSources.prodName}</h3>
-            <div className="produce-card-price">¥{this.props.dataSources.dosSname}</div>
+          <a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}>
+            <img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
+            <h3> {this.props.dataSources.title}</h3>
+            <div className="produce-card-price">¥{this.state.price}</div>
             <p className="produce-card-footer">
-              <span style={{textAlign:'left'}}  onClick={this._subscribe.bind(this)}>{this.state.nub}人订阅</span>
-              <i className="produce-card-icon">{this.props.dataSources.icon}</i>
+              {number}
+              {tag}
             </p>
-          </Link>
+          </a>
         </div>
     )
   }
