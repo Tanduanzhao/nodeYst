@@ -39,6 +39,7 @@ import Home from './components/home';
 import vip from './components/vip';
 
 import ReportContent from "./components/reportContent";
+import Policy from './components/policy';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
 //Token((res) => {
@@ -74,6 +75,7 @@ var _router = (
                     <Route path="hospitalList" component={HospitalList}/>
                     <Route path="drugList" component={drugList}/>
                     <Route path="bidList" component={bidList}/>
+                    <Route path="policy" component={Policy}/>
                 </Route>
                 <Route path="drugContent/:sid">
                   <IndexRoute component={drugContent}/>

@@ -652,3 +652,15 @@ h3{
         font-size: .5rem;
     }
 }
+table{
+    &.table-border{
+        th{
+            font-weight: bold;
+        }
+        td,th{
+            padding: 0.2rem 0.4rem;
+            border: 1px solid #d1d1d1;
+            border-collapse: collapse;
+        }
+    }
+}

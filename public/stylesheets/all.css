@@ -598,3 +598,11 @@ h3 {
   border-width: 1px 0; }
   .market-price .col-50 {
     font-size: .6rem; }
+
+table.table-border th {
+  font-weight: bold; }
+
+table.table-border td, table.table-border th {
+  padding: 0.2rem 0.4rem;
+  border: 1px solid #d1d1d1;
+  border-collapse: collapse; }

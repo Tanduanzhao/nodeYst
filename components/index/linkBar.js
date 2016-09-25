@@ -2,7 +2,6 @@ import React,{Component} from 'react';
 import {Link} from 'react-router';
 export default class LinkBar extends Component{
 	render(){
-        console.log(this.props.link,'this.props.link');
 		return(
                 <div className="item">
                     <strong>{this.props.title}</strong>

@@ -13,6 +13,7 @@ import defaultArea from './defaultArea';
 import home from './home';
 import bidList from './bidList';
 import bidDataContent from './bidDataContent';
+import policy from './policy';
 //合并仓库
 
 const ystReducers = combineReducers({
@@ -29,6 +30,7 @@ const ystReducers = combineReducers({
     defaultArea,
     home,
     bidList,
-    bidDataContent
+    bidDataContent,
+    policy
 })
 export default ystReducers;
