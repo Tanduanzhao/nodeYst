@@ -1,175 +1,95 @@
 /*
-   广东省入市价
+ 中标数据详情信息
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import {loadBidList} from '../function/ajax';
-import Provicen from '../provicen';
-import Filter from '../filter';
 import {Link} from 'react-router';
+import {loadBidListContent} from '../function/ajax.js';
 import Loading from '../loading';
-class bidList extends Component{
+import FilterBidList from '../filterBidList'
+class BidList extends Component{
     constructor(props){
         super(props);
-        this.state= {
-            loading: true,
-            }
-        this._loadData = this._loadData.bind(this);
-        this._infiniteScroll = this._infiniteScroll.bind(this);
-    }
-    _fn(args){
-        this.props.dispatch((dispatch) => {
-            dispatch({
-                type:'LOADDRUGDATA',
-                data:[],
-                pageNo:1
-            });
-            dispatch({
-                type:'UNSHOWFILTER'
-            });
-            dispatch({
-                type:'CHANGEDRUGFILTER',
-                areaId:args.areaId,
-                areaName:args.areaName,
-                searchAreaType:args.searchType,
-                yearMonth:args.yearMonth,
-                hospitalLevel:args.hospitalLevel
-            });
-            setTimeout(()=>{
-                this._loadData();
-            },100);
-        })
+        this.state={
+            loading:true
+        };
     }
     _loadData(){
-        loadBidList({
+        loadBidListContent({
             yearMonth:this.props.yearMonth,
             areaId:this.props.areaId,
             searchAreaType:this.props.searchAreaType,
             callBack:(res)=>{
                 console.log(res.datas)
                 this.props.dispatch({
-                    type:'LOADBIFLISTDATA',
+                    type:'LOADBIFLISTCONTENTDATA',
                     data: res.datas
+                });
+                this.setState({
+                    loading:false
                 });
             }
         });
-        this.props.dispatch((dispatch,getState)=>{
-                    this.setState({
-                        loading:false
-                    });
-        })
-    }
-    _infiniteScroll(){
-        //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.hospitalFilter.infinite){
-            this._loadData();
-        }
     }
     componentDidMount(){
-        this.ele = this.refs.content;
-        this.ele.addEventListener('scroll',this._infiniteScroll);
         this._loadData();
     }
-    componentWillUnMount(){
-        this.ele.removeEventListener('scroll',this._infiniteScroll);
-    }
-
     render(){
-        return(
-          <div className="root">
-              <HeaderBar fn={this._loadData} {...this.props}/>
-              <div ref="content" className="scroll-content has-header">
-                  <Main data={this.props.bidList.data} loading={this.state.loading}/>
-              </div>
-          </div>
-        )
-    }
-}
-class Main extends Component{
-    constructor(props){
-        super(props);
-    }
-    render(){
-        if(this.props.loading) {
+        if(this.state.loading) {
             return <Loading/>
-        }else{
-            return(
-                <ul className="list bid-list">
-                    {
-                        this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                    }
-                </ul>
+        }else {
+            return (
+                <div className="root" style={{"overflow":"auto"}}>
+                    <HeaderBar fn={this._loadData} {...this.props}/>
+                    <div ref="content" className="scroll-content has-header">
+                        <div className="bar bar-header">
+                            <h3 className="title">筛选条件提示语</h3>
+                        </div>
+                        <ul className="scroll-content has-header bidList-view">
+                            {
+                                this.props.bidList.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                            }
+                        </ul>
+                        {
+                            this.props.bidList.isShowFilter ? <FilterBidList dataSources={this.props.provicenData} {...this.props}/> : null
+                        }
+                    </div>
+                </div>
             )
         }
     }
 }
-
-class List extends Component{
-    render(){
-        return(
-            <li className="item">
-                <h2>{this.props.dataSources.productName}</h2>
-                <div className="market-list">
-                    <div className="list-left">
-                        <p>剂型：{this.props.dataSources.prepName}</p>
-                        <p>规格：{this.props.dataSources.spec}</p>
-                        <p>生产企业：{this.props.dataSources.manufacturerName}</p>
-                    </div>
-                    <Link to={`/bidListContent/${this.props.dataSources.id}`} className="list-right btn"> 查看各省中标价</Link>
-                </div>
-                <div className="row market-price">
-                    <div className="col-50"> 广东省最小制剂入市价</div>
-                    <div className="col-50"> 0.5505（yyyy-mm-dd）</div>
-                </div>
-                <div className="market-list price-list">
-                    <div className="list-left">
-                        <p>最低三省均值：{this.props.dataSources.minThreeMean}</p>
-                        <p>最低五省均值：{this.props.dataSources.minFiveMean}</p>
-                    </div>
-                    <div className="list-right">
-                        {
-                            this.props.dataSources.zuidiwusheng.map((v)=>{
-                                return (
-                                    <div key={v.id}>
-                                        {v.bidPrice} ({v.areaName} {v.publishDate})
-                                    </div>
-                                )
-                            })
-                        }
-
-                    </div>
-                </div>
-            </li>
-        )
-    }
-}
-
 class HeaderBar extends Component{
+    _showProvicenHandle(){
+        this.props.dispatch({
+            type:'SHOWFILTERPRODUCE'
+        });
+    }
     _changeHandle(){
         this.props.dispatch({
-            type:'CHANGEDRUGSEARCHNAME',
-            searchName:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
+            type:'CHANGETITLEORREPORTKEY',
+            titleOrReportKey:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
         })
     }
     _searchHandle(){
         this.props.dispatch({
-            type:'LOADDRUGDATA',
+            type:'LOADPRODUCEDATA',
             data:[],
-            pageNo:1
+            pageNo:1,
         });
         setTimeout(()=> this.props.fn(),100);
-    }
-    componentUnMount(){
-        this.props.dispatch({
-            type:'CLEADRUGSEARCHNAME'
-        })
     }
     render(){
         return(
             <div className="bar bar-header bar-positive item-input-inset">
+                <div className="buttons">
+                    <button className="button" onClick={this._showProvicenHandle.bind(this)}>
+                        <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
+                    </button>
+                </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
+                    <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)}  type="search" placeholder="请输入搜索关键词"/>
                 </label>
                 <button className="button button-clear" onClick={this._searchHandle.bind(this)}>
                     搜索
@@ -178,19 +98,33 @@ class HeaderBar extends Component{
         )
     }
 }
-
-function select(state){
-    return{
-        showProvicen:state.index.showProvicen,
-        areaId:state.provicen.areaId,
-        areaName:state.provicen.areaName,
-        provicenData:state.provicen.data,
-        yearMonth:state.data.yearMonth,
-        uri:state.router.uri,
-        hospitalFilter:state.drug,
-        searchAreaType:state.provicen.searchAreaType,
-        bidList:state.bidList
+class List extends Component{
+    render(){
+        return(
+            <div>
+                <h2 className="title">产品名称：头孢呋辛{this.props.dataSources.productName}</h2>
+                <li className="item card">
+                    <p>商品名：{this.props.dataSources.trandName}</p>
+                    <p>剂型：(头孢呋辛酯)胶囊剂{this.props.dataSources.prepName}</p>
+                    <p>规格：0.125g{this.props.dataSources.spec}</p>
+                    <p>包装数量：{this.props.dataSources.packNum}</p>
+                    <p>包材名称：{this.props.dataSources.packMaterialName}</p>
+                    <p>生产企业：深圳致君制药有限公司{this.props.dataSources.manufacturerName}</p>
+                    <p>中标价：<span className="calm">{this.props.dataSources.bidPrice}</span></p>
+                    <p>最小制剂招标价格：<span className="calm">{this.props.dataSources.minBidPrice}</span></p>
+                    <p>省份：<span className="calm">{this.props.dataSources.areaName}</span></p>
+                    <p>项目名称：（201607）广东省基本药物竞价交易品种{this.props.dataSources.projectName}</p>
+                    <p>公布时间：2016-08-02{this.props.dataSources.publishDate}</p>
+                </li>
+            </div>
+        )
     }
 }
 
-export default connect(select)(bidList);
+function select(state){
+    return{
+        provicenData:state.provicen.data,
+        bidList:state.bidList
+    }
+}
+export default connect(select)(BidList);

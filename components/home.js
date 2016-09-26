@@ -72,7 +72,7 @@ var Slider = require('react-slick');
 					<div className="item item-divider home-item-title">
 					<strong>最新报告</strong>
 					<img src="/images/new_report.jpg" alt="" />
-					<Link  to="/produce" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}  onClick={this.newReportMap.bind(this)}>
+					<Link  to="/report" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}  onClick={this.newReportMap.bind(this)}>
 						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
 				</div>
@@ -84,11 +84,11 @@ var Slider = require('react-slick');
 				<div className="item item-divider home-item-title">
 					<strong>热门报告</strong>
 					<img src="/images/hot_report.jpg" alt="" className="hot-title"/>
-					<Link to="/produce" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}  onClick={this.hotReportMap.bind(this)}>
+					<Link to="/report" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}  onClick={this.hotReportMap.bind(this)}>
 						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
 				</div>
-				<div className="row produce-cards bg-fff">
+				<div className="row report-cards bg-fff">
 					{
 						this.props.home.data.hotReportMap.datas.map((ele,index)=> <Hotrepor dataSources={ele} key={ele.id}/>)
 					}
@@ -191,9 +191,9 @@ class Hotrepor extends Component{
 		var string = null;
 		var tag = (()=>{
 			if(this.props.dataSources.costStatus == "1"){
-				string = <i className="produce-card-icon">报告试读</i>;
+				string = <i className="report-card-icon">报告试读</i>;
 			}else{
-				string = <i className="produce-card-icon">点击查看</i>;
+				string = <i className="report-card-icon">点击查看</i>;
 			}
 			return string;
 		})();
@@ -219,8 +219,8 @@ class Hotrepor extends Component{
 				<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}>
 					<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
 					<h3> {this.props.dataSources.title}</h3>
-					<div className="produce-card-price">¥{this.state.price}</div>
-					<p className="produce-card-footer">
+					<div className="report-card-price">¥{this.state.price}</div>
+					<p className="report-card-footer">
 						{number}
 						{tag}
 					</p>

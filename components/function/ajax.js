@@ -308,6 +308,7 @@ export const loadReportList = function(args){
             pageNo:args.pageNo || null,
             hosLevel:args.hospitalLevel || null,
             searchType:args.searchType,
+            titleOrReportKey:args.titleOrReportKey,
         },
         callBack:(res)=>{
             args.callBack(res);

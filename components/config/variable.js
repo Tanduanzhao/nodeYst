@@ -71,6 +71,9 @@ export const UNSHOWFILTERPRODUCE = 'UNSHOWFILTERPRODUCE';
 //隐藏报告过滤层
 export const LOADPRODUCEDATA = 'LOADPRODUCEDATA';
 //加载报告数据
+export const CHANGETITLEORREPORTKEY = 'CHANGETITLEORREPORTKEY';
+//改变报告搜索关键字  参数:titleOrReportKey
+
 export const LOGIN = 'LOGIN';
 //用户登录
 export const LOADUSERINFO = 'LOADUSERINFO';

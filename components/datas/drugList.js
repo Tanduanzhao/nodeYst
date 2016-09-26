@@ -8,6 +8,7 @@ import Provicen from '../provicen';
 import Filter from '../filter';
 import {Link} from 'react-router';
 import Loading from '../loading';
+import EmptyComponent from '../emptyComponent'
 class drugList extends Component{
     constructor(props){
         super(props);

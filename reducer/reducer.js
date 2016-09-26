@@ -7,12 +7,12 @@ import hospital from './hospital';
 import feedBack from './feedBack';
 import drug from './drug';
 import drugContent from './drugContent';
-import Produce from './Produce';
+import report from './report';
 import userInfo from './userInfo';
 import defaultArea from './defaultArea';
 import home from './home';
+import marketPrice from './marketPrice';
 import bidList from './bidList';
-import bidDataContent from './bidDataContent';
 import policy from './policy';
 //合并仓库
 
@@ -21,7 +21,7 @@ const ystReducers = combineReducers({
 	provicen,
 	data,
 	router,
-    Produce,
+    report,
     hospital,
     feedBack,
     drug,
@@ -29,8 +29,8 @@ const ystReducers = combineReducers({
     drugContent,
     defaultArea,
     home,
+    marketPrice,
     bidList,
-    bidDataContent,
     policy
 })
 export default ystReducers;

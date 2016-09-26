@@ -237,7 +237,7 @@ h3{
 .produce-header-tab button{
     text-align: center;
 }
-.produce-cards{
+.report-cards{
     align-content: flex-start;
     -webkit-box-align: start;
     -ms-flex-align: start;
@@ -264,11 +264,11 @@ h3{
         background-color: #fff;
         padding: .5rem;
     }
-    .produce-card-price{
+    .report-card-price{
         text-align: left;
         color: red;
     }
-    .produce-card-footer{
+    .report-card-footer{
         justify-content: space-between;
         -webkit-box-align: start;
         -ms-flex-align: start;
@@ -278,7 +278,7 @@ h3{
         font-size: .6rem;
         color: #888;
     }
-    .produce-card-icon{
+    .report-card-icon{
         font-size: .5rem;
         background: #eee;
         padding: .2rem .3rem;
@@ -608,15 +608,34 @@ h3{
     }
 }
 .bid-list{
-    .item{
-        white-space: inherit;
+    .card{
+        margin-top: 0px;
+        margin-bottom: 10px;
+        padding: 0 12px;
+        h2{
+            padding: 7px 0;
+            font-size: .8rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            img{
+                display: inline-block;
+                width: 19.5px;
+            }
+        }
     }
 }
 .market-list{
     overflow: hidden;
+    padding-left: 12px;
+    padding-right: 4px;
+    margin: 10px 0;
     .list-left{
-        font-size: .6rem;
         float: left;
+        p{
+            font-size: .6rem;
+            margin: 0;
+        }
     }
     .list-right{
         float: right;
@@ -626,7 +645,7 @@ h3{
         color: #fff;
         font-size: 0.45rem;
         padding: 5px 3px;
-        margin-top: 30px;
+        margin-top: 34px;
         border-radius: 5px;
     }
 }
@@ -636,11 +655,14 @@ h3{
     border-style: solid;
     border-width: 1px 0;
     color: #387ef5;
+    padding-left: 12px;
     .col-50{
         font-size: .6rem;
     }
 }
 .price-list{
+    margin-top: 8px;
+    padding-left: 12px;
     .list-left {
         width: 50%;
         p{
@@ -650,6 +672,64 @@ h3{
     .list-right{
         width: 50%;
         font-size: .5rem;
+    }
+}
+.more{
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #387ef5;
+    display: block;
+    z-index: 2;
+    text-align: center;
+    font-size: .6rem;
+    color: #fff;
+    padding: 1px;
+}
+.more-content{
+    position: absolute;
+    top: -100px;
+    right: 10px;
+    min-width: 300px;
+    background: #eee;
+    border: 1px solid #000;
+    border-radius: 5px;
+    text-align: left;
+    padding: 10px 10px 0 10px;
+    a{
+        display: inline-block;
+        border: 1px solid #000;
+        padding: 2px 8px;
+        border-radius: 3px;
+        text-align: right;
+        margin: 0 10px 10px 0;
+    }
+    span{
+        display: block;
+        width: 0;
+        height: 0;
+        border-width: 8px;
+        border-style: solid;
+        border-color: #666 transparent transparent transparent;
+        position: absolute;
+        right: 8px;
+        bottom: -16px;
+    }
+}
+.bidList-view{
+    .item{
+        border-top: 1px solid #eee;
+        margin-top: 0;
+        margin-bottom: 10px;
+        padding: 16px;
+    }
+    .title{
+        font-size: 16px;
+        padding: 7.5px 16px;
+        background: #f6feff;
     }
 }
 table{
