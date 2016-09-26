@@ -16,7 +16,7 @@ default class FooterBar extends Component {
 			title: '首页',
 			icon: 'ios-home'
 		}, {
-			uri: 'produce',
+			uri: 'report',
 			title: '报告',
 			icon: 'cube'
 		}, {

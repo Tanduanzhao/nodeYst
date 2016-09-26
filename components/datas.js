@@ -31,15 +31,27 @@ class Datas extends Component{
                         </Link>
                     </div>
                     <div className="col-50">
-                        <Link to="/datas/bidList">
+                        <Link to="/bidList">
                             <i className="fa fa-line-chart"></i>
                             中标数据
                         </Link>
                     </div>
                     <div className="col-50">
-                        <Link to="/datas/bidList">
+                        <Link to="/datas/marketPrice">
                             <i className="fa fa-calculator"></i>
                             入市价
+                        </Link>
+                    </div>
+                    <div className="col-50">
+                        <Link to="/datas/policy">
+                            <i className="fa fa-file-text-o"></i>
+                            政策准入
+                        </Link>
+                    </div>
+                    <div className="col-50">
+                        <Link to="/datas/product">
+                            <i className="fa fa-bar-chart"></i>
+                            产品数据
                         </Link>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 var ObjectAssign = require('object-assign');
-import {LOADHOMEDATA,LOADHOMEIMG} from '../components/config/variable';
+import {LOADHOMEDATA,LOADHOMEIMG,CHANGETYPE} from '../components/config/variable';
 //时间信息
 
 var defaultData = {
@@ -8,10 +8,9 @@ var defaultData = {
 		newReportMap:{datas:[]},
 		hotReportMap:{datas:[]}
 	},
- 	img:[{}]
+ 	img:[{}],
 };
 export default function home(state = defaultData,action){
-
 	switch(action.type){
 		case LOADHOMEDATA : return ObjectAssign({},state,{data:action.data});
 		case LOADHOMEIMG : return ObjectAssign({},state,{img:action.img});

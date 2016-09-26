@@ -24,15 +24,16 @@ import Datas from './components/datas.js';
 import HospitalList from './components/datas/hospitalList';
 import drugList from './components/datas/drugList';
 import drugContent from './components/datas/drugContent';
-import  bidList from './components/datas/bidList';
-import bidListContent from './components/datas/bidListContent';
+import marketPrice from './components/datas/marketPrice';
+import bidList from './components/datas/bidList';
+import product from './components/datas/product';
 
 import Center from './components/center';
 import FeedBack from './components/feedBack';
 
-import produce from './components/produce';
-import free from './components/produce/free';
-import charge from './components/produce/charge';
+import report from './components/report';
+import free from './components/report/free';
+import charge from './components/report/charge';
 
 import Home from './components/home';
 
@@ -74,24 +75,24 @@ var _router = (
                     <IndexRoute component={Datas}/>
                     <Route path="hospitalList" component={HospitalList}/>
                     <Route path="drugList" component={drugList}/>
-                    <Route path="bidList" component={bidList}/>
+                    <Route path="marketPrice" component={marketPrice}/>
                     <Route path="policy" component={Policy}/>
+                    <Route path="product" component={product}/>
                 </Route>
                 <Route path="drugContent/:sid">
                   <IndexRoute component={drugContent}/>
                 </Route>
-                <Route path="bidListContent/:sid">
-                    <IndexRoute component={bidListContent}/>
+                <Route path="bidList">
+                    <IndexRoute component={bidList}/>
                 </Route>
                 <Route path="center">
                    <IndexRoute component={Center}/>
                    <Route path="feedback" component={FeedBack}/>
                 </Route>
-                <Route path="produce">
-                  <IndexRoute component={produce}/>
+                <Route path="report">
+                  <IndexRoute component={report}/>
                   <Route path="free" component={free}/>
                   <Route path="charge" component={charge}/>
-                  <Route path=":id" component={ReportContent}/>
                 </Route>
                 <Route path="home">
                     <IndexRoute component={Home}/>

@@ -300,13 +300,15 @@ export const loadPicture = function(args){
 //报告列表数据加载
 export const loadReportList = function(args){
     ajaxFn({
-        url:'business/getReportList',
+        url:'business/getLastHotReport',
         data:{
             searchName:args.searchName || null,
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
             pageNo:args.pageNo || null,
-            hosLevel:args.hospitalLevel || null
+            hosLevel:args.hospitalLevel || null,
+            searchType:args.searchType,
+            titleOrReportKey:args.titleOrReportKey,
         },
         callBack:(res)=>{
             args.callBack(res);

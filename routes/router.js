@@ -9,8 +9,8 @@ module.exports = function(app) {
     });
     app.get('/rise/*',index);
     app.get('/optional',index);
-    app.get('/produce',index);
-    app.get('/produce/*',index);
+    app.get('/report',index);
+    app.get('/report/*',index);
 	app.get('/center', index);
     app.get('/datas', index);
     app.get('/datas/*', index);
