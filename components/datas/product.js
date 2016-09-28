@@ -3,13 +3,14 @@
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import {loadBidList} from '../function/ajax';
+import {loadProd} from '../function/ajax';
 import Provicen from '../provicen';
-import Filter from '../filter';
+import FilterProduct from '../filterProduct';
 import {Link} from 'react-router';
 import Loading from '../loading';
+import EmptyComponent from '../emptyComponent';
 import More from './more';
-class MarketPrice extends Component{
+class product extends Component{
     constructor(props){
         super(props);
         this.state= {
@@ -18,51 +19,49 @@ class MarketPrice extends Component{
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
-    _fn(args){
-        this.props.dispatch((dispatch) => {
-            dispatch({
-                type:'LOADDRUGDATA',
-                data:[],
-                pageNo:1
-            });
-            dispatch({
-                type:'UNSHOWFILTER'
-            });
-            dispatch({
-                type:'CHANGEDRUGFILTER',
-                areaId:args.areaId,
-                areaName:args.areaName,
-                searchAreaType:args.searchType,
-                yearMonth:args.yearMonth,
-                hospitalLevel:args.hospitalLevel
-            });
-            setTimeout(()=>{
-                this._loadData();
-            },100);
-        })
+    _fn(args) {
+        console.log(args.tradeType)
+        this.props.dispatch({
+            type: 'LOADPRODUCTDATA',
+            data: [],
+            pageNo: 1
+        });
+        this.props.dispatch({
+            type: 'UNSHOWFILTERPRODUCT'
+        });
+        this.props.dispatch({
+            type: 'CHANGETRADETYPE',
+            tradeType: args.tradeType,
+        });
+        setTimeout(()=> {
+            this._loadData();
+        }, 100);
     }
     _loadData(){
-        loadBidList({
+        loadProd({
+            tradeType:this.props.product.tradeType,
             yearMonth:this.props.yearMonth,
             areaId:this.props.areaId,
             searchAreaType:this.props.searchAreaType,
+            pageNo:this.props.product.pageNo,
+            searchName:this.props.product.searchName,
             callBack:(res)=>{
-                console.log(res.datas)
+                console.log(res.datas,"dd")
+                console.log(this.props.product.data,"sss")
                 this.props.dispatch({
-                    type:'LOADBIFLISTDATA',
-                    data: res.datas
+                    type:'LOADPRODUCTDATA',
+                    data:this.props.product.data.concat(res.datas),
+                    pageNo:this.props.product.pageNo+1
+                });
+                this.setState({
+                    loading:false
                 });
             }
         });
-        this.props.dispatch((dispatch,getState)=>{
-            this.setState({
-                loading:false
-            });
-        })
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.hospitalFilter.infinite){
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.product.infinite){
             this._loadData();
         }
     }
@@ -78,16 +77,14 @@ class MarketPrice extends Component{
     render(){
         return(
             <div className="root">
-                <HeaderBar fn={this._loadData} {...this.props}/>
+                <HeaderBar fn={this._loadData} {...this.props} loading={this.state.loading}/>
                 <div ref="content" className="scroll-content has-header">
-                    <div className="bar bar-header">
-                        <h3 className="title">注：最低五省价格不包含军区、广东省价格</h3>
-                    </div>
-                    <div className="scroll-content has-header">
-                        <Main data={this.props.marketPrice.data} loading={this.state.loading}/>
-                    </div>
+                        <Main {...this.props} data={this.props.product.data} loading={this.state.loading}/>
                 </div>
                 <More {...this.props}/>
+                {
+                    this.props.product.isShowFilter ? <FilterProduct fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.provicenData}/> : null
+                }
             </div>
         )
     }
@@ -95,18 +92,23 @@ class MarketPrice extends Component{
 class Main extends Component{
     constructor(props){
         super(props);
+        console.log( this.props.data,"ss")
     }
     render(){
         if(this.props.loading) {
             return <Loading/>
-        }else{
-            return(
-                <ul className="list bid-list">
-                    {
-                        this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                    }
-                </ul>
-            )
+        }else {
+            if (this.props.data.length != 0) {
+                return (
+                    <ul className="list product-view">
+                        {
+                            this.props.data.map((ele, index)=> <List dataSources={ele} key={ele.id}/>)
+                        }
+                    </ul>
+                )
+            } else {
+                return <EmptyComponent/>
+            }
         }
     }
 }
@@ -114,54 +116,46 @@ class Main extends Component{
 class List extends Component{
     render(){
         return(
+            <div>
+                <h2>产品名称： {this.props.dataSources.productName}</h2>
             <li  className="card">
-                <h2><img src="/images/bidList-icon.png" alt=""/>{this.props.dataSources.productName}</h2>
-                <div className="market-list">
-                    <div className="list-left">
-                        <p>剂型：{this.props.dataSources.prepName}</p>
-                        <p>规格：{this.props.dataSources.spec}</p>
-                        <p>生产企业：{this.props.dataSources.manufacturerName}</p>
-                    </div>
-                    <Link to="/bidList" className="list-right btn"> 查看各省中标价</Link>
-                </div>
-                <div className="row market-price">
-                    <div className="col-50"> 广东省最小制剂入市价</div>
-                    <div className="col-50"> 0.5505（yyyy-mm-dd）</div>
-                </div>
-                <div className="market-list price-list">
-                    <div className="list-left">
-                        <p>最低三省均值：{this.props.dataSources.minThreeMean}</p>
-                        <p>最低五省均值：{this.props.dataSources.minFiveMean}</p>
-                    </div>
-                    <div className="list-right">
-                        {
-                            this.props.dataSources.zuidiwusheng.map((v)=>{
-                                return (
-                                    <div key={v.id}>
-                                        {v.bidPrice} ({v.areaName} {v.publishDate})
-                                    </div>
-                                )
-                            })
-                        }
-
-                    </div>
-                </div>
+                <ul className="list">
+                    <li>剂型/规格：{this.props.dataSources.prepName}/{this.props.dataSources.spec}</li>
+                    <li>批准文号/注册证号：{this.props.dataSources.pzwh}</li>
+                    <li>生产企业：{this.props.dataSources.manufacturerName}</li>
+                </ul>
+                <span className="btn"> {this.props.dataSources.tradeBreedId}</span>
+                <ul className="list">
+                    <li>目录ID：{this.props.dataSources.catalogId}</li>
+                    <li>目录名称：{this.props.dataSources.catalogName}</li>
+                    <li>目录类型：{this.props.dataSources.catalogType}</li>
+                </ul>
             </li>
-
+            </div>
         )
     }
 }
 
 class HeaderBar extends Component{
+    _showProvicenHandle(){
+        this.props.dispatch({
+            type:'SHOWFILTERPRODUCT'
+        });
+    }
     _changeHandle(){
+        console.log(this.refs.hospitalSearchName.value)
         this.props.dispatch({
             type:'CHANGEDRUGSEARCHNAME',
             searchName:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
         })
     }
     _searchHandle(){
+        console.log(this.props.product.searchName)
+        this.setState({
+            loading:true
+        })
         this.props.dispatch({
-            type:'LOADDRUGDATA',
+            type:'LOADPRODUCTDATA',
             data:[],
             pageNo:1
         });
@@ -175,6 +169,11 @@ class HeaderBar extends Component{
     render(){
         return(
             <div className="bar bar-header bar-positive item-input-inset">
+                <div className="buttons">
+                    <button className="button" onClick={this._showProvicenHandle.bind(this)}>
+                        <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
+                    </button>
+                </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
                     <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
@@ -189,16 +188,8 @@ class HeaderBar extends Component{
 
 function select(state){
     return{
-        showProvicen:state.index.showProvicen,
-        areaId:state.provicen.areaId,
-        areaName:state.provicen.areaName,
-        provicenData:state.provicen.data,
-        yearMonth:state.data.yearMonth,
-        uri:state.router.uri,
-        hospitalFilter:state.drug,
-        searchAreaType:state.provicen.searchAreaType,
-        marketPrice:state.marketPrice
+        product:state.product
     }
 }
 
-export default connect(select)(MarketPrice);
+export default connect(select)(product);

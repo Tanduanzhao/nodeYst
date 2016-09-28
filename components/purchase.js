@@ -1,40 +1,39 @@
 /*
- 报告列表
+ 已购报告列表
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
-import FilterReport from './filterReport';
+import FilterPurchase from './filterPurchase';
 import Loading from './loading';
 import EmptyComponent from './emptyComponent';
-import {loadNewrepor,loadPicture,insertUserAction} from './function/ajax';
 
-import {loadReportList} from './function/ajax';
+import {loadProduct} from './function/ajax';
 
-class Report extends Component {
+class purchase extends Component {
   constructor(props){
     super(props);
     console.log(this.props.params.id)
     this.state={
-      searchType:this.props.report.searchType,
+      searchType:this.props.purchase.searchType,
       loading:true
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
   }
   _loadData(){
-    loadReportList({
-      titleOrReportKey:this.props.report.titleOrReportKey,
-      pageNo:this.props.report.pageNo,
-      searchType:this.props.report.searchType,
+    loadProduct({
+      titleOrReportKey:this.props.purchase.titleOrReportKey,
+      pageNo:this.props.purchase.pageNo,
+      searchType:this.props.purchase.searchType,
       callBack:(res)=>{
         this.props.dispatch({
-          type:'LOADPRODUCEDATA',
-          data:this.props.report.data.concat(res.datas),
-          pageNo:this.props.report.pageNo+1
+          type:'LOADPURCHASEDATA',
+          data:this.props.purchase.data.concat(res.datas),
+          pageNo:this.props.purchase.pageNo+1
         });
-        if(res.totalSize <= this.props.report.data.length){
+        if(res.totalSize <= this.props.purchase.data.length){
           this.props.dispatch({
             type:'UNINFINITE'
           });
@@ -51,9 +50,9 @@ class Report extends Component {
   }
   _infiniteScroll(){
     //全部高度-滚动高度 == 屏幕高度-顶部偏移
-    console.log("sssss",this.props.report.infinite)
-    if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.report.infinite){
-      console.log("sdddd",this.props.report.infinite)
+    console.log("sssss",this.props.purchase.infinite)
+    if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.purchase.infinite){
+      console.log("sdddd",this.props.purchase.infinite)
       this._loadData();
     }
   }
@@ -75,7 +74,7 @@ class Report extends Component {
       loading:true
     });
     this.props.dispatch({
-      type:'LOADPRODUCEDATA',
+      type:'LOADPURCHASEDATA',
       data:[],
       pageNo:1
     });
@@ -95,7 +94,7 @@ class Report extends Component {
       loading:true
     });
     this.props.dispatch({
-      type:'LOADPRODUCEDATA',
+      type:'LOADPURCHASEDATA',
       data:[],
       pageNo:1,
     });
@@ -106,12 +105,12 @@ class Report extends Component {
       <div className="root">
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header">
-          <Main data={this.props.report.data} loading={this.state.loading}/>
+          <Main data={this.props.purchase.data} loading={this.state.loading}/>
         </div>
         <FooterBar {...this.props}/>
         {
-          this.props.report.isShowFilter ?
-            <FilterReport fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.provicenData}/> : null
+          this.props.purchase.isShowFilter ?
+            <FilterPurchase fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.provicenData}/> : null
         }
       </div>
     )
@@ -174,16 +173,6 @@ class List extends Component{
   constructor(props){
     super(props);
     };
-  insertUserAction(e){
-    insertUserAction({
-      reportId:this.props.dataSources.id,
-      costStatus:this.props.dataSources.costStatus,
-      callBack:(res)=> {
-        console.log(res)
-      }
-    });
-
-  }
   render(){
     var string = null;
     var tag = (()=>{
@@ -213,7 +202,7 @@ class List extends Component{
     }
     return(
         <div className="col-50">
-          <a onClick={this.insertUserAction.bind(this)} href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}>
+          <a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}>
             <img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
             <h3> {this.props.dataSources.title}</h3>
             <div className="report-card-price">¥{this.state.price}</div>
@@ -228,17 +217,17 @@ class List extends Component{
 }
 function select(state){
   return{
-    subscribe:state.report.subscribe,
-    subscribeTwo:state.report.subscribeTwo,
+    subscribe:state.purchase.subscribe,
+    subscribeTwo:state.purchase.subscribeTwo,
     showProvicen:state.index.showProvicen,
     areaId:state.provicen.areaId,
     areaName:state.provicen.areaName,
     provicenData:state.provicen.data,
     yearMonth:state.data.yearMonth,
     uri:state.router.uri,
-    report:state.report,
+    purchase:state.purchase,
     searchAreaType:state.provicen.searchAreaType
   }
 }
 
-export default connect(select)(Report);
+export default connect(select)(purchase);
