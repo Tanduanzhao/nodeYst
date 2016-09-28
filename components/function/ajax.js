@@ -611,16 +611,3 @@ export const loadPolicySearch = function(args){
         }
     })
 }
-//用户点击查看/购买报告
-export const insertUserAction = function(args){
-    ajaxFn({
-        url:'business/insertUserAction',
-        data:{
-            reportId:args.reportId,
-            costStatus:args.costStatus,
-        },
-        callBack:(res)=>{
-            args.callBack(res);
-        }
-    })
-}
