@@ -3,25 +3,15 @@ import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
 import {loadNewrepor,loadPicture} from './function/ajax';
+import Box from './box';
+import Loading from './loading';
 
 var Slider = require('react-slick');
  class Home extends Component{
-	 newReportMap(){
-		 this.props.dispatch({
-			 type:'CHANGETYPE',
-			 searchType: 1
-		 });
-	 }
-	 hotReportMap(){
-		 this.props.dispatch({
-			 type:'CHANGETYPE',
-			 searchType: 2
-		 });
-	 }
-	 constructor(props){
+	 constructor(props) {
 		 super(props);
-		 this.state= {
-
+		 this.state ={
+			 loading:true
 		 }
 	 }
 	 componentDidMount(){
@@ -35,6 +25,9 @@ var Slider = require('react-slick');
 					 type:'LOADHOMEDATA',
 					 data: res.datas
 				 });
+				 this.setState({
+					 loading:false
+				 });
 			 }
 		 });
 		 loadPicture({
@@ -46,9 +39,42 @@ var Slider = require('react-slick');
 					 type:'LOADHOMEIMG',
 					 img: res.datas
 				 });
+				 this.setState({
+					 loading:false
+				 });
 			 }
 		 });
 	 }
+	render(){
+		return(
+			<div className="root home">
+				{this.state.loading ? <Loading/> : <Main {...this.props}/>}
+				<FooterBar {...this.props}/>
+			</div>
+		)
+	}
+}
+
+class Main extends Component{
+	constructor(props){
+		super(props);
+	}
+	newReportMap(){
+		this.props.dispatch({
+			type:'GOREPORT',
+			data:[],
+			searchType: 1,
+			pageNo:1
+		});
+	}
+	hotReportMap(){
+		this.props.dispatch({
+			type:'GOREPORT',
+			data:[],
+			searchType: 2,
+			pageNo:1
+		});
+	}
 	render(){
 		const settings = {
 			className: '',
@@ -57,19 +83,22 @@ var Slider = require('react-slick');
 			slidesToShow: 1,
 			slidesToScroll: 1,
 			adaptiveHeight:false,
-            autoplay:true
+			autoplay:true
 		};
-		console.log(this.props.home.img,"ddd");
+		var string = null;
+		var slide = (()=>{
+			if(0){
+				string = <Slider {...settings} {...this.props}>{this.props.home.img.map((ele,index)=> <div key={`img_${ele.id}`}><img src={ele.imgUrl}  alt=""/></div>)}</Slider>;
+			}else{
+				string = <Slider {...settings} {...this.props}><div><img src="/images/home.jpg" alt=""/></div></Slider>;
+			}
+			return string;
+		})();
 		return(
-			<div className="root home">
-				<div  className="main">
-					<Slider {...settings} {...this.props}>
-						{
-							this.props.home.img.map((ele,index)=> <div key={`img_${ele.id}`}><img src={ele.imgUrl}  alt=""/></div>)
-						}
-					</Slider>
-					<Column {...this.props}/>
-					<div className="item item-divider home-item-title">
+			<div  className="main">
+				{slide}
+				<Column {...this.props}/>
+				<div className="item item-divider home-item-title">
 					<strong>最新报告</strong>
 					<img src="/images/new_report.jpg" alt="" />
 					<Link  to="/report" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}  onClick={this.newReportMap.bind(this)}>
@@ -94,8 +123,7 @@ var Slider = require('react-slick');
 					}
 
 				</div>
-				</div>
-				<FooterBar {...this.props}/>
+				<Box {...this.props}/>
 			</div>
 		)
 	}
@@ -105,30 +133,26 @@ class Column extends Component{
 	render(){
 		return(
 			<ul className="column">
-				<li>
+				<Link to="/report">
 					<img src="/images/column01.jpg" alt=""/>
 					分析报告
-				</li>
-				<li>
+				</Link>
+				<Link to="/datas/marketPrice">
+					<img src="/images/column07.jpg" alt="" className="price-icon"/>
+					广东省入市价
+				</Link>
+				<Link to="/hospitalList">
 					<img src="/images/column02.jpg" alt=""/>
 					中标数据
-				</li>
-				<li>
+				</Link>
+				<Link to="/datas/policy">
 					<img src="/images/column03.jpg" alt=""/>
 					政策准入
-				</li>
-				<li>
-					<img src="/images/column04.jpg" alt=""/>
-					用药目录
-				</li>
-				<li>
+				</Link>
+				<Link to="/datas/bidList">
 					<img src="/images/column05.jpg" alt=""/>
 					产品数据
-				</li>
-				<li>
-					<img src="/images/column06.jpg" alt=""/>
-					医院列表
-				</li>
+				</Link>
 			</ul>
 		)
 	}

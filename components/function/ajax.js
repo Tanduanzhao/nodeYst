@@ -266,6 +266,20 @@ export const getUserAreaInfo = function(args){
     })
 }
 
+//获取地理位置信息
+export const getLocationBidAreaInfo = function(args){
+    ajaxFn({
+        url:'business/getLocationBidAreaInfo',
+        data:{
+            latitude:args.latitude,
+            longitude:args.longitude
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
 //首页数据加载
 export const loadNewrepor = function(args){
     ajaxFn({
@@ -333,16 +347,89 @@ export const loadBidList = function(args){
     })
 }
 
-//中标详情页数据加载
-export const loadBidListContent = function(args){
+//中标数据加载
+export const loadProd = function(args){
     ajaxFn({
-        url:'business/getBidDetail',
+        url:'business/getTradeProductList',
         data:{
             searchName:args.searchName || null,
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
             pageNo:args.pageNo || null,
-            hosLevel:args.hospitalLevel || null
+            hosLevel:args.hospitalLevel || null,
+            tradeType:args.tradeType,
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//中标详情页数据加载
+export const loadBidListContent = function(args){
+    ajaxFn({
+        url:'business/getBidDetail',
+        data:{
+            sord:args.sord || null,
+            searchName:args.searchName || null,
+            pageNo:args.pageNo || null,
+            searchProductStatus:args.searchProductStatus
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//中标数据省份信息加载
+export const getBidAreaInfo = function(args){
+    ajaxFn({
+        url:'business/getBidAreaInfo',
+        data:{
+            searchName:args.searchName || null,
+            pageNo:args.pageNo || null,
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//中标数据省份信息加载
+export const getProjectStatus = function(args){
+    ajaxFn({
+        url:'business/getProjectStatus',
+        data:{
+            statusType:"REPROT_TYPE",
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+
+//已购报告加载
+export const loadProduct = function(args){
+    ajaxFn({
+        url:'business/getUserBuyReportList',
+        data:{
+            searchName:args.searchName || null,
+            yearMonth:args.yearMonth || null,
+            areaId:args.areaId || null,
+            pageNo:args.pageNo || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//用户点击查看/购买报告
+export const insertUserAction = function(args){
+    ajaxFn({
+        url:'business/insertUserAction',
+        data:{
+            reportId:args.reportId,
+            costStatus:args.costStatus,
         },
         callBack:(res)=>{
             args.callBack(res);
