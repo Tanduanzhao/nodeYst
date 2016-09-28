@@ -423,7 +423,7 @@ export const loadProduct = function(args){
     })
 }
 
-//用户点击查看/购买报告
+//用户点击查看/购买
 export const insertUserAction = function(args){
     ajaxFn({
         url:'business/insertUserAction',
