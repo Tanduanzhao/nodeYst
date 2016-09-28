@@ -41,6 +41,12 @@ import vip from './components/vip';
 
 import ReportContent from "./components/reportContent";
 import Policy from './components/policy';
+import Quality from './components/quality';
+import Base from './components/base';
+import Insurance from './components/insurance';
+import Assist from './components/assist';
+import LowPrice from './components/lowPrice';
+import Anti from './components/anti';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
 //Token((res) => {
@@ -76,7 +82,16 @@ var _router = (
                     <Route path="hospitalList" component={HospitalList}/>
                     <Route path="drugList" component={drugList}/>
                     <Route path="marketPrice" component={marketPrice}/>
-                    <Route path="policy" component={Policy}/>
+                    <Route path="policy">
+                        <IndexRoute component={Policy}/>
+                        <Route path="quality/:gradeId/:catalogEditionId" component={Quality}/>
+                        <Route path="base/:gradeId/:catalogEditionId" component={Base}/>
+                        <Route path="insurance/:gradeId/:catalogEditionId" component={Insurance}/>
+                        <Route path="assist/:gradeId/:catalogEditionId" component={Assist}/>
+                        <Route path="lowPrice/:gradeId/:catalogEditionId" component={LowPrice}/>
+                        <Route path="anti/:gradeId/:catalogEditionId" component={Anti}/>
+                    </Route>
+                    
                     <Route path="product" component={product}/>
                 </Route>
                 <Route path="drugContent/:sid">
