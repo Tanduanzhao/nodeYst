@@ -9,6 +9,7 @@ import Filter from '../filter';
 import {Link} from 'react-router';
 import Loading from '../loading';
 import More from './more';
+import EmptyComponent from '../emptyComponent';
 class MarketPrice extends Component{
     constructor(props){
         super(props);
@@ -50,28 +51,28 @@ class MarketPrice extends Component{
                 console.log(res.datas)
                 this.props.dispatch({
                     type:'LOADBIFLISTDATA',
-                    data: res.datas
+                    data:this.props.marketPrice.data.concat(res.datas),
+                    pageNo:this.props.marketPrice.pageNo+1
+                });
+                this.setState({
+                    loading:false
                 });
             }
         });
-        this.props.dispatch((dispatch,getState)=>{
-                    this.setState({
-                        loading:false
-                    });
-        })
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.hospitalFilter.infinite){
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.marketPrice.infinite){
             this._loadData();
         }
     }
     componentDidMount(){
         this.ele = this.refs.content;
+        console.log(this.props.marketPrice.data);
         this.ele.addEventListener('scroll',this._infiniteScroll);
         this._loadData();
     }
-    componentWillUnMount(){
+    componentWillUnmount(){
         this.ele.removeEventListener('scroll',this._infiniteScroll);
     }
 
@@ -80,11 +81,8 @@ class MarketPrice extends Component{
           <div className="root">
               <HeaderBar fn={this._loadData} {...this.props}/>
               <div ref="content" className="scroll-content has-header">
-                  <div className="bar bar-header">
-                      <h3 className="title">注：最低五省价格不包含军区、广东省价格</h3>
-                  </div>
-                  <div className="scroll-content has-header">
-                      <Main data={this.props.marketPrice.data} loading={this.state.loading}/>
+                  <div className="scroll-content">
+                      <Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
                   </div>
               </div>
               <More {...this.props}/>
@@ -100,13 +98,18 @@ class Main extends Component{
         if(this.props.loading) {
             return <Loading/>
         }else{
-            return(
-                <ul className="list bid-list">
-                    {
-                        this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                    }
-                </ul>
-            )
+            if(this.props.data.length != 0){
+                console.log(this.props.marketPrice.data);
+                return(
+                    <ul className="list bid-list">
+                        {
+                            this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                        }
+                    </ul>
+                )
+            }else{
+                return <EmptyComponent/>
+            }
         }
     }
 }
@@ -122,7 +125,7 @@ class List extends Component{
                             <p>规格：{this.props.dataSources.spec}</p>
                             <p>生产企业：{this.props.dataSources.manufacturerName}</p>
                         </div>
-                        <Link to="/bidList" className="list-right btn"> 查看各省中标价</Link>
+                        <Link to="/datas/bidList" className="list-right btn"> 查看各省中标价</Link>
                     </div>
                     <div className="row market-price">
                         <div className="col-50"> 广东省最小制剂入市价</div>
@@ -167,7 +170,7 @@ class HeaderBar extends Component{
         });
         setTimeout(()=> this.props.fn(),100);
     }
-    componentUnMount(){
+    componentUnmount(){
         this.props.dispatch({
             type:'CLEADRUGSEARCHNAME'
         })

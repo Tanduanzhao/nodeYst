@@ -43,10 +43,10 @@ class Main extends Component{
                         <i className="icon ion-ios-cloud-upload-outline"></i>
                         我要投稿
                     </div>
-                    <div className="item item-icon-left">
+                    <Link to="purchase" className="item item-icon-left">
                         <i className="icon ion-ios-cart-outline"></i>
                         已购报告
-                    </div>
+                    </Link>
                     <Link to="center/feedback" className="item item-icon-left">
                         <i className="icon ion-ios-chatboxes-outline"></i>
                         意见反馈

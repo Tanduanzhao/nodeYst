@@ -1,29 +1,104 @@
 /*
- 中标数据详情信息
+ 中标数据列表
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
+import $ from 'jquery';
 import {Link} from 'react-router';
-import {loadBidListContent} from '../function/ajax.js';
+import {loadBidListContent,getBidAreaInfo,getProjectStatus} from '../function/ajax.js';
 import Loading from '../loading';
-import FilterBidList from '../filterBidList'
+import EmptyComponent from '../emptyComponent';
+import FilterBidList from '../filterBidList';
+import {Token} from '../function/tokenbidList.js';
 class BidList extends Component{
     constructor(props){
         super(props);
         this.state={
             loading:true
         };
+        this._loadData = this._loadData.bind(this);
+        this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _loadData(){
         loadBidListContent({
-            yearMonth:this.props.yearMonth,
-            areaId:this.props.areaId,
-            searchAreaType:this.props.searchAreaType,
+            sord:this.props.bidList.sord,
+            pageNo:this.props.bidList.pageNo,
+            searchName:this.props.bidList.searchName,
+            searchProductStatus:this.props.bidList.searchProductStatus,
             callBack:(res)=>{
-                console.log(res.datas)
                 this.props.dispatch({
                     type:'LOADBIFLISTCONTENTDATA',
-                    data: res.datas
+                    data:this.props.bidList.data.concat(res.datas),
+                    pageNo:this.props.bidList.pageNo+1
+                });
+                if(res.totalSize <= this.props.bidList.data.length){
+                    this.props.dispatch({
+                        type:'UNINFINITE'
+                    });
+                }else{
+                    this.props.dispatch({
+                        type:'INFINITE'
+                    });
+                }
+                this.setState({
+                    loading:false
+                });
+            }
+        });
+    }
+    _fn(args){
+        this.props.dispatch((dispatch) => {
+            dispatch({
+                type:'LOADBIFLISTCONTENTDATA',
+                data:[],
+                pageNo:1,
+            });
+            dispatch({
+                type:'UNSHOWFILTERPBIDLIST'
+            });
+            dispatch({
+                type:'CHANGEBIDLISTFILTER',
+                areaId:args.areaId,
+                areaName:args.areaName,
+                searchAreaType:args.searchType,
+                yearMonth:args.yearMonth,
+                hospitalLevel:args.hospitalLevel,
+                searchProductStatus:args.searchProductStatus,
+                sord:args.sord,
+            });
+            setTimeout(()=>{
+                this._loadData();
+            },100);
+        })
+    }
+    _infiniteScroll(){
+        //全部高度-滚动高度 == 屏幕高度-顶部偏移
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite){
+            this._loadData();
+        }
+    }
+    componentDidMount(){
+        this.ele = this.refs.content;
+        this.ele.addEventListener('scroll',this._infiniteScroll);
+        this._loadData();
+        getBidAreaInfo({
+                pageNo:this.props.bidList.pageNo,
+                searchName:this.props.bidList.searchName,
+                callBack:(res)=>{
+                    this.props.dispatch({
+                        type:'getBidAreaInfo',
+                        getBidAreaInfo:res.datas,
+                    });
+                    this.setState({
+                        loading:false
+                    });
+                }
+            });
+        getProjectStatus({
+            callBack:(res)=>{
+                this.props.dispatch({
+                    type:'getProjectStatus',
+                    getProjectStatus:res.datas,
                 });
                 this.setState({
                     loading:false
@@ -31,49 +106,62 @@ class BidList extends Component{
             }
         });
     }
-    componentDidMount(){
-        this._loadData();
+    componentWillUnmount(){
+        this.ele.removeEventListener('scroll',this._infiniteScroll);
     }
+
     render(){
-        if(this.state.loading) {
-            return <Loading/>
-        }else {
             return (
                 <div className="root" style={{"overflow":"auto"}}>
                     <HeaderBar fn={this._loadData} {...this.props}/>
                     <div ref="content" className="scroll-content has-header">
-                        <div className="bar bar-header">
-                            <h3 className="title">筛选条件提示语</h3>
-                        </div>
-                        <ul className="scroll-content has-header bidList-view">
-                            {
-                                this.props.bidList.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                            }
-                        </ul>
+                        <Main data={this.props.bidList.data} loading={this.state.loading}/>
                         {
-                            this.props.bidList.isShowFilter ? <FilterBidList dataSources={this.props.provicenData} {...this.props}/> : null
+                            this.props.bidList.isShowFilter ? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
                         }
                     </div>
                 </div>
             )
         }
     }
+class Main extends Component{
+    constructor(props){
+        super(props);
+    }
+    render(){
+        var bidList = 0;
+        if(this.props.loading) {
+            return <Loading/>
+        }else{
+            if(this.props.data.length != 0){
+                return(
+                    <ul className="bidList-view">
+                        {
+                            this.props.data.map((ele,index)=> <List dataSources={ele} key={`bidList_${bidList++}+${ele.id}`}/>)
+                        }
+                    </ul>
+                )
+            }else{
+                return <EmptyComponent/>
+            }
+        }
+    }
 }
 class HeaderBar extends Component{
     _showProvicenHandle(){
         this.props.dispatch({
-            type:'SHOWFILTERPRODUCE'
+            type:'SHOWFILTERBIDLIST'
         });
     }
     _changeHandle(){
         this.props.dispatch({
-            type:'CHANGETITLEORREPORTKEY',
-            titleOrReportKey:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
+            type:'CHANGEBIDLISTTITLEORREPORTKEY',
+            searchName:encodeURI(encodeURI(this.refs.bidListSearchName.value))
         })
     }
     _searchHandle(){
         this.props.dispatch({
-            type:'LOADPRODUCEDATA',
+            type:'LOADBIFLISTCONTENTDATA',
             data:[],
             pageNo:1,
         });
@@ -89,7 +177,7 @@ class HeaderBar extends Component{
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)}  type="search" placeholder="请输入搜索关键词"/>
+                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)}  type="search" placeholder="请输入搜索关键词"/>
                 </label>
                 <button className="button button-clear" onClick={this._searchHandle.bind(this)}>
                     搜索
