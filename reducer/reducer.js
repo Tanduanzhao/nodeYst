@@ -16,6 +16,11 @@ import marketPrice from './marketPrice';
 import product from './product';
 import bidList from './bidList';
 import policy from './policy';
+import insurance from './insurance';
+import base from './base';
+import assist from './assist';
+import lowPrice from './lowPrice';
+import anti from './anti';
 //合并仓库
 
 const ystReducers = combineReducers({
@@ -35,6 +40,11 @@ const ystReducers = combineReducers({
     product,
     purchase,
     bidList,
-    policy
+    policy,
+    insurance,
+    base,
+    assist,
+    lowPrice,
+    anti
 })
 export default ystReducers;
