@@ -51,15 +51,13 @@ class MarketPrice extends Component{
                 this.setState({
                     loading:false
                 });
-                if(res){
+                if (res){
                     this.props.dispatch({
                         type:'LOADBIFLISTDATA',
                         data:this.props.marketPrice.data.concat(res.datas),
                         pageNo:this.props.marketPrice.pageNo+1
-                    });    
+                    });
                 }
-                
-                
             }
         });
     }

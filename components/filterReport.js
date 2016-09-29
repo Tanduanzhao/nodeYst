@@ -8,16 +8,16 @@ export default class FilterProduce extends Component{
       areaName:this.props.report.areaName,
       searchAreaType:this.props.report.searchAreaType,
       yearMonth:this.props.report.yearMonth,
-      produceType:this.props.report.produceType
+      reportType:this.props.report.reportType
     };
   }
   _cancelButton(){
-      console.log('canel');
     this.props.dispatch({
       type:'UNSHOWFILTERPRODUCE'
     });
   }
   _sureButton(){
+    console.log(this.state.reportType);
     this.props.fn(this.state);
   }
   _spanhandleClick(id,e,t){
@@ -38,10 +38,13 @@ export default class FilterProduce extends Component{
             <h2 className="item item-divider">报告种类</h2>
             <div className="list padding">
               <ul className="list-horizontal-block">
-                <li style={(this.state.produceType == null) ? styles.active : null} onClick={()=>{this.setState({produceType:null})}}>全部</li>
-                <li style={(this.state.produceType == 1) ? styles.active : null} onClick={()=>{this.setState({produceType:1})}}>行业报告</li>
-                <li style={(this.state.produceType == 2) ? styles.active : null} onClick={()=>{this.setState({produceType:2})}}>品类报告</li>
-                <li style={(this.state.produceType == 4) ? styles.active : null} onClick={()=>{this.setState({produceType:4})}}>处方分析</li>
+                {
+                  this.props.report.ReportTypeDate.map((ele,index)=>{
+                    return(
+                        <li key={index} style={(this.state.reportType == ele.typeName) ? styles.active : null} onClick={()=>{this.setState({reportType:ele.typeName})}}>{ele.typeName}</li>
+                    )
+                  })
+                }
               </ul>
             </div>
             <h2 className="item item-divider">报告类型</h2>

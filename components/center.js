@@ -32,27 +32,33 @@ class Main extends Component{
         return(
             <div className="scroll-content">
                 <div className="list">
-                    <div className="item item-avatar">
-                        <img src={this.props.userInfo.imgUrl} width="80"/>
+                    <div className="item item-avatar bg_center">
+                        <img style={{top:"30px", left:"35px"}} src={this.props.userInfo.imgUrl} width="80"/>
                         <h2>微信用户</h2>
-                        <p>{this.props.userInfo.userName} <span className="tag bg-assertive">VIP</span></p>
+                        <p>{this.props.userInfo.userName}
+                            <img className="vipLogo" src="/images/vipLogo.png" alt=""/>
+                        </p>
                     </div>
                 </div>
-                <div className="list padding-top">
+                <div className="list padding-top center-viwe">
                     <div className="item item-icon-left">
-                        <i className="icon ion-ios-cloud-upload-outline"></i>
+                        <img src="/images/open_icon.jpg" alt=""/>
+                        开通会员
+                    </div>
+                    <div className="item item-icon-left">
+                        <img src="/images/contribute_icon.jpg" alt=""/>
                         我要投稿
                     </div>
                     <Link to="purchase" className="item item-icon-left">
-                        <i className="icon ion-ios-cart-outline"></i>
+                        <img src="/images/purchase_icon.jpg" alt=""/>
                         已购报告
                     </Link>
                     <Link to="center/feedback" className="item item-icon-left">
-                        <i className="icon ion-ios-chatboxes-outline"></i>
+                        <img src="/images/idea_icon.jpg" alt=""/>
                         意见反馈
                     </Link>
                     <div className="item item-icon-left">
-                        <i className="icon ion-ios-help-outline"></i>
+                        <img src="/images/help_icon.jpg" alt=""/>
                         帮助中心
                     </div>
                 </div>
