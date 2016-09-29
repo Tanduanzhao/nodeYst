@@ -48,15 +48,16 @@ class MarketPrice extends Component{
             areaId:this.props.areaId,
             searchAreaType:this.props.searchAreaType,
             callBack:(res)=>{
-                console.log(res.datas)
-                this.props.dispatch({
-                    type:'LOADBIFLISTDATA',
-                    data:this.props.marketPrice.data.concat(res.datas),
-                    pageNo:this.props.marketPrice.pageNo+1
-                });
                 this.setState({
                     loading:false
                 });
+                if (res){
+                    this.props.dispatch({
+                        type:'LOADBIFLISTDATA',
+                        data:this.props.marketPrice.data.concat(res.datas),
+                        pageNo:this.props.marketPrice.pageNo+1
+                    });
+                }
             }
         });
     }

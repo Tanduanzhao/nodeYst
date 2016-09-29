@@ -17,8 +17,9 @@ function ajaxFn(params){
         if(res.state == 1){
             params.callBack(res);
         }else{
-            alert(res.message);
-            return false;
+            params.callBack();
+            //alert(res.message);
+            //return false;
         }
     })
 }
@@ -303,11 +304,8 @@ export const loadReportList = function(args){
     ajaxFn({
         url:'business/getLastHotReport',
         data:{
-            searchName:args.searchName || null,
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
+            reportType:args.reportType || null,
             pageNo:args.pageNo || null,
-            hosLevel:args.hospitalLevel || null,
             searchType:args.searchType,
             titleOrReportKey:args.titleOrReportKey,
         },
@@ -367,8 +365,21 @@ export const loadBidListContent = function(args){
         }
     })
 }
-
 //中标数据省份信息加载
+export const getBidAreaInfo = function(args){
+    ajaxFn({
+        url:'business/getBidAreaInfo',
+        data:{
+            searchName:args.searchName || null,
+            pageNo:args.pageNo || null,
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//项目状态
 export const getProjectStatus = function(args){
     ajaxFn({
         url:'business/getProjectStatus',
@@ -405,6 +416,15 @@ export const insertUserAction = function(args){
             reportId:args.reportId,
             costStatus:args.costStatus,
         },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//报告类型
+export const getReportType = function(args){
+    ajaxFn({
+        url:'business/getReportType',
         callBack:(res)=>{
             args.callBack(res);
         }

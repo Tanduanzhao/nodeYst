@@ -26,23 +26,25 @@ class BidList extends Component{
             searchName:this.props.bidList.searchName,
             searchProductStatus:this.props.bidList.searchProductStatus,
             callBack:(res)=>{
-                this.props.dispatch({
-                    type:'LOADBIFLISTCONTENTDATA',
-                    data:this.props.bidList.data.concat(res.datas),
-                    pageNo:this.props.bidList.pageNo+1
-                });
-                if(res.totalSize <= this.props.bidList.data.length){
-                    this.props.dispatch({
-                        type:'UNINFINITE'
-                    });
-                }else{
-                    this.props.dispatch({
-                        type:'INFINITE'
-                    });
-                }
                 this.setState({
                     loading:false
                 });
+                if (res){
+                    this.props.dispatch({
+                        type:'LOADBIFLISTCONTENTDATA',
+                        data:this.props.bidList.data.concat(res.datas),
+                        pageNo:this.props.bidList.pageNo+1
+                    });
+                    if(res.totalSize <= this.props.bidList.data.length){
+                        this.props.dispatch({
+                            type:'UNINFINITE'
+                        });
+                    }else{
+                        this.props.dispatch({
+                            type:'INFINITE'
+                        });
+                    }
+                }
             }
         });
     }
@@ -71,6 +73,17 @@ class BidList extends Component{
             },100);
         })
     }
+    _searchHandle(){
+        this.setState({
+            loading:true
+        });
+        this.props.dispatch({
+            type:'LOADBIFLISTCONTENTDATA',
+            data:[],
+            pageNo:1,
+        });
+        setTimeout(()=> this._loadData(),100);
+    }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite){
@@ -89,9 +102,6 @@ class BidList extends Component{
                         type:'getBidAreaInfo',
                         getBidAreaInfo:res.datas,
                     });
-                    this.setState({
-                        loading:false
-                    });
                 }
             });
         getProjectStatus({
@@ -99,9 +109,6 @@ class BidList extends Component{
                 this.props.dispatch({
                     type:'getProjectStatus',
                     getProjectStatus:res.datas,
-                });
-                this.setState({
-                    loading:false
                 });
             }
         });
@@ -113,7 +120,7 @@ class BidList extends Component{
     render(){
             return (
                 <div className="root" style={{"overflow":"auto"}}>
-                    <HeaderBar fn={this._loadData} {...this.props}/>
+                    <HeaderBar {...this.props} loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)}/>
                     <div ref="content" className="scroll-content has-header">
                         <Main data={this.props.bidList.data} loading={this.state.loading}/>
                         {
@@ -133,6 +140,7 @@ class Main extends Component{
         if(this.props.loading) {
             return <Loading/>
         }else{
+            console.log(this.props.data.length)
             if(this.props.data.length != 0){
                 return(
                     <ul className="bidList-view">
@@ -159,14 +167,6 @@ class HeaderBar extends Component{
             searchName:encodeURI(encodeURI(this.refs.bidListSearchName.value))
         })
     }
-    _searchHandle(){
-        this.props.dispatch({
-            type:'LOADBIFLISTCONTENTDATA',
-            data:[],
-            pageNo:1,
-        });
-        setTimeout(()=> this.props.fn(),100);
-    }
     render(){
         return(
             <div className="bar bar-header bar-positive item-input-inset">
@@ -179,7 +179,7 @@ class HeaderBar extends Component{
                     <i className="icon ion-ios-search placeholder-icon"></i>
                     <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)}  type="search" placeholder="请输入搜索关键词"/>
                 </label>
-                <button className="button button-clear" onClick={this._searchHandle.bind(this)}>
+                <button className="button button-clear" onClick={this.props._searchHandle.bind(this)}>
                     搜索
                 </button>
             </div>
@@ -193,15 +193,15 @@ class List extends Component{
                 <h2 className="title">产品名称：头孢呋辛{this.props.dataSources.productName}</h2>
                 <li className="item card">
                     <p>商品名：{this.props.dataSources.trandName}</p>
-                    <p>剂型：(头孢呋辛酯)胶囊剂{this.props.dataSources.prepName}</p>
+                    <p>剂型：{this.props.dataSources.prepName}</p>
                     <p>规格：0.125g{this.props.dataSources.spec}</p>
                     <p>包装数量：{this.props.dataSources.packNum}</p>
                     <p>包材名称：{this.props.dataSources.packMaterialName}</p>
-                    <p>生产企业：深圳致君制药有限公司{this.props.dataSources.manufacturerName}</p>
+                    <p>生产企业：{this.props.dataSources.manufacturerName}</p>
                     <p>中标价：<span className="calm">{this.props.dataSources.bidPrice}</span></p>
                     <p>最小制剂招标价格：<span className="calm">{this.props.dataSources.minBidPrice}</span></p>
                     <p>省份：<span className="calm">{this.props.dataSources.areaName}</span></p>
-                    <p>项目名称：（201607）广东省基本药物竞价交易品种{this.props.dataSources.projectName}</p>
+                    <p>项目名称：{this.props.dataSources.projectName}</p>
                     <p>公布时间：2016-08-02{this.props.dataSources.publishDate}</p>
                 </li>
             </div>
