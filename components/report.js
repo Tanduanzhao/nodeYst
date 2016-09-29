@@ -8,7 +8,7 @@ import {Link} from 'react-router';
 import FilterReport from './filterReport';
 import Loading from './loading';
 import EmptyComponent from './emptyComponent';
-import {loadNewrepor,loadPicture,insertUserAction} from './function/ajax';
+import {loadNewrepor,loadPicture,insertUserAction,getReportType} from './function/ajax';
 
 import {loadReportList} from './function/ajax';
 
@@ -25,9 +25,10 @@ class Report extends Component {
   }
   _loadData(){
     loadReportList({
-      titleOrReportKey:this.props.report.titleOrReportKey,
+      titleOrReportKey:encodeURI(encodeURI(this.props.report.titleOrReportKey)),
       pageNo:this.props.report.pageNo,
       searchType:this.props.report.searchType,
+      reportType:encodeURI(encodeURI(this.props.report.reportType)),
       callBack:(res)=>{
         this.props.dispatch({
           type:'LOADPRODUCEDATA',
@@ -57,12 +58,23 @@ class Report extends Component {
       this._loadData();
     }
   }
+  _getReportType(){
+    getReportType({
+      callBack:(res)=>{
+        this.props.dispatch({
+          type:'CHANGEREPORTTYPE',
+          ReportTypeDate:res.datas,
+        });
+      }
+    });
+  }
   componentDidMount(){
     this.ele = this.refs.content;
     console.log(this.refs.content);
     this.ele.addEventListener('scroll',this._infiniteScroll);
     console.log(this.state.searchType)
     this._loadData()
+    this._getReportType()
   }
   componentWillUnmount(){
     this.props.dispatch({
@@ -85,6 +97,7 @@ class Report extends Component {
     this.props.dispatch({
       type:'CHANGETYPE',
       searchType:args.searchType,
+      reportType:args.reportType
     });
     setTimeout(()=>{
       this._loadData();

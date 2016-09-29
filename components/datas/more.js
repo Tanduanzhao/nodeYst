@@ -7,14 +7,16 @@ export default class More extends Component {
 			show:false
 		};
 	}
+	stopPropagation(e){
+		e.stopPropagation();
+	}
 	render() {
 		return (
-			<div>
 				<div className="more"  onClick={()=>{(this.state.show)?this.setState({show:false}): this.setState({show:true})}}>
 					<div><i className="icon ion-android-more-horizontal"></i></div>
 					<div className="more-content" style={(this.state.show) ? styles.active :styles.hidden}>
 						<div className="more-footer">
-							<ul className="column">
+							<ul className="column" onClick={this.stopPropagation.bind(this)}>
 								<Link to="/home">
 									<img src="/images/column_more_home.jpg" alt=""/>
 									首页
@@ -47,7 +49,6 @@ export default class More extends Component {
 						</div>
 					</div>
 				</div>
-			</div>
 		)
 	}
 }
