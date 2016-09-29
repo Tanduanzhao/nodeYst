@@ -4,11 +4,14 @@ import {INCREASE,DECREASE,CHANGEDATA,CHANGEVIP} from '../components/config/varia
 
 var defaultData = {
 	yearMonth:2015,
-    isVip:false
+    isVip:false,
+	img:[],
+	loading:true
 };
 export default function data(state = defaultData,action){
     
 	switch(action.type){
+		case "ssss" : return ObjectAssign({},state,{loading:action.loading});
 		case INCREASE : return ObjectAssign({},state,{yearMonth:++state.yearMonth});
 		case DECREASE : return ObjectAssign({},state,{yearMonth:--state.yearMonth});
 		case CHANGEDATA : return ObjectAssign({},state,{yearMonth:action.yearMonth});

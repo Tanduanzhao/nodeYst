@@ -19,9 +19,7 @@ class Base extends Component{
             isShowFilter:false,
             isLoading:false
         }
-    }
-    componentWillMount(){
-        
+        console.log(this.props.base.datas,'默认仓库数据');
     }
     //加载筛选条件
     _loadSlider(){
@@ -38,6 +36,7 @@ class Base extends Component{
         this.setState({
             isLoading:true
         });
+        console.log('loadingbase');
         loadBaseAll({
             searchName:this.props.base.searchName,
             areaId:JSON.stringify(this.props.base.areaId),
@@ -106,7 +105,7 @@ class Base extends Component{
     //搜索点击查询对应数据
     _searchDatas(key){
         this.props.dispatch({
-            type:'CHANGEINSURANCESEARCHNAME',
+            type:'CHANGEBASESEARCHNAME',
             searchName:key
         });
         setTimeout(()=>{

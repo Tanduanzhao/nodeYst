@@ -3,55 +3,162 @@
 */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
+import {loadQualityFilter,loadQualityAll,loadQualityFilterForm} from './function/ajax';
+import PolicySonFilter from './policySonFilter.js';
+import EmptyComponent from './emptyComponent';
+import Loading from './loading';
 
 class Quality extends Component{
     constructor(props){
         super(props);
+        this._loadSlider = this._loadSlider.bind(this);
+        this._hideFilter = this._hideFilter.bind(this);
+        this._showFilter = this._showFilter.bind(this);
+        this._loadData = this._loadData.bind(this);
+        this.state={
+            isShowFilter:false,
+            isLoading:false
+        }
     }
+    //加载筛选条件
+    _loadSlider(){
+        loadQualityFilter({
+            callBack:(res)=>{
+                this.props.dispatch({
+                    type:'LOADQUALITYMENU',
+                    datas:res.datas
+                })
+            }
+        });
+        loadQualityFilterForm({
+            callBack:(res)=>{
+                this.props.dispatch({
+                    type:'loadQUALITYMENUFORM',
+                    datas:res.datas
+                })
+            }
+        })
+    }
+    _loadData(){
+        this.setState({
+            isLoading:true
+        });
+        loadQualityAll({
+            searchName:this.props.quality.searchName,
+            gradeId:this.props.quality.gradeId,
+            qualityLevelTypeId:JSON.stringify(this.props.quality.qualityLevelTypeIds),
+            pageNo:this.props.quality.pageNo,
+            callBack:(res)=>{
+                this.props.dispatch({
+                    type:'LOADQUALITYDATA',
+                    datas:res.datas
+                });
+                this.setState({
+                    isLoading:false
+                });
+            }
+        })
+    }
+    _showFilter(){
+        this.setState({
+            isShowFilter:true
+        })
+    }
+    
+    _hideFilter(){
+        this.setState({
+            isShowFilter:false
+        })
+    }
+    _fn(args){
+        this.props.dispatch({
+            type:'CHANGEQUALITY',
+            gradeId:args.gradeId,
+            qualityLevelTypeIds:args.qualityLevelTypeIds
+        });
+        this._hideFilter();
+        setTimeout(()=>{
+            this._loadData();
+        },100);
+    }
+    
     componentDidMount(){
-        
+        //传入默认数据到仓库
+        this.props.dispatch({
+            type:'DEFAULTQUALITY',
+            gradeId:this.props.params.gradeId,
+            searchName:this.props.policy.searchName
+        });
+        this._loadSlider();
+        this.ele = this.refs.main;
+        this.ele.addEventListener("scroll",(e)=>{
+            this._isNeedLoadData();
+        });
+        setTimeout(()=>{
+            this._isNeedLoadData();
+        });
+    }
+     //判断屏幕是否加载满
+    _isNeedLoadData(){
+        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && !this.state.isLoading){
+            this._loadData();
+        }
+    }
+    //搜索点击查询对应数据
+    _searchDatas(key){
+        this.props.dispatch({
+            type:'CHANGEBASESEARCHNAME',
+            searchName:key
+        });
+        setTimeout(()=>{
+            this._loadData();
+        },100);
     }
     
     render(){
         return(
             <div className="root">
-                <HeaderBar {...this.props}/>
-                <div className="scroll-content has-header">
+                <HeaderBar showFilter={this._showFilter.bind(this)} searchAction = {this._searchDatas.bind(this)} {...this.props}/>
+                <div ref="main" className="scroll-content has-header">
                     <div className="list">
-                        <div className="card" style={{marginTop:0}}>
-                            <div className="item item-divider item-text-wrap">
-                                <i className="fa fa-tag
-        "></i> 来源：关于公示2015年江苏省药品集中采购申报资质审核情况的通知（2016-09-09）
+                        {
+                            typeof this.props.quality.datas.lists == 'undefined' ? <EmptyComponent/> : <div className="card" style={{marginTop:0}}>
+                                <div className="item item-divider item-text-wrap">
+                                    <i className="fa fa-tag
+            "></i> 来源：{this.props.quality.datas.grade}（{this.props.quality.datas.publishDate}）
+                                </div>
+                                <ul className="list">
+                                    {
+                                        this.props.quality.datas.lists.map((ele)=>{
+                                            return(
+                                                <li className="item">
+                                                    <h2>{ele.productName}（{ele.trandName}）</h2>
+                                                    <p>剂型/规格：{ele.prepName} / {ele.spec}</p>
+                                                    <p>生产企业：{ele.manufacturerName}</p>
+                                                    <p>
+                                                        {
+                                                            ele.qualityLevelTypeNames.map((ele)=>{
+                                                                return(
+                                                                    <span className="tag">{ele.qualityLevelTypeName}</span>
+                                                                )
+                                                            })
+                                                        }
+                                                    </p>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
                             </div>
-                            <ul className="list">
-                                <li className="item">
-                                    <h2>阿奇霉素胶囊（舒美特）</h2>
-                                    <p>剂型/规格：胶囊剂 / 0.25g(25万单位)</p>
-                                    <p>生产企业：克罗地亚PLIVA CROATIA Ltd.</p>
-                                    <p><span className="tag">过期认证</span><span className="tag">欧盟认证</span></p>
-                                </li>
-                                <li className="item">
-                                    <h2>阿奇霉素胶囊（舒美特）</h2>
-                                    <p>剂型/规格：胶囊剂 / 0.25g(25万单位)</p>
-                                    <p>生产企业：克罗地亚PLIVA CROATIA Ltd.</p>
-                                    <p><span className="tag">过期认证</span><span className="tag">欧盟认证</span></p>
-                                </li>
-                                <li className="item">
-                                    <h2>阿奇霉素胶囊（舒美特）</h2>
-                                    <p>剂型/规格：胶囊剂 / 0.25g(25万单位)</p>
-                                    <p>生产企业：克罗地亚PLIVA CROATIA Ltd.</p>
-                                    <p><span className="tag">过期认证</span><span className="tag">欧盟认证</span></p>
-                                </li>
-                                <li className="item">
-                                    <h2>阿奇霉素胶囊（舒美特）</h2>
-                                    <p>剂型/规格：胶囊剂 / 0.25g(25万单位)</p>
-                                    <p>生产企业：克罗地亚PLIVA CROATIA Ltd.</p>
-                                    <p><span className="tag">过期认证</span><span className="tag">欧盟认证</span></p>
-                                </li>
-                            </ul>
-                        </div>
+                        }
                     </div>
                 </div>
+                {
+                    !this.state.isShowFilter ? null : <PolicySonFilter origins={this.props.quality.origins} levels={this.props.quality.levels} qualityLevelTypeIds={this.props.quality.qualityLevelTypeIds} fn={this._fn.bind(this)} cancelButton={this._hideFilter}/>
+                }
+                {
+                    !this.state.isLoading ? null :<Loading/>
+                }
             </div>
         )
     }
@@ -59,21 +166,22 @@ class Quality extends Component{
 
 class HeaderBar extends Component{
   _showProvicenHandle(){
-    this.props.dispatch({
-      type:'SHOWFILTERPRODUCE'
-    });
+    this.props.showFilter();
+  }
+  _changeHandle(){
+      this.props.searchAction(this.refs.searchName.value);
   }
   render(){
     return(
       <div className="bar bar-header bar-positive item-input-inset">
         <div className="buttons">
-            <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-map-marker"></i><span style={{paddingLeft:'5px'}}>{this.props.quality.areaName}</span></button>
+            <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i></button>
         </div>
         <label className="item-input-wrapper">
           <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="hospitalSearchName" type="search" placeholder="请输入搜索关键词"/>
+          <input ref="searchName" type="search" placeholder="请输入搜索关键词"/>
         </label>
-        <button className="button button-clear">
+        <button className="button button-clear" onClick={this._changeHandle.bind(this)}>
            搜索
         </button>
       </div>

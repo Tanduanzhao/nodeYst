@@ -62,9 +62,17 @@ export const LOADBIFLISTDATA = 'LOADBIFLISTDATA';
 //加载中标数据
 export const LOADBIFLISTCONTENTDATA = 'LOADBIFLISTCONTENTDATA';
 //加载中标详情数据
+export const SHOWFILTERBIDLIST = 'SHOWFILTERBIDLIST';
+//显示中标过数据滤层
 export const UNSHOWFILTERPBIDLIST = 'UNSHOWFILTERPBIDLIST';
 //隐藏中标详情数据过滤层
+export const CHANGEBIDLISTTITLEORREPORTKEY = 'CHANGEBIDLISTTITLEORREPORTKEY';
+//改变中标数据搜索关键字  参数:searchName
+export const CHANGEBIDLISTFILTER = 'CHANGEBIDLISTFILTER';
+//标数据筛选条件改变
 
+export const LOADPURCHASEDATA = 'LOADPURCHASEDATA';
+//显示报告过滤层
 export const SHOWFILTERPRODUCE = 'SHOWFILTERPRODUCE';
 //显示报告过滤层
 export const UNSHOWFILTERPRODUCE = 'UNSHOWFILTERPRODUCE';
@@ -87,4 +95,14 @@ export const LOADHOMEIMG = 'LOADHOMEIMG';
 export const CHANGEPOLICYPROVICEN = 'CHANGEPOLICYPROVICEN';
 //切换政策准入省份
 
+export const GOREPORT = 'GOREPORT';
 export const CHANGETYPE = 'CHANGETYPE';
+
+export const  LOADPRODUCTDATA = ' LOADPRODUCTDATA';
+//加载产品数据
+export const SHOWFILTERPRODUCT = 'SHOWFILTERPRODUCT';
+//显示产品数据过滤层
+export const UNSHOWFILTERPRODUCT = 'UNSHOWFILTERPRODUCT';
+//隐藏产品数据过滤层
+export const CHANGETRADETYPE = 'CHANGETRADETYPE';
+//改变用药目录筛选条件  参数:areaName、areaId、searchAreaType、yearMonth、hospitalLevel

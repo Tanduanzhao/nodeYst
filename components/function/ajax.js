@@ -18,13 +18,13 @@ function ajaxFn(params){
             params.callBack(res);
         }else{
             alert(res.message);
-            return false;
+            params.callBack();
         }
     })
 }
 //首页数据加载
 export const loadIndex = function(dispatch,args){
-    
+
     var params ={
         yearMonth:args.yearMonth,
         areaId:args.areaId,
@@ -334,6 +334,23 @@ export const loadBidList = function(args){
     })
 }
 
+//中标数据
+export const loadProd = function(args){
+    ajaxFn({
+        url:'business/getTradeProductList',
+        data:{
+            searchName:args.searchName || null,
+            yearMonth:args.yearMonth || null,
+            areaId:args.areaId || null,
+            pageNo:args.pageNo || null,
+            hosLevel:args.hospitalLevel || null,
+            tradeType:args.tradeType,
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
 //中标详情页数据加载
 export const loadBidListContent = function(args){
     ajaxFn({
@@ -351,6 +368,48 @@ export const loadBidListContent = function(args){
     })
 }
 
+//中标数据省份信息加载
+export const getProjectStatus = function(args){
+    ajaxFn({
+        url:'business/getProjectStatus',
+        data:{
+            statusType:"REPROT_TYPE",
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//已购报告加载
+export const loadProduct = function(args){
+    ajaxFn({
+        url:'business/getUserBuyReportList',
+        data:{
+            searchName:args.searchName || null,
+            yearMonth:args.yearMonth || null,
+            areaId:args.areaId || null,
+            pageNo:args.pageNo || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//用户点击查看/购买报告
+export const insertUserAction = function(args){
+    ajaxFn({
+        url:'business/insertUserAction',
+        data:{
+            reportId:args.reportId,
+            costStatus:args.costStatus,
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
 //政策准入6大板块加载
 export const loadPolicyModules = function(args){
     ajaxFn({
@@ -371,9 +430,26 @@ export const loadQualitySimple = function(args){
         url:'business/getQualityLevelList',
         data:{
             searchName:encode(args.searchName),
-            areaId:args.areaId,
             pageNo:args.pageNo
         },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//加载质量层次筛选列表项-质量层次
+export const loadQualityFilter = function(args){
+    ajaxFn({
+        url:'business/getQualityLevelSearchMenu',
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//加载质量层次筛选列表项-来源
+export const loadQualityFilterForm = function(args){
+    ajaxFn({
+        url:'business/getQlGradeSearchMenu',
         callBack:(res)=>{
             args.callBack(res);
         }
@@ -385,8 +461,7 @@ export const loadQualityAll = function(args){
         url:'business/getQualityLevelDetail',
         data:{
             searchName:encode(args.searchName),
-            qualityLevelType:args.qualityLevelType,
-            areaId:args.areaId,
+            qualityLevelType:args.qualityLevelTypeId,
             gradeId:args.gradeId,
             pageNo:args.pageNo
         },
@@ -415,7 +490,7 @@ export const loadBaseFilter = function(args){
         url:'business/getBasicDrugSearchMenu',
         callBack:(res)=>{
             args.callBack(res);
-        }  
+        }
     })
 }
 //基药全部
@@ -455,7 +530,7 @@ export const loadInsuranceFilter = function(args){
         url:'business/getPqriSearchMenu',
         callBack:(res)=>{
             args.callBack(res);
-        }  
+        }
     })
 }
 //医保全部
@@ -494,7 +569,7 @@ export const loadAssistFilter = function(args){
         url:'business/getAssistDrugSearchMenu',
         callBack:(res)=>{
             args.callBack(res);
-        }  
+        }
     })
 }
 //辅助用药全部
@@ -532,7 +607,7 @@ export const loadLowPriceFilter = function(args){
         url:'business/getLowPriceDrugSearchMenu',
         callBack:(res)=>{
             args.callBack(res);
-        }  
+        }
     })
 }
 //低价药全部
@@ -570,7 +645,7 @@ export const loadAntiFilter = function(args){
         url:'business/getAntibioDrugSearchMenu',
         callBack:(res)=>{
             args.callBack(res);
-        }  
+        }
     })
 }
 //抗菌药物全部

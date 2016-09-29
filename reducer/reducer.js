@@ -8,12 +8,15 @@ import feedBack from './feedBack';
 import drug from './drug';
 import drugContent from './drugContent';
 import report from './report';
+import purchase from './purchase';
 import userInfo from './userInfo';
 import defaultArea from './defaultArea';
 import home from './home';
 import marketPrice from './marketPrice';
+import product from './product';
 import bidList from './bidList';
 import policy from './policy';
+import quality from './quality';
 import insurance from './insurance';
 import base from './base';
 import assist from './assist';
@@ -35,8 +38,11 @@ const ystReducers = combineReducers({
     defaultArea,
     home,
     marketPrice,
+    product,
+    purchase,
     bidList,
     policy,
+    quality,
     insurance,
     base,
     assist,

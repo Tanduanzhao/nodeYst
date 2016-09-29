@@ -30,6 +30,7 @@ import product from './components/datas/product';
 
 import Center from './components/center';
 import FeedBack from './components/feedBack';
+import purchase from './components/purchase';
 
 import report from './components/report';
 import free from './components/report/free';
@@ -84,7 +85,7 @@ var _router = (
                     <Route path="marketPrice" component={marketPrice}/>
                     <Route path="policy">
                         <IndexRoute component={Policy}/>
-                        <Route path="quality/:gradeId/:catalogEditionId" component={Quality}/>
+                        <Route path="quality/:gradeId" component={Quality}/>
                         <Route path="base/:gradeId/:catalogEditionId" component={Base}/>
                         <Route path="insurance/:gradeId/:catalogEditionId" component={Insurance}/>
                         <Route path="assist/:gradeId/:catalogEditionId" component={Assist}/>
@@ -93,16 +94,17 @@ var _router = (
                     </Route>
                     
                     <Route path="product" component={product}/>
+                    <Route path="bidList" component={bidList}/>
                 </Route>
                 <Route path="drugContent/:sid">
                   <IndexRoute component={drugContent}/>
                 </Route>
-                <Route path="bidList">
-                    <IndexRoute component={bidList}/>
-                </Route>
                 <Route path="center">
                    <IndexRoute component={Center}/>
                    <Route path="feedback" component={FeedBack}/>
+                </Route>
+                <Route path="purchase">
+                    <IndexRoute component={purchase}/>
                 </Route>
                 <Route path="report">
                   <IndexRoute component={report}/>

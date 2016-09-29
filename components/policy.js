@@ -7,6 +7,8 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import More from './datas/more';
 import FilterPolicy from './filterPolicy';
+import Loading from './loading';
+import EmptyComponent from './emptyComponent';
 import {loadPolicyModules,loadQualitySimple,loadBaseSimple,loadInsuranceSimple,loadAssistSimple,loadLowPriceSimple,loadAntiSimple,loadPolicyProvince,loadPolicySearch} from './function/ajax';
 class Policy extends Component{
     constructor(props){
@@ -101,16 +103,29 @@ class Policy extends Component{
         });
         loadQualitySimple({
             searchName:this.props.policy.searchName,
-            areaId:JSON.stringify(this.props.policy.areaId),
             pageNo:this.props.policy.pageNo,
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADQUALITYDATA',
+                    type:'LOADPOLICYQUALITYDATA',
                     datas:res.datas
                 });
                 this.setState({
                     isLoading:false
                 });
+                //判断当前模块数据是否加载完成
+                if(this.props.policy.quality.length == res.totalSize){
+                    this.props.dispatch({
+                         type:'BREAKSTATE'      
+                    });
+                }else{
+                    this.props.dispatch({
+                        type:'PAGEPOLICYADD'
+                    });
+                };
+                //如果质量层次没有数据需要再次去加载下面的数据
+                if(this.props.policy.quality.length == 0){
+                    this._isNeedLoadData();
+                }
             }
         })
     }
@@ -125,7 +140,7 @@ class Policy extends Component{
             pageNo:this.props.policy.pageNo,
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADBASEDATA',
+                    type:'LOADPOLICYBASEDATA',
                     datas:res.datas
                 });
                 this.setState({
@@ -155,7 +170,7 @@ class Policy extends Component{
             pageNo:this.props.policy.pageNo,
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADINSURANCEDATA',
+                    type:'LOADPOLICYINSURANCEDATA',
                     datas:res.datas
                 });
                 this.setState({
@@ -185,7 +200,7 @@ class Policy extends Component{
             pageNo:this.props.policy.pageNo,
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADASSISTDATA',
+                    type:'LOADPOLICYASSISTDATA',
                     datas:res.datas
                 });
                 this.setState({
@@ -215,7 +230,7 @@ class Policy extends Component{
             pageNo:this.props.policy.pageNo,
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADLOWPRICEDATA',
+                    type:'LOADPOLICYLOWPRICEDATA',
                     datas:res.datas
                 });
                 this.setState({
@@ -245,7 +260,7 @@ class Policy extends Component{
             pageNo:this.props.policy.pageNo,
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADANTIDATA',
+                    type:'LOADPOLICYANTIDATA',
                     datas:res.datas
                 });
                 this.setState({
@@ -339,10 +354,13 @@ class Policy extends Component{
                     <div ref="main" className="scroll-content has-header">
                         <Main {...this.props}/>
                     </div>
+                    <More/>
                 </div>
-                <More/>
                 {
                     !this.state.isShowFilter ? null : <FilterPolicy dataSources={this.props.policy.provinces} areaId={this.props.policy.areaId} areaName={this.props.policy.areaName} fn={this._fn.bind(this)} cancelButton={this._cancelButton}/>  
+                }
+                {
+                    !this.state.isLoading ? null : <Loading/>
                 }
             </div>
         )
@@ -385,27 +403,38 @@ class Main extends Component{
         return(
             <div className="list">
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[0].title : null}/>
+                    {
+                        typeof this.props.policy.quality.grade == 'undefined'? <EmptyComponent/> :
                 <div className="card" style={{marginTop:0}}>
                     <div className="item item-divider item-text-wrap">
                         <i className="fa fa-tag
-"></i> 来源：关于公示2015年江苏省药品集中采购申报资质审核情况的通知（2016-09-09）
+"></i> 来源：{this.props.policy.quality.grade}（{this.props.policy.quality.publishDate}）
                     </div>
                     <ul className="list">
-                        <li className="item">
-                            <h2>阿奇霉素胶囊（舒美特）</h2>
-                            <p>剂型/规格：胶囊剂 / 0.25g(25万单位)</p>
-                            <p>生产企业：克罗地亚PLIVA CROATIA Ltd.</p>
-                            <p><span className="tag">过期认证</span><span className="tag">欧盟认证</span></p>
-                        </li>
-                        <li className="item">
-                            <h2>阿奇霉素胶囊（舒美特）</h2>
-                            <p>剂型/规格：胶囊剂 / 0.25g(25万单位)</p>
-                            <p>生产企业：克罗地亚PLIVA CROATIA Ltd.</p>
-                            <p><span className="tag">过期认证</span><span className="tag">欧盟认证</span></p>
-                        </li>
+                        {
+                            typeof this.props.policy.quality.lists == 'undefined' ? null : this.props.policy.quality.lists.map((ele)=>{
+                                return(
+                                    <li className="item">
+                                        <h2>{ele.productName}（{ele.trandName}）</h2>
+                                        <p>剂型/规格：{ele.prepName} / {ele.spec}</p>
+                                        <p>生产企业：{ele.manufacturerName}</p>
+                                        <p>
+                                           {
+                                                ele.qualityLevelTypeNames.length ==0 ? null : ele.qualityLevelTypeNames.map((ele)=>{
+                                                    return(
+                                                        <span className="tag">{ele.qualityLevelTypeName}</span>
+                                                    )
+                                                })
+                                            }
+                                        </p>
+                                    </li>
+                                )
+                            }) 
+                        }
                     </ul>
-                    <MoreBar link="/datas/policy/quality"/>
+                    <MoreBar link={`/datas/policy/quality/${this.props.policy.quality.gradeId}`}/>
                 </div>
+                }
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[1].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                    {
@@ -437,7 +466,7 @@ class Main extends Component{
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <MoreBar link="/datas/policy/base"/>
+                                        <MoreBar link={`/datas/policy/base/${ele.gradeId}/${ele.catalogEditionId}`}/>
                                    </div>
                                )
                         })
@@ -476,7 +505,7 @@ class Main extends Component{
                                         </tbody>
                                     </table>
                                 </div>
-                                <MoreBar link="/datas/policy/insurance/gradeId/catalogEditionId"/>
+                                <MoreBar link={`/datas/policy/insurance/${ele.gradeId}/${ele.catalogEditionId}`}/>
                             </div>
                           )
                       })
@@ -517,7 +546,7 @@ class Main extends Component{
                                         </tbody>
                                     </table>
                                 </div>
-                                <MoreBar link="/datas/policy/assist"/>
+                                <MoreBar link={`/datas/policy/assist/${ele.gradeId}/${ele.catalogEditionId}`}/>
                             </div>
                         )
                       })
@@ -552,7 +581,7 @@ class Main extends Component{
                                         </tbody>
                                     </table>
                                 </div>
-                                <MoreBar link="/datas/policy/lowPrice"/>
+                                <MoreBar link={`/datas/policy/lowPrice/${ele.gradeId}/${ele.catalogEditionId}`}/>
                             </div>
                         )
                       })
@@ -587,7 +616,7 @@ class Main extends Component{
                                         </tbody>
                                     </table>
                                 </div>
-                                <MoreBar link="/datas/policy/anti"/>
+                                <MoreBar link={`/datas/policy/anti/${ele.gradeId}/${ele.catalogEditionId}`}/>
                             </div>
                         )
                       })
