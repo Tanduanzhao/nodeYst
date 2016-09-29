@@ -39,11 +39,9 @@ export default class FilterProduce extends Component{
             <div className="list padding">
               <ul className="list-horizontal-block">
                 {
-                  this.props.bidList.getProjectStatus.map((ele)=>{
+                  this.props.bidList.getProjectStatus.map((ele,index)=>{
                       return(
-                          <div key={ele.id}>
-                            <li style={(ele.statusNum == 1) ? styles.active : null} onClick={()=>{this.setState({searchProductStatus:ele.statusNum })}}>{ele.statusName}</li>
-                          </div>
+                          <li key={index} style={(this.state.searchProductStatus == ele.statusNum) ? styles.active : null} onClick={()=>{this.setState({searchProductStatus:ele.statusNum })}}>{ele.statusName}</li>
                       )
                   })
                 }

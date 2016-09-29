@@ -4,11 +4,11 @@ export default class FilterProduce extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      areaId:this.props.report.areaId,
-      areaName:this.props.report.areaName,
-      searchAreaType:this.props.report.searchAreaType,
-      yearMonth:this.props.report.yearMonth,
-      produceType:this.props.report.produceType
+      areaId:this.props.purchase.areaId,
+      areaName:this.props.purchase.areaName,
+      searchAreaType:this.props.purchase.searchAreaType,
+      yearMonth:this.props.purchase.yearMonth,
+      produceType:this.props.purchase.produceType
     };
   }
   _cancelButton(){
