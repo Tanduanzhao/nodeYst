@@ -554,26 +554,27 @@ h3 {
       color: #f6a416;
       font-weight: 600;
       margin-bottom: 1rem; }
-    .vip .level .buttons {
-      text-align: left;
-      margin-top: .5rem;
-      position: relative; }
-      .vip .level .buttons button {
-        text-align: center;
-        background-color: #f6a416;
-        color: #fff;
-        border-width: 0;
-        padding: 0.1rem 0.2rem;
-        font-size: 0.7rem;
-        position: relative; }
-        .vip .level .buttons button.level_1 {
-          margin-left: 0.9rem; }
-        .vip .level .buttons button.level_2 {
-          margin-left: 2rem;
-          top: -1.25rem; }
-        .vip .level .buttons button.level_3 {
-          margin-left: 2rem;
-          top: -2.5rem; }
+    .vip .level button {
+      text-align: center;
+      background-color: #f6a416;
+      color: #fff;
+      border-width: 0;
+      padding: 0.1rem 0.2rem;
+      font-size: 0.7rem;
+      border-radius: 5px; }
+  .vip .level-list {
+    text-align: left; }
+    .vip .level-list img {
+      width: 45px;
+      vertical-align: middle;
+      display: inline-block; }
+    .vip .level-list span {
+      vertical-align: middle;
+      display: inline-block;
+      font-size: 1rem;
+      color: #f6a416;
+      font-weight: 600;
+      margin-left: 3%; }
   .vip .pk {
     padding: 0 1rem;
     background-color: #fff; }
@@ -787,3 +788,23 @@ table.table-border td, table.table-border th {
   padding: 0.2rem 0.4rem;
   border: 1px solid #d1d1d1;
   border-collapse: collapse; }
+
+.bg_center {
+  background: url(/images/bg_center.jpg) center top no-repeat;
+  background-size: 100% 100%;
+  height: 145px;
+  padding-left: 90px;
+  padding-top: 30px; }
+  .bg_center h2 {
+    font-size: 20px;
+    color: #fff; }
+  .bg_center .vipLogo {
+    width: 67.5px; }
+
+.center-viwe .item-icon-left {
+  padding-left: 25px; }
+
+.center-viwe img {
+  width: 42.5px;
+  vertical-align: middle;
+  margin-right: 20px; }
