@@ -33,9 +33,10 @@ class Datas extends Component{
         });
     }
     componentWillMount(){
-        if(!this.props.datas.isVip){
+        console.log(this.props.userInfo.isVip);
+        if(!this.props.userInfo.isVip){
             this.props.dispatch({
-                type:'CHANGEVIP'
+                type:'OPENVIP'
             });
             this.context.router.push('/vip');
         }
@@ -43,7 +44,7 @@ class Datas extends Component{
     render(){
         return(
             <div className="root" style={{"overflow":"auto"}}>
-                {this.state.loading ? <Loading/> : <Slide {...this.props}/>}
+                {this.props.datas.img.length == 0? <Slidedefault {...this.props}/> : <Slide {...this.props}/>}
                 <Column {...this.props}/>
                 <div className="item item-divider home-item-title">
                     <strong>数据简介</strong>
@@ -70,9 +71,25 @@ class Slide extends Component{
         return(
             <Slider {...settings} {...this.props}>
                 {
-                    this.props.datas.img.length?this.props.home.img.map((ele,index)=> <div key={`img_${ele.id}`}><img src={ele.imgUrl} style={{"width":"100%"}} alt=""/></div>):<div><img src="/images/home.jpg" alt=""/></div>
+                    this.props.datas.img.map((ele,index)=> <div key={`img_${ele.id}`}><img src={ele.imgUrl} style={{"width":"100%"}} alt=""/></div>)
                 }
             </Slider>
+        )
+    }
+}
+class Slidedefault extends Component{
+    render(){
+        const settings = {
+            className: '',
+            dots: true,
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            adaptiveHeight:false,
+            autoplay:true
+        };
+        return(
+        <Slider {...settings} {...this.props}><div><img src="/images/home.jpg" alt=""/></div></Slider>
         )
     }
 }
@@ -95,15 +112,7 @@ class Column extends Component{
                     </Link>
                     <Link to="/datas/marketPrice">
                         <img src="/images/column07.jpg" alt="" className="price-icon"/>
-                        广东省入市价
-                    </Link>
-                    <Link to="/datas/hospitalList">
-                        <img src="/images/column03.jpg" alt="" className="price-icon"/>
-                        医院列表
-                    </Link>
-                    <Link to="/datas/drugList">
-                        <img src="/images/column03.jpg" alt="" className="price-icon"/>
-                        用药目录
+                        入市价
                     </Link>
                 </ul>
             </div>
@@ -112,8 +121,8 @@ class Column extends Component{
 }
 function select(state){
     return{
-        uri:state.router.uri,
-        datas:state.data
+        datas:state.data,
+        userInfo:state.userInfo
     }
 }
 Datas.contextTypes = {

@@ -423,7 +423,7 @@ h3{
   text-align: center;
   line-height: 2;
   font-size: .7rem;
-  padding-top:2rem;
+  padding-top:.5rem;
   color: lighten(#000,65%);
   >i{
     display: block;
@@ -507,8 +507,8 @@ h3{
     }
     img{
         display: block;
-        width: 44px;
-        height: 44px;
+        width: 45px;
+        height: 45px;
         margin: 0 auto 8px auto;
     }
 }
@@ -586,21 +586,20 @@ h3{
             font-size: 0.7rem;
             border-radius: 5px;
         }
-    }
-    .level-list{
-        text-align: left;
         img{
             width: 45px;
             vertical-align: middle;
             display: inline-block;
         }
+        .row{
+            padding:0
+        }
         span{
             vertical-align: middle;
             display: inline-block;
-            font-size: 1rem;
+            font-size: .8rem;
             color: #f6a416;
             font-weight: 600;
-            margin-left: 3%;
         }
     }
     .pk{

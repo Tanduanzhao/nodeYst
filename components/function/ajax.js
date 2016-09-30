@@ -320,10 +320,7 @@ export const loadBidList = function(args){
         url:'business/getBidList',
         data:{
             searchName:args.searchName || null,
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            pageNo:args.pageNo || null,
-            hosLevel:args.hospitalLevel || null
+            pageNo:args.pageNo || null
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -353,11 +350,12 @@ export const loadBidListContent = function(args){
     ajaxFn({
         url:'business/getBidDetail',
         data:{
-            searchName:args.searchName || null,
-            yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
+            sord:args.sord || null,
+            sidx:args.sidx || null,
             pageNo:args.pageNo || null,
-            hosLevel:args.hospitalLevel || null
+            searchName:args.searchName || null,
+            searchProductStatus:args.searchProductStatus || null,
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -396,10 +394,10 @@ export const loadProduct = function(args){
     ajaxFn({
         url:'business/getUserBuyReportList',
         data:{
-            searchName:args.searchName || null,
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            pageNo:args.pageNo || null
+            reportType:args.reportType || null,
+            pageNo:args.pageNo || null,
+            searchType:args.searchType,
+            titleOrReportKey:args.titleOrReportKey,
         },
         callBack:(res)=>{
             args.callBack(res);

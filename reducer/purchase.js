@@ -13,8 +13,6 @@ var defaultData = {
 // 报告信息
 var defaultPurchase={
   isShowFilter:false,
-  subscribe:2346,
-  subscribeTwo:3434,
   areaName:defaultProvicen.areaName,
   areaId:defaultProvicen.areaId,
   searchAreaType:defaultProvicen.searchAreaType,
@@ -28,17 +26,20 @@ var defaultPurchase={
   infinite:false,
   titleOrReportKey:null,
   ReportType:[],
+  reportType:"行业报告",
+  ReportTypeDate:[]
 
 }
 export default function purchase(state=defaultPurchase,action) {
   switch(action.type){
+    case "CHANGEPURCHASETYPE" : return ObjectAssign({},state,{ReportTypeDate:action.ReportTypeDate});
     case "LOADREPORTTYPE" : return ObjectAssign({},state,{ReportType:action.ReportType});
     case INFINITE : return ObjectAssign({},state,{infinite:false});
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
     case SHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:false});
     case LOADPURCHASEDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
-    case CHANGETYPE : return ObjectAssign({},state,{searchType:action.searchType});
+    case CHANGETYPE : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType});
     case GOREPORT : return ObjectAssign({},state,{data:action.data,searchType:action.searchType,pageNo:action.pageNo});
     case CHANGETITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:action.titleOrReportKey});
     default : return state;

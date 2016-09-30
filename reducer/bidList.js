@@ -12,7 +12,8 @@ var defaultBidList={
   getBidAreaInfo:[],
   getProjectStatus:[],
   searchProductStatus:0,
-  sord:null
+  sord:null,
+  sidx:null,
 }
 export default function bidList(state=defaultBidList,action){
   switch(action.type){
@@ -24,7 +25,7 @@ export default function bidList(state=defaultBidList,action){
     case SHOWFILTERBIDLIST : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPBIDLIST : return ObjectAssign({},state,{isShowFilter:false});
     case CHANGEBIDLISTTITLEORREPORTKEY : return ObjectAssign({},state,{searchName:action.searchName});
-    case CHANGEBIDLISTFILTER : return ObjectAssign({},state,{areaName:action.areaName,areaId:action.areaId,searchAreaType:action.searchAreaType,yearMonth:action.yearMonth,searchProductStatus:action.searchProductStatus,sord:action.sord});
+    case CHANGEBIDLISTFILTER : return ObjectAssign({},state,{areaId:action.areaId,searchAreaType:action.searchAreaType,searchProductStatus:action.searchProductStatus,sord:action.sord,sidx:action.sidx});
     default : return state;
   }
 }

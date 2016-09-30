@@ -106,3 +106,6 @@ export const UNSHOWFILTERPRODUCT = 'UNSHOWFILTERPRODUCT';
 //隐藏产品数据过滤层
 export const CHANGETRADETYPE = 'CHANGETRADETYPE';
 //改变用药目录筛选条件  参数:areaName、areaId、searchAreaType、yearMonth、hospitalLevel
+
+export const LOADMARKETTDATA = 'LOADMARKETTDATA';
+//加载入市价

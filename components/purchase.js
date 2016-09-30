@@ -9,7 +9,7 @@ import FilterPurchase from './filterPurchase';
 import Loading from './loading';
 import EmptyComponent from './emptyComponent';
 
-import {loadProduct} from './function/ajax';
+import {loadProduct,getReportType} from './function/ajax';
 
 class purchase extends Component {
   constructor(props){
@@ -27,6 +27,7 @@ class purchase extends Component {
       titleOrReportKey:this.props.purchase.titleOrReportKey,
       pageNo:this.props.purchase.pageNo,
       searchType:this.props.purchase.searchType,
+      reportType:encodeURI(encodeURI(this.props.purchase.reportType)),
       callBack:(res)=>{
         this.props.dispatch({
           type:'LOADPURCHASEDATA',
@@ -62,11 +63,24 @@ class purchase extends Component {
     this.ele.addEventListener('scroll',this._infiniteScroll);
     console.log(this.state.searchType)
     this._loadData()
+    getReportType({
+      callBack:(res)=>{
+        this.props.dispatch({
+          type:'CHANGEPURCHASETYPE',
+          ReportTypeDate:res.datas,
+        });
+      }
+    });
   }
   componentWillUnmount(){
     this.props.dispatch({
       type:'CHANGETYPE',
       searchType: null
+    });
+    this.props.dispatch({
+      type:'LOADPURCHASEDATA',
+      data:[],
+      pageNo:1,
     });
   }
   _fn(args) {
@@ -84,6 +98,7 @@ class purchase extends Component {
     this.props.dispatch({
       type:'CHANGETYPE',
       searchType:args.searchType,
+      reportType:args.reportType
     });
     setTimeout(()=>{
       this._loadData();
@@ -123,6 +138,7 @@ class HeaderBar extends Component{
     });
   }
   _changeHandle(){
+    console.log(this.refs.hospitalSearchName.value)
     this.props.dispatch({
       type:'CHANGETITLEORREPORTKEY',
       titleOrReportKey:encodeURI(encodeURI(this.refs.hospitalSearchName.value))

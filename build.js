@@ -39,6 +39,7 @@ import charge from './components/report/charge';
 import Home from './components/home';
 
 import vip from './components/vip';
+import Pdf from './components/pdf';
 
 import ReportContent from "./components/reportContent";
 import Policy from './components/policy';
@@ -89,11 +90,17 @@ var _router = (
                     <Route path="marketPrice" component={marketPrice}/>
                     <Route path="policy">
                         <IndexRoute component={Policy}/>
+                        <Route path="quality" component={Quality}/>
                         <Route path="quality/:gradeId" component={Quality}/>
+                        <Route path="base" component={Base}/>
                         <Route path="base/:gradeId/:catalogEditionId" component={Base}/>
+                        <Route path="insurance" component={Insurance}/>
                         <Route path="insurance/:gradeId/:catalogEditionId" component={Insurance}/>
+                        <Route path="assist" component={Assist}/>
                         <Route path="assist/:gradeId/:catalogEditionId" component={Assist}/>
+                        <Route path="lowPrice" component={LowPrice}/>
                         <Route path="lowPrice/:gradeId/:catalogEditionId" component={LowPrice}/>
+                        <Route path="anti" component={Anti}/>
                         <Route path="anti/:gradeId/:catalogEditionId" component={Anti}/>
                     </Route>
                     
@@ -119,6 +126,7 @@ var _router = (
                     <IndexRoute component={Home}/>
                 </Route>
                 <Route path="vip" component={vip}></Route>
+                <Route path="pdf/:id" component={Pdf}></Route>
             </Route>
 		</Router>
 	</Provider>

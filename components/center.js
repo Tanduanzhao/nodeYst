@@ -7,16 +7,6 @@ import FooterBar from './footerBar';
 import {Link} from 'react-router';
 import {loadUserInfo} from './function/ajax';
 class Center extends Component{
-    componentDidMount(){
-        loadUserInfo({
-            callBack:(res)=>{
-                this.props.dispatch({
-                    type:'LOADUSERINFO',
-                    datas:res.datas
-                });
-            }
-        })
-    }
     render(){
         return(
             <div className="root">
@@ -30,7 +20,7 @@ class Center extends Component{
 class Main extends Component{
     render(){
         return(
-            <div className="scroll-content">
+            <div className="scroll-content has-footer">
                 <div className="list">
                     <div className="item item-avatar bg_center">
                         <img style={{top:"30px", left:"35px"}} src={this.props.userInfo.imgUrl} width="80"/>
@@ -39,7 +29,7 @@ class Main extends Component{
                         </p>
                     </div>
                 </div>
-                <div className="list padding-top center-viwe">
+                <div className="list center-viwe">
                     <div className="item item-icon-left">
                         <img src="/images/open_icon.jpg" alt=""/>
                         开通会员

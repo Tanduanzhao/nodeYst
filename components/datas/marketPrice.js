@@ -5,7 +5,6 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {loadBidList} from '../function/ajax';
 import Provicen from '../provicen';
-import Filter from '../filter';
 import {Link} from 'react-router';
 import Loading from '../loading';
 import More from './more';
@@ -19,41 +18,17 @@ class MarketPrice extends Component{
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
-    _fn(args){
-        this.props.dispatch((dispatch) => {
-            dispatch({
-                type:'LOADDRUGDATA',
-                data:[],
-                pageNo:1
-            });
-            dispatch({
-                type:'UNSHOWFILTER'
-            });
-            dispatch({
-                type:'CHANGEDRUGFILTER',
-                areaId:args.areaId,
-                areaName:args.areaName,
-                searchAreaType:args.searchType,
-                yearMonth:args.yearMonth,
-                hospitalLevel:args.hospitalLevel
-            });
-            setTimeout(()=>{
-                this._loadData();
-            },100);
-        })
-    }
     _loadData(){
         loadBidList({
-            yearMonth:this.props.yearMonth,
-            areaId:this.props.areaId,
-            searchAreaType:this.props.searchAreaType,
+            searchName:this.props.marketPrice.searchName,
+            pageNo:this.props.marketPrice.pageNo,
             callBack:(res)=>{
                 this.setState({
                     loading:false
                 });
                 if (res){
                     this.props.dispatch({
-                        type:'LOADBIFLISTDATA',
+                        type:'LOADMARKETTDATA',
                         data:this.props.marketPrice.data.concat(res.datas),
                         pageNo:this.props.marketPrice.pageNo+1
                     });
@@ -74,7 +49,11 @@ class MarketPrice extends Component{
         this._loadData();
     }
     componentWillUnmount(){
-        this.ele.removeEventListener('scroll',this._infiniteScroll);
+        this.props.dispatch({
+            type:'LOADMARKETTDATA',
+            data:[],
+            pageNo:1
+        });
     }
 
     render(){
@@ -99,8 +78,7 @@ class Main extends Component{
         if(this.props.loading) {
             return <Loading/>
         }else{
-            if(this.props.data.length != 0){
-                console.log(this.props.marketPrice.data);
+            if(this.props.data != 0){
                 return(
                     <ul className="list bid-list">
                         {
@@ -158,6 +136,7 @@ class List extends Component{
 
 class HeaderBar extends Component{
     _changeHandle(){
+        console.log(this.props.marketPrice.searchName)
         this.props.dispatch({
             type:'CHANGEDRUGSEARCHNAME',
             searchName:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
@@ -165,7 +144,7 @@ class HeaderBar extends Component{
     }
     _searchHandle(){
         this.props.dispatch({
-            type:'LOADDRUGDATA',
+            type:'LOADMARKETTDATA',
             data:[],
             pageNo:1
         });
@@ -193,14 +172,7 @@ class HeaderBar extends Component{
 
 function select(state){
     return{
-        showProvicen:state.index.showProvicen,
-        areaId:state.provicen.areaId,
-        areaName:state.provicen.areaName,
-        provicenData:state.provicen.data,
-        yearMonth:state.data.yearMonth,
         uri:state.router.uri,
-        hospitalFilter:state.drug,
-        searchAreaType:state.provicen.searchAreaType,
         marketPrice:state.marketPrice
     }
 }

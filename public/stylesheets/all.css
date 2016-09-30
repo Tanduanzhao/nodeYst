@@ -416,7 +416,7 @@ h3 {
   text-align: center;
   line-height: 2;
   font-size: .7rem;
-  padding-top: 2rem;
+  padding-top: .5rem;
   color: #a6a6a6; }
   .noDataTip > i {
     display: block;
@@ -497,8 +497,8 @@ h3 {
     color: #000; }
   .column img {
     display: block;
-    width: 44px;
-    height: 44px;
+    width: 45px;
+    height: 45px;
     margin: 0 auto 8px auto; }
 
 .home-item-title {
@@ -562,19 +562,18 @@ h3 {
       padding: 0.1rem 0.2rem;
       font-size: 0.7rem;
       border-radius: 5px; }
-  .vip .level-list {
-    text-align: left; }
-    .vip .level-list img {
+    .vip .level img {
       width: 45px;
       vertical-align: middle;
       display: inline-block; }
-    .vip .level-list span {
+    .vip .level .row {
+      padding: 0; }
+    .vip .level span {
       vertical-align: middle;
       display: inline-block;
-      font-size: 1rem;
+      font-size: .8rem;
       color: #f6a416;
-      font-weight: 600;
-      margin-left: 3%; }
+      font-weight: 600; }
   .vip .pk {
     padding: 0 1rem;
     background-color: #fff; }

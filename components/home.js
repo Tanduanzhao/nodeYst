@@ -87,7 +87,7 @@ class Main extends Component{
 		};
 		var string = null;
 		var slide = (()=>{
-			if(0){
+			if(this.props.home.img.length != 0){
 				string = <Slider {...settings} {...this.props}>{this.props.home.img.map((ele,index)=> <div key={`img_${ele.id}`}><img src={ele.imgUrl}  alt=""/></div>)}</Slider>;
 			}else{
 				string = <Slider {...settings} {...this.props}><div><img src="/images/home.jpg" alt=""/></div></Slider>;
@@ -190,7 +190,7 @@ class Newrepor extends Component{
 			}
 		}
 		return(
-			<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`} className="item">
+			<Link to={`/pdf/${this.props.dataSources.id}`} className="item">
 				<div  className="item-left">
 					<img src={this.props.dataSources.mainImg} alt=""/>
 				</div>
@@ -202,7 +202,7 @@ class Newrepor extends Component{
 						{tag}
 					</div>
 				</div>
-			</a>
+			</Link>
 		)
 	}
 }

@@ -4,7 +4,7 @@
 import {loadWx,loadJssdk,getUserAreaInfo} from './ajax';
 import {url2obj} from './common';
 var isLogin = false;
-export const Token = function(fn,login){
+export const Token = function(fn,login,isLogin){
     if(isLogin || url2obj().code){
         loadWx({
           code:url2obj().code,
