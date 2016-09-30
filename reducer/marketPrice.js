@@ -1,5 +1,5 @@
 var ObjectAssign = require('object-assign');
-import {LOADBIFLISTDATA,CHANGEDRUGFILTER,SHOWFILTERDRUG,UNSHOWFILTER,CHANGEDRUGSEARCHNAME,CLEADRUGSEARCHNAME,INFINITEDRUG,UNINFINITEDRUG,LOADDRUGDATA} from '../components/config/variable';
+import {LOADMARKETTDATA,CHANGEDRUGFILTER,SHOWFILTERDRUG,UNSHOWFILTER,CHANGEDRUGSEARCHNAME,CLEADRUGSEARCHNAME,INFINITEDRUG,UNINFINITEDRUG} from '../components/config/variable';
 //省份信息
 var defaultProvicen = {
 	areaName:'广州市',
@@ -26,7 +26,7 @@ var defaultMarketPrice={
 }
 export default function marketPrice(state=defaultMarketPrice,action){
   switch(action.type){
-    case LOADBIFLISTDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
+    case LOADMARKETTDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
     case CHANGEDRUGFILTER : return ObjectAssign({},state,{areaName:action.areaName,areaId:action.areaId,searchAreaType:action.searchAreaType,yearMonth:action.yearMonth,hospitalLevel:action.hospitalLevel});
     case SHOWFILTERDRUG : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTER : return ObjectAssign({},state,{isShowFilter:false});

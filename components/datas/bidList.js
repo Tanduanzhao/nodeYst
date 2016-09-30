@@ -21,6 +21,7 @@ class BidList extends Component{
     }
     _loadData(){
         loadBidListContent({
+            sidx:this.props.bidList.sidx,
             sord:this.props.bidList.sord,
             pageNo:this.props.bidList.pageNo,
             searchName:this.props.bidList.searchName,
@@ -60,13 +61,11 @@ class BidList extends Component{
             });
             dispatch({
                 type:'CHANGEBIDLISTFILTER',
-                areaId:args.areaId,
-                areaName:args.areaName,
-                searchAreaType:args.searchType,
-                yearMonth:args.yearMonth,
-                hospitalLevel:args.hospitalLevel,
-                searchProductStatus:args.searchProductStatus,
                 sord:args.sord,
+                sidx:args.sidx,
+                areaId:args.areaId,
+                searchAreaType:args.searchType,
+                searchProductStatus:args.searchProductStatus,
             });
             setTimeout(()=>{
                 this._loadData();
@@ -114,6 +113,11 @@ class BidList extends Component{
         });
     }
     componentWillUnmount(){
+        this.props.dispatch({
+            type:'LOADBIFLISTCONTENTDATA',
+            data:[],
+            pageNo:1,
+        });
         this.ele.removeEventListener('scroll',this._infiniteScroll);
     }
 

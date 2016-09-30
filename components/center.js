@@ -40,7 +40,7 @@ class Main extends Component{
                         </p>
                     </div>
                 </div>
-                <div className="list padding-top center-viwe">
+                <div className="list center-viwe">
                     <div className="item item-icon-left">
                         <img src="/images/open_icon.jpg" alt=""/>
                         开通会员

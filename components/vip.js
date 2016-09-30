@@ -22,10 +22,22 @@ import {loadHome} from './function/ajax';
                     <div className="level">
                         <h3>需开通会员后才能查看数据<br/>请选择开通会员的期限</h3>
                         <ul className="row">
-                            <img className="col" src="images/level.jpg" alt=""/>
-                            <span className="col">1个月</span>
-                            <img className="col level_price" src="images/level_price.jpg" alt=""/>
-                            <button className="col  level_1">立即开通</button>
+                           <li className="col"><img src="images/level.jpg" alt=""/></li>
+                            <li className="col"><span>1个月</span></li>
+                            <li className="col"><img className="level_price" src="images/level_price.jpg" alt=""/></li>
+                            <li className="col"><button className="col  level_1">立即开通</button></li>
+                        </ul>
+                        <ul className="row">
+                            <li className="col"><img src="images/level.jpg" alt=""/></li>
+                            <li className="col"><span>3个月</span></li>
+                            <li className="col"><img className="level_price" src="images/level_price02.jpg" alt=""/></li>
+                            <li className="col"><button className="col  level_1">立即开通</button></li>
+                        </ul>
+                        <ul className="row">
+                            <li className="col"><img src="images/level.jpg" alt=""/></li>
+                            <li className="col"><span>12个月</span></li>
+                            <li className="col"><img className="level_price" src="images/level_price03.jpg" alt=""/></li>
+                            <li className="col"><button className="col  level_1">立即开通</button></li>
                         </ul>
                     </div>
                     <div className="pk">

@@ -87,7 +87,7 @@ class Main extends Component{
 		};
 		var string = null;
 		var slide = (()=>{
-			if(0){
+			if(this.props.home.img.length != 0){
 				string = <Slider {...settings} {...this.props}>{this.props.home.img.map((ele,index)=> <div key={`img_${ele.id}`}><img src={ele.imgUrl}  alt=""/></div>)}</Slider>;
 			}else{
 				string = <Slider {...settings} {...this.props}><div><img src="/images/home.jpg" alt=""/></div></Slider>;

@@ -70,14 +70,31 @@ class product extends Component{
         this.ele.addEventListener('scroll',this._infiniteScroll);
         this._loadData();
     }
-    componentWillUnMount(){
-        this.ele.removeEventListener('scroll',this._infiniteScroll);
+    componentWillUnmount(){
+        this.props.dispatch({
+            type:'CLEADRUGSEARCHNAME'
+        })
+        this.props.dispatch({
+            type:'LOADPRODUCTDATA',
+            data:[],
+            pageNo:1,
+        });
     }
-
+    _searchHandle(){
+        this.setState({
+            loading:true
+        })
+        this.props.dispatch({
+            type:'LOADPRODUCTDATA',
+            data:[],
+            pageNo:1
+        });
+        setTimeout(()=> this._loadData(),100);
+    }
     render(){
         return(
             <div className="root">
-                <HeaderBar fn={this._loadData} {...this.props} loading={this.state.loading}/>
+                <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)} loading={this.state.loading}/>
                 <div ref="content" className="scroll-content has-header">
                         <Main {...this.props} data={this.props.product.data} loading={this.state.loading}/>
                 </div>
@@ -124,12 +141,14 @@ class List extends Component{
                     <li>批准文号/注册证号：{this.props.dataSources.pzwh}</li>
                     <li>生产企业：{this.props.dataSources.manufacturerName}</li>
                 </ul>
-                <span className="btn"> {this.props.dataSources.tradeBreedId}</span>
-                <ul className="list">
-                    <li>目录ID：{this.props.dataSources.catalogId}</li>
-                    <li>目录名称：{this.props.dataSources.catalogName}</li>
-                    <li>目录类型：{this.props.dataSources.catalogType}</li>
-                </ul>
+                <div style={(this.props.dataSources.tradeBreedId)?null:styles.active  }>
+                    <span className="btn"  > {this.props.dataSources.tradeBreedId}</span>
+                    <ul className="list">
+                        <li>目录ID：{this.props.dataSources.catalogId}</li>
+                        <li>目录名称：{this.props.dataSources.catalogName}</li>
+                        <li>目录类型：{this.props.dataSources.catalogType}</li>
+                    </ul>
+                </div>
             </li>
             </div>
         )
@@ -149,23 +168,6 @@ class HeaderBar extends Component{
             searchName:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
         })
     }
-    _searchHandle(){
-        console.log(this.props.product.searchName)
-        this.setState({
-            loading:true
-        })
-        this.props.dispatch({
-            type:'LOADPRODUCTDATA',
-            data:[],
-            pageNo:1
-        });
-        setTimeout(()=> this.props.fn(),100);
-    }
-    componentUnMount(){
-        this.props.dispatch({
-            type:'CLEADRUGSEARCHNAME'
-        })
-    }
     render(){
         return(
             <div className="bar bar-header bar-positive item-input-inset">
@@ -178,7 +180,7 @@ class HeaderBar extends Component{
                     <i className="icon ion-ios-search placeholder-icon"></i>
                     <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
                 </label>
-                <button className="button button-clear" onClick={this._searchHandle.bind(this)}>
+                <button className="button button-clear" onClick={this.props.searchHandle}>
                     搜索
                 </button>
             </div>
@@ -193,3 +195,9 @@ function select(state){
 }
 
 export default connect(select)(product);
+
+const styles = {
+    active:{
+        display:'none',
+    }
+}

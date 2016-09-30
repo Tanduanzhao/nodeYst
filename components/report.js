@@ -81,6 +81,11 @@ class Report extends Component {
       type:'CHANGETYPE',
       searchType: null
     });
+      this.props.dispatch({
+        type:'LOADPRODUCEDATA',
+        data:[],
+        pageNo:1,
+      });
   }
   _fn(args) {
     this.setState({

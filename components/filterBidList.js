@@ -2,13 +2,19 @@ import React,{Component} from 'react';
 import NormalHeaderBar from './normalHeaderBar';
 import $ from 'jquery';
 import {httpAddress} from './config.js';
+import {valINarr} from './function/common';
 export default class FilterProduce extends Component{
   constructor(props) {
     super(props);
     this.state = {
       produceType:this.props.bidList.produceType,
       sord:this.props.bidList.sord,
+      sidx:this.props.bidList.sidx,
       searchProductStatus:this.props.bidList.searchProductStatus,
+      active:null,
+      id:[],
+      num:null,
+      keys:[]
     };
   }
   _cancelButton(){
@@ -17,7 +23,7 @@ export default class FilterProduce extends Component{
     })
   }
   _sureButton(){
-    console.log(this.state.searchProductStatus)
+    console.log(this.state.sidx)
     this.props.fn(this.state);
   }
   _spanhandleClick(id,e,t){
@@ -27,8 +33,27 @@ export default class FilterProduce extends Component{
       searchAreaType:t
     })
   }
+  _ahandleClick(id,index) {
+    this.setState({
+      keys: valINarr(this.state.keys, index)
+    });
+  }
+  componentDidMount(){
+    if(!this.props.bidList.getProjectStatus){
+      //匹配目录
+      for(let i=0;i<this.props.bidList.getProjectStatus.length;i++){
+        if(this.props.bidList.getProjectStatus[i].id == this.props.id[0]){
+          this.setState({
+            keys:this.state.keys.concat([i])
+          });
+          break;
+        }
+      }
+    }
+  }
   render(){
-    console.log(this.props.bidList.getProjectStatus)
+    console.log(this.state.keys,"keys")
+    console.log(this.state.id,"id")
     return(
       <div className="modal-backdrop">
         <div className="modal-backdrop-bg"></div>
@@ -50,26 +75,20 @@ export default class FilterProduce extends Component{
             <h2 className="item item-divider">排序</h2>
             <div className="list padding">
               <ul className="list-horizontal-block">
-                <li style={(this.state.sord == null) ? styles.active : null} onClick={()=>{this.setState({sord:null})}}>最新时间</li>
-                <li style={(this.state.sord == "asc") ? styles.active : null} onClick={()=>{this.setState({sord:"asc"})}}>最低价格</li>
-                <li style={(this.state.sord == "desc" ) ? styles.active : null} onClick={()=>{this.setState({sord:"desc"})}}>最高价格</li>
+                <li style={(this.state.active == 0) ? styles.active : null} onClick={()=>{this.setState({sord:"desc",sidx:"publishDate",active:0})}}>最新时间</li>
+                <li style={(this.state.active == 1) ? styles.active : null} onClick={()=>{this.setState({sord:"asc",sidx:"bidPrice",active:1})}}>最低价格</li>
+                <li style={(this.state.active == 2 ) ? styles.active : null} onClick={()=>{this.setState({sord:"desc",sidx:"bidPrice",active:2})}}>最高价格</li>
               </ul>
             </div>
             <h2 className="item item-divider">区域选择</h2>
             <div className="list padding">
-              {
-                this.props.bidList.getBidAreaInfo.map((ele)=>{
-                  if(true){
-                    return(
-                        <div key={ele.id}>
-                          <h3 className="list-horizontal-title"><span>{ele.areaName}</span></h3>
-                          <ul className="list-horizontal-block">
-                          </ul>
-                        </div>
-                    )
-                  }
-                })
-              }
+                <ul className="list-horizontal-block">
+                {
+                  this.props.bidList.getBidAreaInfo.map((ele,index)=> {
+                    return (<li key={ele.id} style={(this.state.id.indexOf(ele.id) != -1) ? styles.active : null} onClick={this._ahandleClick.bind(this,ele.id,index)}>{ele.areaName}</li>)
+                  })
+                }
+                </ul>
             </div>
           </div>
         </div>
