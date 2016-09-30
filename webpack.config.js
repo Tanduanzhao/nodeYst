@@ -24,6 +24,11 @@ module.exports = {
 		return [require('autoprefixer'),require('precss')];
 	},
 	plugins:[
-		new ExtractTextPlugin('../stylesheets/all.css')
-	]
+		new ExtractTextPlugin('../stylesheets/all.css'),
+        new webpack.DefinePlugin({
+              'process.env': {
+                  NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+              },
+            }),
+        ]
 }
