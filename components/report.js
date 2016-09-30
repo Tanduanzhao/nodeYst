@@ -231,7 +231,7 @@ class List extends Component{
     }
     return(
         <div className="col-50">
-          <a onClick={this.insertUserAction.bind(this)} href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}>
+          <Link onClick={this.insertUserAction.bind(this)} to={`/pdf/${this.props.dataSources.id}`}>
             <img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
             <h3> {this.props.dataSources.title}</h3>
             <div className="report-card-price">¥{this.state.price}</div>
@@ -239,7 +239,7 @@ class List extends Component{
               {number}
               {tag}
             </p>
-          </a>
+          </Link>
         </div>
     )
   }
