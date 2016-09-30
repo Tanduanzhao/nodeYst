@@ -33,9 +33,10 @@ class Datas extends Component{
         });
     }
     componentWillMount(){
-        if(!this.props.datas.isVip){
+        console.log(this.props.userInfo.isVip);
+        if(!this.props.userInfo.isVip){
             this.props.dispatch({
-                type:'CHANGEVIP'
+                type:'OPENVIP'
             });
             this.context.router.push('/vip');
         }
@@ -120,8 +121,8 @@ class Column extends Component{
 }
 function select(state){
     return{
-        uri:state.router.uri,
-        datas:state.data
+        datas:state.data,
+        userInfo:state.userInfo
     }
 }
 Datas.contextTypes = {

@@ -162,16 +162,6 @@ class Newrepor extends Component{
 	constructor(props){
 		super(props);
 	};
-	insertUserAction(e){
-		insertUserAction({
-			reportId:this.props.dataSources.id,
-			costStatus:this.props.dataSources.costStatus,
-			callBack:(res)=> {
-				console.log(res)
-			}
-		});
-
-	}
 	render(){
 		var string = null;
 		var tag = (()=>{
@@ -200,7 +190,7 @@ class Newrepor extends Component{
 			}
 		}
 		return(
-			<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`} onClick={this.insertUserAction.bind(this)} className="item">
+			<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`} className="item">
 				<div  className="item-left">
 					<img src={this.props.dataSources.mainImg} alt=""/>
 				</div>
@@ -221,16 +211,6 @@ class Hotrepor extends Component{
 	constructor(props){
 		super(props);
 	};
-	insertUserAction(e){
-		insertUserAction({
-			reportId:this.props.dataSources.id,
-			costStatus:this.props.dataSources.costStatus,
-			callBack:(res)=> {
-				console.log(res)
-			}
-		});
-
-	}
 	render(){
 		var string = null;
 		var tag = (()=>{
@@ -260,7 +240,7 @@ class Hotrepor extends Component{
 		}
 		return(
 			<div className="col-50">
-				<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}  onClick={this.insertUserAction.bind(this)}>
+				<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}>
 					<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
 					<h3> {this.props.dataSources.title}</h3>
 					<div className="report-card-price">¥{this.state.price}</div>

@@ -9,7 +9,7 @@ export default class EmptyComponent extends Component{
     render(){
         return (
             <div className="noDataTip">
-                <i className="fa fa-4x fa-exclamation-triangle"></i>
+                <i className="fa fa-2x fa-exclamation-triangle"></i>
                 {this.props.message}
             </div>
         )

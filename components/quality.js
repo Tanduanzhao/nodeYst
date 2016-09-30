@@ -152,6 +152,7 @@ class Quality extends Component{
                             </div>
                         }
                     </div>
+                    <More/>
                 </div>
                 {
                     !this.state.isShowFilter ? null : <PolicySonFilter origins={this.props.quality.origins} levels={this.props.quality.levels} qualityLevelTypeIds={this.props.quality.qualityLevelTypeIds} fn={this._fn.bind(this)} cancelButton={this._hideFilter}/>
@@ -179,7 +180,7 @@ class HeaderBar extends Component{
         </div>
         <label className="item-input-wrapper">
           <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="searchName" type="search" placeholder="请输入搜索关键词"/>
+          <input ref="searchName" type="search" placeholder={this.props.lowPrice.searchName}/>
         </label>
         <button className="button button-clear" onClick={this._changeHandle.bind(this)}>
            搜索

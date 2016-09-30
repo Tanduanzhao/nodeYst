@@ -45,27 +45,27 @@ export default class More extends Component {
 									<img src="/images/column05.jpg" alt=""/>
 									产品数据
 								</Link>
-								<Link to="/datas/bidList">
+								<Link to="/datas/policy/quality">
 									<img src="/images/column08.jpg" alt=""/>
 									质量层次
 								</Link>
-								<Link to="/datas/bidList">
+								<Link to="/datas/policy/base">
 									<img src="/images/column09.jpg" alt=""/>
 									基药
 								</Link>
-								<Link to="/datas/bidList">
+								<Link to="/datas/policy/insurance">
 									<img src="/images/column10.jpg" alt=""/>
 									医保
 								</Link>
-								<Link to="/datas/bidList">
+								<Link to="/datas/policy/anti">
 									<img src="/images/column11.jpg" alt=""/>
 									抗菌药物
 								</Link>
-								<Link to="/datas/bidList">
+								<Link to="/datas/policy/lowPrice">
 									<img src="/images/column12.jpg" alt=""/>
 									低价药
 								</Link>
-								<Link to="/datas/bidList">
+								<Link to="/datas/assist">
 									<img src="/images/column13.jpg" alt=""/>
 									辅助用药
 								</Link>

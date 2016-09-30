@@ -20,5 +20,6 @@ module.exports = function(app) {
     app.get('/vip/*',index);
     app.get('/pdf',pdf);
     app.get('/purchase',index);
+    app.get('/pdf/*',index);
     app.post('/getToken',getToken);
 }

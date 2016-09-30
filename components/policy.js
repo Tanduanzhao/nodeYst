@@ -30,9 +30,14 @@ class Policy extends Component{
             this._isNeedLoadData();
         });
         //第一屏需要执行两个方法  1、加载模块标签；2、加载第一模块数据
-        this._loadData();
-        this._isNeedLoadData();
-        this._loadProvince();
+        if(this.props.policy.modules.length ==0){
+            this._loadData();
+        }
+        
+//        this._isNeedLoadData();
+        if(this.props.policy.provinces == 0){
+            this._loadProvince();   
+        }
     }
     //判断屏幕是否加载满
     _isNeedLoadData(){
@@ -92,6 +97,7 @@ class Policy extends Component{
                 this.setState({
                     isLoading:false
                 });
+                this._loadQuality();
             }
         })
     }
@@ -123,7 +129,7 @@ class Policy extends Component{
                 };
                 //如果质量层次没有数据需要再次去加载下面的数据
                 if(this.props.policy.quality.length == 0){
-                    this._isNeedLoadData();
+                    this._loadBase();
                 }
             }
         })
@@ -155,6 +161,10 @@ class Policy extends Component{
                         type:'PAGEPOLICYADD'
                     });
                 }
+                //如果质量层次没有数据需要再次去加载下面的数据
+                if(this.props.policy.base.length == 0){
+                    this._loadInsurance();
+                }
             }
         })
     }
@@ -184,6 +194,10 @@ class Policy extends Component{
                     this.props.dispatch({
                         type:'PAGEPOLICYADD'
                     });
+                }
+                //如果质量层次没有数据需要再次去加载下面的数据
+                if(this.props.policy.insurance.length == 0){
+                    this._loadAssist();
                 }
             }
         })
@@ -215,6 +229,10 @@ class Policy extends Component{
                         type:'PAGEPOLICYADD'
                     });
                 }
+                //如果质量层次没有数据需要再次去加载下面的数据
+                if(this.props.policy.assist.length == 0){
+                    this._loadLowPrice();
+                }
             }
         })
     }
@@ -244,6 +262,10 @@ class Policy extends Component{
                     this.props.dispatch({
                         type:'PAGEPOLICYADD'
                     });
+                }
+                //如果质量层次没有数据需要再次去加载下面的数据
+                if(this.props.policy.lowPrice.length == 0){
+                    this._loadAnti();
                 }
             }
         })
@@ -320,6 +342,7 @@ class Policy extends Component{
     }
     //搜索结果通用名点击查询对应数据
     _searchDatas(key){
+        console.log(key);
         this.props.dispatch({
             type:'POLICYRESET',
             areaId:[this.props.policy.areaId],
@@ -387,7 +410,7 @@ class HeaderBar extends Component{
         </div>
         <label className="item-input-wrapper">
           <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="policySearchName" onBlur={this._hideSlider.bind(this)} onChange={this._changeHandle.bind(this)} type="search" placeholder={this.props.policy.searchName}/>
+          <input ref="policySearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder={this.props.policy.searchName}/>
         </label>
         <button className="button button-clear">
            搜索
@@ -437,7 +460,7 @@ class Main extends Component{
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[1].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                    {
-                        this.props.policy.base.length == 0 ? null : this.props.policy.base.map((ele)=>{
+                        this.props.policy.base.length == 0 ? <EmptyComponent/> : this.props.policy.base.map((ele)=>{
                                return(
                                     <div key={Math.random(2)}>
                                        <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
@@ -474,7 +497,7 @@ class Main extends Component{
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[2].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                     {
-                      this.props.policy.insurance.length == 0 ? null : this.props.policy.insurance.map((ele)=>{
+                      this.props.policy.insurance.length == 0 ? <EmptyComponent/> : this.props.policy.insurance.map((ele)=>{
                           return(
                             <div key={Math.random(2)}>
                                 <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
@@ -513,7 +536,7 @@ class Main extends Component{
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[3].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                     {
-                      this.props.policy.assist.length == 0 ? null : this.props.policy.assist.map((ele)=>{
+                      this.props.policy.assist.length == 0 ? <EmptyComponent/> : this.props.policy.assist.map((ele)=>{
                         return(
                             <div key={Math.random(2)}>
                                 <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
@@ -554,7 +577,7 @@ class Main extends Component{
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[4].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                     {
-                      this.props.policy.lowPrice.length == 0 ? null : this.props.policy.lowPrice.map((ele)=>{
+                      this.props.policy.lowPrice.length == 0 ? <EmptyComponent/> : this.props.policy.lowPrice.map((ele)=>{
                         return(
                             <div key={Math.random(2)}>
                                 <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
@@ -589,7 +612,7 @@ class Main extends Component{
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[5].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                     {
-                      this.props.policy.anti.length == 0 ? null : this.props.policy.anti.map((ele)=>{
+                      this.props.policy.anti.length == 0 ? <EmptyComponent/> : this.props.policy.anti.map((ele)=>{
                         return(
                             <div key={Math.random(2)}>
                                 <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>

@@ -39,6 +39,7 @@ import charge from './components/report/charge';
 import Home from './components/home';
 
 import vip from './components/vip';
+import Pdf from './components/pdf';
 
 import ReportContent from "./components/reportContent";
 import Policy from './components/policy';
@@ -50,20 +51,24 @@ import LowPrice from './components/lowPrice';
 import Anti from './components/anti';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
-//Token((res) => {
-//    store.dispatch({
-//        type:'CHANGE',
-//        areaName:res.datas.areaName,
-//        areaId:res.datas.areaId,
-//        searchAreaType:res.datas.searchAreaType
-//    });
-//    store.dispatch({
-//        type:'CHANGEDATA',
-//        yearMonth:res.datas.yearMonth
-//    });
-//    
-//    ReactDOM.render(_router, ele, null);
-//});
+Token((res) => {
+    store.dispatch({
+        type:'CHANGE',
+        areaName:res.datas.areaName,
+        areaId:res.datas.areaId,
+        searchAreaType:res.datas.searchAreaType
+    });
+    store.dispatch({
+        type:'CHANGEDATA',
+        yearMonth:res.datas.yearMonth
+    });
+    ReactDOM.render(_router, ele, null);
+},(res)=>{
+    store.dispatch({
+        type:'LOADUSERINFO',
+        datas:res.datas
+    });
+});
 var _router = (
 	<Provider store={store}>
 		<Router history={browserHistory}>
@@ -85,11 +90,17 @@ var _router = (
                     <Route path="marketPrice" component={marketPrice}/>
                     <Route path="policy">
                         <IndexRoute component={Policy}/>
+                        <Route path="quality" component={Quality}/>
                         <Route path="quality/:gradeId" component={Quality}/>
+                        <Route path="base" component={Base}/>
                         <Route path="base/:gradeId/:catalogEditionId" component={Base}/>
+                        <Route path="insurance" component={Insurance}/>
                         <Route path="insurance/:gradeId/:catalogEditionId" component={Insurance}/>
+                        <Route path="assist" component={Assist}/>
                         <Route path="assist/:gradeId/:catalogEditionId" component={Assist}/>
+                        <Route path="lowPrice" component={LowPrice}/>
                         <Route path="lowPrice/:gradeId/:catalogEditionId" component={LowPrice}/>
+                        <Route path="anti" component={Anti}/>
                         <Route path="anti/:gradeId/:catalogEditionId" component={Anti}/>
                     </Route>
                     
@@ -115,9 +126,10 @@ var _router = (
                     <IndexRoute component={Home}/>
                 </Route>
                 <Route path="vip" component={vip}></Route>
+                <Route path="pdf/:id" component={Pdf}></Route>
             </Route>
 		</Router>
 	</Provider>
 );
 var ele = document.getElementById('app');
-ReactDOM.render(_router, ele, null);
+//ReactDOM.render(_router, ele, null);
