@@ -68,7 +68,7 @@ class Dialog extends Component{
             if((typeof this.props.dir) =='undefined'){
                 return(
                     <div className="dialog-feedBack left">
-                        <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3763138089,1906867312&fm=116&gp=0.jpg"/>
+                        <img src="/images/logo.jpg"/>
                         <div className="dialog-content"><span>{this.props.feedContent}</span></div>
                     </div>
                 )

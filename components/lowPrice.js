@@ -7,7 +7,7 @@ import {loadLowPriceFilter,loadLowPriceAll} from './function/ajax';
 import PolicySonFilter from './policySonFilter.js';
 import EmptyComponent from './emptyComponent';
 import Loading from './loading';
-
+import More from './datas/more';
 class LowPrice extends Component{
     constructor(props){
         super(props);
@@ -99,7 +99,7 @@ class LowPrice extends Component{
     }
      //判断屏幕是否加载满
     _isNeedLoadData(){
-        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && this.props.policy.loadState <= 6 && !this.state.isLoading){
+        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && !this.state.isLoading){
             this._loadData();
         }
     }
@@ -155,6 +155,7 @@ class LowPrice extends Component{
                             }
                         </div>
                     </div>
+                    <More/>
                 </div>
                 {
                     !this.state.isShowFilter ? null : <PolicySonFilter dataSources={this.props.lowPrice.filters} areaId={this.props.lowPrice.areaId} areaName={this.props.lowPrice.areaName} fn={this._fn.bind(this)} cancelButton={this._hideFilter}/>
@@ -182,7 +183,7 @@ class HeaderBar extends Component{
         </div>
         <label className="item-input-wrapper">
           <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="searchName" type="search" placeholder="请输入搜索关键词"/>
+          <input ref="searchName" type="search" placeholder={this.props.lowPrice.searchName}/>
         </label>
         <button className="button button-clear" onClick={this._changeHandle.bind(this)}>
            搜索

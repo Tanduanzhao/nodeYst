@@ -13,7 +13,7 @@ var defaultUserInfo = {
 export default function userInfo(state = defaultUserInfo,action){
     switch(action.type){
         case LOGIN : return ObjectAssign({},state,{isLogin:true});
-        case LOADUSERINFO : return ObjectAssign({},state,{imgUrl:action.datas.imgUrl,id:action.datas.id,userName:action.datas.userName});
+        case LOADUSERINFO : return ObjectAssign({},state,{imgUrl:action.datas.imgUrl,id:action.datas.id,userName:action.datas.userName,isVip:actions.datas.isVip});
             default : return state;
     }
     

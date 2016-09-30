@@ -4,12 +4,12 @@
 import {loadWx,loadJssdk,getUserAreaInfo} from './ajax';
 import {url2obj} from './common';
 var isLogin = false;
-export const Token = function(fn){
+export const Token = function(fn,login){
     if(isLogin || url2obj().code){
         loadWx({
           code:url2obj().code,
           callBack:(res)=>{
-              isLogin = true;
+              login(res);
           }
         })
         //获取微信授权
