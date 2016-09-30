@@ -35,8 +35,11 @@ class Main extends Component{
                     <div className="item item-avatar bg_center">
                         <img style={{top:"30px", left:"35px"}} src={this.props.userInfo.imgUrl} width="80"/>
                         <h2>微信用户</h2>
-                        <p>{this.props.userInfo.userName}
-                            <img className="vipLogo" src="/images/vipLogo.png" alt=""/>
+                        <p>
+                            {this.props.userInfo.userName}
+                            {
+                                this.props.userInfo.isVip?<img className="vipLogo" src="/images/vipLogo.png" alt=""/>:<img className="vipLogo" src="/images/mass.png" alt=""/>
+                            }
                         </p>
                     </div>
                 </div>

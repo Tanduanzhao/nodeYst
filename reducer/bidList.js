@@ -11,9 +11,10 @@ var defaultBidList={
   searchName:null,
   getBidAreaInfo:[],
   getProjectStatus:[],
-  searchProductStatus:0,
+  searchProductStatus:null,
   sord:null,
   sidx:null,
+  areaId:[],
 }
 export default function bidList(state=defaultBidList,action){
   switch(action.type){

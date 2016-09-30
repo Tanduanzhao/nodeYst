@@ -21,6 +21,7 @@ class BidList extends Component{
     }
     _loadData(){
         loadBidListContent({
+            areaId:JSON.stringify(this.props.bidList.areaId),
             sidx:this.props.bidList.sidx,
             sord:this.props.bidList.sord,
             pageNo:this.props.bidList.pageNo,
@@ -50,6 +51,9 @@ class BidList extends Component{
         });
     }
     _fn(args){
+        this.setState({
+            loading:true
+        });
         this.props.dispatch((dispatch) => {
             dispatch({
                 type:'LOADBIFLISTCONTENTDATA',

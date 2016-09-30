@@ -432,7 +432,7 @@ h3{
 }
 //home
 .home{
-    overflow: auto;
+    overflow-y: auto;
 }
 .main{
     overflow-x: hidden;
@@ -466,7 +466,7 @@ h3{
     margin-left: 16px;
     h3{
         font-size: .6rem;
-        margin-top: 14px;
+        margin-top: 5px;
         -webkit-line-clamp: 1;
         white-space: initial;
     }
@@ -504,6 +504,7 @@ h3{
         float: left;
         font-size: .55rem;
         color: #000;
+        text-align: center;
     }
     img{
         display: block;
@@ -605,6 +606,11 @@ h3{
     .pk{
         padding: 0 1rem;
         background-color: #fff;
+    }
+}
+@media screen and (max-width:322px){
+    .vip  .level span{
+        font-size: .6rem;
     }
 }
 .bid-list{
@@ -718,6 +724,7 @@ h3{
             a{
                 width: 25%;
                 margin-top: 20px;
+                text-align: center;
             }
             .price-icon{
                 width: 53px;
@@ -773,6 +780,9 @@ h3{
     right: 0;
     width: 38px;
     z-index: 2;
+    .box_photo{
+        opacity: .7;
+    }
     .boxContont{
         position: relative;
         margin: 80px auto 0 auto;
@@ -867,7 +877,7 @@ table{
         padding-left: 25px;
     }
     img{
-        width: 42.5px;
+        width: 32.5px;
         vertical-align: middle;
         margin-right: 20px;
     }

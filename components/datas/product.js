@@ -20,7 +20,9 @@ class product extends Component{
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _fn(args) {
-        console.log(args.tradeType)
+        this.setState({
+            loading:true
+        });
         this.props.dispatch({
             type: 'LOADPRODUCTDATA',
             data: [],
@@ -119,7 +121,7 @@ class Main extends Component{
                 return (
                     <ul className="list product-view">
                         {
-                            this.props.data.map((ele, index)=> <List dataSources={ele} key={ele.id}/>)
+                            this.props.data.map((ele, index)=> <List dataSources={ele} key={index}/>)
                         }
                     </ul>
                 )
@@ -141,15 +143,25 @@ class List extends Component{
                     <li>批准文号/注册证号：{this.props.dataSources.pzwh}</li>
                     <li>生产企业：{this.props.dataSources.manufacturerName}</li>
                 </ul>
-                <div style={(this.props.dataSources.tradeBreedId)?null:styles.active  }>
-                    <span className="btn"  > {this.props.dataSources.tradeBreedId}</span>
-                    <ul className="list">
-                        <li>目录ID：{this.props.dataSources.catalogId}</li>
-                        <li>目录名称：{this.props.dataSources.catalogName}</li>
-                        <li>目录类型：{this.props.dataSources.catalogType}</li>
-                    </ul>
-                </div>
+                {
+                    this.props.dataSources.tradeBreedId?<TradeBreedId  {...this.props}/>:null
+                }
             </li>
+            </div>
+        )
+    }
+}
+
+class TradeBreedId extends Component{
+    render(){
+        return(
+            <div>
+                <span className="btn"  > {this.props.tradeBreedId}</span>
+                <ul className="list">
+                    <li>目录ID：{this.props.catalogId}</li>
+                    <li>目录名称：{this.props.catalogName}</li>
+                    <li>目录类型：{this.props.catalogType}</li>
+                </ul>
             </div>
         )
     }

@@ -12,9 +12,7 @@ export default class FilterProduce extends Component{
       sidx:this.props.bidList.sidx,
       searchProductStatus:this.props.bidList.searchProductStatus,
       active:null,
-      id:[],
-      num:null,
-      keys:[]
+      areaId:[]
     };
   }
   _cancelButton(){
@@ -34,8 +32,9 @@ export default class FilterProduce extends Component{
     })
   }
   _ahandleClick(id,index) {
+    console.log(id)
     this.setState({
-      keys: valINarr(this.state.keys, index)
+      areaId: valINarr(this.state.areaId, id)
     });
   }
   componentDidMount(){
@@ -44,7 +43,7 @@ export default class FilterProduce extends Component{
       for(let i=0;i<this.props.bidList.getProjectStatus.length;i++){
         if(this.props.bidList.getProjectStatus[i].id == this.props.id[0]){
           this.setState({
-            keys:this.state.keys.concat([i])
+            areaId:this.state.areaId.concat([i])
           });
           break;
         }
@@ -52,8 +51,6 @@ export default class FilterProduce extends Component{
     }
   }
   render(){
-    console.log(this.state.keys,"keys")
-    console.log(this.state.id,"id")
     return(
       <div className="modal-backdrop">
         <div className="modal-backdrop-bg"></div>
@@ -85,7 +82,7 @@ export default class FilterProduce extends Component{
                 <ul className="list-horizontal-block">
                 {
                   this.props.bidList.getBidAreaInfo.map((ele,index)=> {
-                    return (<li key={ele.id} style={(this.state.id.indexOf(ele.id) != -1) ? styles.active : null} onClick={this._ahandleClick.bind(this,ele.id,index)}>{ele.areaName}</li>)
+                    return (<li key={ele.id} style={(this.state.areaId.indexOf(ele.id) != -1) ? styles.active : null} onClick={this._ahandleClick.bind(this,ele.id,index)}>{ele.areaName}</li>)
                   })
                 }
                 </ul>

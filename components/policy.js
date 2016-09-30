@@ -34,7 +34,6 @@ class Policy extends Component{
         this._isNeedLoadData();
         this._loadProvince();
     }
-    
     //判断屏幕是否加载满
     _isNeedLoadData(){
         if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && this.props.policy.loadState <= 6 && !this.state.isLoading){

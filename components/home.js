@@ -100,7 +100,7 @@ class Main extends Component{
 				<Column {...this.props}/>
 				<div className="item item-divider home-item-title">
 					<strong>最新报告</strong>
-					<img src="/images/new_report.jpg" alt="" />
+					<img src="/images/hot_report.jpg" alt="" className="hot-title"/>
 					<Link  to="/report" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}  onClick={this.newReportMap.bind(this)}>
 						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
@@ -139,9 +139,9 @@ class Column extends Component{
 				</Link>
 				<Link to="/datas/marketPrice">
 					<img src="/images/column07.jpg" alt="" className="price-icon"/>
-					广东省入市价
+					入市价
 				</Link>
-				<Link to="/hospitalList">
+				<Link to="/datas/bidList">
 					<img src="/images/column02.jpg" alt=""/>
 					中标数据
 				</Link>
@@ -149,7 +149,7 @@ class Column extends Component{
 					<img src="/images/column03.jpg" alt=""/>
 					政策准入
 				</Link>
-				<Link to="/datas/bidList">
+				<Link to="/datas/product">
 					<img src="/images/column05.jpg" alt=""/>
 					产品数据
 				</Link>
@@ -162,6 +162,16 @@ class Newrepor extends Component{
 	constructor(props){
 		super(props);
 	};
+	insertUserAction(e){
+		insertUserAction({
+			reportId:this.props.dataSources.id,
+			costStatus:this.props.dataSources.costStatus,
+			callBack:(res)=> {
+				console.log(res)
+			}
+		});
+
+	}
 	render(){
 		var string = null;
 		var tag = (()=>{
@@ -190,7 +200,7 @@ class Newrepor extends Component{
 			}
 		}
 		return(
-			<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`} className="item">
+			<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`} onClick={this.insertUserAction.bind(this)} className="item">
 				<div  className="item-left">
 					<img src={this.props.dataSources.mainImg} alt=""/>
 				</div>
@@ -211,6 +221,16 @@ class Hotrepor extends Component{
 	constructor(props){
 		super(props);
 	};
+	insertUserAction(e){
+		insertUserAction({
+			reportId:this.props.dataSources.id,
+			costStatus:this.props.dataSources.costStatus,
+			callBack:(res)=> {
+				console.log(res)
+			}
+		});
+
+	}
 	render(){
 		var string = null;
 		var tag = (()=>{
@@ -240,7 +260,7 @@ class Hotrepor extends Component{
 		}
 		return(
 			<div className="col-50">
-				<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}>
+				<a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}  onClick={this.insertUserAction.bind(this)}>
 					<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
 					<h3> {this.props.dataSources.title}</h3>
 					<div className="report-card-price">¥{this.state.price}</div>

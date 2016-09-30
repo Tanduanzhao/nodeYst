@@ -4,10 +4,6 @@ export default class FilterProduce extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      areaId:this.props.purchase.areaId,
-      areaName:this.props.purchase.areaName,
-      searchAreaType:this.props.purchase.searchAreaType,
-      yearMonth:this.props.purchase.yearMonth,
       produceType:this.props.purchase.produceType
     };
   }
@@ -19,14 +15,6 @@ export default class FilterProduce extends Component{
   _sureButton(){
     console.log(this.state.produceType);
     this.props.fn(this.state);
-  }
-  _spanhandleClick(id,e,t){
-    this.setState({
-      areaId :id,
-      areaName: e,
-      searchAreaType:t,
-      searchType: null
-    })
   }
   render(){
     return(

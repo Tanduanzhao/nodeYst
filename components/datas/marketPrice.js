@@ -49,19 +49,32 @@ class MarketPrice extends Component{
         this._loadData();
     }
     componentWillUnmount(){
+        this.setState({
+            loading:false
+        })
         this.props.dispatch({
             type:'LOADMARKETTDATA',
             data:[],
             pageNo:1
         });
     }
-
+    _searchHandle(){
+        this.setState({
+            loading:true
+        })
+        this.props.dispatch({
+            type:'LOADMARKETTDATA',
+            data:[],
+            pageNo:1
+        });
+        setTimeout(()=> this._loadData(),100);
+    }
     render(){
         return(
           <div className="root">
-              <HeaderBar fn={this._loadData} {...this.props}/>
+              <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
               <div ref="content" className="scroll-content has-header">
-                  <div className="scroll-content">
+                  <div>
                       <Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
                   </div>
               </div>
@@ -81,9 +94,11 @@ class Main extends Component{
             if(this.props.data != 0){
                 return(
                     <ul className="list bid-list">
-                        {
-                            this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
-                        }
+                        <ul className="list bid-list">
+                            {
+                                this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                            }
+                        </ul>
                     </ul>
                 )
             }else{
@@ -142,14 +157,6 @@ class HeaderBar extends Component{
             searchName:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
         })
     }
-    _searchHandle(){
-        this.props.dispatch({
-            type:'LOADMARKETTDATA',
-            data:[],
-            pageNo:1
-        });
-        setTimeout(()=> this.props.fn(),100);
-    }
     componentUnmount(){
         this.props.dispatch({
             type:'CLEADRUGSEARCHNAME'
@@ -162,7 +169,7 @@ class HeaderBar extends Component{
                     <i className="icon ion-ios-search placeholder-icon"></i>
                     <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
                 </label>
-                <button className="button button-clear" onClick={this._searchHandle.bind(this)}>
+                <button className="button button-clear" onClick={this.props.searchHandle}>
                     搜索
                 </button>
             </div>

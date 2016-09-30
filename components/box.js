@@ -58,13 +58,13 @@ export default class More extends Component {
 		return (
 			<div>
 				<div className="box"  onClick={()=>{(this.state.show)?this.setState({show:false}): this.setState({show:true})}}>
-					<img src="/images/box_golden.png" alt=""/>
+					<img src="/images/box_golden.png" alt="" className="box_photo"/>
 					<div className="more-content" style={(this.state.show) ? styles.active :styles.hidden}>
-						<div className="boxContont">
-							<img src="/images/box_close.png" alt="" className="close"/>
+						<div className="boxContont" onClick={this.get.bind(this)}>
+							<img src="/images/box_close.png" alt="" className="close"  onClick={()=>{this.setState({show:false})}}/>
 							<div><img src="/images/box_header_silver.jpg" alt=""/></div>
 							<div className="boxMain silver-main">
-								<form className="silver-bg" onClick={this.get.bind(this)}>
+								<form className="silver-bg">
 									<div className="list">
 										<label className=" item-input">
 											<span>姓名*</span>
@@ -86,7 +86,7 @@ export default class More extends Component {
 					</div>
 				</div>
 				<div className="box" style={{bottom:"130px"}} onClick={()=>{(this.state.showSilver)?this.setState({showSilver:false}): this.setState({showSilver:true})}}>
-					<img src="/images/box_silver.png" alt=""/>
+					<img src="/images/box_silver.png" alt="" className="box_photo"/>
 					<div className="more-content" style={(this.state.showSilver) ? styles.active :styles.hidden}>
 						<div className="boxContont">
 							<img src="/images/box_close.png" alt="" className="close"/>
