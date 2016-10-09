@@ -18,7 +18,8 @@ class Anti extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false
+            isLoading:false,
+            isInfinite:false
         }
     }
     componentWillMount(){
@@ -36,6 +37,7 @@ class Anti extends Component{
         })
     }
     _loadData(){
+        if(this.state.isInfinite) return;
         this.setState({
             isLoading:true
         });
@@ -53,6 +55,13 @@ class Anti extends Component{
                 this.setState({
                     isLoading:false
                 });
+                setTimeout(()=>{
+                    if(this.props.anti.datas.length == res.totalSize){
+                        this.setState({
+                            isInfinite:true
+                        });
+                    }
+                },10);
             }
         })
     }
@@ -133,7 +142,6 @@ class Anti extends Component{
                                                             <tr>
                                                                 <th>药品名称</th>
                                                                 <th>剂型</th>
-                                                                <th>规格</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -142,8 +150,7 @@ class Anti extends Component{
                                                                     return(
                                                                         <tr key={Math.random(1)}>
                                                                             <td>{v.productName || null}</td>
-                                                                            <td>{v.prepName || null}</td>
-                                                                            <td>{v.spec || null}</td>
+                                                                            <td>{v.antibioLevel || null}</td>
                                                                         </tr>
                                                                     )
                                                                 })

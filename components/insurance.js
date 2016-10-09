@@ -18,7 +18,8 @@ class Insurance extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false
+            isLoading:false,
+            isInfinite:false
         }
     }
     componentWillMount(){
@@ -36,6 +37,7 @@ class Insurance extends Component{
         })
     }
     _loadData(){
+        if(this.state.isInfinite) return false;
         this.setState({
             isLoading:true
         });
@@ -53,6 +55,13 @@ class Insurance extends Component{
                 this.setState({
                     isLoading:false
                 });
+                setTimeout(()=>{
+                    if(this.props.insurance.datas.length == res.totalSize){
+                        this.setState({
+                            isInfinite:true
+                        });
+                    }
+                },10);
             }
         })
     }
