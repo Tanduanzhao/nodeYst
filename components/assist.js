@@ -18,7 +18,8 @@ class Assist extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false
+            isLoading:false,
+            isInfinite:false
         }
     }
     componentWillMount(){
@@ -44,6 +45,7 @@ class Assist extends Component{
         })
     }
     _loadData(){
+        if(this.state.isInfinite) return false;
         this.setState({
             isLoading:true
         });
@@ -61,6 +63,13 @@ class Assist extends Component{
                 this.setState({
                     isLoading:false
                 });
+                setTimeout(()=>{
+                    if(this.props.assist.datas.length == res.totalSize){
+                        this.setState({
+                            isInfinite:true
+                        });
+                    }
+                },10);
             }
         })
     }

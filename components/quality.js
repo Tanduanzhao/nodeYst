@@ -17,7 +17,8 @@ class Quality extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false
+            isLoading:false,
+            isInfinite:false
         }
     }
     //加载筛选条件
@@ -40,6 +41,7 @@ class Quality extends Component{
         })
     }
     _loadData(){
+        if(this.state.isInfinite) return false;
         this.setState({
             isLoading:true
         });
@@ -56,6 +58,13 @@ class Quality extends Component{
                 this.setState({
                     isLoading:false
                 });
+                setTimeout(()=>{
+                    if(this.props.quality.datas.length == res.totalSize){
+                        this.setState({
+                            isInfinite:true
+                        });
+                    }
+                },10);
             }
         })
     }

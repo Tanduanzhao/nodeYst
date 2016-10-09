@@ -17,7 +17,8 @@ class Base extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false
+            isLoading:false,
+            isInfinite:false
         }
         console.log(this.props.base.datas,'默认仓库数据');
     }
@@ -33,6 +34,7 @@ class Base extends Component{
         })
     }
     _loadData(){
+        if(this.state.isInfinite) return false;
         this.setState({
             isLoading:true
         });
@@ -51,6 +53,13 @@ class Base extends Component{
                 this.setState({
                     isLoading:false
                 });
+                setTimeout(()=>{
+                    if(this.props.base.datas.length == res.totalSize){
+                        this.setState({
+                            isInfinite:true
+                        });
+                    }
+                },10);
             }
         })
     }

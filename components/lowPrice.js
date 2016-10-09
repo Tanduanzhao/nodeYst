@@ -17,7 +17,8 @@ class LowPrice extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false
+            isLoading:false,
+            isInfinite:false
         }
     }
     //加载筛选条件
@@ -32,6 +33,7 @@ class LowPrice extends Component{
         })
     }
     _loadData(){
+        if(this.state.isInfinite) return false;
         this.setState({
             isLoading:true
         });
@@ -50,7 +52,13 @@ class LowPrice extends Component{
                 this.setState({
                     isLoading:false
                 });
-                console.log(this.props.lowPrice.gradeId);
+                setTimeout(()=>{
+                    if(this.props.lowPrice.datas.length == res.totalSize){
+                        this.setState({
+                            isInfinite:true
+                        });
+                    }
+                },10);
             }
         })
     }
