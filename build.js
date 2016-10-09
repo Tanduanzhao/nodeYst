@@ -73,7 +73,7 @@ var _router = (
 	<Provider store={store}>
 		<Router history={browserHistory}>
 			<Route>
-                <Route path='/' component={Index}/>
+                <Route path='/' component={Home}/>
                 <Route path='optional'>
                     <Route path='classify/:sid' component={Optional}/>
                     <Route path='concept/:cid' component={Concept}/>
@@ -123,7 +123,7 @@ var _router = (
                   <Route path="charge" component={charge}/>
                 </Route>
                 <Route path="home">
-                    <IndexRoute component={Home}/>
+                    <IndexRoute component={Index}/>
                 </Route>
                 <Route path="vip" component={vip}></Route>
                 <Route path="pdf/:id" component={Pdf}></Route>

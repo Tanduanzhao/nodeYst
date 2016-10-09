@@ -21,7 +21,8 @@ class Policy extends Component{
             isLoading:false,
             isShowFilter:false,
             isShowSlider:false,
-            searchDatas:[]
+            searchDatas:[],
+            defaultValue:''
         };
     }
     componentDidMount(){
@@ -43,6 +44,7 @@ class Policy extends Component{
     _isNeedLoadData(){
         if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && this.props.policy.loadState <= 6 && !this.state.isLoading){
             //匹配this.props.policy.loadState分步加载6大模块
+            console.log(this.props.policy.loadState);
             switch(this.props.policy.loadState){
                 case 1 : return this._loadQuality();
                 case 2 : return this._loadBase();
@@ -70,7 +72,7 @@ class Policy extends Component{
                     this.setState({
                         isShowSlider:true
                     })
-                }
+                };
             }
         })
     }
@@ -97,7 +99,9 @@ class Policy extends Component{
                 this.setState({
                     isLoading:false
                 });
-                this._loadQuality();
+                setTimeout((res)=>{
+                    this._loadQuality();
+                },100);
             }
         })
     }
@@ -141,6 +145,7 @@ class Policy extends Component{
         });
         loadBaseSimple({
             searchName:this.props.policy.searchName,
+            catalogEditionId:this.props.policy.modules[1].catalogEditionId || null,
             areaId:JSON.stringify(this.props.policy.areaId),
             pageNo:this.props.policy.pageNo,
             callBack:(res)=>{
@@ -161,7 +166,7 @@ class Policy extends Component{
                         type:'PAGEPOLICYADD'
                     });
                 }
-                //如果质量层次没有数据需要再次去加载下面的数据
+                //如果基药没有数据需要再次去加载下面的数据
                 if(this.props.policy.base.length == 0){
                     this._loadInsurance();
                 }
@@ -176,6 +181,7 @@ class Policy extends Component{
         loadInsuranceSimple({
             searchName:this.props.policy.searchName,
             areaId:JSON.stringify(this.props.policy.areaId),
+            catalogEditionId:this.props.policy.modules[2].catalogEditionId || null,
             pageNo:this.props.policy.pageNo,
             callBack:(res)=>{
                 this.props.dispatch({
@@ -277,6 +283,7 @@ class Policy extends Component{
         });
         loadAntiSimple({
             searchName:this.props.policy.searchName,
+            catalogEditionId:this.props.policy.modules[5].catalogEditionId || null,
             areaId:JSON.stringify(this.props.policy.areaId),
             pageNo:this.props.policy.pageNo,
             callBack:(res)=>{
@@ -342,10 +349,11 @@ class Policy extends Component{
     }
     //搜索结果通用名点击查询对应数据
     _searchDatas(key){
-        console.log(key);
+//        console.dir(this.refs.header.ref.policySearchName);
+        this.refs.header.refs.policySearchName.value=key;
         this.props.dispatch({
             type:'POLICYRESET',
-            areaId:[this.props.policy.areaId],
+            areaId:this.props.policy.areaId,
             areaName:this.props.policy.areaName
         });
         this.props.dispatch({
@@ -357,15 +365,18 @@ class Policy extends Component{
             searchDatas:[]
         });
         setTimeout(()=>{
+            this.setState({
+                defaultValue:key
+            });
             this._loadData();
             this._isNeedLoadData();
-        },100);
+        },10);
     }
     
     render(){
         return(
             <div className="root">
-                <HeaderBar hideAction={this._hideSlider.bind(this)} searchAction = {this._loadSearch.bind(this)} {...this.props} showFilter={this._showFilter}/>
+                <HeaderBar ref="header" hideAction={this._hideSlider.bind(this)} searchAction = {this._loadSearch.bind(this)} {...this.props} showFilter={this._showFilter}/>
                 {
                     this.state.isShowSlider ? <Slider itemHandle={this._searchDatas.bind(this)} dataSources={this.state.searchDatas}/> : null
                 }
@@ -410,11 +421,8 @@ class HeaderBar extends Component{
         </div>
         <label className="item-input-wrapper">
           <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="policySearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder={this.props.policy.searchName}/>
+          <input ref="policySearchName" onChange={this._changeHandle.bind(this)} type="search" value={this.props.defaultValue} placeholder={this.props.policy.searchName}/>
         </label>
-        <button className="button button-clear">
-           搜索
-        </button>
       </div>
     )
   }

@@ -30,6 +30,10 @@ class Index extends Component{
                      type:'LOADDATA',
                      data:res.datas
                 });
+                this.props.dispatch({
+                    type:'CHANGEDATA',
+                    yearMonth:res.datas.yearMonth
+                });
                 this.setState({
                     loading:false
                 });
@@ -54,6 +58,10 @@ class Index extends Component{
                     });
                     dispatch({
                         type:'INCREASE'
+                    });
+                    this.props.dispatch({
+                        type:'CHANGEDATA',
+                        yearMonth:res.datas.yearMonth
                     });
                     this.setState({
                         loading:false
@@ -80,6 +88,10 @@ class Index extends Component{
                     dispatch({
                         type:'DECREASE'
                     });
+                    this.props.dispatch({
+                        type:'CHANGEDATA',
+                        yearMonth:res.datas.yearMonth
+                    });
                     this.setState({
                         loading:false
                     })
@@ -99,6 +111,10 @@ class Index extends Component{
                 this.props.dispatch({
                      type:'LOADDATA',
                      data:res.datas
+                });
+                this.props.dispatch({
+                    type:'CHANGEDATA',
+                    yearMonth:res.datas.yearMonth
                 });
                 this.setState({
                     loading:false

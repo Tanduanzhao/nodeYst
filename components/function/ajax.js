@@ -494,6 +494,7 @@ export const loadBaseSimple = function(args){
         data:{
             searchName:encode(args.searchName),
             areaId:args.areaId,
+            catalogEditionId:args.catalogEditionId,
             pageNo:args.pageNo
         },
         callBack:(res)=>{
@@ -534,6 +535,7 @@ export const loadInsuranceSimple = function(args){
         data:{
             searchName:encode(args.searchName),
             areaId:args.areaId,
+            catalogEditionId:args.catalogEditionId,
             pageNo:args.pageNo
         },
         callBack:(res)=>{
@@ -649,6 +651,7 @@ export const loadAntiSimple = function(args){
         data:{
             searchName:encode(args.searchName),
             areaId:args.areaId,
+            catalogEditionId:args.catalogEditionId,
             pageNo:args.pageNo
         },
         callBack:(res)=>{

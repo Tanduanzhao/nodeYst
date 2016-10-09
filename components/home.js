@@ -63,7 +63,7 @@ class Main extends Component{
 		this.props.dispatch({
 			type:'GOREPORT',
 			data:[],
-			searchType: 1,
+			searchType: 0,
 			pageNo:1
 		});
 	}

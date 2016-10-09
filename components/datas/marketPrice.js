@@ -44,7 +44,6 @@ class MarketPrice extends Component{
     }
     componentDidMount(){
         this.ele = this.refs.content;
-        console.log(this.props.marketPrice.data);
         this.ele.addEventListener('scroll',this._infiniteScroll);
         this._loadData();
     }
@@ -74,9 +73,7 @@ class MarketPrice extends Component{
           <div className="root">
               <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
               <div ref="content" className="scroll-content has-header">
-                  <div>
                       <Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
-                  </div>
               </div>
               <More {...this.props}/>
           </div>
@@ -91,19 +88,17 @@ class Main extends Component{
         if(this.props.loading) {
             return <Loading/>
         }else{
-            if(this.props.data != 0){
-                return(
-                    <ul className="list bid-list">
+            console.log(this.props.data.length == 0);
+            
+            return(
+                this.props.data.length == 0 ? <EmptyComponent/> : <ul className="list bid-list">
                         <ul className="list bid-list">
                             {
-                                this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                                this.props.data.map((ele)=> <List dataSources={ele} key={ele.id}/>)
                             }
                         </ul>
                     </ul>
-                )
-            }else{
-                return <EmptyComponent/>
-            }
+            )
         }
     }
 }
@@ -132,7 +127,7 @@ class List extends Component{
                         </div>
                         <div className="list-right">
                             {
-                                this.props.dataSources.zuidiwusheng.map((v)=>{
+                                this.props.dataSources.zuidiwusheng == null ? null : this.props.dataSources.zuidiwusheng.map((v)=>{
                                     return (
                                         <div key={v.id}>
                                             {v.bidPrice} ({v.areaName} {v.publishDate})
@@ -151,7 +146,7 @@ class List extends Component{
 
 class HeaderBar extends Component{
     _changeHandle(){
-        console.log(this.props.marketPrice.searchName)
+        console.log(this.props.marketPrice.searchName);
         this.props.dispatch({
             type:'CHANGEDRUGSEARCHNAME',
             searchName:encodeURI(encodeURI(this.refs.hospitalSearchName.value))

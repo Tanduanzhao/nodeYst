@@ -198,7 +198,7 @@ class List extends Component{
     render(){
         return(
             <div>
-                <h2 className="title">产品名称：头孢呋辛{this.props.dataSources.productName}</h2>
+                <h2 className="title">产品名称：{this.props.dataSources.productName}</h2>
                 <li className="item card">
                     <p>商品名：{this.props.dataSources.trandName}</p>
                     <p>剂型：{this.props.dataSources.prepName}</p>

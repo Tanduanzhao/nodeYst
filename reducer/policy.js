@@ -28,7 +28,7 @@ export default function policy(state = defaultPolicy,action){
         case 'LOADPOLICYASSISTDATA' : return ObjectAssign({},state,{assist:state.assist.concat(action.datas)});
         case 'LOADPOLICYLOWPRICEDATA' : return ObjectAssign({},state,{lowPrice:state.lowPrice.concat(action.datas)});
         case 'LOADPOLICYANTIDATA' : return ObjectAssign({},state,{anti:state.anti.concat(action.datas)});
-        case 'POLICYRESET' : return ObjectAssign({},state,{areaName:action.areaName,areaId:action.areaId,loadState:2,pageNo:1,modules:[],quality:[],base:[],insurance:[],assist:[],lowPrice:[],anti:[]});
+        case 'POLICYRESET' : return ObjectAssign({},state,{areaName:action.areaName,areaId:action.areaId,loadState:1,pageNo:1,modules:[],quality:[],base:[],insurance:[],assist:[],lowPrice:[],anti:[]});
         case 'POLICYSEARCHCHANGE' : return ObjectAssign({},state,{searchName:action.searchName});
         default : return state;
     }

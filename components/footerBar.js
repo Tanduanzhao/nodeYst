@@ -12,7 +12,7 @@ default class FooterBar extends Component {
     }
 	render() {
 		var menus = [{
-			uri: 'home',
+			uri: '/',
 			title: '首页',
 			icon: 'ios-home'
 		}, {
@@ -20,7 +20,7 @@ default class FooterBar extends Component {
 			title: '报告',
 			icon: 'cube'
 		}, {
-			uri: '/',
+			uri: 'home',
 			title: '行情',
 			icon: 'earth'
 		}, {
