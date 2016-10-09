@@ -20,6 +20,9 @@ class BidList extends Component{
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _loadData(){
+        this.props.dispatch({
+            type:'request'
+        });
         loadBidListContent({
             areaId:JSON.stringify(this.props.bidList.areaId),
             sidx:this.props.bidList.sidx,
@@ -28,9 +31,14 @@ class BidList extends Component{
             searchName:this.props.bidList.searchName,
             searchProductStatus:this.props.bidList.searchProductStatus,
             callBack:(res)=>{
+                console.log(this._calledComponentWillUnmount);
+                if(this._calledComponentWillUnmount) return false;
                 this.setState({
                     loading:false
                 });
+                    this.props.dispatch({
+                        type:'requestss'
+                    });
                 if (res){
                     this.props.dispatch({
                         type:'LOADBIFLISTCONTENTDATA',
@@ -58,7 +66,7 @@ class BidList extends Component{
             dispatch({
                 type:'LOADBIFLISTCONTENTDATA',
                 data:[],
-                pageNo:1,
+                pageNo:1
             });
             dispatch({
                 type:'UNSHOWFILTERPBIDLIST'
@@ -89,7 +97,8 @@ class BidList extends Component{
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite){
+        console.log(this.ele.firstChild.clientHeight-this.ele.scrollTop , document.body.clientHeight-this.ele.offsetTop)
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite && this.props.bidList.request){
             this._loadData();
         }
     }
@@ -148,7 +157,6 @@ class Main extends Component{
         if(this.props.loading) {
             return <Loading/>
         }else{
-            console.log(this.props.data.length)
             if(this.props.data.length != 0){
                 return(
                     <ul className="bidList-view">

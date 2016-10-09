@@ -22,12 +22,12 @@ var defaultReport={
   hospitalLevel:null,
   produceType:null,
   searchName:null,
-  searchType:0,
+  searchType:1,
   pageNo:1,
   data:[],
   infinite:false,
-  titleOrReportKey:null,
-  reportType:"行业报告",
+  titleOrReportKey:"",
+  reportType:null,
   ReportTypeDate:[]
 }
 export default function report(state=defaultReport,action) {

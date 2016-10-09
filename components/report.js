@@ -8,9 +8,7 @@ import {Link} from 'react-router';
 import FilterReport from './filterReport';
 import Loading from './loading';
 import EmptyComponent from './emptyComponent';
-import {loadNewrepor,loadPicture,insertUserAction,getReportType} from './function/ajax';
-
-import {loadReportList} from './function/ajax';
+import {loadNewrepor,loadPicture,insertUserAction,getReportType,loadReportList} from './function/ajax';
 
 class Report extends Component {
   constructor(props){
@@ -25,10 +23,10 @@ class Report extends Component {
   }
   _loadData(){
     loadReportList({
-      titleOrReportKey:encodeURI(encodeURI(this.props.report.titleOrReportKey)),
+      titleOrReportKey:this.props.report.titleOrReportKey,
       pageNo:this.props.report.pageNo,
       searchType:this.props.report.searchType,
-      reportType:encodeURI(encodeURI(this.props.report.reportType)),
+      reportType:this.props.report.reportType,
       callBack:(res)=>{
         this.props.dispatch({
           type:'LOADPRODUCEDATA',
@@ -102,7 +100,7 @@ class Report extends Component {
     this.props.dispatch({
       type:'CHANGETYPE',
       searchType:args.searchType,
-      reportType:args.reportType
+      reportType:encodeURI(encodeURI(args.reportType))
     });
     setTimeout(()=>{
       this._loadData();

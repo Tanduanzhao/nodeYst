@@ -15,6 +15,7 @@ class product extends Component{
         super(props);
         this.state= {
             loading: true,
+            request:true
         }
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -40,6 +41,9 @@ class product extends Component{
         }, 100);
     }
     _loadData(){
+        this.setState({
+            request:false
+        });
         loadProd({
             tradeType:this.props.product.tradeType,
             yearMonth:this.props.yearMonth,
@@ -56,6 +60,9 @@ class product extends Component{
                     pageNo:this.props.product.pageNo+1
                 });
                 this.setState({
+                    request:true
+                });
+                this.setState({
                     loading:false
                 });
             }
@@ -63,7 +70,9 @@ class product extends Component{
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.product.infinite){
+        console.dir(this.ele);
+        console.log(this.ele.firstChild.clientHeight-this.ele.scrollTop , document.body.clientHeight-this.ele.offsetTop)
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.product.infinite  && this.state.request){
             this._loadData();
         }
     }

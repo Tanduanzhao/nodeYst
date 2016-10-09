@@ -8,7 +8,9 @@ export default class More extends Component {
 		super(props);
 		this.state = {
 			show:false,
-			showSilver:false
+			showSilver:false,
+			hideGlodBox:true,
+			hideBox:true
 		};
 	}
     
@@ -38,9 +40,10 @@ export default class More extends Component {
 			email:this.refs.email.value || null,
 			callBack:(res)=>{
 				console.log(res.datas,"dd")
-				alert("报告领取成功，请在“我的-已领报告”查看。")
+				alert("领取报告成功，请到“个人中心-已领报告查阅”查看。")
 			}
 		});
+		this.setState({hideGlodBox:false})
 	}
 	cashBox(e){
 		$.ajax({
@@ -50,46 +53,47 @@ export default class More extends Component {
 			email:this.refs.email.value || null,
 			callBack:(res)=>{
 				console.log(res.datas,"dd")
-				alert("报告领取成功，请在“我的-已领报告”查看。")
 			}
 		});
+		alert("领取报告成功，请到“个人中心-已领报告查阅”查看。")
+		this.setState({hideBox:false})
 	}
 	render() {
 		return (
 			<div>
-				<div className="box"  onClick={()=>{(this.state.show)?this.setState({show:false}): this.setState({show:true})}}>
+				<div className="box" style={(this.state.hideGlodBox) ? {display:"block" }:{display:"none" }} onClick={()=>{(this.state.show)?this.setState({show:false}): this.setState({show:true})}}>
 					<img src="/images/box_golden.png" alt="" className="box_photo"/>
-					<div className="more-content" style={(this.state.show) ? styles.active :styles.hidden}>
-						<div className="boxContont" onClick={this.get.bind(this)}>
-							<img src="/images/box_close.png" alt="" className="close"  onClick={()=>{this.setState({show:false})}}/>
-							<div><img src="/images/box_header_silver.jpg" alt=""/></div>
-							<div className="boxMain silver-main">
-								<form className="silver-bg">
-									<div className="list">
-										<label className=" item-input">
-											<span>姓名*</span>
-											<input ref="username" type="text" onChange={this._changeBox.bind(this)}/>
-										</label>
-										<label className=" item-input">
-											<span>手机*</span>
-											<input ref="phone" type="text" onChange={this._changeBox.bind(this)}/>
-										</label>
-										<label className=" item-input">
-											<span>邮箱*</span>
-											<input ref="email" type="text" onChange={this._changeBox.bind(this)}/>
-										</label>
-									</div>
-									<span className="get"  onClick={this.glodBox.bind(this)}>马上领取</span>
-								</form>
-							</div>
+				</div>
+				<div className="more-content" onClick={this.get.bind(this)} style={(this.state.show) ? styles.active :styles.hidden}>
+					<div className="boxContont">
+						<img src="/images/box_close.png" alt="" className="close"  onClick={()=>{this.setState({show:false})}}/>
+						<div><img src="/images/box_header_silver.jpg" alt=""/></div>
+						<div className="boxMain silver-main">
+							<form className="silver-bg">
+								<div className="list">
+									<label className=" item-input">
+										<span>姓名*</span>
+										<input ref="username" type="text" onChange={this._changeBox.bind(this)}/>
+									</label>
+									<label className=" item-input">
+										<span>手机*</span>
+										<input ref="phone" type="text" onChange={this._changeBox.bind(this)}/>
+									</label>
+									<label className=" item-input">
+										<span>邮箱*</span>
+										<input ref="email" type="text" onChange={this._changeBox.bind(this)}/>
+									</label>
+								</div>
+								<span className="get"  onClick={this.glodBox.bind(this)}>马上领取</span>
+							</form>
 						</div>
 					</div>
 				</div>
-				<div className="box" style={{bottom:"130px"}} onClick={()=>{(this.state.showSilver)?this.setState({showSilver:false}): this.setState({showSilver:true})}}>
+				<div className="box bottom" style={(this.state.hideBox) ? {display:"block" }:{display:"none" }} onClick={()=>{(this.state.showSilver)?this.setState({showSilver:false}): this.setState({showSilver:true})}}>
 					<img src="/images/box_silver.png" alt="" className="box_photo"/>
-					<div className="more-content" style={(this.state.showSilver) ? styles.active :styles.hidden}>
+					<div className="more-content" onClick={this.get.bind(this)} style={(this.state.showSilver) ? styles.active :styles.hidden}>
 						<div className="boxContont">
-							<img src="/images/box_close.png" alt="" className="close"/>
+							<img src="/images/box_close.png" alt="" className="close" onClick={()=>{this.setState({showSilver:false})}}/>
 							<div style={{"overflow":"hidden"}}><img src="/images/box_header.jpg" alt=""/></div>
 							<div style={{"overflow":"hidden"}}>
 								<div className="boxMain">

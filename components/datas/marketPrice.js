@@ -14,11 +14,15 @@ class MarketPrice extends Component{
         super(props);
         this.state= {
             loading: true,
+            request:true
             }
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _loadData(){
+        this.setState({
+            request:false
+        });
         loadBidList({
             searchName:this.props.marketPrice.searchName,
             pageNo:this.props.marketPrice.pageNo,
@@ -33,12 +37,16 @@ class MarketPrice extends Component{
                         pageNo:this.props.marketPrice.pageNo+1
                     });
                 }
+                this.setState({
+                    request:true
+                });
             }
         });
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.marketPrice.infinite){
+        console.log(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop)
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && ! this.props.marketPrice.infinite  && this.state.request){
             this._loadData();
         }
     }
@@ -114,7 +122,7 @@ class List extends Component{
                             <p>规格：{this.props.dataSources.spec}</p>
                             <p>生产企业：{this.props.dataSources.manufacturerName}</p>
                         </div>
-                        <Link to="/datas/bidList" className="list-right btn"> 查看各省中标价</Link>
+                        <Link to={`/datas/bidList/${this.props.dataSources.id}`}  className="list-right btn"> 查看各省中标价</Link>
                     </div>
                     <div className="row market-price">
                         <div className="col-50"> 广东省最小制剂入市价</div>

@@ -15,12 +15,15 @@ var defaultBidList={
   sord:null,
   sidx:null,
   areaId:[],
+  request:true,
 }
 export default function bidList(state=defaultBidList,action){
   switch(action.type){
     case "getBidAreaInfo" : return ObjectAssign({},state,{getBidAreaInfo:action.getBidAreaInfo});
     case "getProjectStatus" : return ObjectAssign({},state,{getProjectStatus:action.getProjectStatus});
     case INFINITE : return ObjectAssign({},state,{infinite:false});
+    case "request": return ObjectAssign({},state,{request:false});
+    case "requestss": return ObjectAssign({},state,{request:true});
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
     case LOADBIFLISTCONTENTDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
     case SHOWFILTERBIDLIST : return ObjectAssign({},state,{isShowFilter:true});

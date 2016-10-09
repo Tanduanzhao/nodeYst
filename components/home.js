@@ -100,7 +100,7 @@ class Main extends Component{
 				<Column {...this.props}/>
 				<div className="item item-divider home-item-title">
 					<strong>最新报告</strong>
-					<img src="/images/hot_report.jpg" alt="" className="hot-title"/>
+					<img src="/images/new_report.jpg" alt="" className="hot-title"/>
 					<Link  to="/report" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}  onClick={this.newReportMap.bind(this)}>
 						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
