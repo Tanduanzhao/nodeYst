@@ -12,7 +12,7 @@ export default class Breed extends Component{
             return(
                 <div className="list card">
                     <LinkBar link="/rise/breed" title="品种影响力排行榜"/>
-                    <div className="row horizontal">
+                    <div className="border horizontal list">
                         {
                             this.props.dataSources.map((ele)=>{
                                 return <List data={ele} key={ele.id}/>
