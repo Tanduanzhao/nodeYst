@@ -106,6 +106,9 @@ class Quality extends Component{
         this.ele.addEventListener("scroll",(e)=>{
             this._isNeedLoadData();
         });
+        this.setState({
+            isInfinite:false
+        });
         setTimeout(()=>{
             this._isNeedLoadData();
         });

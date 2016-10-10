@@ -191,7 +191,7 @@ class Newrepor extends Component{
 			}
 		}
 		return(
-			<Link to={`/pdf/${this.props.dataSources.id}`}  className="item">
+			<Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}  className="item">
 				<div  className="item-left">
 					<img src={this.props.dataSources.mainImg} alt=""/>
 				</div>
@@ -241,7 +241,7 @@ class Hotrepor extends Component{
 		}
 		return(
 			<div className="col-50">
-				<Link to={`/pdf/${this.props.dataSources.id}`}>
+				<Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
 					<div className="report-img">
 						<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
 					</div>
