@@ -707,3 +707,16 @@ export const loadPolicySearch = function(args){
         }
     })
 }
+
+export const isJoinActivity = function(args){
+    ajaxFn({
+        url:'partakeActivity/isJoinActivity',
+        data:{
+            searchName:encode(args.searchName),
+            areaId:args.areaId
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}

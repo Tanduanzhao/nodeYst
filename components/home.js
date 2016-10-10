@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
-import {loadNewrepor,loadPicture} from './function/ajax';
+import {loadNewrepor,loadPicture,isJoinActivity} from './function/ajax';
 import Box from './box';
 import Loading from './loading';
 
@@ -15,6 +15,12 @@ var Slider = require('react-slick');
 		 }
 	 }
 	 componentDidMount(){
+		 isJoinActivity({
+			 callBack:(res)=>{
+				 console.log(res.datas)
+			 }
+		 });
+
 		 loadNewrepor({
 			 yearMonth:this.props.yearMonth,
 			 areaId:this.props.areaId,
