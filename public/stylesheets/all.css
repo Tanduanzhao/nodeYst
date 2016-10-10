@@ -232,6 +232,9 @@ h3 {
 .produce-header-tab button {
   text-align: center; }
 
+.report-view {
+  margin-bottom: 52px; }
+
 .report-cards {
   -ms-flex-line-pack: start;
       align-content: flex-start;
@@ -245,6 +248,13 @@ h3 {
   padding: .3rem; }
   .report-cards .col-50 {
     padding: .3rem; }
+  .report-cards .report-img {
+    width: 100%;
+    height: 79px;
+    overflow: hidden; }
+    .report-cards .report-img img {
+      width: 100%;
+      height: 100%; }
   .report-cards h3 {
     font-size: .6rem;
     padding: .3rem 0;
@@ -429,11 +439,15 @@ h3 {
   overflow-x: hidden;
   margin-bottom: 52px; }
 
+.slick-list {
+  max-height: 236px; }
+
 .slick-slider {
   overflow: hidden; }
 
 .slick-slide img {
-  width: 100%; }
+  width: 100%;
+  height: 100%; }
 
 .slick-dots li {
   top: -25px; }
@@ -448,10 +462,12 @@ h3 {
   padding: .6rem; }
 
 .item-left {
-  float: left; }
+  float: left;
+  height: 87px; }
   .item-left img {
     display: block;
-    width: 7.5rem; }
+    width: 7.5rem;
+    height: 100%; }
 
 .item-right {
   float: left;
@@ -640,7 +656,7 @@ h3 {
   .price-list .list-left {
     width: 50%; }
     .price-list .list-left p {
-      font-size: .5rem; }
+      font-size: .6rem; }
   .price-list .list-right {
     width: 50%;
     font-size: .5rem; }
@@ -704,6 +720,8 @@ h3 {
   margin-top: 0;
   margin-bottom: 10px;
   padding: 16px; }
+  .bidList-view .item p {
+    white-space: normal; }
 
 .bidList-view .title {
   font-size: 16px;

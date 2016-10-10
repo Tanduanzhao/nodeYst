@@ -48,10 +48,10 @@ export const Token = function(fn,login,isLogin){
                      
                      // 分享
                         var info = {
-                            title: '药市通-医药圈的「股市」神器',
+                            title: '药市通',
                             link: 'http://yst-test.immortalshealth.com',
                             imgUrl: 'http://yst.immortalshealth.com/yst/src/images/logo.jpg',
-                            desc: '通过市场行情引导，进行产品自选和医院绑定，辅助销售人员管理自己的重点客户和重要信息，以达成销售目标'
+                            desc: ' 提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
                         };
                         wx.onMenuShareTimeline({
                             title: info.title, // 分享标题

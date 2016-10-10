@@ -19,6 +19,7 @@ class Center extends Component{
 
 class Main extends Component{
     render(){
+        console.log(typeof this.props.userInfo.isVip,'vip');
         return(
             <div className="scroll-content has-footer">
                 <div className="list">
@@ -27,14 +28,14 @@ class Main extends Component{
                         <h2>{this.props.userInfo.userName}</h2>
                         <p>
                             {
-                                !!this.props.userInfo.isVip?<img className="vipLogo" src="/images/vipLogo.png" alt=""/>:<img className="vipLogo" src="/images/mass.png" alt=""/>
+                                this.props.userInfo.isVip != '0' ? <img className="vipLogo" src="/images/vipLogo.png" alt=""/>:<img className="vipLogo" src="/images/mass.png" alt=""/>
                             }
                         </p>
                     </div>
                 </div>
                 <div className="list center-viwe">
                     {
-                       !this.props.userInfo.isVip? null : <Link to="vip" className="item item-icon-left">
+                       this.props.userInfo.isVip != '0' ? null : <Link to="vip" className="item item-icon-left">
                             <img src="/images/open_icon.jpg" alt=""/>
                             开通会员
                         </Link>

@@ -12,7 +12,7 @@ export default function quality(state = defaultQuality,action){
     switch(action.type){
         case 'CHANGEQUALITY' : return ObjectAssign({},state,{qualityLevelTypeIds:action.qualityLevelTypeIds,gradeId:action.gradeId,datas:[],pageNo:1});
         case 'DEFAULTQUALITY' : return ObjectAssign({},state,{gradeId:action.gradeId,searchName:action.searchName});
-        case 'PAGEADD' : return ObjectAssign({},state,{pageNo:state.pageNo+1});
+        case 'PAGEADDQUALITY' : return ObjectAssign({},state,{pageNo:state.pageNo+1});
         case 'CHANGEQUALITYSEARCHNAME' : return ObjectAssign({},state,{searchName:action.searchName,pageNo:1,datas:[]});
         case 'LOADQUALITYMENU' : return ObjectAssign({},state,{levels:state.levels.concat(action.datas)});
         case 'loadQUALITYMENUFORM' : return ObjectAssign({},state,{origins:state.origins.concat(action.datas)});

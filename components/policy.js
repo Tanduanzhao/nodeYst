@@ -709,7 +709,8 @@ const styles ={
 
 function select(state){
     return {
-        policy:state.policy
+        policy:state.policy,
+        userInfo:state.userInfo
     }
 }
 

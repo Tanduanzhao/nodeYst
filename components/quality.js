@@ -46,6 +46,7 @@ class Quality extends Component{
         this.setState({
             isLoading:true
         });
+        
         loadQualityAll({
             searchName:this.props.quality.searchName,
             gradeId:this.props.quality.gradeId,
@@ -93,6 +94,7 @@ class Quality extends Component{
     }
     
     componentDidMount(){
+        
         //传入默认数据到仓库
         this.props.dispatch({
             type:'DEFAULTQUALITY',
@@ -124,9 +126,9 @@ class Quality extends Component{
             this._loadData();
         },100);
     }
-    componentWillMount(){
+    componentWillUnmount(){
         this.props.dispatch({
-            type:'REASETQUALITY'
+            type:'RESETQUALITY'
         });
     }
     render(){
@@ -136,7 +138,7 @@ class Quality extends Component{
                 <div ref="main" className="scroll-content has-header">
                     <div className="list">
                         {
-                            typeof this.props.quality.datas.lists == 'undefined' ? <EmptyComponent/> : <div className="card" style={{marginTop:0}}>
+                            this.props.quality.datas.length == 0 ? <EmptyComponent/> : <div className="card" style={{marginTop:0}}>
                                 <div className="item item-divider item-text-wrap">
                                     <i className="fa fa-tag
             "></i> 来源：{this.props.quality.datas[0].grade}（{this.props.quality.datas[0].publishDate}）
@@ -145,7 +147,7 @@ class Quality extends Component{
                                     {
                                         this.props.quality.datas[0].lists.map((ele)=>{
                                             return(
-                                                <li className="item">
+                                                <li className="item" key={Math.random(1)}>
                                                     <h2>{ele.productName}（{ele.trandName}）</h2>
                                                     <p>剂型/规格：{ele.prepName} / {ele.spec}</p>
                                                     <p>生产企业：{ele.manufacturerName}</p>
@@ -153,7 +155,7 @@ class Quality extends Component{
                                                         {
                                                             ele.qualityLevelTypes.map((ele)=>{
                                                                 return(
-                                                                    <span className="tag">{ele}</span>
+                                                                    <span className="tag" key={Math.random(1)}>{ele}</span>
                                                                 )
                                                             })
                                                         }
