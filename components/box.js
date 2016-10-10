@@ -35,35 +35,48 @@ export default class More extends Component {
 		}
 		$.ajax({
 			url:httpAddress +"partakeActivity/glodBox",
-			username:this.refs.username.value || null,
-			phone:this.refs.phone.value || null,
-			email:this.refs.email.value || null,
-			callBack:(res)=>{
-				console.log(res.datas,"dd")
-				alert("领取2015年珠三角医疗终端市场分析报告成功，请到“个人中心-已购报告查阅”查阅。")
+			data:{
+                username:this.refs.username.value || null,
+                phone:this.refs.phone.value || null,
+                email:this.refs.email.value || null
+            },
+			success:(res)=>{
+                if(res.state == '1'){
+                    this.props.dispatch({
+                        type:'UNSHOWGOLDBOX'
+                    });
+                    this.setState({show:false})
+                    alert("领取2015年珠三角医疗终端市场分析报告成功，请到“个人中心-已购报告查阅”查阅。");
+                }
 			}
 		});
-		this.setState({hideGlodBox:false})
+		
 	}
 	cashBox(e){
 		$.ajax({
 			url:httpAddress +"partakeActivity/cashBox",
-			username:this.refs.username.value || null,
-			phone:this.refs.phone.value || null,
-			email:this.refs.email.value || null,
-			callBack:(res)=>{
-				console.log(res.datas,"dd")
+			success:(res)=>{
+                if(res.state == '1'){
+                    this.props.dispatch({
+                        type:'UNSHOWCASHBOX'
+                    });
+                    this.setState({showSilver:false});
+                    alert("领取2015年广东省心脑血管中成药市场分析报告报告成功，请到“个人中心-已购报告查阅”查阅。");
+                }
+                
 			}
 		});
-		alert("领取2015年广东省心脑血管中成药市场分析报告报告成功，请到“个人中心-已购报告查阅”查阅。")
-		this.setState({hideBox:false})
+		
+		
 	}
 	render() {
 		return (
 			<div>
-				<div className="box" style={(this.state.hideGlodBox) ? {display:"block" }:{display:"none" }} onClick={()=>{(this.state.show)?this.setState({show:false}): this.setState({show:true})}}>
-					<img src="/images/box_golden.png" alt="" className="box_photo"/>
-				</div>
+				{
+                    !this.props.home.goldBox ? null : <div className="box" onClick={()=>{(this.state.show)?this.setState({show:false}): this.setState({show:true})}}>
+                        <img src="/images/box_golden.png" alt="" className="box_photo"/>
+                    </div>
+                }
 				<div className="more-content" onClick={this.get.bind(this)} style={(this.state.show) ? styles.active :styles.hidden}>
 					<div className="boxContont">
 						<img src="/images/box_close.png" alt="" className="close"  onClick={()=>{this.setState({show:false})}}/>
@@ -89,20 +102,22 @@ export default class More extends Component {
 						</div>
 					</div>
 				</div>
-				<div className="box bottom" style={(this.state.hideBox) ? {display:"block" }:{display:"none" }} onClick={()=>{(this.state.showSilver)?this.setState({showSilver:false}): this.setState({showSilver:true})}}>
-					<img src="/images/box_silver.png" alt="" className="box_photo"/>
-					<div className="more-content" onClick={this.get.bind(this)} style={(this.state.showSilver) ? styles.active :styles.hidden}>
-						<div className="boxContont">
-							<img src="/images/box_close.png" alt="" className="close" onClick={()=>{this.setState({showSilver:false})}}/>
-							<div style={{"overflow":"hidden"}}><img src="/images/box_header.jpg" alt=""/></div>
-							<div style={{"overflow":"hidden"}}>
-								<div className="boxMain">
-									<span className="get"  onClick={this.cashBox.bind(this)}>马上领取</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+                {
+                    !this.props.home.cashBox ? null : <div className="box bottom" onClick={()=>{(this.state.showSilver)?this.setState({showSilver:false}): this.setState({showSilver:true})}}>
+                        <img src="/images/box_silver.png" alt="" className="box_photo"/>
+                    </div>
+                }
+                <div className="more-content" onClick={this.get.bind(this)} style={(this.state.showSilver) ? styles.active :styles.hidden}>
+                    <div className="boxContont">
+                        <img src="/images/box_close.png" alt="" className="close" onClick={()=>{this.setState({showSilver:false})}}/>
+                        <div style={{"overflow":"hidden"}}><img src="/images/box_header.jpg" alt=""/></div>
+                        <div style={{"overflow":"hidden"}}>
+                            <div className="boxMain">
+                                <span className="get"  onClick={this.cashBox.bind(this)}>马上领取</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 			</div>
 		)
 	}

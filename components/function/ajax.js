@@ -707,3 +707,12 @@ export const loadPolicySearch = function(args){
         }
     })
 }
+//获取金银活动状态
+export const loadJoinActivity = function(args){
+    ajaxFn({
+        url:'partakeActivity/isJoinActivity',
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}

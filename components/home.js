@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
-import {loadNewrepor,loadPicture} from './function/ajax';
+import {loadNewrepor,loadPicture,loadJoinActivity} from './function/ajax';
 import Box from './box';
 import Loading from './loading';
 
@@ -45,6 +45,29 @@ var Slider = require('react-slick');
 				 });
 			 }
 		 });
+         //获取金银活动箱子状态
+         loadJoinActivity({
+             callBack:(res)=>{
+                 if(res.datas.isJoinCashBox == '0'){
+                    this.props.dispatch({
+                        type:'SHOWCASHBOX'
+                    });
+                 }else{
+                     this.props.dispatch({
+                        type:'UNSHOWCASHBOX'
+                    });
+                 }
+                 if(res.datas.isJoinGlodBox == '0'){
+                    this.props.dispatch({
+                        type:'SHOWGOLDBOX'
+                    });
+                 }else{
+                     this.props.dispatch({
+                        type:'UNSHOWGOLDBOX'
+                    });
+                 }
+             }
+         })
 	 }
 	render(){
 		return(
