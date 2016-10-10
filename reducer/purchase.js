@@ -39,7 +39,7 @@ export default function purchase(state=defaultPurchase,action) {
     case SHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:false});
     case LOADPURCHASEDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
-    case CHANGETYPE : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType});
+    case "CHANGETYPEPURCHASE" : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType});
     case GOREPORT : return ObjectAssign({},state,{data:action.data,searchType:action.searchType,pageNo:action.pageNo});
     case CHANGETITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:action.titleOrReportKey});
     default : return state;

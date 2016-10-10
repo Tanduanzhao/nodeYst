@@ -24,7 +24,7 @@ class Datas extends Component{
             imgType:this.state.imgType,
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADDATA',
+                    type:'LOADDATAIMG',
                     img: res.datas
                 });
                 this.props.dispatch({
