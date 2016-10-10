@@ -205,6 +205,23 @@ class List extends Component{
     });
 
   }
+   _openProductView(id){
+        if (typeof WeixinJSBridge == "undefined")   return false;
+
+        var pid = "pDF3iY_G88cM_d-wuImym3tkVfG5";//只需要传递
+        WeixinJSBridge.invoke('openProductViewWithPid',{"pid":pid},function(res){
+            // 返回res.err_msg,取值 
+            // open_product_view_with_id:ok 打开成功
+//            alert(res.err_msg);
+            if (res.err_msg != "open_product_view_with_id:ok"){
+                WeixinJSBridge.invoke('openProductView',{
+                    "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
+                    },function(res){ 
+//                    alert(res.err_msg);
+                });
+            }
+        });
+    }
   render(){
     var string = null;
     var tag = (()=>{
@@ -232,19 +249,37 @@ class List extends Component{
         price: 0
       }
     }
+    let isCanViewReport = false;
+      if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
+              isCanViewReport = false;
+      }else{
+          isCanViewReport = true;
+      }
     return(
         <div className="col-50">
-          <Link onClick={this.insertUserAction.bind(this)} to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
-            <div className="report-img">
-              <img src={this.props.dataSources.mainImg}/>
-            </div>
-            <h3> {this.props.dataSources.title}</h3>
-            <div className="report-card-price">¥{this.state.price}</div>
-            <p className="report-card-footer">
-              {number}
-              {tag}
-            </p>
-          </Link>
+            {
+                isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
+                    <div className="report-img">
+                      <img src={this.props.dataSources.mainImg}/>
+                    </div>
+                    <h3> {this.props.dataSources.title}</h3>
+                    <div className="report-card-price">¥{this.state.price}</div>
+                    <p className="report-card-footer">
+                      {number}
+                      {tag}
+                    </p>
+                  </Link> : <div onClick={this._openProductView.bind(this,this.props.dataSources.id)}>
+                    <div className="report-img">
+                      <img src={this.props.dataSources.mainImg}/>
+                    </div>
+                    <h3> {this.props.dataSources.title}</h3>
+                    <div className="report-card-price">¥{this.state.price}</div>
+                    <p className="report-card-footer">
+                      {number}
+                      {tag}
+                    </p>
+                  </div>
+            }
         </div>
     )
   }
