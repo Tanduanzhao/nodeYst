@@ -11,8 +11,8 @@ export default class FilterProduce extends Component{
       sord:this.props.bidList.sord,
       sidx:this.props.bidList.sidx,
       searchProductStatus:this.props.bidList.searchProductStatus,
-      active:null,
-      areaId:[]
+      active:this.props.bidList.active,
+      areaId:this.props.bidList.areaId
     };
   }
   _cancelButton(){
@@ -21,7 +21,7 @@ export default class FilterProduce extends Component{
     })
   }
   _sureButton(){
-    console.log(this.state.sidx)
+    console.log(this.state.active)
     this.props.fn(this.state);
   }
   _spanhandleClick(id,e,t){
@@ -51,6 +51,7 @@ export default class FilterProduce extends Component{
     }
   }
   render(){
+    console.log(this.state.areaId)
     return(
       <div className="modal-backdrop">
         <div className="modal-backdrop-bg"></div>

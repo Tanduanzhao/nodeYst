@@ -8,7 +8,8 @@ export default class FilterProduce extends Component{
       areaName:this.props.report.areaName,
       searchAreaType:this.props.report.searchAreaType,
       yearMonth:this.props.report.yearMonth,
-      reportType:this.props.report.reportType
+      reportType:this.props.report.reportType,
+      searchType:this.props.report.searchType
     };
   }
   _cancelButton(){
@@ -17,7 +18,7 @@ export default class FilterProduce extends Component{
     });
   }
   _sureButton(){
-    console.log(this.state.reportType);
+    console.log(this.state.searchType);
     this.props.fn(this.state);
   }
   _spanhandleClick(id,e,t){
@@ -41,7 +42,7 @@ export default class FilterProduce extends Component{
                 {
                   this.props.report.ReportTypeDate.map((ele,index)=>{
                     return(
-                        <li key={index} style={(this.state.reportType == ele.typeName) ? styles.active : null} onClick={()=>{this.setState({reportType:ele.typeName})}}>{ele.typeName}</li>
+                        <li key={index} style={(this.state.reportType == ele.id) ? styles.active : null} onClick={()=>{this.setState({reportType:ele.id})}}>{ele.typeName}</li>
                     )
                   })
                 }

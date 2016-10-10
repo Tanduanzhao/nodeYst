@@ -13,13 +13,16 @@ class MarketPrice extends Component{
     constructor(props){
         super(props);
         this.state= {
-            loading: true,
+            loading: false,
             request:true
             }
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _loadData(){
+        this.setState({
+            loading:true
+        });
         this.setState({
             request:false
         });
@@ -53,18 +56,20 @@ class MarketPrice extends Component{
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        this._loadData();
+        if(this.props.marketPrice.data.length == 0){
+            this._loadData();
+        }
     }
-    componentWillUnmount(){
-        this.setState({
-            loading:false
-        })
-        this.props.dispatch({
-            type:'LOADMARKETTDATA',
-            data:[],
-            pageNo:1
-        });
-    }
+    //componentWillUnmount(){
+    //    this.setState({
+    //        loading:false
+    //    })
+    //    this.props.dispatch({
+    //        type:'LOADMARKETTDATA',
+    //        data:[],
+    //        pageNo:1
+    //    });
+    //}
     _searchHandle(){
         this.setState({
             loading:true
@@ -122,11 +127,11 @@ class List extends Component{
                             <p>规格：{this.props.dataSources.spec}</p>
                             <p>生产企业：{this.props.dataSources.manufacturerName}</p>
                         </div>
-                        <Link to={`/datas/bidList/${this.props.dataSources.id}`}  className="list-right btn"> 查看各省中标价</Link>
+                        <Link to={`/datas/bidList/${encodeURI(encodeURI(this.props.dataSources.productName))}`}  className="list-right btn"> 查看各省中标价</Link>
                     </div>
                     <div className="row market-price">
                         <div className="col-50"> 广东省最小制剂入市价</div>
-                        <div className="col-50"> 0.5505（yyyy-mm-dd）</div>
+                        <div className="col-50">{this.props.dataSources.entryPrice} （{this.props.dataSources.entryDate}）</div>
                     </div>
                     <div className="market-list price-list">
                         <div className="list-left">

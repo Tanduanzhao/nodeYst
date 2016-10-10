@@ -14,7 +14,7 @@ class product extends Component{
     constructor(props){
         super(props);
         this.state= {
-            loading: true,
+            loading: false,
             request:true
         }
         this._loadData = this._loadData.bind(this);
@@ -41,6 +41,9 @@ class product extends Component{
         }, 100);
     }
     _loadData(){
+        this.setState({
+            loading:true
+        });
         this.setState({
             request:false
         });
@@ -79,17 +82,22 @@ class product extends Component{
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        this._loadData();
+        if(this.props.product.data.length == 0){
+            this._loadData();
+        }
     }
     componentWillUnmount(){
         this.props.dispatch({
             type:'CLEADRUGSEARCHNAME'
         })
         this.props.dispatch({
-            type:'LOADPRODUCTDATA',
-            data:[],
-            pageNo:1,
+            type:'UNSHOWFILTERPRODUCT',
         });
+        //this.props.dispatch({
+        //    type:'LOADPRODUCTDATA',
+        //    data:[],
+        //    pageNo:1,
+        //});
     }
     _searchHandle(){
         this.setState({
@@ -216,6 +224,10 @@ function select(state){
 }
 
 export default connect(select)(product);
+
+product.contextTypes = {
+    router:React.PropTypes.object.isRequired
+}
 
 const styles = {
     active:{

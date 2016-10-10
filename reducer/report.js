@@ -27,7 +27,7 @@ var defaultReport={
   data:[],
   infinite:false,
   titleOrReportKey:"",
-  reportType:null,
+  reportType:0,
   ReportTypeDate:[]
 }
 export default function report(state=defaultReport,action) {

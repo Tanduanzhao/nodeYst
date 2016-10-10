@@ -40,7 +40,7 @@ export default class More extends Component {
 			email:this.refs.email.value || null,
 			callBack:(res)=>{
 				console.log(res.datas,"dd")
-				alert("领取报告成功，请到“个人中心-已领报告查阅”查看。")
+				alert("领取2015年珠三角医疗终端市场分析报告成功，请到“个人中心-已购报告查阅”查阅。")
 			}
 		});
 		this.setState({hideGlodBox:false})
@@ -55,7 +55,7 @@ export default class More extends Component {
 				console.log(res.datas,"dd")
 			}
 		});
-		alert("领取报告成功，请到“个人中心-已领报告查阅”查看。")
+		alert("领取2015年广东省心脑血管中成药市场分析报告报告成功，请到“个人中心-已购报告查阅”查阅。")
 		this.setState({hideBox:false})
 	}
 	render() {
