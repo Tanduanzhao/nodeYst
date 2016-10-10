@@ -139,11 +139,11 @@ class Quality extends Component{
                             typeof this.props.quality.datas.lists == 'undefined' ? <EmptyComponent/> : <div className="card" style={{marginTop:0}}>
                                 <div className="item item-divider item-text-wrap">
                                     <i className="fa fa-tag
-            "></i> 来源：{this.props.quality.datas.grade}（{this.props.quality.datas.publishDate}）
+            "></i> 来源：{this.props.quality.datas[0].grade}（{this.props.quality.datas[0].publishDate}）
                                 </div>
                                 <ul className="list">
                                     {
-                                        this.props.quality.datas.lists.map((ele)=>{
+                                        this.props.quality.datas[0].lists.map((ele)=>{
                                             return(
                                                 <li className="item">
                                                     <h2>{ele.productName}（{ele.trandName}）</h2>
@@ -151,9 +151,9 @@ class Quality extends Component{
                                                     <p>生产企业：{ele.manufacturerName}</p>
                                                     <p>
                                                         {
-                                                            ele.qualityLevelTypeNames.map((ele)=>{
+                                                            ele.qualityLevelTypes.map((ele)=>{
                                                                 return(
-                                                                    <span className="tag">{ele.qualityLevelTypeName}</span>
+                                                                    <span className="tag">{ele}</span>
                                                                 )
                                                             })
                                                         }
@@ -194,7 +194,7 @@ class HeaderBar extends Component{
         </div>
         <label className="item-input-wrapper">
           <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="searchName" type="search" placeholder={this.props.lowPrice.searchName}/>
+          <input ref="searchName" type="search" placeholder={this.props.quality.searchName}/>
         </label>
         <button className="button button-clear" onClick={this._changeHandle.bind(this)}>
            搜索

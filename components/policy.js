@@ -430,29 +430,30 @@ class HeaderBar extends Component{
 
 class Main extends Component{   
     render(){
+        console.log(this.props.policy.quality,'quality');
         return(
             <div className="list">
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[0].title : null}/>
                     {
-                        typeof this.props.policy.quality.grade == 'undefined'? <EmptyComponent/> :
+                        this.props.policy.quality.length == 0? <EmptyComponent/> :
                 <div className="card" style={{marginTop:0}}>
                     <div className="item item-divider item-text-wrap">
                         <i className="fa fa-tag
-"></i> 来源：{this.props.policy.quality.grade}（{this.props.policy.quality.publishDate}）
+"></i> 来源：{this.props.policy.quality[0].grade}（{this.props.policy.quality[0].publishDate}）
                     </div>
                     <ul className="list">
                         {
-                            typeof this.props.policy.quality.lists == 'undefined' ? null : this.props.policy.quality.lists.map((ele)=>{
+                            typeof this.props.policy.quality[0].lists == 'undefined' ? null : this.props.policy.quality[0].lists.map((ele)=>{
                                 return(
-                                    <li className="item">
+                                    <li className="item" key={Math.random(1)}>
                                         <h2>{ele.productName}（{ele.trandName}）</h2>
                                         <p>剂型/规格：{ele.prepName} / {ele.spec}</p>
                                         <p>生产企业：{ele.manufacturerName}</p>
                                         <p>
                                            {
-                                                ele.qualityLevelTypeNames.length ==0 ? null : ele.qualityLevelTypeNames.map((ele)=>{
+                                                ele.qualityLevelTypes.length ==0 ? null : ele.qualityLevelTypes.map((ele)=>{
                                                     return(
-                                                        <span className="tag">{ele.qualityLevelTypeName}</span>
+                                                        <span className="tag" key={Math.random(1)}>{ele}</span>
                                                     )
                                                 })
                                             }
@@ -462,7 +463,7 @@ class Main extends Component{
                             }) 
                         }
                     </ul>
-                    <MoreBar link={`/datas/policy/quality/${this.props.policy.quality.gradeId}`}/>
+                    <MoreBar link={`/datas/policy/quality/${this.props.policy.quality[0].gradeId}`}/>
                 </div>
                 }
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[1].title : null}/>
