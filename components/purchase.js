@@ -27,7 +27,7 @@ class purchase extends Component {
       titleOrReportKey:this.props.purchase.titleOrReportKey,
       pageNo:this.props.purchase.pageNo,
       searchType:this.props.purchase.searchType,
-      reportType:encodeURI(encodeURI(this.props.purchase.reportType)),
+      reportType:this.props.purchase.reportType,
       callBack:(res)=>{
         this.props.dispatch({
           type:'LOADPURCHASEDATA',
@@ -98,7 +98,7 @@ class purchase extends Component {
     this.props.dispatch({
       type:'CHANGETYPE',
       searchType:args.searchType,
-      reportType:args.reportType
+      reportType:encodeURI(encodeURI(args.reportType))
     });
     setTimeout(()=>{
       this._loadData();

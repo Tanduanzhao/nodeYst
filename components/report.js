@@ -16,12 +16,16 @@ class Report extends Component {
     console.log(this.props.params.id)
     this.state={
       searchType:this.props.report.searchType,
-      loading:true
+      loading:true,
+      request:true
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
   }
   _loadData(){
+    this.setState({
+      request:false
+    });
     loadReportList({
       titleOrReportKey:this.props.report.titleOrReportKey,
       pageNo:this.props.report.pageNo,
@@ -45,12 +49,15 @@ class Report extends Component {
         this.setState({
           loading:false
         });
+        this.setState({
+          request:true
+        });
       }
     });
   }
   _infiniteScroll(){
     //全部高度-滚动高度 == 屏幕高度-顶部偏移
-    if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.report.infinite){
+    if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.report.infinite && this.state.request){
       console.log("sdddd",this.props.report.infinite)
       this._loadData();
     }
@@ -210,9 +217,9 @@ class List extends Component{
     })();
     var number = (()=>{
       if(this.props.dataSources.costStatus == "1"){
-        string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人购买</span>;
+        string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人购买</span>;
       }else{
-        string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人查看</span>;
+        string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人查看</span>;
       }
       return string;
     })();
@@ -227,7 +234,7 @@ class List extends Component{
     }
     return(
         <div className="col-50">
-          <Link onClick={this.insertUserAction.bind(this)} to={`/pdf/${this.props.dataSources.id}`}>
+          <Link onClick={this.insertUserAction.bind(this)} to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
             <div className="report-img">
               <img src={this.props.dataSources.mainImg}/>
             </div>

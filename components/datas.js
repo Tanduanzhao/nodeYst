@@ -13,16 +13,18 @@ class Datas extends Component{
     constructor(props) {
         super(props);
         this.state ={
-            loading:this.props.datas.loading
+            loading:this.props.datas.loading,
+            imgType:"POLICY_ADVERTISEMENT"
         }
     }
     componentDidMount(){
         loadPicture({
             yearMonth:this.props.yearMonth,
             areaId:this.props.areaId,
+            imgType:this.state.imgType,
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADHOMEIMG',
+                    type:'LOADDATA',
                     img: res.datas
                 });
                 this.props.dispatch({

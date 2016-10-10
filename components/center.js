@@ -21,7 +21,7 @@ class Main extends Component{
     render(){
         console.log(typeof this.props.userInfo.isVip,'vip');
         return(
-            <div className="scroll-content has-footer">
+            <div className="scroll-content has-footer center">
                 <div className="list">
                     <div className="item item-avatar bg_center">
                         <img style={{top:"30px", left:"35px"}} src={this.props.userInfo.imgUrl} width="80"/>

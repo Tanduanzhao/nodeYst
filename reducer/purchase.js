@@ -20,7 +20,7 @@ var defaultPurchase={
   hospitalLevel:null,
   produceType:null,
   searchName:null,
-  searchType:0,
+  searchType:1,
   pageNo:1,
   data:[],
   infinite:false,
