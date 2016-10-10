@@ -17,6 +17,7 @@ export default function quality(state = defaultQuality,action){
         case 'LOADQUALITYMENU' : return ObjectAssign({},state,{levels:state.levels.concat(action.datas)});
         case 'loadQUALITYMENUFORM' : return ObjectAssign({},state,{origins:state.origins.concat(action.datas)});
         case 'LOADQUALITYDATA' : return ObjectAssign({},state,{datas:state.datas.concat(action.datas)});
+        case 'RESETQUALITY' : return defaultQuality;
         default : return state;
     }
 }

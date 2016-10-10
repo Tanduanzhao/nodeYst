@@ -27,16 +27,18 @@ class Main extends Component{
                         <h2>{this.props.userInfo.userName}</h2>
                         <p>
                             {
-                                this.props.userInfo.isVip?<img className="vipLogo" src="/images/vipLogo.png" alt=""/>:<img className="vipLogo" src="/images/mass.png" alt=""/>
+                                !!this.props.userInfo.isVip?<img className="vipLogo" src="/images/vipLogo.png" alt=""/>:<img className="vipLogo" src="/images/mass.png" alt=""/>
                             }
                         </p>
                     </div>
                 </div>
                 <div className="list center-viwe">
-                    <div className="item item-icon-left">
-                        <img src="/images/open_icon.jpg" alt=""/>
-                        开通会员
-                    </div>
+                    {
+                       !this.props.userInfo.isVip? null : <Link to="vip" className="item item-icon-left">
+                            <img src="/images/open_icon.jpg" alt=""/>
+                            开通会员
+                        </Link>
+                    }
                     <div className="item item-icon-left">
                         <img src="/images/contribute_icon.jpg" alt=""/>
                         我要投稿

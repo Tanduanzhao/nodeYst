@@ -121,6 +121,11 @@ class LowPrice extends Component{
             this._loadData();
         },100);
     }
+    componentWillMount(){
+        this.props.dispatch({
+            type:'REASETLOWPRICE'
+        });
+    }
     render(){
         return(
             <div className="root">

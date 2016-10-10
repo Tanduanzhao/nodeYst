@@ -123,7 +123,11 @@ class Insurance extends Component{
             this._loadData();
         },100);
     }
-    
+    componentWillMount(){
+        this.props.dispatch({
+            type:'REASETINSURANCE'
+        });
+    }
     render(){
         return(
             <div className="root">
@@ -143,7 +147,8 @@ class Insurance extends Component{
                                                             <tr>
                                                                 <th>药品名称</th>
                                                                 <th>剂型</th>
-                                                                <th>规格</th>
+                                                                <th>医保类别</th>
+                                                                <th>医保编号</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -152,6 +157,7 @@ class Insurance extends Component{
                                                                     return(
                                                                         <tr key={Math.random(1)}>
                                                                             <td>{v.productName || null}</td>
+                                                                            <td>{v.prepName || null}</td>
                                                                             <td>{v.pqriType || null}</td>
                                                                             <td>{v.pqriCode || null}</td>
                                                                         </tr>

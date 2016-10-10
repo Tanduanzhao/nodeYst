@@ -20,7 +20,6 @@ class Base extends Component{
             isLoading:false,
             isInfinite:false
         }
-        console.log(this.props.base.datas,'默认仓库数据');
     }
     //加载筛选条件
     _loadSlider(){
@@ -38,7 +37,6 @@ class Base extends Component{
         this.setState({
             isLoading:true
         });
-        console.log('loadingbase');
         loadBaseAll({
             searchName:this.props.base.searchName,
             areaId:JSON.stringify(this.props.base.areaId),
@@ -120,6 +118,11 @@ class Base extends Component{
         setTimeout(()=>{
             this._loadData();
         },100);
+    }
+    componentWillMount(){
+        this.props.dispatch({
+            type:'REASETBASE'
+        });
     }
     render(){
         return(
