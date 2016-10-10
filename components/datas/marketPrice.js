@@ -91,11 +91,12 @@ class MarketPrice extends Component{
           <div className="root">
               <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
               <div ref="content" className="scroll-content has-header">
-                  {
-                      this.state.loading?<Loading/>:<Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
-                  }
+                  <Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
               </div>
               <More {...this.props}/>
+              {  
+                this.state.loading?<Loading/>: null
+               }
           </div>
         )
     }

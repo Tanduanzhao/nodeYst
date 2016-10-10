@@ -9,6 +9,7 @@ import FilterReport from './filterReport';
 import Loading from './loading';
 import EmptyComponent from './emptyComponent';
 import {loadNewrepor,loadPicture,insertUserAction,getReportType,loadReportList} from './function/ajax';
+import Popup from './popup';
 
 class Report extends Component {
   constructor(props){
@@ -17,7 +18,8 @@ class Report extends Component {
     this.state={
       searchType:this.props.report.searchType,
       loading:true,
-      request:true
+      request:true,
+      showPopup:false
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -90,6 +92,27 @@ class Report extends Component {
         pageNo:1
       });
   }
+    
+    
+   _openProductView(id){
+        if (typeof WeixinJSBridge == "undefined")   return false;
+        var pid = id;
+//        var pid = "pDF3iY_G88cM_d-wuImym3tkVfG5";//只需要传递
+        WeixinJSBridge.invoke('openProductViewWithPid',{"pid":pid},(res)=>{
+            // 返回res.err_msg,取值 
+            // open_product_view_with_id:ok 打开成功
+//            alert(res.err_msg);
+            if (res.err_msg == "open_product_view_with_id:ok"){
+                WeixinJSBridge.invoke('openProductView',{
+                    "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
+                    },(res)=>{ 
+                    this.setState({
+                        showPopup:true
+                    });
+                });
+            }
+        });
+    }
   _fn(args) {
     this.setState({
       loading:true
@@ -122,12 +145,32 @@ class Report extends Component {
     });
     setTimeout(()=> this._loadData(),100);
   }
+    
+    _popupCancel(){
+        this.setState({
+            showPopup:false
+        })
+    }
+    _popupSure(){
+        this.setState({
+            showPopup:false
+        });
+        this.props.dispatch({
+          type:'LOADPRODUCEDATA',
+          data:[],
+          pageNo:1,
+        });
+        setTimeout(()=> this._loadData(),100);
+    }
   render() {
     return (
       <div className="root">
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header report-view">
-          <Main data={this.props.report.data} loading={this.state.loading}/>
+          <Main openProductView={this._openProductView.bind(this)} data={this.props.report.data} loading={this.state.loading}/>
+            {
+                this.state.showPopup ? <Popup popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
+            }
         </div>
         <FooterBar {...this.props}/>
         {
@@ -181,7 +224,7 @@ class Main extends Component{
         return(
             <ul className="report-cards row">
               {
-                this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                this.props.data.map((ele,index)=> <List openProductView = {this.props.openProductView} dataSources={ele} key={ele.id}/>)
               }
             </ul>
         )
@@ -205,24 +248,9 @@ class List extends Component{
     });
 
   }
-   _openProductView(id){
-        if (typeof WeixinJSBridge == "undefined")   return false;
-
-        var pid = "pDF3iY_G88cM_d-wuImym3tkVfG5";//只需要传递
-        WeixinJSBridge.invoke('openProductViewWithPid',{"pid":pid},function(res){
-            // 返回res.err_msg,取值 
-            // open_product_view_with_id:ok 打开成功
-//            alert(res.err_msg);
-            if (res.err_msg != "open_product_view_with_id:ok"){
-                WeixinJSBridge.invoke('openProductView',{
-                    "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
-                    },function(res){ 
-//                    alert(res.err_msg);
-                });
-            }
-        });
-    }
   render(){
+      console.log(this.props.dataSources.costStatus,'ct');
+      console.log(this.props.dataSources.buyReport,'br');
     var string = null;
     var tag = (()=>{
       if(this.props.dataSources.costStatus == "1"){
@@ -268,7 +296,7 @@ class List extends Component{
                       {number}
                       {tag}
                     </p>
-                  </Link> : <div onClick={this._openProductView.bind(this,this.props.dataSources.id)}>
+                  </Link> : <a onClick={()=>this.props.openProductView(this.props.dataSources.id)}>
                     <div className="report-img">
                       <img src={this.props.dataSources.mainImg}/>
                     </div>
@@ -278,7 +306,7 @@ class List extends Component{
                       {number}
                       {tag}
                     </p>
-                  </div>
+                  </a>
             }
         </div>
     )

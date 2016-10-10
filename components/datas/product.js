@@ -125,6 +125,9 @@ class product extends Component{
                 {
                     this.props.product.isShowFilter ? <FilterProduct fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.provicenData}/> : null
                 }
+                {
+                    this.state.loading ? <Loading/> : null
+                }
             </div>
         )
     }
@@ -135,20 +138,16 @@ class Main extends Component{
         console.log( this.props.data,"ss")
     }
     render(){
-        if(this.props.loading) {
-            return <Loading/>
-        }else {
-            if (this.props.data.length != 0) {
-                return (
-                    <ul className="list product-view">
-                        {
-                            this.props.data.map((ele, index)=> <List dataSources={ele} key={index}/>)
-                        }
-                    </ul>
-                )
-            } else {
-                return <EmptyComponent/>
-            }
+        if (this.props.data.length != 0) {
+            return (
+                <ul className="list product-view">
+                    {
+                        this.props.data.map((ele, index)=> <List dataSources={ele} key={index}/>)
+                    }
+                </ul>
+            )
+        } else {
+            return <EmptyComponent/>
         }
     }
 }

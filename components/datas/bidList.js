@@ -160,11 +160,15 @@ class BidList extends Component{
                     <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)}/>
                     <div ref="content" className="scroll-content has-header">
                         <Main data={this.props.bidList.data} loading={this.state.loading}/>
+                        
                         <More {...this.props}/>
                         {
                             this.props.bidList.isShowFilter ? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
                         }
                     </div>
+                    {
+                        this.state.loading ? <Loading/> : null
+                    }
                 </div>
             )
         }
@@ -175,20 +179,16 @@ class Main extends Component{
     }
     render(){
         var bidList = 0;
-        if(this.props.loading) {
-            return <Loading/>
+        if(this.props.data.length != 0){
+            return(
+                <ul className="bidList-view">
+                    {
+                        this.props.data.map((ele,index)=> <List dataSources={ele} key={`bidList_${bidList++}+${ele.id}`}/>)
+                    }
+                </ul>
+            )
         }else{
-            if(this.props.data.length != 0){
-                return(
-                    <ul className="bidList-view">
-                        {
-                            this.props.data.map((ele,index)=> <List dataSources={ele} key={`bidList_${bidList++}+${ele.id}`}/>)
-                        }
-                    </ul>
-                )
-            }else{
-                return <EmptyComponent/>
-            }
+            return <EmptyComponent/>
         }
     }
 }
