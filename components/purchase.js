@@ -74,8 +74,8 @@ class purchase extends Component {
   }
   componentWillUnmount(){
     this.props.dispatch({
-      type:'CHANGETYPE',
-      searchType: null
+      type:'CHANGETYPEPURCHASE',
+      searchType: 1
     });
     this.props.dispatch({
       type:'LOADPURCHASEDATA',
@@ -201,9 +201,9 @@ class List extends Component{
     })();
     var number = (()=>{
       if(this.props.dataSources.costStatus == "1"){
-        string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人购买</span>;
+        string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人购买</span>;
       }else{
-        string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人查看</span>;
+        string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人查看</span>;
       }
       return string;
     })();

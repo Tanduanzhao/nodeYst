@@ -849,3 +849,6 @@ table.table-border td, table.table-border th {
   width: 32.5px;
   vertical-align: middle;
   margin-right: 20px; }
+
+.border {
+  border-top: 1px solid #ddd; }

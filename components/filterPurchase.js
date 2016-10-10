@@ -6,6 +6,7 @@ export default class FilterProduce extends Component{
     this.state = {
       produceType:this.props.purchase.produceType,
       reportType:this.props.purchase.reportType,
+      searchType:this.props.purchase.searchType,
     };
   }
   _cancelButton(){
