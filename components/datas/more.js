@@ -17,7 +17,7 @@ export default class More extends Component {
 					<div className="more-content" style={(this.state.show) ? styles.active :styles.hidden}>
 						<div className="more-footer">
 							<ul className="column" onClick={this.stopPropagation.bind(this)}>
-								<Link to="/home">
+								<Link to="/">
 									<img src="/images/column_more_home.jpg" alt=""/>
 									首页
 								</Link>
@@ -25,7 +25,7 @@ export default class More extends Component {
 									<img src="/images/column01.jpg" alt=""/>
 									报告
 								</Link>
-								<Link to="/">
+								<Link to="/home">
 									<img src="/images/column_more_report.jpg" alt=""/>
 									行情
 								</Link>
@@ -33,7 +33,7 @@ export default class More extends Component {
 									<img src="/images/column07.jpg" alt="" className="price-icon"/>
 									入市价
 								</Link>
-								<Link to="/hospitalList">
+								<Link to="/datas/bidList">
 									<img src="/images/column02.jpg" alt=""/>
 									中标数据
 								</Link>
@@ -41,7 +41,7 @@ export default class More extends Component {
 									<img src="/images/column03.jpg" alt=""/>
 									政策准入
 								</Link>
-								<Link to="/datas/bidList">
+								<Link to="/datas/product">
 									<img src="/images/column05.jpg" alt=""/>
 									产品数据
 								</Link>
@@ -65,7 +65,7 @@ export default class More extends Component {
 									<img src="/images/column12.jpg" alt=""/>
 									低价药
 								</Link>
-								<Link to="/datas/assist">
+								<Link to="/datas/policy/assist">
 									<img src="/images/column13.jpg" alt=""/>
 									辅助用药
 								</Link>

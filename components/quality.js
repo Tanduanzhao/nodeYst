@@ -7,6 +7,7 @@ import {loadQualityFilter,loadQualityAll,loadQualityFilterForm} from './function
 import PolicySonFilter from './policySonFilter.js';
 import EmptyComponent from './emptyComponent';
 import Loading from './loading';
+import More from './datas/more';
 
 class Quality extends Component{
     constructor(props){
@@ -123,7 +124,11 @@ class Quality extends Component{
             this._loadData();
         },100);
     }
-    
+    componentWillMount(){
+        this.props.dispatch({
+            type:'REASETQUALITY'
+        });
+    }
     render(){
         return(
             <div className="root">

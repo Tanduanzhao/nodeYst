@@ -23,6 +23,7 @@ export default function insurance(state=defaultInsurance,action){
         case 'CHANGEINSURANCESEARCHNAME' : return ObjectAssign({},state,{searchName:action.searchName,pageNo:1,datas:[]});
         case 'LOADINSURANCEMENU' : return ObjectAssign({},state,{filters:state.filters.concat(action.datas)});
         case 'LOADINSURANCEDATA' : return ObjectAssign({},state,{datas:state.datas.concat(action.datas)});
+        case 'RESETINSURANCE' : return defaultInsurance;
         default : return state;
     }
 }

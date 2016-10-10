@@ -24,7 +24,7 @@ export default class ChartSingle extends Component{
             const sid = this.props.data.salesId || this.props.data.conceptId;
             return(
                 <div className="col text-center">
-                    <h3><span className="tag">{this.props.data.icoType}</span>{this.props.data.cwmName}</h3>
+                    <h3>{ !this.props.data.icoType ? null :<span className="tag">{this.props.data.icoType}</span>}{this.props.data.cwmName}</h3>
                     <h5 className="text zb">{this.props.data.sales}万</h5>
                     <div className="row footer-row">
                         {changeCost}

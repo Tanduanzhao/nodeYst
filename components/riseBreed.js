@@ -146,7 +146,7 @@ class List extends Component{
                 </div>
                 <p>
                     <span>市场规模：{this.props.dataSources.sales}</span>
-                    <span style={{marginLeft:'1rem'}}>市场份额： {this.props.dataSources.marketMth}</span>
+                    <span style={{marginLeft:'1rem'}}>市场份额： {this.props.dataSources.marketMth}%</span>
                 </p>
             </li>
         )
