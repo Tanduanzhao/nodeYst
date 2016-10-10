@@ -290,7 +290,8 @@ export const loadPicture = function(args){
         data:{
             searchName:args.searchName || null,
             yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null
+            areaId:args.areaId || null,
+            imgType:args.imgType || null,
         },
         callBack:(res)=>{
             args.callBack(res);

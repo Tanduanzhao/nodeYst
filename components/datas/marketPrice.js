@@ -56,20 +56,21 @@ class MarketPrice extends Component{
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        if(this.props.marketPrice.data.length == 0){
-            this._loadData();
-        }
+        //if(this.props.marketPrice.data.length == 0){
+        //    this._loadData();
+        //}
+        this._loadData();
     }
-    //componentWillUnmount(){
-    //    this.setState({
-    //        loading:false
-    //    })
-    //    this.props.dispatch({
-    //        type:'LOADMARKETTDATA',
-    //        data:[],
-    //        pageNo:1
-    //    });
-    //}
+    componentWillUnmount(){
+        //this.setState({
+        //    loading:false
+        //})
+        this.props.dispatch({
+            type:'LOADMARKETTDATA',
+            data:[],
+            pageNo:1
+        });
+    }
     _searchHandle(){
         this.setState({
             loading:true

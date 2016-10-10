@@ -11,7 +11,7 @@ var Slider = require('react-slick');
 	 constructor(props) {
 		 super(props);
 		 this.state ={
-			 loading:true
+			 loading:true,
 		 }
 	 }
 	 componentDidMount(){
@@ -34,6 +34,7 @@ var Slider = require('react-slick');
 			 yearMonth:this.props.yearMonth,
 			 areaId:this.props.areaId,
 			 searchAreaType:this.state.searchAreaType,
+			 imgType:"MAIN_ADVERTISEMENT"
 			 callBack:(res)=>{
 				 this.props.dispatch({
 					 type:'LOADHOMEIMG',

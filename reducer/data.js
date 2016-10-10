@@ -16,6 +16,7 @@ export default function data(state = defaultData,action){
 		case DECREASE : return ObjectAssign({},state,{yearMonth:--state.yearMonth});
 		case CHANGEDATA : return ObjectAssign({},state,{yearMonth:action.yearMonth});
         case CHANGEVIP : return ObjectAssign({},state,{isVip:true});
+		case "LOADDATA" : return ObjectAssign({},state,{data:action.data});
 		default : return state;
 	}
 }

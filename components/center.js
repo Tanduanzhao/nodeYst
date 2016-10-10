@@ -20,7 +20,7 @@ class Center extends Component{
 class Main extends Component{
     render(){
         return(
-            <div className="scroll-content has-footer">
+            <div className="scroll-content has-footer center">
                 <div className="list">
                     <div className="item item-avatar bg_center">
                         <img style={{top:"30px", left:"35px"}} src={this.props.userInfo.imgUrl} width="80"/>

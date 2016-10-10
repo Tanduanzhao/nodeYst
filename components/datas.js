@@ -20,9 +20,10 @@ class Datas extends Component{
         loadPicture({
             yearMonth:this.props.yearMonth,
             areaId:this.props.areaId,
+            imgType:"POLICY_ADVERTISEMENT"
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADHOMEIMG',
+                    type:'LOADDATA',
                     img: res.datas
                 });
                 this.props.dispatch({
