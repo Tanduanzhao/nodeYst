@@ -89,13 +89,11 @@ class BidList extends Component{
             },100);
         })
     }
-    _focus(){
-        console.log(this.props.userInfo.isVip,"ddd");
-        if(!this.props.userInfo.isVip){
-            this.context.router.push('/vip');
-        }
-    }
     _searchHandle(){
+        if(this.props.isVip == '0'){
+            this.context.router.push('/vip');
+            return false;
+        }
         this.setState({
             loading:true
         });
@@ -252,7 +250,7 @@ function select(state){
     return{
         provicenData:state.provicen.data,
         bidList:state.bidList,
-        userInfo:state.userInfo
+        isVip:state.userInfo.isVip
     }
 }
 BidList.contextTypes = {

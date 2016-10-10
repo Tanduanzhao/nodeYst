@@ -72,6 +72,10 @@ class MarketPrice extends Component{
         });
     }
     _searchHandle(){
+        if(this.props.isVip == '0'){
+            this.context.router.push('/vip');
+            return false;
+        }
         this.setState({
             loading:true
         })
@@ -189,8 +193,13 @@ class HeaderBar extends Component{
 function select(state){
     return{
         uri:state.router.uri,
-        marketPrice:state.marketPrice
+        marketPrice:state.marketPrice,
+        isVip:state.userInfo.isVip
     }
 }
 
 export default connect(select)(MarketPrice);
+
+MarketPrice.contextTypes = {
+    router:React.PropTypes.object.isRequired
+}

@@ -5,7 +5,7 @@ export default class FilterProduce extends Component{
     super(props);
     this.state = {
       produceType:this.props.purchase.produceType,
-      reportType:this.props.report.reportType,
+      reportType:this.props.purchase.reportType,
     };
   }
   _cancelButton(){

@@ -26,7 +26,7 @@ var defaultPurchase={
   infinite:false,
   titleOrReportKey:null,
   ReportType:[],
-  reportType:"行业报告",
+  reportType:0,
   ReportTypeDate:[]
 
 }
