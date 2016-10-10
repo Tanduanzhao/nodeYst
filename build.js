@@ -127,7 +127,7 @@ var _router = (
                     <IndexRoute component={Index}/>
                 </Route>
                 <Route path="vip" component={vip}></Route>
-                <Route path="pdf/:id" component={Pdf}></Route>
+                <Route path="pdf/:id/:title" component={Pdf}></Route>
             </Route>
 		</Router>
 	</Provider>

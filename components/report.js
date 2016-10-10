@@ -234,7 +234,7 @@ class List extends Component{
     }
     return(
         <div className="col-50">
-          <Link onClick={this.insertUserAction.bind(this)} to={`/pdf/${this.props.dataSources.id}`}>
+          <Link onClick={this.insertUserAction.bind(this)} to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
             <div className="report-img">
               <img src={this.props.dataSources.mainImg}/>
             </div>
