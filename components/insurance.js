@@ -115,9 +115,16 @@ class Insurance extends Component{
     
     //搜索点击查询对应数据
     _searchDatas(key){
+        if(this.props.isVip == '0'){
+           this.context.router.push('/vip');
+            return false;
+        }
         this.props.dispatch({
             type:'CHANGEINSURANCESEARCHNAME',
             searchName:key
+        });
+        this.setState({
+            isInfinite:false
         });
         setTimeout(()=>{
             this._loadData();
@@ -223,8 +230,12 @@ class LinkBar extends Component{
 function select(state){
     return{
         policy:state.policy,
-        insurance:state.insurance
+        insurance:state.insurance,
+        isVip:state.userInfo.isVip
     }
+}
+Insurance.contextTypes = {
+    router:React.PropTypes.object.isRequired
 }
 
 export default connect(select)(Insurance);

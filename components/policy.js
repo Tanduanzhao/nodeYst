@@ -349,6 +349,10 @@ class Policy extends Component{
     }
     //搜索结果通用名点击查询对应数据
     _searchDatas(key){
+        if(this.props.isVip == '0'){
+           this.context.router.push('/vip');
+            return false;
+        }
 //        console.dir(this.refs.header.ref.policySearchName);
         this.refs.header.refs.policySearchName.value=key;
         this.props.dispatch({
@@ -710,8 +714,12 @@ const styles ={
 function select(state){
     return {
         policy:state.policy,
-        userInfo:state.userInfo
+        isVip:state.userInfo.isVip
     }
+}
+
+Policy.contextTypes = {
+    router:React.PropTypes.object.isRequired
 }
 
 export default connect(select)(Policy);

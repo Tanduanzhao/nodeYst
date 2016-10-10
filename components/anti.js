@@ -115,9 +115,16 @@ class Anti extends Component{
     }
     //搜索点击查询对应数据
     _searchDatas(key){
+        if(this.props.isVip == '0'){
+           this.context.router.push('/vip');
+            return false;
+        }
         this.props.dispatch({
             type:'CHANGEANTISEARCHNAME',
             searchName:key
+        });
+        this.setState({
+            isInfinite:false
         });
         setTimeout(()=>{
             this._loadData();
@@ -219,8 +226,12 @@ class LinkBar extends Component{
 function select(state){
     return{
         policy:state.policy,
-        anti:state.anti
+        anti:state.anti,
+        isVip:state.userInfo.isVip
     }
+}
+Anti.contextTypes = {
+    router:React.PropTypes.object.isRequired
 }
 
 export default connect(select)(Anti);
