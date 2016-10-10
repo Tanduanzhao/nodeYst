@@ -7,7 +7,7 @@ var defaultProduct={
   searchName:null,
   produceType:null,
   pageNo:1,
-  tradeType:0,
+  tradeType:3,
   data:[],
   infinite:false
 }

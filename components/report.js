@@ -50,7 +50,6 @@ class Report extends Component {
   }
   _infiniteScroll(){
     //全部高度-滚动高度 == 屏幕高度-顶部偏移
-    console.log("sssss",this.props.report.infinite)
     if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.report.infinite){
       console.log("sdddd",this.props.report.infinite)
       this._loadData();
@@ -70,19 +69,18 @@ class Report extends Component {
     this.ele = this.refs.content;
     console.log(this.refs.content);
     this.ele.addEventListener('scroll',this._infiniteScroll);
-    console.log(this.state.searchType)
-    this._loadData()
-    this._getReportType()
+    console.log(this.state.searchType);
+    this._loadData();
+    this._getReportType();
   }
   componentWillUnmount(){
     this.props.dispatch({
-      type:'CHANGETYPE',
-      searchType: null
+      type:'UNSHOWFILTERPRODUCE',
     });
       this.props.dispatch({
         type:'LOADPRODUCEDATA',
         data:[],
-        pageNo:1,
+        pageNo:1
       });
   }
   _fn(args) {
@@ -121,7 +119,7 @@ class Report extends Component {
     return (
       <div className="root">
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
-        <div  ref="content"  className="scroll-content has-header">
+        <div  ref="content"  className="scroll-content has-header report-view">
           <Main data={this.props.report.data} loading={this.state.loading}/>
         </div>
         <FooterBar {...this.props}/>
@@ -230,7 +228,9 @@ class List extends Component{
     return(
         <div className="col-50">
           <Link onClick={this.insertUserAction.bind(this)} to={`/pdf/${this.props.dataSources.id}`}>
-            <img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
+            <div className="report-img">
+              <img src={this.props.dataSources.mainImg}/>
+            </div>
             <h3> {this.props.dataSources.title}</h3>
             <div className="report-card-price">¥{this.state.price}</div>
             <p className="report-card-footer">

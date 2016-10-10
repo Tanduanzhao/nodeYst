@@ -33,6 +33,7 @@ export default class FilterProduce extends Component{
             <h2 className="item item-divider">药品分类</h2>
             <div className="list padding">
               <ul className="list-horizontal-block">
+                <li style={(this.state.tradeType == 3) ? styles.active : null} onClick={()=>{this.setState({tradeType:3})}}>全部</li>
                 <li style={(this.state.tradeType == 0) ? styles.active : null} onClick={()=>{this.setState({tradeType:0})}}>西药</li>
                 <li style={(this.state.tradeType == 1) ? styles.active : null} onClick={()=>{this.setState({tradeType:1})}}>中成药</li>
                 <li style={(this.state.tradeType == 2) ? styles.active : null} onClick={()=>{this.setState({tradeType:2})}}>生物制品</li>

@@ -10,16 +10,20 @@ import Loading from '../loading';
 import EmptyComponent from '../emptyComponent';
 import FilterBidList from '../filterBidList';
 import {Token} from '../function/tokenbidList.js';
+import More from './more';
 class BidList extends Component{
     constructor(props){
         super(props);
         this.state={
-            loading:true
+            loading:false
         };
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _loadData(){
+        this.setState({
+            loading:true
+        });
         this.props.dispatch({
             type:'request'
         });
@@ -77,12 +81,19 @@ class BidList extends Component{
                 sidx:args.sidx,
                 areaId:args.areaId,
                 searchAreaType:args.searchType,
+                active:args.active,
                 searchProductStatus:args.searchProductStatus,
             });
             setTimeout(()=>{
                 this._loadData();
             },100);
         })
+    }
+    _focus(){
+        console.log(this.props.userInfo.isVip,"ddd");
+        if(!this.props.userInfo.isVip){
+            this.context.router.push('/vip');
+        }
     }
     _searchHandle(){
         this.setState({
@@ -97,49 +108,61 @@ class BidList extends Component{
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        console.log(this.ele.firstChild.clientHeight-this.ele.scrollTop , document.body.clientHeight-this.ele.offsetTop)
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite && this.props.bidList.request){
             this._loadData();
         }
     }
     componentDidMount(){
+        this.props.dispatch({
+            type:'CHANGEBIDLISTTITLEORREPORTKEY',
+            searchName:this.props.params.productName
+        });
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        this._loadData();
-        getBidAreaInfo({
-                pageNo:this.props.bidList.pageNo,
-                searchName:this.props.bidList.searchName,
-                callBack:(res)=>{
-                    this.props.dispatch({
-                        type:'getBidAreaInfo',
-                        getBidAreaInfo:res.datas,
-                    });
-                }
-            });
-        getProjectStatus({
-            callBack:(res)=>{
-                this.props.dispatch({
-                    type:'getProjectStatus',
-                    getProjectStatus:res.datas,
+            if(this.props.params.productName || this.props.bidList.data.length == 0){
+                setTimeout(()=>{
+                    this._loadData();
+                },10);
+                getBidAreaInfo({
+                    pageNo:this.props.bidList.pageNo,
+                    searchName:this.props.bidList.searchName,
+                    callBack:(res)=>{
+                        this.props.dispatch({
+                            type:'getBidAreaInfo',
+                            getBidAreaInfo:res.datas,
+                        });
+                    }
+                });
+                getProjectStatus({
+                    callBack:(res)=>{
+                        this.props.dispatch({
+                            type:'getProjectStatus',
+                            getProjectStatus:res.datas,
+                        });
+                    }
                 });
             }
-        });
+
     }
     componentWillUnmount(){
-        this.props.dispatch({
-            type:'LOADBIFLISTCONTENTDATA',
-            data:[],
-            pageNo:1,
-        });
+        //this.props.dispatch({
+        //    type:'LOADBIFLISTCONTENTDATA',
+        //    data:[],
+        //    pageNo:1,
+        //});
         this.ele.removeEventListener('scroll',this._infiniteScroll);
+        this.props.dispatch({
+            type:'UNSHOWFILTERPRODUCE',
+        });
     }
 
     render(){
             return (
                 <div className="root" style={{"overflow":"auto"}}>
-                    <HeaderBar {...this.props} loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)}/>
+                    <HeaderBar {...this.props} _focus={this._focus.bind(this)} loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)}/>
                     <div ref="content" className="scroll-content has-header">
                         <Main data={this.props.bidList.data} loading={this.state.loading}/>
+                        <More {...this.props}/>
                         {
                             this.props.bidList.isShowFilter ? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
                         }
@@ -193,7 +216,7 @@ class HeaderBar extends Component{
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)}  type="search" placeholder="请输入搜索关键词"/>
+                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)} onFocus={this.props._focus.bind(this)} type="search" placeholder="请输入搜索关键词"/>
                 </label>
                 <button className="button button-clear" onClick={this.props._searchHandle.bind(this)}>
                     搜索
@@ -228,7 +251,11 @@ class List extends Component{
 function select(state){
     return{
         provicenData:state.provicen.data,
-        bidList:state.bidList
+        bidList:state.bidList,
+        userInfo:state.userInfo
     }
+}
+BidList.contextTypes = {
+    router:React.PropTypes.object.isRequired
 }
 export default connect(select)(BidList);

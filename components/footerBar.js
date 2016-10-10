@@ -18,7 +18,14 @@ default class FooterBar extends Component {
 		}, {
 			uri: 'report',
 			title: '报告',
-			icon: 'cube'
+			icon: 'cube',
+			fn:()=>{
+				this.props.dispatch({
+					type:'CHANGETYPE',
+					searchType:1,
+					reportType:0
+				});
+			}
 		}, {
 			uri: 'home',
 			title: '行情',

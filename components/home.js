@@ -241,7 +241,9 @@ class Hotrepor extends Component{
 		return(
 			<div className="col-50">
 				<Link to={`/pdf/${this.props.dataSources.id}`}>
-					<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
+					<div className="report-img">
+						<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
+					</div>
 					<h3> {this.props.dataSources.title}</h3>
 					<div className="report-card-price">¥{this.state.price}</div>
 					<p className="report-card-footer">
