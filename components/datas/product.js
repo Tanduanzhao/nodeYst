@@ -100,6 +100,10 @@ class product extends Component{
         //});
     }
     _searchHandle(){
+        if(this.props.isVip == '0'){
+            this.context.router.push('/vip');
+            return false;
+        }
         this.setState({
             loading:true
         })
@@ -219,7 +223,8 @@ class HeaderBar extends Component{
 
 function select(state){
     return{
-        product:state.product
+        product:state.product,
+        isVip:state.userInfo.isVip
     }
 }
 
