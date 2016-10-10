@@ -65,6 +65,10 @@ class Quality extends Component{
                         this.setState({
                             isInfinite:true
                         });
+                    }else{
+                        this.props.dispatch({
+                            type:'PAGEADDQUALITY'
+                        })
                     }
                 },10);
             }

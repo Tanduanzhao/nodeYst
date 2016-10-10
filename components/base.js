@@ -56,6 +56,10 @@ class Base extends Component{
                         this.setState({
                             isInfinite:true
                         });
+                    }else{
+                        this.props.dispatch({
+                            type:'PAGEADDBASE'
+                        })
                     }
                 },10);
             }
@@ -116,6 +120,9 @@ class Base extends Component{
             return false;
         }
         this.props.dispatch({
+            type:'REASETBASE'
+        });
+        this.props.dispatch({
             type:'CHANGEBASESEARCHNAME',
             searchName:key
         });
@@ -158,9 +165,9 @@ class Base extends Component{
                                                                 ele.lists.map((v)=>{
                                                                     return(
                                                                         <tr key={Math.random(1)}>
-                                                                            <td>{v.productName || null}</td>
-                                                                            <td>{v.prepName || null}</td>
-                                                                            <td>{v.spec || null}</td>
+                                                                            <td className="item-text-wrap">{v.productName || null}</td>
+                                                                            <td className="item-text-wrap">{v.prepName || null}</td>
+                                                                            <td className="item-text-wrap">{v.spec || null}</td>
                                                                         </tr>
                                                                     )
                                                                 })

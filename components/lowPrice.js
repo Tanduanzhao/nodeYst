@@ -57,6 +57,10 @@ class LowPrice extends Component{
                         this.setState({
                             isInfinite:true
                         });
+                    }else{
+                        this.props.dispatch({
+                            type:'PAGEADDLOWPRICE'
+                        })
                     }
                 },10);
             }
@@ -159,8 +163,8 @@ class LowPrice extends Component{
                                                                 ele.lists.map((v)=>{
                                                                     return(
                                                                         <tr key={Math.random(1)}>
-                                                                            <td>{v.productName || null}</td>
-                                                                            <td>{v.prepName || null}</td>
+                                                                            <td className="item-text-wrap">{v.productName || null}</td>
+                                                                            <td className="item-text-wrap">{v.prepName || null}</td>
                                                                         </tr>
                                                                     )
                                                                 })

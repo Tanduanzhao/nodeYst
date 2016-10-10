@@ -68,6 +68,10 @@ class Assist extends Component{
                         this.setState({
                             isInfinite:true
                         });
+                    }else{
+                        this.props.dispatch({
+                            type:'PAGEADDASSIST'
+                        })
                     }
                 },10);
             }
@@ -162,11 +166,11 @@ class Assist extends Component{
                                                                 ele.lists.map((v)=>{
                                                                     return(
                                                                         <tr key={Math.random(1)}>
-                                                                            <td>{v.productName || null}</td>
-                                                                            <td>{v.prepName || null}</td>
-                                                                            <td>{v.spec || null}</td>
-                                                                            <td>{v.drugPack || null}</td>
-                                                                            <td>{v.manufacturerName || null}</td>
+                                                                            <td className="item-text-wrap">{v.productName || null}</td>
+                                                                            <td className="item-text-wrap">{v.prepName || null}</td>
+                                                                            <td className="item-text-wrap">{v.spec || null}</td>
+                                                                            <td className="item-text-wrap">{v.drugPack || null}</td>
+                                                                            <td className="item-text-wrap">{v.manufacturerName || null}</td>
                                                                         </tr>
                                                                     )
                                                                 })

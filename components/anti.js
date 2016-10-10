@@ -60,6 +60,10 @@ class Anti extends Component{
                         this.setState({
                             isInfinite:true
                         });
+                    }else{
+                        this.props.dispatch({
+                            type:'PAGEADDANTI'
+                        })
                     }
                 },10);
             }
@@ -161,8 +165,8 @@ class Anti extends Component{
                                                                 ele.lists.map((v)=>{
                                                                     return(
                                                                         <tr key={Math.random(1)}>
-                                                                            <td>{v.productName || null}</td>
-                                                                            <td>{v.antibioLevel || null}</td>
+                                                                            <td className="item-text-wrap">{v.productName || null}</td>
+                                                                            <td className="item-text-wrap">{v.antibioLevel || null}</td>
                                                                         </tr>
                                                                     )
                                                                 })

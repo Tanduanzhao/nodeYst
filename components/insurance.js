@@ -60,6 +60,10 @@ class Insurance extends Component{
                         this.setState({
                             isInfinite:true
                         });
+                    }else{
+                        this.props.dispatch({
+                            type:'PAGEADDINSURANCE'
+                        })
                     }
                 },10);
             }
@@ -163,10 +167,10 @@ class Insurance extends Component{
                                                                 ele.lists.map((v)=>{
                                                                     return(
                                                                         <tr key={Math.random(1)}>
-                                                                            <td>{v.productName || null}</td>
-                                                                            <td>{v.prepName || null}</td>
-                                                                            <td>{v.pqriType || null}</td>
-                                                                            <td>{v.pqriCode || null}</td>
+                                                                            <td className="item-text-wrap">{v.productName || null}</td>
+                                                                            <td className="item-text-wrap">{v.prepName || null}</td>
+                                                                            <td className="item-text-wrap">{v.pqriType || null}</td>
+                                                                            <td className="item-text-wrap">{v.pqriCode || null}</td>
                                                                         </tr>
                                                                     )
                                                                 })
