@@ -10,7 +10,7 @@ var users = require('./routes/users');
 var compression = require('compression')
 
 var app = express();
-
+app.listen(3001);
 require('./routes/router.js')(app);
 
 
