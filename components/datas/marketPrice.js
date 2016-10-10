@@ -91,7 +91,7 @@ class MarketPrice extends Component{
           <div className="root">
               <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
               <div ref="content" className="scroll-content has-header">
-                      <Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
+                  this.props.loading?<Loading/>:<Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
               </div>
               <More {...this.props}/>
           </div>
@@ -103,11 +103,6 @@ class Main extends Component{
         super(props);
     }
     render(){
-        if(this.props.loading) {
-            return <Loading/>
-        }else{
-            console.log(this.props.data.length == 0);
-            
             return(
                 this.props.data.length == 0 ? <EmptyComponent/> : <ul className="list bid-list">
                         <ul className="list bid-list">
@@ -117,7 +112,6 @@ class Main extends Component{
                         </ul>
                     </ul>
             )
-        }
     }
 }
 

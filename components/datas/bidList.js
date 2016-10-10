@@ -157,7 +157,7 @@ class BidList extends Component{
     render(){
             return (
                 <div className="root" style={{"overflow":"auto"}}>
-                    <HeaderBar {...this.props} _focus={this._focus.bind(this)} loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)}/>
+                    <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)}/>
                     <div ref="content" className="scroll-content has-header">
                         <Main data={this.props.bidList.data} loading={this.state.loading}/>
                         <More {...this.props}/>
@@ -214,7 +214,7 @@ class HeaderBar extends Component{
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)} onFocus={this.props._focus.bind(this)} type="search" placeholder="请输入搜索关键词"/>
+                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
                 </label>
                 <button className="button button-clear" onClick={this.props._searchHandle.bind(this)}>
                     搜索
