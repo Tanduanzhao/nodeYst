@@ -132,7 +132,7 @@ class LowPrice extends Component{
             this._loadData();
         },100);
     }
-    componentWillMount(){
+    componentWillUnmount(){
         this.props.dispatch({
             type:'REASETLOWPRICE'
         });
