@@ -336,9 +336,14 @@ class Policy extends Component{
     
     //显示筛选条件
     _showFilter(){
-        this.setState({
-            isShowFilter:true
-        });
+        if(this.props.isVip == '0'){
+            this.context.router.push('/vip');
+            return false;
+        }else{
+            this.setState({
+                isShowFilter:true
+            });
+        }
     }
     
     //关闭筛选条件
@@ -376,7 +381,7 @@ class Policy extends Component{
             this._isNeedLoadData();
         },10);
     }
-    
+
     render(){
         return(
             <div className="root">
@@ -448,9 +453,22 @@ class Main extends Component{
                     <ul className="list">
                         {
                             typeof this.props.policy.quality[0].lists == 'undefined' ? null : this.props.policy.quality[0].lists.map((ele)=>{
+                                var trandName = (()=>{
+                                    var string = "";
+                                    if( ele.trandName !="无"|| ele.trandName==null || ele.trandName==undefined){
+                                        string += "（";
+                                        string +=ele.trandName;
+                                        string += " ）";
+                                    }else{
+                                        string = "";
+                                    }
+                                    return string;
+                                })();
                                 return(
                                     <li className="item" key={Math.random(1)}>
-                                        <h2>{ele.productName}（{ele.trandName}）</h2>
+                                        <h2>{ele.productName}
+                                            {trandName}
+                                        </h2>
                                         <p>剂型/规格：{ele.prepName} / {ele.spec}</p>
                                         <p>生产企业：{ele.manufacturerName}</p>
                                         <p>

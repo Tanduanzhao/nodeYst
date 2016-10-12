@@ -22,9 +22,6 @@ class Anti extends Component{
             isInfinite:false
         }
     }
-    componentWillMount(){
-        
-    }
     //加载筛选条件
     _loadSlider(){
         loadAntiFilter({
@@ -70,9 +67,14 @@ class Anti extends Component{
         })
     }
     _showFilter(){
-        this.setState({
-            isShowFilter:true
-        })
+        if(this.props.isVip == '0'){
+            this.context.router.push('/vip');
+            return false;
+        }else {
+            this.setState({
+                isShowFilter: true
+            })
+        }
     }
     
     _hideFilter(){

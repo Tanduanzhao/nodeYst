@@ -20,7 +20,7 @@ import {loadHome} from './function/ajax';
                         <button className="close" onClick={this._pushHandle.bind(this)}></button>
                     </div>
                     <div className="level">
-                        <h3>需开通会员后才能查看数据<br/>请选择开通会员的期限</h3>
+                        <h3>需开通会员后才能查看数据<br/>如已开通再次购买将叠加会员期限</h3>
                         <ul className="row">
                            <li className="col-20"><img src="images/level.jpg" alt=""/></li>
                             <li className="col-20"><span>1个月</span></li>

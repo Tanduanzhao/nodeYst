@@ -99,6 +99,7 @@ class product extends Component{
         //    pageNo:1,
         //});
     }
+
     _searchHandle(){
         if(this.props.isVip == '0'){
             this.context.router.push('/vip');
@@ -188,11 +189,6 @@ class TradeBreedId extends Component{
 }
 
 class HeaderBar extends Component{
-    _showProvicenHandle(){
-        this.props.dispatch({
-            type:'SHOWFILTERPRODUCT'
-        });
-    }
     _changeHandle(){
         console.log(this.refs.hospitalSearchName.value)
         this.props.dispatch({
@@ -204,7 +200,7 @@ class HeaderBar extends Component{
         return(
             <div className="bar bar-header bar-positive item-input-inset">
                 <div className="buttons">
-                    <button className="button" onClick={this._showProvicenHandle.bind(this)}>
+                    <button className="button" onClick={this.props._showProvicenHandle}>
                         <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
                     </button>
                 </div>

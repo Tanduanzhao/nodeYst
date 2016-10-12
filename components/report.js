@@ -33,28 +33,30 @@ class Report extends Component {
       pageNo:this.props.report.pageNo,
       searchType:this.props.report.searchType,
       reportType:this.props.report.reportType,
-      callBack:(res)=>{
-        this.props.dispatch({
-          type:'LOADPRODUCEDATA',
-          data:this.props.report.data.concat(res.datas),
-          pageNo:this.props.report.pageNo+1
-        });
-        if(res.totalSize <= this.props.report.data.length){
+      callBack:(res)=> {
+        if (res) {
           this.props.dispatch({
-            type:'UNINFINITE'
+            type: 'LOADPRODUCEDATA',
+            data: this.props.report.data.concat(res.datas),
+            pageNo: this.props.report.pageNo + 1
           });
-        }else{
-          this.props.dispatch({
-            type:'INFINITE'
-          });
+            if (res.totalSize <= this.props.report.data.length) {
+              this.props.dispatch({
+                type: 'UNINFINITE'
+              });
+            } else {
+              this.props.dispatch({
+                type: 'INFINITE'
+              });
+            }
+            this.setState({
+              loading: false
+            });
+            this.setState({
+              request: true
+            });
+          }
         }
-        this.setState({
-          loading:false
-        });
-        this.setState({
-          request:true
-        });
-      }
     });
   }
   _infiniteScroll(){
@@ -254,7 +256,7 @@ class List extends Component{
     var string = null;
     var tag = (()=>{
       if(this.props.dataSources.costStatus == "1"){
-        string = <i className="report-card-icon">报告试读</i>;
+        string = <i className="report-card-icon">点击查看</i>;
       }else{
         string = <i className="report-card-icon">点击查看</i>;
       }
