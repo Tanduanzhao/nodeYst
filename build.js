@@ -51,24 +51,24 @@ import LowPrice from './components/lowPrice';
 import Anti from './components/anti';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
-Token((res) => {
-    store.dispatch({
-        type:'CHANGE',
-        areaName:res.datas.areaName,
-        areaId:res.datas.areaId,
-        searchAreaType:res.datas.searchAreaType
-    });
-    store.dispatch({
-        type:'CHANGEDATA',
-        yearMonth:res.datas.yearMonth
-    });
-    ReactDOM.render(_router, ele, null);
-},(res)=>{
-    store.dispatch({
-        type:'LOADUSERINFO',
-        datas:res.datas
-    });
-});
+//Token((res) => {
+//    store.dispatch({
+//        type:'CHANGE',
+//        areaName:res.datas.areaName,
+//        areaId:res.datas.areaId,
+//        searchAreaType:res.datas.searchAreaType
+//    });
+//    store.dispatch({
+//        type:'CHANGEDATA',
+//        yearMonth:res.datas.yearMonth
+//    });
+//    ReactDOM.render(_router, ele, null);
+//},(res)=>{
+//    store.dispatch({
+//        type:'LOADUSERINFO',
+//        datas:res.datas
+//    });
+//});
 var _router = (
 	<Provider store={store}>
 		<Router history={browserHistory}>
@@ -133,4 +133,4 @@ var _router = (
 	</Provider>
 );
 var ele = document.getElementById('app');
-//ReactDOM.render(_router, ele, null);
+ReactDOM.render(_router, ele, null);

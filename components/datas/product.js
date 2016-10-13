@@ -55,6 +55,7 @@ class product extends Component{
             pageNo:this.props.product.pageNo,
             searchName:this.props.product.searchName,
             callBack:(res)=>{
+                if(this._calledComponentWillUnmount) return false;
                 console.log(res.datas,"dd")
                 console.log(this.props.product.data,"sss")
                 this.props.dispatch({
@@ -165,7 +166,7 @@ class List extends Component{
                     <li>生产企业：{this.props.dataSources.manufacturerName}</li>
                 </ul>
                 {
-                    this.props.dataSources.tradeBreedId?<TradeBreedId  {...this.props}/>:null
+                    this.props.dataSources.catalogId?<TradeBreedId  {...this.props} catalog={this.props.dataSources}/>:null
                 }
             </li>
             </div>
@@ -177,11 +178,11 @@ class TradeBreedId extends Component{
     render(){
         return(
             <div>
-                <span className="btn"  > {this.props.tradeBreedId}</span>
+                <span className="btn"  > 广东交易平台</span>
                 <ul className="list">
-                    <li>目录ID：{this.props.catalogId}</li>
-                    <li>目录名称：{this.props.catalogName}</li>
-                    <li>目录类型：{this.props.catalogType}</li>
+                    <li>目录ID：{this.props.catalog.catalogId}</li>
+                    <li>目录名称：{this.props.catalog.catalogName}</li>
+                    <li>目录类型：{this.props.catalog.catalogType}</li>
                 </ul>
             </div>
         )
@@ -200,7 +201,7 @@ class HeaderBar extends Component{
         return(
             <div className="bar bar-header bar-positive item-input-inset">
                 <div className="buttons">
-                    <button className="button" onClick={this.props._showProvicenHandle}>
+                    <button className="button" onClick={this.props.searchHandle}>
                         <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
                     </button>
                 </div>

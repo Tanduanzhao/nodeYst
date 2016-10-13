@@ -473,11 +473,11 @@ class Main extends Component{
                                         <p>生产企业：{ele.manufacturerName}</p>
                                         <p>
                                            {
-                                                ele.qualityLevelTypes.length ==0 ? null : ele.qualityLevelTypes.map((ele)=>{
+                                               ele.qualityLevelTypes != null && ele.qualityLevelTypes.length > 0 ?  ele.qualityLevelTypes.map((ele)=>{
                                                     return(
                                                         <span className="tag" key={Math.random(1)}>{ele}</span>
                                                     )
-                                                })
+                                                }):null
                                             }
                                         </p>
                                     </li>
