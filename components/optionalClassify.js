@@ -90,7 +90,10 @@ class OptionalClassify extends Component{
         this._loadData();
        
     }
-    componentWillUnMount(){
+    componentWillUnmount(){
+        this.props.dispatch({
+            type:'UNSHOW'
+        })
         this.ele.removeEventListener('scroll',this._infiniteScroll);
     }
     render(){

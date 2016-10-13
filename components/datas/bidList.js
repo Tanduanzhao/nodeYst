@@ -104,6 +104,16 @@ class BidList extends Component{
         });
         setTimeout(()=> this._loadData(),100);
     }
+    _showProvicenHandle(){
+        if(this.props.isVip == '0'){
+            this.context.router.push('/vip');
+            return false;
+        }else{
+            this.props.dispatch({
+                type:'SHOWFILTERBIDLIST'
+            });
+        }
+    }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite && this.props.bidList.request){
@@ -113,7 +123,8 @@ class BidList extends Component{
     componentDidMount(){
         this.props.dispatch({
             type:'CHANGEBIDLISTTITLEORREPORTKEY',
-            searchName:this.props.params.productName
+            searchName:this.props.params.productName,
+            searchText:this.props.params.productName || this.props.bidList.searchText
         });
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
@@ -148,16 +159,19 @@ class BidList extends Component{
         //    data:[],
         //    pageNo:1,
         //});
+        this.props.dispatch({
+            type:'UNSHOWFILTERPBIDLIST'
+        })
         this.ele.removeEventListener('scroll',this._infiniteScroll);
         this.props.dispatch({
-            type:'UNSHOWFILTERPRODUCE',
+            type:'UNSHOWFILTERPRODUCE'
         });
     }
 
     render(){
             return (
                 <div className="root" style={{"overflow":"auto"}}>
-                    <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)}/>
+                    <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)} _showProvicenHandle={this._showProvicenHandle.bind(this)}/>
                     <div ref="content" className="scroll-content has-header">
                         <Main data={this.props.bidList.data} loading={this.state.loading}/>
                         
@@ -193,11 +207,6 @@ class Main extends Component{
     }
 }
 class HeaderBar extends Component{
-    _showProvicenHandle(){
-        this.props.dispatch({
-            type:'SHOWFILTERBIDLIST'
-        });
-    }
     _changeHandle(){
         this.props.dispatch({
             type:'CHANGEBIDLISTTITLEORREPORTKEY',
@@ -208,13 +217,13 @@ class HeaderBar extends Component{
         return(
             <div className="bar bar-header bar-positive item-input-inset">
                 <div className="buttons">
-                    <button className="button" onClick={this._showProvicenHandle.bind(this)}>
+                    <button className="button" onClick={this.props._showProvicenHandle}>
                         <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
                     </button>
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
+                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder={decodeURI(decodeURI(this.props.bidList.searchText))}/>
                 </label>
                 <button className="button button-clear" onClick={this.props._searchHandle.bind(this)}>
                     搜索

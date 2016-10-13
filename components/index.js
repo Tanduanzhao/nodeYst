@@ -40,6 +40,11 @@ class Index extends Component{
             }
         });
     }
+    componentWillUnmount(){
+        this.props.dispatch({
+            type:'UNSHOW'
+        })
+    }
     
 	_increaseHandle(){
         this.setState({

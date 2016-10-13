@@ -50,7 +50,7 @@ export const Token = function(fn,login,isLogin){
                         var info = {
                             title: '药市通',
                             link: 'http://yst-test.immortalshealth.com',
-                            imgUrl: 'http://yst.immortalshealth.com/yst/src/images/logo.jpg',
+                            imgUrl: 'http://yst-test.immortalshealth.com/pub/resources/sysres/logo.jpg',
                             desc: ' 提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
                         };
                         wx.onMenuShareTimeline({

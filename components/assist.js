@@ -78,9 +78,14 @@ class Assist extends Component{
         })
     }
     _showFilter(){
-        this.setState({
-            isShowFilter:true
-        })
+        if(this.props.isVip == '0'){
+            this.context.router.push('/vip');
+            return false;
+        }else {
+            this.setState({
+                isShowFilter: true
+            })
+        }
     }
     
     _hideFilter(){

@@ -46,7 +46,7 @@ class Quality extends Component{
         this.setState({
             isLoading:true
         });
-        
+
         loadQualityAll({
             searchName:this.props.quality.searchName,
             gradeId:this.props.quality.gradeId,
@@ -74,10 +74,15 @@ class Quality extends Component{
             }
         })
     }
-    _showFilter(){
-        this.setState({
-            isShowFilter:true
-        })
+    _showFilter() {
+        if (this.props.isVip == '0') {
+            this.context.router.push('/vip');
+            return false;
+        } else {
+            this.setState({
+                isShowFilter: true
+            })
+        }
     }
     
     _hideFilter(){

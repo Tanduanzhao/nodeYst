@@ -6,16 +6,17 @@ export default class FilterProduce extends Component{
     this.state = {
       produceType:this.props.purchase.produceType,
       reportType:this.props.purchase.reportType,
-      searchType:this.props.purchase.searchType,
+      searchType:this.props.purchase.searchType
     };
   }
   _cancelButton(){
+    console.log(this.state.reportType);
     this.props.dispatch({
       type:'UNSHOWFILTERPRODUCE'
     });
   }
   _sureButton(){
-    console.log(this.state.produceType);
+    console.log(this.state.reportType);
     this.props.fn(this.state);
   }
   render(){
