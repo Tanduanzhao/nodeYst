@@ -92,6 +92,9 @@ class Quality extends Component{
             qualityLevelTypeIds:args.qualityLevelTypeIds
         });
         this._hideFilter();
+        this.setState({
+            isInfinite:false
+        });
         setTimeout(()=>{
             this._loadData();
         },100);
@@ -132,6 +135,9 @@ class Quality extends Component{
         this.props.dispatch({
             type:'CHANGEBASESEARCHNAME',
             searchName:key
+        });
+        this.setState({
+            isInfinite:false
         });
         setTimeout(()=>{
             this._loadData();

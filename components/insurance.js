@@ -87,6 +87,9 @@ class Insurance extends Component{
             gradeId:args.gradeId,
             catalogEditionId:args.catalogEditionId
         });
+        this.setState({
+            isInfinite:false
+        });
         this._hideFilter();
         setTimeout(()=>{
             this._loadData();

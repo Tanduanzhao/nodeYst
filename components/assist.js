@@ -96,6 +96,9 @@ class Assist extends Component{
             catalogEditionId:args.catalogEditionId
         });
         this._hideFilter();
+        this.setState({
+            isInfinite:false
+        });
         setTimeout(()=>{
             this._loadData();
         },100);
