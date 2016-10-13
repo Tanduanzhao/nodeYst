@@ -250,7 +250,7 @@ h3 {
     padding: .3rem; }
   .report-cards .report-img {
     width: 100%;
-    height: 79px;
+    height: 80px;
     overflow: hidden; }
     .report-cards .report-img img {
       width: 100%;
@@ -541,7 +541,8 @@ h3 {
     width: 100%; }
 
 .vip {
-  overflow: auto; }
+  overflow: auto;
+  color: #fff; }
   .vip img {
     width: 100%;
     display: block; }
@@ -564,7 +565,7 @@ h3 {
       background: url(/images/icon_close_vip.png) center center no-repeat;
       background-size: contain; }
   .vip .level {
-    padding: 0 1.8rem;
+    padding: 0 1.2rem;
     font-size: 1.2rem;
     padding-top: 1rem;
     background-color: #fff;
@@ -580,7 +581,7 @@ h3 {
       color: #fff;
       border-width: 0;
       padding: 0.1rem 0.2rem;
-      font-size: 0.7rem;
+      font-size: 0.6rem;
       border-radius: 5px; }
     .vip .level img {
       width: 45px;
@@ -591,16 +592,20 @@ h3 {
     .vip .level span {
       vertical-align: middle;
       display: inline-block;
-      font-size: .8rem;
+      font-size: .6rem;
       color: #f6a416;
       font-weight: 600; }
   .vip .pk {
     padding: 0 1rem;
+    margin-bottom: 20px;
     background-color: #fff; }
 
 @media screen and (max-width: 322px) {
   .vip .level span {
-    font-size: .6rem; } }
+    font-size: .6rem; }
+  .vip .level button {
+    font-size: 0.55rem;
+    padding: 0.1rem 0.1rem; } }
 
 .bid-list .card {
   margin-top: 0px;
@@ -659,7 +664,7 @@ h3 {
       font-size: .6rem; }
   .price-list .list-right {
     width: 50%;
-    font-size: .5rem; }
+    font-size: .6rem; }
 
 .more {
   position: fixed;
