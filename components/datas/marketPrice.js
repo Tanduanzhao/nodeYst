@@ -30,6 +30,7 @@ class MarketPrice extends Component{
             searchName:this.props.marketPrice.searchName,
             pageNo:this.props.marketPrice.pageNo,
             callBack:(res)=>{
+                if(this._calledComponentWillUnmount) return false;
                 this.setState({
                     loading:false
                 });

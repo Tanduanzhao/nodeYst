@@ -214,7 +214,7 @@ class List extends Component{
     }
     return(
         <div className="col-50">
-          <a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}>
+          <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
             <div className="report-img">
               <img src={this.props.dataSources.mainImg}/>
             </div>
@@ -224,7 +224,7 @@ class List extends Component{
               {number}
               {tag}
             </p>
-          </a>
+          </Link>
         </div>
     )
   }

@@ -116,10 +116,20 @@ class product extends Component{
         });
         setTimeout(()=> this._loadData(),100);
     }
+    _showProvicenHandle(){
+        if(this.props.isVip == '0'){
+            this.context.router.push('/vip');
+            return false;
+        }else{
+            this.props.dispatch({
+                type:'SHOWFILTERPRODUCT'
+            });
+        }
+    }
     render(){
         return(
             <div className="root">
-                <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)} loading={this.state.loading}/>
+                <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}  showProvicenHandle={this._showProvicenHandle.bind(this)} loading={this.state.loading}/>
                 <div ref="content" className="scroll-content has-header">
                         <Main {...this.props} data={this.props.product.data} loading={this.state.loading}/>
                 </div>
@@ -201,7 +211,7 @@ class HeaderBar extends Component{
         return(
             <div className="bar bar-header bar-positive item-input-inset">
                 <div className="buttons">
-                    <button className="button" onClick={this.props.searchHandle}>
+                    <button className="button" onClick={this.props.showProvicenHandle}>
                         <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
                     </button>
                 </div>
