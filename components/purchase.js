@@ -74,10 +74,6 @@ class purchase extends Component {
   }
   componentWillUnmount(){
     this.props.dispatch({
-      type:'CHANGETYPEPURCHASE',
-      searchType: 1
-    });
-    this.props.dispatch({
       type:'LOADPURCHASEDATA',
       data:[],
       pageNo:1,
@@ -96,7 +92,7 @@ class purchase extends Component {
       type:'UNSHOWFILTERPRODUCE'
     })
     this.props.dispatch({
-      type:'CHANGETYPE',
+      type:'CHANGETYPEPURCHASE',
       searchType:args.searchType,
       reportType:encodeURI(encodeURI(args.reportType))
     });
@@ -119,7 +115,7 @@ class purchase extends Component {
     return (
       <div className="root">
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
-        <div  ref="content"  className="scroll-content has-header">
+        <div  ref="content"  className="scroll-content has-header report-view">
           <Main data={this.props.purchase.data} loading={this.state.loading}/>
         </div>
         <FooterBar {...this.props}/>
@@ -193,7 +189,7 @@ class List extends Component{
     var string = null;
     var tag = (()=>{
       if(this.props.dataSources.costStatus == "1"){
-        string = <i className="report-card-icon">报告试读</i>;
+        string = <i className="report-card-icon">点击查看</i>;
       }else{
         string = <i className="report-card-icon">点击查看</i>;
       }
@@ -218,15 +214,17 @@ class List extends Component{
     }
     return(
         <div className="col-50">
-          <a href={`/pdf?file=${encodeURIComponent(`http://yst-test.immortalshealth.com/modm/pub/getPubPdf?reportId=${this.props.dataSources.id}`)}`}>
-            <img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
+          <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
+            <div className="report-img">
+              <img src={this.props.dataSources.mainImg}/>
+            </div>
             <h3> {this.props.dataSources.title}</h3>
             <div className="report-card-price">¥{this.state.price}</div>
             <p className="report-card-footer">
               {number}
               {tag}
             </p>
-          </a>
+          </Link>
         </div>
     )
   }

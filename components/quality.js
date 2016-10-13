@@ -46,7 +46,7 @@ class Quality extends Component{
         this.setState({
             isLoading:true
         });
-        
+
         loadQualityAll({
             searchName:this.props.quality.searchName,
             gradeId:this.props.quality.gradeId,
@@ -74,10 +74,15 @@ class Quality extends Component{
             }
         })
     }
-    _showFilter(){
-        this.setState({
-            isShowFilter:true
-        })
+    _showFilter() {
+        if (this.props.isVip == '0') {
+            this.context.router.push('/vip');
+            return false;
+        } else {
+            this.setState({
+                isShowFilter: true
+            })
+        }
     }
     
     _hideFilter(){
@@ -92,6 +97,9 @@ class Quality extends Component{
             qualityLevelTypeIds:args.qualityLevelTypeIds
         });
         this._hideFilter();
+        this.setState({
+            isInfinite:false
+        });
         setTimeout(()=>{
             this._loadData();
         },100);
@@ -132,6 +140,9 @@ class Quality extends Component{
         this.props.dispatch({
             type:'CHANGEBASESEARCHNAME',
             searchName:key
+        });
+        this.setState({
+            isInfinite:false
         });
         setTimeout(()=>{
             this._loadData();

@@ -240,7 +240,7 @@ class Newrepor extends Component{
 		var string = null;
 		var tag = (()=>{
 			if(this.props.dataSources.costStatus == "1"){
-				string = <i className="item-icon">报告试读</i>;
+				string = <i className="item-icon">点击查看</i>;
 			}else{
 				string = <i className="item-icon">点击查看</i>;
 			}
@@ -312,7 +312,7 @@ class Hotrepor extends Component{
 		var string = null;
 		var tag = (()=>{
 			if(this.props.dataSources.costStatus == "1"){
-				string = <i className="report-card-icon">报告试读</i>;
+				string = <i className="report-card-icon">点击查看</i>;
 			}else{
 				string = <i className="report-card-icon">点击查看</i>;
 			}

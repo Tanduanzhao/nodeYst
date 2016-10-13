@@ -67,9 +67,14 @@ class LowPrice extends Component{
         })
     }
     _showFilter(){
-        this.setState({
-            isShowFilter:true
-        })
+        if(this.props.isVip == '0'){
+            this.context.router.push('/vip');
+            return false;
+        }else {
+            this.setState({
+                isShowFilter: true
+            })
+        }
     }
     
     _hideFilter(){
@@ -83,6 +88,9 @@ class LowPrice extends Component{
             areaId:args.areaId,
             gradeId:args.gradeId,
             catalogEditionId:args.catalogEditionId
+        });
+        this.setState({
+            isInfinite:false
         });
         this._hideFilter();
         setTimeout(()=>{
@@ -132,7 +140,7 @@ class LowPrice extends Component{
             this._loadData();
         },100);
     }
-    componentWillMount(){
+    componentWillUnmount(){
         this.props.dispatch({
             type:'REASETLOWPRICE'
         });

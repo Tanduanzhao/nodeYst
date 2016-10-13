@@ -78,9 +78,14 @@ class Assist extends Component{
         })
     }
     _showFilter(){
-        this.setState({
-            isShowFilter:true
-        })
+        if(this.props.isVip == '0'){
+            this.context.router.push('/vip');
+            return false;
+        }else {
+            this.setState({
+                isShowFilter: true
+            })
+        }
     }
     
     _hideFilter(){
@@ -96,6 +101,9 @@ class Assist extends Component{
             catalogEditionId:args.catalogEditionId
         });
         this._hideFilter();
+        this.setState({
+            isInfinite:false
+        });
         setTimeout(()=>{
             this._loadData();
         },100);
@@ -132,7 +140,7 @@ class Assist extends Component{
             this._loadData();
         },100);
     }
-    componentWillMount(){
+    componentWillUnmount(){
         this.props.dispatch({
             type:'REASETASSIST'
         });

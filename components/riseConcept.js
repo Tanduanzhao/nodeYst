@@ -76,7 +76,10 @@ class RiseConcept extends Component{
             this._loadData();
         }
     }
-    componentDidMount(){
+    componentDidmount(){
+        this.props.dispatch({
+            type:'UNSHOW'
+        })
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
         this._loadData();

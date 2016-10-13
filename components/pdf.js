@@ -7,7 +7,7 @@ export default class Pdf extends Component{
                 var info = {
                     title: this.props.params.title,
                     link: 'http://yst.immortalshealth.com',
-                    imgUrl: 'http://yst.immortalshealth.com/yst/src/images/logo.jpg',
+                    imgUrl: 'http://yst.immortalshealth.com/pub/resources/sysres/logo.jpg',
                     desc: '小伙伴们和我一起去逛逛医药圈的报告超市吧，分享报告还有分成！'
                 };
                 wx.onMenuShareTimeline({
@@ -39,7 +39,7 @@ export default class Pdf extends Component{
                 var info = {
                     title: '药市通',
                     link: 'http://yst.immortalshealth.com',
-                    imgUrl: 'http://yst.immortalshealth.com/yst/src/images/logo.jpg',
+                    imgUrl: 'http://yst.immortalshealth.com/pub/resources/sysres/logo.jpg',
                     desc: '提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
                 };
                 wx.onMenuShareTimeline({
