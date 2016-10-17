@@ -22,6 +22,7 @@ export default function insurance(state=defaultAssist,action){
         case 'PAGEADDASSIST' : return ObjectAssign({},state,{pageNo:state.pageNo+1});
         case 'LOADASSISTMENU' : return ObjectAssign({},state,{filters:state.filters.concat(action.datas)});
         case 'LOADASSISTDATA' : return ObjectAssign({},state,{datas:state.datas.concat(action.datas)});
+        case 'CHANGEASSISTSEARCHNAME' : return ObjectAssign({},state,{searchName:action.searchName,pageNo:1,datas:[]});
         case 'RESETASSIST' : return defaultAssist;
         default : return state;
     }

@@ -11,9 +11,6 @@ var defaultLowPrice = {
     provinces:[],
     filters:[],
     datas:[]
-    
-    
-    
 };
 export default function insurance(state=defaultLowPrice,action){
     switch(action.type){
@@ -22,6 +19,7 @@ export default function insurance(state=defaultLowPrice,action){
         case 'PAGEADDLOWPRICE' : return ObjectAssign({},state,{pageNo:state.pageNo+1});
         case 'LOADLOWPRICEMENU' : return ObjectAssign({},state,{filters:state.filters.concat(action.datas)});
         case 'LOADLOWPRICEDATA' : return ObjectAssign({},state,{datas:state.datas.concat(action.datas)});
+        case 'CHANGELOWPRICESEARCHNAME' : return ObjectAssign({},state,{searchName:action.searchName,pageNo:1,datas:[]});
         case 'RESETLOWPRICE' : return defaultLowPrice;
         default : return state;
     }

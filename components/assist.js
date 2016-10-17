@@ -156,8 +156,8 @@ class Assist extends Component{
                                 this.props.assist.datas.length==0 ? <EmptyComponent/> :this.props.assist.datas.map((ele)=>{
                                     return(
                                         <div key={Math.random(2)}>
-                                            <LinkBar title={ele.grade +" ("+ele.publishDate+")"}/>
-                                            <div className="item">
+                                            <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",p:ele.areaName}}/>
+                                            <div className="item" style={{boxSizing:'content-box'}}>
                                                 {
                                                     ele.lists.length == 0 ? <EmptyComponent/> : <table className="table-border" width="100%">
                                                         <thead>
@@ -234,7 +234,8 @@ class LinkBar extends Component{
 	render(){
 		return(
                 <div className="item item-divider item-text-wrap">
-                    <i className="fa fa-file-text-o"></i> 文号：{this.props.title}
+                    <i className="fa fa-fw fa-file-text-o"></i> 文号：{this.props.title.c}<br/>
+                    <i className="fa fa-fw fa-map-pin"></i> 省份：{this.props.title.p}
                 </div>
         )
 	}

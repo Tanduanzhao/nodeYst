@@ -133,12 +133,13 @@ class Quality extends Component{
     }
     //搜索点击查询对应数据
     _searchDatas(key){
+        console.log(key);
         if(this.props.isVip == '0'){
            this.context.router.push('/vip');
             return false;
         }
         this.props.dispatch({
-            type:'CHANGEBASESEARCHNAME',
+            type:'CHANGEQUALITYSEARCHNAME',
             searchName:key
         });
         this.setState({

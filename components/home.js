@@ -2,13 +2,10 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
-import {loadNewrepor,loadPicture,loadJoinActivity} from './function/ajax';
+import {loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent} from './function/ajax';
 import Box from './box';
 import Loading from './loading';
 import Popup from './popup';
-
-
-
 
 var Slider = require('react-slick');
  class Home extends Component{
@@ -16,9 +13,11 @@ var Slider = require('react-slick');
 		 super(props);
 		 this.state ={
 			 loading:true,
-             showPopup:false
+             showPopup:false,
+             reCordNum:0
 		 };
          this._loadData = this._loadData.bind(this);
+         this._loadRecordContent = this._loadRecordContent.bind(this);
 	 }
      _loadData(){
          loadNewrepor({
@@ -37,9 +36,30 @@ var Slider = require('react-slick');
 			 }
 		 });
      }
+     
+     _loadRecordContent(){
+         loadRecordContent({
+             callBack:(res)=>{
+                 this.props.dispatch({
+                     type:'SHOWRECORD'
+                 });
+                 this.setState({
+                     reCordNum:res.datas.content
+                 });
+                 setTimeout(()=>{
+                     this.props.dispatch({
+                         type:'HIDERECORD'
+                     });
+                 },8000)
+             }
+         })
+     }
+     componentWillMount(){
+         this._loadRecordContent();
+     }
 	 componentDidMount(){
 		 this._loadData();
-     
+         
 		 loadPicture({
 			 yearMonth:this.props.yearMonth,
 			 areaId:this.props.areaId,
@@ -115,6 +135,9 @@ var Slider = require('react-slick');
 	render(){
 		return(
 			<div className="root home">
+                {
+                    this.props.home.isShowRecord ? <Record dataSources={this.state.reCordNum}/> : false
+                }
 				<Main {...this.props} showPopup={this.state.showPopup} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)} openProductView={this._openProductView.bind(this)}/>
 				{
                     this.state.loading ? <Loading/> : null
@@ -371,6 +394,17 @@ class Hotrepor extends Component{
 		)
 	}
 }
+
+class Record extends Component{
+    render(){
+        return(
+            <div style={{position:'absolute',left:'0',top:'0',zIndex:'999',width:'100%',paddingLeft:'10px',lineHeight:'2',fontSize:'12px',backgroundColor:'rgba(255,255,255,.7)'}}>
+                最近{this.props.dataSources}
+            </div>
+        )
+    }
+}
+
 function select(state){
 	return{
 		home:state.home

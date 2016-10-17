@@ -716,3 +716,13 @@ export const loadJoinActivity = function(args){
         }
     })
 }
+
+//读取报告更新状态
+export const loadRecordContent = function(args){
+    ajaxFn({
+        url:'partakeRecord/getRecordContent',
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}

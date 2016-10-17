@@ -7,6 +7,7 @@ import {valINarr} from './function/common';
 export default class PolicySonFilter extends Component {
     constructor(props) {
 	  super(props);
+      this.__filterChioce = this.__filterChioce.bind(this);
 	  this.state = {
           areaId:this.props.areaId || null,
           gradeId:this.props.gradeId || null,
@@ -29,59 +30,99 @@ export default class PolicySonFilter extends Component {
         this.props.fn(this.state);
     }
     _ahandleClick(id,index){
-        this.setState({
-            keys:valINarr(this.state.keys,index)
-        });
+        if(id == 0){
+            console.log(this.state.keys);
+            console.log(this.state.keys.indexOf('0') != -1);
+            if(this.state.keys.indexOf(0) != -1){
+                this.setState({
+                    keys: []
+                });
+            }else{
+                this.setState({
+                    keys: []
+                });
+                let preAll = [];
+
+                this.props.dataSources.forEach((e,i)=>{
+                    preAll.push(i);
+                })
+                this.setState({
+                    keys:preAll
+                });
+            }
+        }else{
+            if(this.state.keys.indexOf(0) != -1){
+                this.setState({
+                    keys:[index]
+                });
+            }else{
+                this.setState({
+                    keys:[]
+                });
+                this.setState({
+                    keys:valINarr(this.state.keys,index)
+                });
+            }
+            
+        }
+        setTimeout(()=>{
+            this.__filterChioce(this.state.keys);
+        })
+        
+        
+	}
+    __filterChioce(keys){
         var areaIdArray = [],cListArray = [],gListArray = [];
-        for(let k=0;k<this.state.keys.length;k++){
-            areaIdArray.push(this.props.dataSources[this.state.keys[k]].areaId);
+        for(let k=0;k<keys.length;k++){
+            areaIdArray.push(this.props.dataSources[keys[k]].areaId);
 
-            if(typeof this.props.dataSources[this.state.keys[k]].catalogEditions != 'undefined'){
+            if(typeof this.props.dataSources[keys[k]].catalogEditions != 'undefined'){
 
-                if(this.props.dataSources[this.state.keys[k]].catalogEditions.length !=0){
+                if(this.props.dataSources[keys[k]].catalogEditions.length !=0){
 
-                    for(let c=0;c<this.props.dataSources[this.state.keys[k]].catalogEditions.length;c++){
+                    for(let c=0;c<this.props.dataSources[keys[k]].catalogEditions.length;c++){
 
-                        if(this.props.dataSources[this.state.keys[k]].catalogEditions[c].grades.length!=0){
+                        if(this.props.dataSources[keys[k]].catalogEditions[c].grades.length!=0){
 
-                            for(let d=0;d<this.props.dataSources[this.state.keys[k]].catalogEditions[c].grades.length;d++){
-                                gListArray.push(this.props.dataSources[this.state.keys[k]].catalogEditions[c].grades[d]);   
+                            for(let d=0;d<this.props.dataSources[keys[k]].catalogEditions[c].grades.length;d++){
+                                gListArray.push(this.props.dataSources[keys[k]].catalogEditions[c].grades[d]);   
                             }
                         }
                         if(cListArray.length>0){
                             let isInArr = false;
                             for(let e=0;e<cListArray.length;e++){
-                                if(this.props.dataSources[this.state.keys[k]].catalogEditions[c].catalogEditionName == cListArray[e].catalogEditionName){
+                                if(this.props.dataSources[keys[k]].catalogEditions[c].catalogEditionName == cListArray[e].catalogEditionName){
                                     isInArr = true
                                 }
                             }
                             if(!isInArr){
-                                cListArray.push(this.props.dataSources[this.state.keys[k]].catalogEditions[c]);
+                                cListArray.push(this.props.dataSources[keys[k]].catalogEditions[c]);
                             }
 
 
                         }else{
-                            cListArray.push(this.props.dataSources[this.state.keys[k]].catalogEditions[c]);
+                            cListArray.push(this.props.dataSources[keys[k]].catalogEditions[c]);
                         }
                     }
                 }
             }else{
-                if(this.props.dataSources[this.state.keys[k]].grades.length !=0){
-                    if(cListArray.length>0){
-                        let isInArr = false;
-                        for(let e=0;e<cListArray.length;e++){
-                            if(this.props.dataSources[this.state.keys[k]].catalogEditions[c].catalogEditionName == cListArray[e].catalogEditionName){
-                                isInArr = true
+                for(let c=0;c<this.props.dataSources[keys[k]].grades.length;c++){
+                    if(this.props.dataSources[keys[k]].grades.length !=0){
+                        if(cListArray.length>0){
+                            let isInArr = false;
+                            for(let e=0;e<cListArray.length;e++){
+                                if(this.props.dataSources[keys[k]].catalogEditions[c].catalogEditionName == cListArray[e].catalogEditionName){
+                                    isInArr = true
+                                }
                             }
-                        }
-                        console.log(isInArr);
-                        if(!isInArr){
-                            cListArray.push(this.props.dataSources[this.state.keys[k]].catalogEditions[c]);
-                        }
+                            if(!isInArr){
+                                cListArray.push(this.props.dataSources[keys[k]].catalogEditions[c]);
+                            }
 
 
-                    }else{
-                        cListArray.push(this.props.dataSources[this.state.keys[k]].catalogEditions[c]);
+                        }else{
+                            gListArray.push(this.props.dataSources[keys[k]].grades[c]);
+                        }
                     }
                 }
             }
@@ -91,9 +132,11 @@ export default class PolicySonFilter extends Component {
             areaId:areaIdArray,
             cList:cListArray,
             gList:gListArray
-        })
-        
-	}
+        });
+    }
+    
+    
+    
     _lhandleClick(id){
         console.log(id);
         this.setState({

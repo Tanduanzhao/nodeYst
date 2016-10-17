@@ -22,6 +22,7 @@ export default function insurance(state=defaultAnti,action){
         case 'PAGEADDANTI' : return ObjectAssign({},state,{pageNo:state.pageNo+1});
         case 'LOADANTIMENU' : return ObjectAssign({},state,{filters:state.filters.concat(action.datas)});
         case 'LOADANTIDATA' : return ObjectAssign({},state,{datas:state.datas.concat(action.datas)});
+        case 'CHANGEANTISEARCHNAME' : return ObjectAssign({},state,{searchName:action.searchName,pageNo:1,datas:[]});
         case 'RESETANTI' : return defaultAnti;
         default : return state;
     }

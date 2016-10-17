@@ -155,8 +155,8 @@ class Anti extends Component{
                                 this.props.anti.datas.length==0 ? <EmptyComponent/> :this.props.anti.datas.map((ele)=>{
                                     return(
                                         <div key={Math.random(2)}>
-                                            <LinkBar title={ele.grade +" ("+ele.publishDate+")"}/>
-                                            <div className="item">
+                                            <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",g:ele.catalogEditionName,p:ele.areaName}}/>
+                                            <div className="item" style={{boxSizing:'content-box'}}>
                                                 {
                                                     ele.lists.length == 0 ? <EmptyComponent/> : <table className="table-border" width="100%">
                                                         <thead>
@@ -227,7 +227,9 @@ class LinkBar extends Component{
 	render(){
 		return(
                 <div className="item item-divider item-text-wrap">
-                    <i className="fa fa-file-text-o"></i> 文号：{this.props.title}
+                    <i className="fa fa-fw fa-file-text-o"></i> 文号：{this.props.title.c}<br/>
+                    <i className="fa fa-fw fa-calendar-check-o"></i> 目录版本：{this.props.title.g}<br/>
+                    <i className="fa fa-fw fa-map-pin"></i> 省份：{this.props.title.p}
                 </div>
         )
 	}
