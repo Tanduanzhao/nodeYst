@@ -52,8 +52,28 @@ class OptionalClassify extends Component{
             data:[]
         })
     }
-    _fn(){
-        this._loadData();
+    _fn(args){
+        this.props.dispatch((dispatch,getState)=>{
+            loadSingleClassifyProduct(dispatch,{
+                yearMonth:getState().data.yearMonth,
+                areaId:args.areaId,
+                salesId:this.props.params.sid,
+                searchAreaType:args.searchAreaType,
+                pageNo:this.state.pageNo,
+                callBack:(res)=>{
+                    this.setState({
+                        data:res.datas,
+                        infinite:false
+                    })
+                    if(res.totalSize <= this.state.data.length){
+                        this.ele.removeEventListener('scroll',this._infiniteScroll);
+                    }
+                    this.setState({
+                        loading:false
+                    });
+                }
+            });
+        })
     }
     _loadData(){
         this.props.dispatch((dispatch,getState)=>{

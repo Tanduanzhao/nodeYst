@@ -50,8 +50,28 @@ class Concept extends Component{
             data:[]
         })
     }
-    _fn(){
-        this._loadData();
+    _fn(args){
+        this.props.dispatch((dispatch,getState)=>{
+            loadSingleConceptProduct(dispatch,{
+                yearMonth:getState().data.yearMonth,
+                areaId:args.areaId,
+                conceptId:this.props.params.cid,
+                searchAreaType:args.searchAreaType,
+                pageNo:this.state.pageNo,
+                callBack:(res)=>{
+                    this.setState({
+                        data:res.datas,
+                        infinite:false
+                    })
+                    if(res.totalSize <= this.state.data.length){
+                        this.ele.removeEventListener('scroll',this._infiniteScroll);
+                    }
+                    this.setState({
+                        loading:false
+                    });
+                }
+            });
+        })
     }
     _loadData(){
         this.props.dispatch((dispatch,getState)=>{

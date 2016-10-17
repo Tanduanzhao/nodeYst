@@ -18,6 +18,7 @@ class RiseClassify extends Component{
         };
         this._reSet = this._reSet.bind(this);
         this._loadData = this._loadData.bind(this);
+        this._fn = this._fn.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _increaseHandle(){
@@ -44,14 +45,34 @@ class RiseClassify extends Component{
             data:[]
         })
     }
-    _fn(){
-        this._loadData();
+    _fn(args){
+        this.props.dispatch((dispatch,getState)=>{
+            loadListClassifyProduct(dispatch,{
+                yearMonth:getState().data.yearMonth,
+                areaId:args.areaId,
+                salesId:this.props.params.sid,
+                searchAreaType:args.searchAreaType,
+                pageNo:this.state.pageNo,
+                callBack:(res)=>{
+                    this.setState({
+                        data:res.datas,
+                        infinite:false
+                    })
+                    if(res.totalSize <= this.state.data.length){
+                        this.ele.removeEventListener('scroll',this._infiniteScroll);
+                    }
+                    this.setState({
+                        loading:false
+                    });
+                }
+            });
+        })
     }
     _loadData(){
         this.props.dispatch((dispatch,getState)=>{
             loadListClassifyProduct(dispatch,{
                 yearMonth:getState().data.yearMonth,
-                areaId:getState().provicen.areaId,
+                areaId:this.props.areaId,
                 salesId:this.props.params.sid,
                 searchAreaType:getState().provicen.searchAreaType,
                 pageNo:this.state.pageNo,
