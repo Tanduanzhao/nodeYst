@@ -93,16 +93,17 @@ class BidList extends Component{
         if(this.props.isVip == '0'){
             this.context.router.push('/vip');
             return false;
+        }else{
+            this.setState({
+                loading:true
+            });
+            this.props.dispatch({
+                type:'LOADBIFLISTCONTENTDATA',
+                data:[],
+                pageNo:1,
+            });
+            setTimeout(()=> this._loadData(),100);
         }
-        this.setState({
-            loading:true
-        });
-        this.props.dispatch({
-            type:'LOADBIFLISTCONTENTDATA',
-            data:[],
-            pageNo:1,
-        });
-        setTimeout(()=> this._loadData(),100);
     }
     _showProvicenHandle(){
         if(this.props.isVip == '0'){
@@ -240,7 +241,7 @@ class List extends Component{
                 <li className="item card">
                     <p>商品名：{this.props.dataSources.trandName}</p>
                     <p>剂型：{this.props.dataSources.prepName}</p>
-                    <p>规格：0.125g{this.props.dataSources.spec}</p>
+                    <p>规格：{this.props.dataSources.spec}</p>
                     <p>包装数量：{this.props.dataSources.packNum}</p>
                     <p>包材名称：{this.props.dataSources.packMaterialName}</p>
                     <p>生产企业：{this.props.dataSources.manufacturerName}</p>
@@ -248,7 +249,7 @@ class List extends Component{
                     <p>最小制剂招标价格：<span className="calm">{this.props.dataSources.minBidPrice}</span></p>
                     <p>省份：<span className="calm">{this.props.dataSources.areaName}</span></p>
                     <p>项目名称：{this.props.dataSources.projectName}</p>
-                    <p>公布时间：2016-08-02{this.props.dataSources.publishDate}</p>
+                    <p>公布时间：{this.props.dataSources.publishDate}</p>
                 </li>
             </div>
         )

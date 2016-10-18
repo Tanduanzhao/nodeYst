@@ -100,21 +100,21 @@ class Column extends Component{
         return(
             <div>
                 <ul className="column">
-                    <Link to="/datas/bidList">
-                        <img src="/images/column02.jpg" alt=""/>
-                        中标数据
-                    </Link>
-                    <Link to="/datas/product">
-                        <img src="/images/column05.jpg" alt=""/>
-                        产品数据
-                    </Link>
                     <Link to="/datas/policy">
                         <img src="/images/column03.jpg" alt=""/>
                         政策准入
                     </Link>
+                    <Link to="/datas/bidList">
+                        <img src="/images/column02.jpg" alt=""/>
+                        中标数据
+                    </Link>
                     <Link to="/datas/marketPrice">
                         <img src="/images/column07.jpg" alt="" className="price-icon"/>
                         入市价
+                    </Link>
+                    <Link to="/datas/product">
+                        <img src="/images/column05.jpg" alt=""/>
+                        产品数据
                     </Link>
                 </ul>
             </div>

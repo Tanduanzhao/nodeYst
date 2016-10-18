@@ -8,6 +8,7 @@ import {Link} from 'react-router';
 import FilterPurchase from './filterPurchase';
 import Loading from './loading';
 import EmptyComponent from './emptyComponent';
+import ReportList from './reportList';
 
 import {loadProduct,getReportType} from './function/ajax';
 
@@ -17,7 +18,8 @@ class purchase extends Component {
     console.log(this.props.params.id)
     this.state={
       searchType:this.props.purchase.searchType,
-      loading:true
+      loading:true,
+      BuyReportList:true,
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -116,7 +118,7 @@ class purchase extends Component {
       <div className="root">
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header report-view">
-          <Main data={this.props.purchase.data} loading={this.state.loading}/>
+          <Main data={this.props.purchase.data} loading={this.state.loading} BuyReportList={this.state.BuyReportList}/>
         </div>
         <FooterBar {...this.props}/>
         {
@@ -169,9 +171,9 @@ class Main extends Component{
     }else{
       if(this.props.data.length != 0){
         return(
-            <ul className="report-cards row">
+            <ul className="list new_report">
               {
-                this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id}/>)
+                this.props.data.map((ele,index)=> <ReportList BuyReportList={this.props.BuyReportList} dataSources={ele} key={ele.id}/>)
               }
             </ul>
         )

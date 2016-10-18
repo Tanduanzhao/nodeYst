@@ -188,7 +188,7 @@ class TradeBreedId extends Component{
     render(){
         return(
             <div>
-                <span className="btn"  > 广东交易平台</span>
+                <span className="btn"  >广东省交易品种</span>
                 <ul className="list">
                     <li>目录ID：{this.props.catalog.catalogId}</li>
                     <li>目录名称：{this.props.catalog.catalogName}</li>
