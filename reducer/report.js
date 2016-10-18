@@ -1,5 +1,5 @@
 var ObjectAssign = require('object-assign');
-import {SHOWFILTERPRODUCE,UNSHOWFILTERPRODUCE,LOADPRODUCEDATA,GOREPORT,CHANGETYPE,CHANGETITLEORREPORTKEY,INFINITE,UNINFINITE} from '../components/config/variable';
+import {SHOWFILTERPRODUCE,UNSHOWFILTERPRODUCE,LOADPRODUCEDATA,GOREPORT,CHANGETYPE,CHANGETITLEORREPORTKEY,INFINITE,UNINFINITE,CLEARTITLEORREPORTKEY} from '../components/config/variable';
 //省份信息
 var defaultProvicen = {
 	areaName:'广州市',
@@ -42,6 +42,7 @@ export default function report(state=defaultReport,action) {
     case CHANGETYPE : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType});
     case GOREPORT : return ObjectAssign({},state,{data:action.data,searchType:action.searchType,pageNo:action.pageNo});
     case CHANGETITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:action.titleOrReportKey});
+    case CLEARTITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:null});
     default : return state;
   }
 }

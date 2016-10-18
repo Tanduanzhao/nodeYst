@@ -37,13 +37,13 @@ export default class More extends Component {
 									<img src="/images/column02.jpg" alt=""/>
 									中标数据
 								</Link>
-								<Link to="/datas/policy">
-									<img src="/images/column03.jpg" alt=""/>
-									政策准入
-								</Link>
 								<Link to="/datas/product">
 									<img src="/images/column05.jpg" alt=""/>
 									产品数据
+								</Link>
+								<Link to="/datas/policy">
+									<img src="/images/column03.jpg" alt=""/>
+									政策准入
 								</Link>
 								<Link to="/datas/policy/quality">
 									<img src="/images/column08.jpg" alt=""/>

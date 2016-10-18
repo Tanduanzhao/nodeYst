@@ -10,6 +10,7 @@ import Loading from './loading';
 import EmptyComponent from './emptyComponent';
 import {loadNewrepor,loadPicture,insertUserAction,getReportType,loadReportList} from './function/ajax';
 import Popup from './popup';
+import ReportList from './reportList';
 
 class Report extends Component {
   constructor(props){
@@ -84,7 +85,10 @@ class Report extends Component {
   }
   componentWillUnmount(){
     this.props.dispatch({
-      type:'UNSHOWFILTERPRODUCE',
+      type:'UNSHOWFILTERPRODUCE'
+    });
+    this.props.dispatch({
+      type:'CLEARTITLEORREPORTKEY'
     });
       this.props.dispatch({
         type:'LOADPRODUCEDATA',
@@ -222,9 +226,9 @@ class Main extends Component{
     }else{
       if(this.props.data.length != 0){
         return(
-            <ul className="report-cards row">
+            <ul className="list new_report">
               {
-                this.props.data.map((ele,index)=> <List openProductView = {this.props.openProductView} dataSources={ele} key={ele.id}/>)
+                this.props.data.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} dataSources={ele} key={ele.id}/>)
               }
             </ul>
         )

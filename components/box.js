@@ -46,7 +46,7 @@ export default class More extends Component {
                         type:'UNSHOWGOLDBOX'
                     });
                     this.setState({show:false})
-                    alert("领取【2015年珠三角医疗终端市场分析报告】成功，请到“个人中心-已购报告查阅”查阅。");
+                    alert("领取【2015年珠三角医疗终端市场分析报告】成功，请到“个人中心-已购报告”查阅。");
                 }
 			}
 		});
@@ -61,7 +61,7 @@ export default class More extends Component {
                         type:'UNSHOWCASHBOX'
                     });
                     this.setState({showSilver:false});
-                    alert("领取【2015年广东省心脑血管中成药市场分析报告】报告成功，请到“个人中心-已购报告查阅”查阅。");
+                    alert("领取【2015年广东省心脑血管中成药市场分析报告】成功，请到“个人中心-已购报告”查阅。");
                 }
                 
 			}

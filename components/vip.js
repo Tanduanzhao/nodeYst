@@ -44,7 +44,7 @@ import {loadHome} from './function/ajax';
                             <li className="col-80">
                                 <ul className="row">
                                 <li className="col-20"><img src="images/level.jpg" alt=""/></li>
-                                <li className="col-50"><span>月度 有效期30天</span></li>
+                                <li className="col-50"><span>月度 有效期1个月</span></li>
                                 <li className="col"><img src="images/level_price.jpg" alt=""/></li>
                                 </ul>
                             </li>
@@ -54,7 +54,7 @@ import {loadHome} from './function/ajax';
                             <li className="col-80">
                                 <ul className="row">
                                     <li className="col-20"><img src="images/level.jpg" alt=""/></li>
-                                    <li className="col-50"><span>季度 有效期90天</span></li>
+                                    <li className="col-50"><span>季度 有效期3个月</span></li>
                                     <li className="col"><img src="images/level_price02.jpg" alt=""/></li>
                                 </ul>
                             </li>
@@ -64,7 +64,7 @@ import {loadHome} from './function/ajax';
                             <li className="col-80">
                                 <ul className="row">
                                     <li className="col-20"><img src="images/level.jpg" alt=""/></li>
-                                    <li className="col-50"><span>年度 有效期360天</span></li>
+                                    <li className="col-50"><span>年度 有效期1年</span></li>
                                     <li className="col"><img src="images/level_price03.jpg" alt=""/></li>
                                 </ul>
                             </li>

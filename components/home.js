@@ -6,8 +6,7 @@ import {loadNewrepor,loadPicture,loadJoinActivity} from './function/ajax';
 import Box from './box';
 import Loading from './loading';
 import Popup from './popup';
-
-
+import ReportList from './reportList';
 
 
 var Slider = require('react-slick');
@@ -181,7 +180,7 @@ class Main extends Component{
 				</div>
 				<ul className="list new_report">
 					{
-						this.props.home.data.newReportMap.datas.map((ele,index)=> <Newrepor openProductView = {this.props.openProductView} dataSources={ele} key={ele.id}/>)
+						this.props.home.data.newReportMap.datas.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} dataSources={ele} key={ele.id}/>)
 					}
 				</ul>
 				<div className="item item-divider home-item-title">
@@ -191,9 +190,9 @@ class Main extends Component{
 						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
 				</div>
-				<div className="row report-cards bg-fff">
+				<div className="list new_report">
 					{
-						this.props.home.data.hotReportMap.datas.map((ele,index)=> <Hotrepor openProductView = {this.props.openProductView} dataSources={ele} key={ele.id}/>)
+						this.props.home.data.hotReportMap.datas.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} dataSources={ele} key={ele.id}/>)
 					}
 
 				</div>
@@ -240,7 +239,7 @@ class Newrepor extends Component{
 		var string = null;
 		var tag = (()=>{
 			if(this.props.dataSources.costStatus == "1"){
-				string = <i className="item-icon">点击查看</i>;
+				string = <i className="item-icon">报告试读</i>;
 			}else{
 				string = <i className="item-icon">点击查看</i>;
 			}
@@ -312,7 +311,7 @@ class Hotrepor extends Component{
 		var string = null;
 		var tag = (()=>{
 			if(this.props.dataSources.costStatus == "1"){
-				string = <i className="report-card-icon">点击查看</i>;
+				string = <i className="report-card-icon">报告试读</i>;
 			}else{
 				string = <i className="report-card-icon">点击查看</i>;
 			}

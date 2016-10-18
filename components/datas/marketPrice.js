@@ -76,16 +76,17 @@ class MarketPrice extends Component{
         if(this.props.isVip == '0'){
             this.context.router.push('/vip');
             return false;
+        }else{
+            this.setState({
+                loading:true
+            })
+            this.props.dispatch({
+                type:'LOADMARKETTDATA',
+                data:[],
+                pageNo:1
+            });
+            setTimeout(()=> this._loadData(),100);
         }
-        this.setState({
-            loading:true
-        })
-        this.props.dispatch({
-            type:'LOADMARKETTDATA',
-            data:[],
-            pageNo:1
-        });
-        setTimeout(()=> this._loadData(),100);
     }
     render(){
         return(
