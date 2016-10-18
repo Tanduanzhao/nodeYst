@@ -63,7 +63,7 @@ export default class Pdf extends Component{
         });
     }
     render(){
-        this.url = `http://yst-test.immortalshealth.com/pdfjs-1.1.114-dist/web/viewer.html?file=http://yst.immortalshealth.com/modm/pub/getPubPdf?reportId%3D${this.props.params.id}`;
+        this.url = `http://yst.immortalshealth.com/pdfjs-1.1.114-dist/web/viewer.html?file=http://yst.immortalshealth.com/modm/pub/getPubPdf?reportId%3D${this.props.params.id}`;
         return(
             <div className="root">
                 <div style={{width:'100%',height:'100%',overflowScrolling:'touch',overFlow:'auto'}}>
