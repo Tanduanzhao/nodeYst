@@ -15,7 +15,6 @@ import {loadProduct,getReportType} from './function/ajax';
 class purchase extends Component {
   constructor(props){
     super(props);
-    console.log(this.props.params.id)
     this.state={
       searchType:this.props.purchase.searchType,
       loading:true,

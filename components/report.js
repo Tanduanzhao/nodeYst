@@ -20,7 +20,8 @@ class Report extends Component {
       searchType:this.props.report.searchType,
       loading:true,
       request:true,
-      showPopup:false
+      showPopup:false,
+      reportTag:true
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -171,7 +172,7 @@ class Report extends Component {
       <div className="root">
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header report-view">
-          <Main openProductView={this._openProductView.bind(this)} data={this.props.report.data} loading={this.state.loading}/>
+          <Main openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
             {
                 this.state.showPopup ? <Popup popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
             }
@@ -228,7 +229,7 @@ class Main extends Component{
         return(
             <ul className="list new_report">
               {
-                this.props.data.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} dataSources={ele} key={ele.id}/>)
+                this.props.data.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} reportTag={this.props.reportTag} dataSources={ele} key={ele.id}/>)
               }
             </ul>
         )

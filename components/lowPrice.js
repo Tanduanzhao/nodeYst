@@ -26,7 +26,7 @@ class LowPrice extends Component{
         loadLowPriceFilter({
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADBASEMENU',
+                    type:'LOADLOWPRICEMENU',
                     datas:res.datas
                 })
             }
@@ -153,7 +153,7 @@ class LowPrice extends Component{
                     <div className="list">
                         <div className="card" style={{marginTop:0}}>
                             {
-                                this.props.lowPrice.length==0 ? <EmptyComponent/> :this.props.lowPrice.datas.map((ele)=>{
+                                this.props.lowPrice.datas.length==0 ? <EmptyComponent/> :this.props.lowPrice.datas.map((ele)=>{
                                     return(
                                         <div key={Math.random(2)}>
                                             <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",p:ele.areaName}}/>

@@ -175,12 +175,11 @@ class BidList extends Component{
                     <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)} _showProvicenHandle={this._showProvicenHandle.bind(this)}/>
                     <div ref="content" className="scroll-content has-header">
                         <Main data={this.props.bidList.data} loading={this.state.loading}/>
-                        
                         <More {...this.props}/>
-                        {
-                            this.props.bidList.isShowFilter ? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
-                        }
                     </div>
+                    {
+                        this.props.bidList.isShowFilter ? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
+                    }
                     {
                         this.state.loading ? <Loading/> : null
                     }

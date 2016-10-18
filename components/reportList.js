@@ -15,14 +15,25 @@ export default class ReportList extends Component {
 			}
 			return string;
 		})();
-		var number = (()=>{
-			if(this.props.dataSources.costStatus == "1"){
-				string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人购买</span>;
-			}else{
-				string =<span style={{textAlign:"left"}}>{this.props.dataSources.num}人查看</span>;
-			}
-			return string;
-		})();
+		if(this.props.reportTag || this.props.BuyReportList){
+			var number = (()=>{
+				if(this.props.dataSources.costStatus == "1"){
+					string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人购买</span>;
+				}else{
+					string =<span style={{textAlign:"left"}}>{this.props.dataSources.number}人查看</span>;
+				}
+				return string;
+			})();
+		}else{
+			var number = (()=>{
+				if(this.props.dataSources.costStatus == "1"){
+					string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人购买</span>;
+				}else{
+					string =<span style={{textAlign:"left"}}>{this.props.dataSources.num}人查看</span>;
+				}
+				return string;
+			})();
+		}
 		if(this.props.dataSources.costStatus == "1"){
 			this.state= {
 				price: this.props.dataSources.price
