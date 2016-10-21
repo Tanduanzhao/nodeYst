@@ -78,6 +78,6 @@ export const Token = function(fn,login,isLogin){
             }
         })
     }else{
-      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5b09933bb205ed95&redirect_uri='+HTTPURL+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+WXKEY+'&redirect_uri='+HTTPURL+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
     }
 }
