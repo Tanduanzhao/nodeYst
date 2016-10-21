@@ -1,4 +1,6 @@
 import React,{Component} from 'react';
+import {loadReport} from './function/ajax';
+import {WXKEY,HTTPURL} from '../config';
 export default class Pdf extends Component{
     constructor(props){
         super(props);
@@ -6,8 +8,8 @@ export default class Pdf extends Component{
              // 分享
                 var info = {
                     title: this.props.params.title,
-                    link: 'http://yst.immortalshealth.com',
-                    imgUrl: 'http://yst.immortalshealth.com/pub/resources/sysres/logo.jpg',
+                    link: HTTPURL,
+                    imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                     desc: '小伙伴们和我一起去逛逛医药圈的报告超市--药市通~'
                 };
                 wx.onMenuShareTimeline({
@@ -29,17 +31,30 @@ export default class Pdf extends Component{
                     }
                 });
         });
+        this.state = {
+            report:null
+        }
     }
-    componentDidMount(){
-        console.dir(this.refs.frame);
+    _loadData(){
+        loadReport({
+            id:this.props.params.id,
+            callBack:(res)=>{
+                this.setState({
+                    report:res.datas
+                })
+            }
+        })
+    }
+    componentWillMount(){
+        
     }
     componentWillUnmount(){
         wx.ready(()=> {
              // 分享
                 var info = {
                     title: '药市通-首个医药行业报告超市',
-                    link: 'http://yst.immortalshealth.com',
-                    imgUrl: 'http://yst.immortalshealth.com/pub/resources/sysres/logo.jpg',
+                    link: HTTPURL,
+                    imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                     desc: '提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
                 };
                 wx.onMenuShareTimeline({
@@ -63,11 +78,11 @@ export default class Pdf extends Component{
         });
     }
     render(){
-        this.url = `http://yst-test.immortalshealth.com/pdfjs-1.1.114-dist/web/viewer.html?file=http://yst.immortalshealth.com/modm/pub/getPubPdf?reportId%3D${this.props.params.id}`;
+        this.url = `${HTTPURL}/pdfjs-1.1.114-dist/web/viewer.html?file=${HTTPURL}/modm/pub/getPubPdf?reportId%3D${this.props.params.id}`;
         return(
             <div className="root">
-                <div style={{width:'100%',height:'100%',overflowScrolling:'touch',overFlow:'auto'}}>
-                    <iframe ref='frame' style={{display:'block',overFlow:'auto'}} width="100%" height="100%" name="iFrame1" width="100%" scrolling="yes" src={this.url}></iframe>
+                <div className="scroll-content">
+                    <div dangerouslySetInnerHTML={this.state.report.content}></div>
                 </div>
             </div>
         )
