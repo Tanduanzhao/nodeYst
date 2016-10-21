@@ -69,7 +69,16 @@ class Slide extends Component{
         return(
             <Slider {...settings} {...this.props}>
                 {
-                    this.props.datas.img.map((ele,index)=> <div key={`img_${ele.id}`}><img src={ele.imgUrl} style={{"width":"100%"}} alt=""/></div>)
+                    this.props.datas.img.map((ele,index)=>{
+                        switch(ele.resourceType){
+                            case "EXTERNAL": let url = '/picture/'+encodeURIComponent(ele.imgSource);return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
+                            case "INTERNAL":return <div  key={ele.id+Math.random()}><Link to={ele.imgSource}><img src={ele.imgUrl}  alt=""/></Link></div>;
+                            case "ORDER_REPORT":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
+                            case "NO":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
+                            default :return <div key={`img_${ele.id}`}><img src={ele.imgUrl} style={{"width":"100%"}} alt=""/></div>;
+                        }
+                    })
+
                 }
             </Slider>
         )
@@ -87,7 +96,7 @@ class Slidedefault extends Component{
             autoplay:true
         };
         return(
-        <Slider {...settings} {...this.props}><div><img src="/images/home.jpg" alt=""/></div></Slider>
+         <Slider {...settings} {...this.props}><div><img src="/images/home.jpg" alt=""/></div></Slider>
         )
     }
 }

@@ -8,7 +8,7 @@ var defaultBidList={
   infinite:false,
   pageNo:1,
   municipality:1,
-  searchName:null,
+  searchName:"",
   getBidAreaInfo:[],
   getProjectStatus:[],
   searchProductStatus:-1,
@@ -16,8 +16,8 @@ var defaultBidList={
   sidx:null,
   request:true,
   active:0,
-  areaName:'广东省',
-  areaId:['ZZOQD0000000000000000000000020']
+  areaName:null,
+  areaId:null
 }
 export default function bidList(state=defaultBidList,action){
   switch(action.type){
@@ -26,6 +26,8 @@ export default function bidList(state=defaultBidList,action){
     case INFINITE : return ObjectAssign({},state,{infinite:false});
     case "request": return ObjectAssign({},state,{request:false});
     case "requestss": return ObjectAssign({},state,{request:true});
+    case "areaIdall": return ObjectAssign({},state,{areaId:['0']});
+    case "CHANGEALLPROVINCE": return ObjectAssign({},state,{areaName:action.provinceName,areaId:[action.provinceId]});
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
     case LOADBIFLISTCONTENTDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
     case SHOWFILTERBIDLIST : return ObjectAssign({},state,{isShowFilter:true});
@@ -33,6 +35,7 @@ export default function bidList(state=defaultBidList,action){
     case CHANGEBIDLISTTITLEORREPORTKEY : return ObjectAssign({},state,{searchName:action.searchName});
     case CHANGEBIDLISTFILTER : return ObjectAssign({},state,{areaId:action.areaId,searchAreaType:action.searchAreaType,searchProductStatus:action.searchProductStatus,sord:action.sord,sidx:action.sidx,active:action.active});
     case "UNCHANGEBIDLISTTITLEORREPORTKEY" : return ObjectAssign({},state,{searchName:defaultBidList.searchName});
+    case "RESETBIDLIST" : return  ObjectAssign({},defaultBidList,{areaName:state.areaName,areaId:state.areaId});
     default : return state;
   }
 }
