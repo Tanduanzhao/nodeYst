@@ -45,15 +45,11 @@ class Datas extends Component{
     }
     render(){
         return(
-            <div className="root" style={{"overflow":"auto"}}>
+            <div className="root datas" style={{"overflow":"auto"}}>
                 {this.props.datas.img.length == 0? <Slidedefault {...this.props}/> : <Slide {...this.props}/>}
-                <Column {...this.props}/>
-                <div className="item item-divider home-item-title">
-                    <strong>数据简介</strong>
-                </div>
-                <div className="content">
-
-                </div>
+               <div  className="scroll-content has-header bgcf">
+                   <Column {...this.props}/>
+               </div>
                 <FooterBar {...this.props}/>
             </div>
         )
@@ -98,26 +94,81 @@ class Slidedefault extends Component{
 class Column extends Component{
     render(){
         return(
-            <div>
-                <ul className="column">
-                    <Link to="/datas/policy">
-                        <img src="/images/column03.jpg" alt=""/>
-                        政策准入
-                    </Link>
-                    <Link to="/datas/bidList">
-                        <img src="/images/column02.jpg" alt=""/>
-                        中标数据
-                    </Link>
-                    <Link to="/datas/marketPrice">
-                        <img src="/images/column07.jpg" alt="" className="price-icon"/>
-                        入市价
-                    </Link>
-                    <Link to="/datas/product">
-                        <img src="/images/column05.jpg" alt=""/>
-                        产品数据
-                    </Link>
-                </ul>
-            </div>
+            <ul className="column column-block">
+                <Link to="/datas/policy">
+                    <img src="/images/column03.jpg" alt=""/>
+                    政策准入
+                </Link>
+                <Link to="/datas/bidList">
+                    <img src="/images/column02.jpg" alt=""/>
+                    中标数据
+                </Link>
+                <Link to="/datas/marketPrice">
+                    <img src="/images/column07.jpg" alt="" className="price-icon"/>
+                    入市价
+                </Link>
+                <Link to="/datas/product">
+                    <img src="/images/column05.jpg" alt=""/>
+                    产品数据
+                </Link>
+                <Link to="/datas/policy/base">
+                    <img src="/images/column09.jpg" alt=""/>
+                    基药
+                </Link>
+                <Link to="/datas/policy/insurance">
+                    <img src="/images/column10.jpg" alt=""/>
+                    医保
+                </Link>
+                <Link to="/datas/policy/anti">
+                    <img src="/images/column11.jpg" alt=""/>
+                    抗菌药物
+                </Link>
+                <Link to="/datas/policy/lowPrice">
+                    <img src="/images/column12.jpg" alt=""/>
+                    低价药
+                </Link>
+                <Link to="/datas/policy/assist">
+                    <img src="/images/column13.jpg" alt=""/>
+                    辅助用药
+                </Link>
+                <Link to="/datas">
+                    <img src="/images/column14.jpg" alt=""/>
+                    专利
+                </Link>
+                <Link to="/datas">
+                    <img src="/images/column15.jpg" alt=""/>
+                    过期专利
+                </Link>
+                <Link to="/datas">
+                    <img src="/images/column16.jpg" alt=""/>
+                    一类新药
+                </Link>
+                <Link to="/datas">
+                    <img src="/images/column17.jpg" alt=""/>
+                    首仿
+                </Link>
+                <Link to="/datas">
+                    <img src="/images/column18.jpg" alt=""/>
+                    欧盟认证
+                </Link>
+                <Link to="/datas">
+                    <img src="/images/column19.jpg" alt=""/>
+                    美国认证
+                </Link>
+                <Link to="/datas">
+                    <img src="/images/column20.jpg" alt=""/>
+                    日本认证
+                </Link>
+                <Link to="/datas">
+                    <img src="/images/column21.jpg" alt=""/>
+                    国家科技奖
+                </Link>
+                <Link to="/datas">
+                    <img src="/images/column22.jpg" alt=""/>
+                    国家中药保密<br/>
+                    处方
+                </Link>
+            </ul>
         )
     }
 }

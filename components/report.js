@@ -21,7 +21,7 @@ class Report extends Component {
       loading:true,
       request:true,
       showPopup:false,
-      reportTag:true
+      reportTag:this.props.report.reportTag
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -96,6 +96,14 @@ class Report extends Component {
         data:[],
         pageNo:1
       });
+    this.props.dispatch({
+      type:'CHANGETYPE',
+      searchType:1,
+      reportType:0
+    });
+    this.props.dispatch({
+      type:'CHANGEREPORTTAG'
+    });
   }
     
     
@@ -229,7 +237,7 @@ class Main extends Component{
         return(
             <ul className="list new_report">
               {
-                this.props.data.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} reportTag={this.props.reportTag} dataSources={ele} key={ele.id}/>)
+                this.props.data.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} reportTag={this.props.reportTag} dataSources={ele} key={ele.id+Math.random()}/>)
               }
             </ul>
         )

@@ -257,7 +257,7 @@ export default class PolicySonFilter extends Component {
                                             <ul>
                                                 {
                                                     this.state.origins.map((v)=>{
-                                                        return <li style={(v.gradeId == this.state.gradeId) ? styles.active : null} onClick={this._chandleClick.bind(this,v.gradeId)} key={Math.random(1)}>{v.gradeName}</li>
+                                                        return <li style={(v.gradeId == this.state.gradeId) ? styles.active : null} onClick={this._chandleClick.bind(this,v.gradeId)} key={Math.random(1)}>{v.grade}</li>
                                                     })
                                                 }
                                             </ul>

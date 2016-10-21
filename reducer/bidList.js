@@ -17,8 +17,7 @@ var defaultBidList={
   request:true,
   active:0,
   areaName:'广东省',
-  areaId:['ZZOQD0000000000000000000000020'],
-  searchText:'请输入搜索关键词'
+  areaId:['ZZOQD0000000000000000000000020']
 }
 export default function bidList(state=defaultBidList,action){
   switch(action.type){
@@ -31,8 +30,9 @@ export default function bidList(state=defaultBidList,action){
     case LOADBIFLISTCONTENTDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
     case SHOWFILTERBIDLIST : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPBIDLIST : return ObjectAssign({},state,{isShowFilter:false});
-    case CHANGEBIDLISTTITLEORREPORTKEY : return ObjectAssign({},state,{searchName:action.searchName,searchText:action.searchText});
+    case CHANGEBIDLISTTITLEORREPORTKEY : return ObjectAssign({},state,{searchName:action.searchName});
     case CHANGEBIDLISTFILTER : return ObjectAssign({},state,{areaId:action.areaId,searchAreaType:action.searchAreaType,searchProductStatus:action.searchProductStatus,sord:action.sord,sidx:action.sidx,active:action.active});
+    case "UNCHANGEBIDLISTTITLEORREPORTKEY" : return ObjectAssign({},state,{searchName:defaultBidList.searchName});
     default : return state;
   }
 }

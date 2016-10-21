@@ -144,7 +144,7 @@ class Base extends Component{
     }
     componentWillUnmount(){
         this.props.dispatch({
-            type:'REASETBASE'
+            type:'RESETBASE'
         });
     }
     render(){

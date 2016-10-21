@@ -31,6 +31,9 @@ import product from './components/datas/product';
 import Center from './components/center';
 import FeedBack from './components/feedBack';
 import purchase from './components/purchase';
+import help from './components/help';
+import contribute from './components/contribute';
+import dataIntro from './components/dataIntro';
 
 import report from './components/report';
 import free from './components/report/free';
@@ -39,6 +42,7 @@ import charge from './components/report/charge';
 import Home from './components/home';
 
 import vip from './components/vip';
+import protocol from './components/protocol';
 import Pdf from './components/pdf';
 
 import ReportContent from "./components/reportContent";
@@ -114,6 +118,8 @@ var _router = (
                 <Route path="center">
                    <IndexRoute component={Center}/>
                    <Route path="feedback" component={FeedBack}/>
+                    <Route path="help" component={help}/>
+                    <Route path="contribute" component={contribute}/>
                 </Route>
                 <Route path="purchase">
                     <IndexRoute component={purchase}/>
@@ -126,8 +132,11 @@ var _router = (
                 <Route path="home">
                     <IndexRoute component={Index}/>
                 </Route>
-                <Route path="vip" component={vip}></Route>
                 <Route path="pdf/:id/:title" component={Pdf}></Route>
+                <Route path="vip">
+                    <IndexRoute component={vip}/>
+                    <Route path="protocol" component={protocol}/>
+                </Route>
             </Route>
 		</Router>
 	</Provider>

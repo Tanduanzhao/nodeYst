@@ -144,7 +144,7 @@ class Insurance extends Component{
     }
     componentWillUnmount(){
         this.props.dispatch({
-            type:'REASETINSURANCE'
+            type:'RESETINSURANCE'
         });
     }
     render(){

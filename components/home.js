@@ -161,6 +161,9 @@ class Main extends Component{
 			searchType: 0,
 			pageNo:1
 		});
+		this.props.dispatch({
+			type:'UNCHANGEREPORTTAG'
+		});
 	}
 	hotReportMap(){
 		this.props.dispatch({
@@ -168,6 +171,9 @@ class Main extends Component{
 			data:[],
 			searchType: 2,
 			pageNo:1
+		});
+		this.props.dispatch({
+			type:'UNCHANGEREPORTTAG'
 		});
 	}
 	render(){
@@ -398,6 +404,7 @@ class Hotrepor extends Component{
 
 class Record extends Component{
     render(){
+		console.log(this.props.dataSources);
         return(
             <div style={{position:'absolute',left:'0',top:'0',zIndex:'999',width:'100%',paddingLeft:'10px',lineHeight:'2',fontSize:'12px',backgroundColor:'rgba(255,255,255,.7)'}}>
                 最近{this.props.dataSources}

@@ -142,7 +142,7 @@ class Assist extends Component{
     }
     componentWillUnmount(){
         this.props.dispatch({
-            type:'REASETASSIST'
+            type:'RESETASSIST'
         });
     }
     render(){

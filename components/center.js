@@ -40,10 +40,10 @@ class Main extends Component{
                             开通会员
                         </Link>
                     }
-                    <div className="item item-icon-left">
+                    <Link to="center/dataIntro" className="item item-icon-left">
                         <img src="/images/contribute_icon.jpg" alt=""/>
                         我要投稿
-                    </div>
+                    </Link>
                     <Link to="purchase" className="item item-icon-left">
                         <img src="/images/purchase_icon.jpg" alt=""/>
                         已购报告
@@ -52,10 +52,10 @@ class Main extends Component{
                         <img src="/images/idea_icon.jpg" alt=""/>
                         意见反馈
                     </Link>
-                    <div className="item item-icon-left">
+                    <Link to="center/help" className="item item-icon-left">
                         <img src="/images/help_icon.jpg" alt=""/>
                         帮助中心
-                    </div>
+                    </Link>
                 </div>
             </div>
         )

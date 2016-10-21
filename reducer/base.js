@@ -20,7 +20,7 @@ export default function insurance(state=defaultBase,action){
         case 'LOADBASEMENU' : return ObjectAssign({},state,{filters:state.filters.concat(action.datas)});
         case 'LOADBASEDATA' : return ObjectAssign({},state,{datas:state.datas.concat(action.datas)});
         case 'CHANGEBASESEARCHNAME' : return ObjectAssign({},state,{searchName:action.searchName,pageNo:1,datas:[]});
-        case 'REASETBASE' : return defaultBase;
+        case 'RESETBASE' : return defaultBase;
         default : return state;
     }
 }

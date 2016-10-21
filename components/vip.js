@@ -12,6 +12,10 @@ import {loadHome} from './function/ajax';
          this.context.router.goBack();
      }
      _ProductView(id,sele){
+         if(!this.refs.checkbox.checked){
+             alert("请同意服务协议")
+             return false
+         }
          if (typeof WeixinJSBridge == "undefined")  return false;
          var pid = id;
 //        var pid = "pDF3iY_G88cM_d-wuImym3tkVfG5";//只需要传递
@@ -70,6 +74,7 @@ import {loadHome} from './function/ajax';
                             </li>
                             <li className="col-20"><button className="col"  onClick={this._ProductView.bind(this,"pxFGiwyfqw59qONiyD5Gq5Ro__2g")}>立即开通</button></li>
                         </ul>
+                        <div className="protocol"><input ref="checkbox" type="checkbox" defaultChecked/>我已阅读并同意 <Link to="vip/protocol">《药市通会员服务协议》 </Link></div>
                     </div>
                     <div className="pk">
                         <img src="/images/bg_pk_vip.jpg"/>
