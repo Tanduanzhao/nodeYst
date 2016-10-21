@@ -44,6 +44,7 @@ import Home from './components/home';
 import vip from './components/vip';
 import protocol from './components/protocol';
 import Pdf from './components/pdf';
+import Picture from './components/picture';
 
 import ReportContent from "./components/reportContent";
 import Policy from './components/policy';
@@ -63,9 +64,15 @@ Token((res) => {
         searchAreaType:res.datas.searchAreaType
     });
     store.dispatch({
+        type:'CHANGEALLPROVINCE',
+        provinceName:res.datas.provinceName,
+        provinceId:res.datas.provinceId
+    });
+    store.dispatch({
         type:'CHANGEDATA',
         yearMonth:res.datas.yearMonth
     });
+
     ReactDOM.render(_router, ele, null);
 },(res)=>{
     store.dispatch({
@@ -133,6 +140,7 @@ var _router = (
                     <IndexRoute component={Index}/>
                 </Route>
                 <Route path="pdf/:id/:title" component={Pdf}></Route>
+                <Route path="picture/:url" component={Picture}></Route>
                 <Route path="vip">
                     <IndexRoute component={vip}/>
                     <Route path="protocol" component={protocol}/>

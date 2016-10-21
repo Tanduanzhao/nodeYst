@@ -17,6 +17,7 @@ class BidList extends Component{
         this.state={
             loading:false
         };
+        console.log(this.props.bidList.areaName,'前');
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
@@ -35,7 +36,6 @@ class BidList extends Component{
             searchName:this.props.bidList.searchName,
             searchProductStatus:this.props.bidList.searchProductStatus,
             callBack:(res)=>{
-                console.log(this._calledComponentWillUnmount);
                 if(this._calledComponentWillUnmount) return false;
                 this.setState({
                     loading:false
@@ -122,35 +122,45 @@ class BidList extends Component{
         }
     }
     componentDidMount(){
+        if(this.props.params.productName){
+            this.props.dispatch({
+                type:'LOADBIFLISTCONTENTDATA',
+                data:[],
+                pageNo:1,
+            });
+            this.props.dispatch({
+                type:'areaIdall'
+            });
+        }
         this.props.dispatch({
             type:'CHANGEBIDLISTTITLEORREPORTKEY',
             searchName:this.props.params.productName? (this.props.params.productName+" "+this.props.params.prepName+" "+this.props.params.spec+" "+this.props.params.manufacturerName):null
         });
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-            if(this.props.params.productName || this.props.bidList.data.length == 0){
-                setTimeout(()=>{
-                    this._loadData();
-                },10);
-                getBidAreaInfo({
-                    pageNo:this.props.bidList.pageNo,
-                    searchName:this.props.bidList.searchName,
-                    callBack:(res)=>{
-                        this.props.dispatch({
-                            type:'getBidAreaInfo',
-                            getBidAreaInfo:res.datas,
-                        });
-                    }
-                });
-                getProjectStatus({
-                    callBack:(res)=>{
-                        this.props.dispatch({
-                            type:'getProjectStatus',
-                            getProjectStatus:res.datas,
-                        });
-                    }
-                });
-            }
+        if(this.props.params.productName || this.props.bidList.data.length == 0) {
+            setTimeout(()=> {
+                this._loadData();
+            }, 10);
+            getBidAreaInfo({
+                pageNo: this.props.bidList.pageNo,
+                searchName: this.props.bidList.searchName,
+                callBack: (res)=> {
+                    this.props.dispatch({
+                        type: 'getBidAreaInfo',
+                        getBidAreaInfo: res.datas,
+                    });
+                }
+            });
+            getProjectStatus({
+                callBack: (res)=> {
+                    this.props.dispatch({
+                        type: 'getProjectStatus',
+                        getProjectStatus: res.datas,
+                    });
+                }
+            });
+        }
 
     }
     componentWillUnmount(){

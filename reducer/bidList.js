@@ -16,8 +16,8 @@ var defaultBidList={
   sidx:null,
   request:true,
   active:0,
-  areaName:'广东省',
-  areaId:['ZZOQD0000000000000000000000020']
+  areaName:'全部',
+  areaId:['0']
 }
 export default function bidList(state=defaultBidList,action){
   switch(action.type){
@@ -26,6 +26,8 @@ export default function bidList(state=defaultBidList,action){
     case INFINITE : return ObjectAssign({},state,{infinite:false});
     case "request": return ObjectAssign({},state,{request:false});
     case "requestss": return ObjectAssign({},state,{request:true});
+    case "areaIdall": return ObjectAssign({},state,{areaId:['0']});
+    case "CHANGEALLPROVINCE": return ObjectAssign({},state,{areaName:action.provinceName,areaId:[action.provinceId]});
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
     case LOADBIFLISTCONTENTDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
     case SHOWFILTERBIDLIST : return ObjectAssign({},state,{isShowFilter:true});

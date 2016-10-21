@@ -69,7 +69,11 @@ class Slide extends Component{
         return(
             <Slider {...settings} {...this.props}>
                 {
-                    this.props.datas.img.map((ele,index)=> <div key={`img_${ele.id}`}><img src={ele.imgUrl} style={{"width":"100%"}} alt=""/></div>)
+                    this.props.datas.img.map((ele,index)=>{
+                    return(
+                        <div key={`img_${ele.id}`}><img src={ele.imgUrl} style={{"width":"100%"}} alt=""/></div>)
+                    })
+
                 }
             </Slider>
         )
