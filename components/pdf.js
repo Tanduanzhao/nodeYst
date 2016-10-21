@@ -81,7 +81,6 @@ export default class Pdf extends Component{
         });
     }
     render(){
-        this.url = `${HTTPURL}/pdfjs-1.1.114-dist/web/viewer.html?file=${HTTPURL}/modm/pub/getPubPdf?reportId%3D${this.props.params.id}`;
         return(
             <div className="root">
                 <div className="bar bar-positive">{this.state.report.title}</div>
