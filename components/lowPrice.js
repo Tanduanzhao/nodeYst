@@ -142,7 +142,7 @@ class LowPrice extends Component{
     }
     componentWillUnmount(){
         this.props.dispatch({
-            type:'REASETLOWPRICE'
+            type:'RESETLOWPRICE'
         });
     }
     render(){

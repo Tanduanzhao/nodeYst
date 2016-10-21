@@ -38,14 +38,6 @@ export default class FilterProduce extends Component{
                   }
                 </ul>
               </div>
-              <h2 className="item item-divider">报告类型</h2>
-              <div className="list padding">
-                <ul className="list-horizontal-block">
-                  <li style={(this.state.searchType == 1) ? styles.active : null} onClick={()=>{this.setState({searchType:1})}}>全部</li>
-                  <li style={(this.state.searchType == 0) ? styles.active : null} onClick={()=>{this.setState({searchType:0})}}>最新报告</li>
-                  <li style={(this.state.searchType == 2) ? styles.active : null} onClick={()=>{this.setState({searchType:2})}}>热门报告</li>
-                </ul>
-              </div>
             </div>
           </div>
         </div>

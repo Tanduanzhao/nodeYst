@@ -4,7 +4,7 @@ export default class ReportList extends Component {
 	render(){
 		var string = null;
 		var tag = (()=>{
-			if(this.props.BuyReportList){
+			if(this.props.BuyReportList || this.props.dataSources.buyReport == 1){
 				string = <i className="item-icon">点击查看</i>;
 			}else{
 				if(this.props.dataSources.costStatus == "1"){

@@ -124,8 +124,7 @@ class BidList extends Component{
     componentDidMount(){
         this.props.dispatch({
             type:'CHANGEBIDLISTTITLEORREPORTKEY',
-            searchName:this.props.params.productName,
-            searchText:this.props.params.productName || this.props.bidList.searchText
+            searchName:this.props.params.productName
         });
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
@@ -167,6 +166,9 @@ class BidList extends Component{
         this.props.dispatch({
             type:'UNSHOWFILTERPRODUCE'
         });
+        this.props.dispatch({
+            type:'UNCHANGEBIDLISTTITLEORREPORTKEY'
+        })
     }
 
     render(){
@@ -223,7 +225,7 @@ class HeaderBar extends Component{
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder={decodeURI(decodeURI(this.props.bidList.searchText))}/>
+                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)} type="search"  placeholder={this.props.bidList.searchName?decodeURI(decodeURI(this.props.bidList.searchName)):"请输入搜索关键词"}/>
                 </label>
                 <button className="button button-clear" onClick={this.props._searchHandle.bind(this)}>
                     搜索

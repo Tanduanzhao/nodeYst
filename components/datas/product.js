@@ -166,9 +166,20 @@ class Main extends Component{
 
 class List extends Component{
     render(){
+        var string = null;
+        var trandName = (()=> {
+            if (this.props.dataSources.trandName==null || this.props.dataSources.trandName==undefined) {
+                string = ""
+            } else {
+                string = "(",
+                string +=this.props.dataSources.trandName,
+                string +=")"
+            }
+            return string;
+        })();
         return(
             <div>
-                <h2>产品名称： {this.props.dataSources.productName}</h2>
+                <h2>产品名称： {this.props.dataSources.productName}{trandName}</h2>
             <li  className="card">
                 <ul className="list">
                     <li>剂型/规格：{this.props.dataSources.prepName}/{this.props.dataSources.spec}</li>
