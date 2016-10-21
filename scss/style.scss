@@ -1014,3 +1014,13 @@ table{
         left: 0;
     }
 }
+.report-content{
+    img{
+        display: block;
+        max-width: 100%;
+    }
+    p{
+        text-indent: 2em;
+        line-height: 1.8;
+    }
+}

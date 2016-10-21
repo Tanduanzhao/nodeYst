@@ -83,8 +83,8 @@ export default class Pdf extends Component{
         this.url = `${HTTPURL}/pdfjs-1.1.114-dist/web/viewer.html?file=${HTTPURL}/modm/pub/getPubPdf?reportId%3D${this.props.params.id}`;
         return(
             <div className="root">
-                <div className="scroll-content">
-                    <div dangerouslySetInnerHTML={{__html:this.state.report.content}}></div>
+                <div className="scroll-content padding report-content" dangerouslySetInnerHTML={{__html:this.state.report.content}}>
+            
                 </div>
             </div>
         )
