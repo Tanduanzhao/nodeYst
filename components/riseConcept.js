@@ -96,7 +96,7 @@ class RiseConcept extends Component{
             this._loadData();
         }
     }
-    componentDidmount(){
+    componentDidMount(){
         this.props.dispatch({
             type:'UNSHOW'
         })
@@ -105,7 +105,7 @@ class RiseConcept extends Component{
         this._loadData();
        
     }
-    componentWillUnMount(){
+    componentWillUnmount(){
         this.ele.removeEventListener('scroll',this._infiniteScroll);
     }
     render(){

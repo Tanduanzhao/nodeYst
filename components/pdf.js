@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {loadReport} from './function/ajax';
-import {WXKEY,HTTPURL} from '../config';
+import {WXKEY,HTTPURL} from './config';
 export default class Pdf extends Component{
     constructor(props){
         super(props);
@@ -32,7 +32,9 @@ export default class Pdf extends Component{
                 });
         });
         this.state = {
-            report:null
+            report:{
+                content:null
+            }
         }
     }
     _loadData(){
@@ -46,7 +48,7 @@ export default class Pdf extends Component{
         })
     }
     componentWillMount(){
-        
+        this._loadData();
     }
     componentWillUnmount(){
         wx.ready(()=> {
@@ -82,7 +84,7 @@ export default class Pdf extends Component{
         return(
             <div className="root">
                 <div className="scroll-content">
-                    <div dangerouslySetInnerHTML={this.state.report.content}></div>
+                    <div dangerouslySetInnerHTML={{__html:this.state.report.content}}></div>
                 </div>
             </div>
         )

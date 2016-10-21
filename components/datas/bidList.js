@@ -124,7 +124,7 @@ class BidList extends Component{
     componentDidMount(){
         this.props.dispatch({
             type:'CHANGEBIDLISTTITLEORREPORTKEY',
-            searchName:this.props.params.productName+" "+this.props.params.prepName+this.props.params.spec+" "+this.props.params.manufacturerName
+            searchName:this.props.params.productName? (this.props.params.productName+" "+this.props.params.prepName+this.props.params.spec+" "+this.props.params.manufacturerName):null
         });
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
@@ -217,10 +217,16 @@ class HeaderBar extends Component{
     }
     render(){
         var placeholder=(()=>{
+            var children="";
+            var str=this.props.bidList.searchName+"";
+            var arr=str.split(" ");
+            if(this.props.bidList.searchName){
+                children=decodeURI(decodeURI(arr[0]))
 
-            var children="dddd";
-
-            return children;
+            }else{
+                 children="请输入搜索关键词"
+            }
+           return children;
         })();
         return(
             <div className="bar bar-header bar-positive item-input-inset">
@@ -231,7 +237,7 @@ class HeaderBar extends Component{
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)} type="search"  placeholder={this.props.bidList.searchName?decodeURI(decodeURI(this.props.bidList.searchName)):"请输入搜索关键词"}/>
+                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)} type="search"  placeholder={placeholder}/>
                 </label>
                 <button className="button button-clear" onClick={this.props._searchHandle.bind(this)}>
                     搜索

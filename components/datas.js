@@ -165,8 +165,7 @@ class Column extends Component{
                 </Link>
                 <Link to="/datas">
                     <img src="/images/column22.jpg" alt=""/>
-                    国家中药保密<br/>
-                    处方
+                    中药保密处方
                 </Link>
             </ul>
         )
