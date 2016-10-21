@@ -141,7 +141,7 @@ class Anti extends Component{
     }
     componentWillUnmount(){
         this.props.dispatch({
-            type:'REASETANTI'
+            type:'RESETANTI'
         });
     }
     render(){

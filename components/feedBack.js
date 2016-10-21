@@ -37,7 +37,7 @@ class FeedBack extends Component{
     render(){
         return(
             <div className="root">
-                <div className="scroll-content">
+                <div className="scroll-content padding">
                     {
                         this.props.feedBack.data.map((ele)=>{
                           return (ele.isReplay == 1) ? (<Dialog key={Math.random(1)} feedContent = {ele.feedContent}/>) : (<Dialog key={Math.random(1)} feedContent ={ele.feedContent} dir="right" imgUrl={ele.headImageUrl}/>)

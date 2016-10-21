@@ -31,6 +31,10 @@ import product from './components/datas/product';
 import Center from './components/center';
 import FeedBack from './components/feedBack';
 import purchase from './components/purchase';
+import help from './components/help';
+import User from './components/user';
+import contribute from './components/contribute';
+import dataIntro from './components/dataIntro';
 
 import report from './components/report';
 import free from './components/report/free';
@@ -39,7 +43,9 @@ import charge from './components/report/charge';
 import Home from './components/home';
 
 import vip from './components/vip';
+import protocol from './components/protocol';
 import Pdf from './components/pdf';
+import Picture from './components/picture';
 
 import ReportContent from "./components/reportContent";
 import Policy from './components/policy';
@@ -59,9 +65,15 @@ Token((res) => {
         searchAreaType:res.datas.searchAreaType
     });
     store.dispatch({
+        type:'CHANGEALLPROVINCE',
+        provinceName:res.datas.provinceName,
+        provinceId:res.datas.provinceId
+    });
+    store.dispatch({
         type:'CHANGEDATA',
         yearMonth:res.datas.yearMonth
     });
+
     ReactDOM.render(_router, ele, null);
 },(res)=>{
     store.dispatch({
@@ -106,7 +118,7 @@ var _router = (
                     
                     <Route path="product" component={product}/>
                     <Route path="bidList" component={bidList}/>
-                    <Route path="bidList/:productName" component={bidList}/>
+                    <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>
                 </Route>
                 <Route path="drugContent/:sid">
                   <IndexRoute component={drugContent}/>
@@ -114,6 +126,10 @@ var _router = (
                 <Route path="center">
                    <IndexRoute component={Center}/>
                    <Route path="feedback" component={FeedBack}/>
+                    <Route path="help" component={help}/>
+                    <Route path="user" component={User}/>
+                    <Route path="contribute" component={contribute}/>
+                    <Route path="dataIntro" component={dataIntro}/>
                 </Route>
                 <Route path="purchase">
                     <IndexRoute component={purchase}/>
@@ -126,8 +142,12 @@ var _router = (
                 <Route path="home">
                     <IndexRoute component={Index}/>
                 </Route>
-                <Route path="vip" component={vip}></Route>
                 <Route path="pdf/:id/:title" component={Pdf}></Route>
+                <Route path="picture/:url" component={Picture}></Route>
+                <Route path="vip">
+                    <IndexRoute component={vip}/>
+                    <Route path="protocol" component={protocol}/>
+                </Route>
             </Route>
 		</Router>
 	</Provider>

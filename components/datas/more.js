@@ -16,7 +16,7 @@ export default class More extends Component {
 					<div><i className="icon ion-android-more-horizontal"></i></div>
 					<div className="more-content" style={(this.state.show) ? styles.active :styles.hidden}>
 						<div className="more-footer">
-							<ul className="column" onClick={this.stopPropagation.bind(this)}>
+							<ul className="column column-block" onClick={this.stopPropagation.bind(this)}>
 								<Link to="/">
 									<img src="/images/column_more_home.jpg" alt=""/>
 									首页

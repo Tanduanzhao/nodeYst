@@ -21,5 +21,7 @@ module.exports = function(app) {
     app.get('/pdf',pdf);
     app.get('/purchase',index);
     app.get('/pdf/*',index);
+    app.get('/picture',index);
+    app.get('/picture/*',index);
     app.post('/getToken',getToken);
 }

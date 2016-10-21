@@ -56,7 +56,7 @@ var Slider = require('react-slick');
          })
      }
      componentWillMount(){
-         this._loadRecordContent();
+         if(this.props.home.hasRecord) this._loadRecordContent();
      }
 	 componentDidMount(){
 		 this._loadData();
@@ -161,6 +161,9 @@ class Main extends Component{
 			searchType: 0,
 			pageNo:1
 		});
+		this.props.dispatch({
+			type:'UNCHANGEREPORTTAG'
+		});
 	}
 	hotReportMap(){
 		this.props.dispatch({
@@ -168,6 +171,9 @@ class Main extends Component{
 			data:[],
 			searchType: 2,
 			pageNo:1
+		});
+		this.props.dispatch({
+			type:'UNCHANGEREPORTTAG'
 		});
 	}
 	render(){
@@ -183,14 +189,23 @@ class Main extends Component{
 		var string = null;
 		var slide = (()=>{
 			if(this.props.home.img.length != 0){
-				string = <Slider {...settings} {...this.props}>{this.props.home.img.map((ele,index)=> <div key={`img_${ele.id}`}><img src={ele.imgUrl}  alt=""/></div>)}</Slider>;
+				string = <Slider {...settings} {...this.props}>{this.props.home.img.map((ele,index)=> {
+					console.log(this.props.home.img[index].imgSource)
+					switch(this.props.home.img[index].resourceType){
+						case "EXTERNAL": let url = '/picture/'+encodeURIComponent(this.props.home.img[index].imgSource);return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
+						case "INTERNAL":<div  key={ele.id+Math.random()}><Link to={this.props.home.img[index].imgSource}><img src={ele.imgUrl}  alt=""/></Link></div>;
+						case "ORDER_REPORT":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
+						case "NO":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
+						default : return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
+					}
+				})}</Slider>;
 			}else{
 				string = <Slider {...settings} {...this.props}><div><img src="/images/home.jpg" alt=""/></div></Slider>;
 			}
 			return string;
 		})();
 		return(
-			<div  className="main">
+			<div  className="scroll-content has-footer">
 			    {
                     this.props.showPopup ? <Popup popupCancel={this.props.popupCancel} popupSure={this.props.popupSure}/> : null
                 }
@@ -398,9 +413,10 @@ class Hotrepor extends Component{
 
 class Record extends Component{
     render(){
+		console.log(this.props.dataSources);
         return(
             <div style={{position:'absolute',left:'0',top:'0',zIndex:'999',width:'100%',paddingLeft:'10px',lineHeight:'2',fontSize:'12px',backgroundColor:'rgba(255,255,255,.7)'}}>
-                最近{this.props.dataSources}
+                {this.props.dataSources}
             </div>
         )
     }

@@ -29,7 +29,7 @@ body{
 .scroll-content{
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background-color: #f1f1f1;
+    background-color: #fff;
 }
 h1,h2,h3,h4,h5{
     margin: 0;
@@ -133,6 +133,67 @@ h3{
     line-height: 2;
     border-bottom: 1px solid #EFEFEF;
 }
+.column{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-around;
+    -webkit-justify-content: space-around;
+    align-items: center;
+    padding:9px 12px 12px 12px;
+    a{
+        flex:1;
+        -webkit-flex:1;
+        float: left;
+        font-size: .55rem;
+        color: #000;
+        text-align: center;
+    }
+    img{
+        display: block;
+        width: 45px;
+        height: 45px;
+        margin: 0 auto 8px auto;
+    }
+}
+.column-block{
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    text-align: center;
+    justify-content: inherit;
+    -webkit-justify-content: inherit;
+    a{
+        width: 25%;
+        margin-top: 20px;
+        text-align: center;
+        flex: inherit;
+        -webkit-flex: inherit;
+    }
+    .price-icon{
+        width: 53px;
+        height: 49px;
+        margin-bottom: 3px;
+    }
+}
+.row .bg-fff{
+    background: #fff;
+}
+ .bgcf{
+    background: #fff;
+}
+.datas{
+    .has-header{
+        top: 125px;
+    }
+    .column-block{
+        margin-bottom: 52px;
+        padding-top: 0;
+        align-items: flex-start;
+        -webkit-align-items: flex-start;
+        a{
+            margin-top: 10px;
+        }
+    }
+}
 .data-views{
     background: url(/images/bg_datas.jpg) center center;
     background-size: 100% 100%;
@@ -155,6 +216,7 @@ h3{
         padding: 20px;
         text-align: center;
         display: flex;
+        display: -webkit-flex;
         flex-direction:column;
         background-color: rgb(2, 132, 208);
         color: #fff;
@@ -185,7 +247,7 @@ h3{
         img{
             float: right;
             margin-right: 15px;
-            margin-left: 10px;
+            margin-left: 5px;
         }
         span{
             &:before{
@@ -266,9 +328,10 @@ h3{
         height: 52px;
     }
     a{
-        display: -webkit-box;
-        display: -ms-flexbox;
+        //display: -webkit-box;
+        //display: -ms-flexbox;
         display: flex;
+        display: -webkit-flex;
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
         -ms-flex-direction: column;
@@ -282,6 +345,7 @@ h3{
     }
     .report-card-footer{
         justify-content: space-between;
+        -webkit-justify-content: space-between;
         -webkit-box-align: start;
         -ms-flex-align: start;
         align-items: center;
@@ -329,6 +393,7 @@ h3{
         background-color: rgba(255,255,255,0.5);
         flex-direction: row;
         justify-content: space-around;
+        -webkit-justify-content: space-around;
         align-items: center;
         .title-text{
             opacity: 1;
@@ -347,8 +412,8 @@ h3{
     padding-left: 1.5rem;
     color: #0a8ddf;
     font-weight: 600;
-    display: -webkit-box;
-    display: -ms-flexbox;
+    //display: -webkit-box;
+    //display: -ms-flexbox;
     display: flex;
     display: -webkit-flex;
     flex-direction: row;
@@ -448,10 +513,10 @@ h3{
 }
 .main{
     overflow-x: hidden;
-    margin-bottom: 52px;
+    //margin-bottom: 52px;
 }
 .slick-list{
-    max-height: 236px;
+    max-height:125px;
 }
 .slick-slider{
     overflow: hidden;
@@ -469,22 +534,31 @@ h3{
 .new_report{
     a{
         display: flex;
-        padding: .6rem;
+        display: -webkit-flex;
+        padding: .5rem;
+        justify-content: space-between;
+        -webkit-justify-content: space-between;
     }
 }
 .item-left{
-    float: left;
-    height: 87px;
+    height:  4rem;
+    overflow: hidden;
+    width: 4rem;
     img{
-        display: block;
-        width: 7.5rem;
+        width: 100%;
         height: 100%;
     }
 }
 .item-right{
-    float: left;
-    width: 9.2rem;
     margin-left: 16px;
+    display: flex;
+    display: -webkit-flex;
+    flex: 1;
+    -webkit-flex: 1;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
     h3{
         font-size: .6rem;
         margin-top: 5px;
@@ -500,10 +574,13 @@ h3{
         -webkit-box-pack: justify;
         -ms-flex-pack: justify;
         justify-content: space-between;
+        -webkit-justify-content: space-between;
         -webkit-box-align: start;
         -ms-flex-align: start;
         align-items: center;
+        -webkit-align-items: center;
         text-align: left;
+        display: flex;
         display: -webkit-flex;
         font-size: .6rem;
         color: #888;
@@ -514,24 +591,6 @@ h3{
             color: #0894ec;
             border-radius: 5px;
         }
-    }
-}
-.column{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding:9px 12px 12px 12px;
-    a{
-        float: left;
-        font-size: .55rem;
-        color: #000;
-        text-align: center;
-    }
-    img{
-        display: block;
-        width: 45px;
-        height: 45px;
-        margin: 0 auto 8px auto;
     }
 }
 .home-item-title{
@@ -628,9 +687,17 @@ h3{
             text-align: left;
         }
     }
+    .protocol{
+        color:black;
+        font-size: .6rem;
+        margin-top: 6px;
+        input{
+            vertical-align: middle;
+        }
+    }
     .pk{
         padding: 0 1rem;
-        margin-bottom: 20px;
+        padding-bottom: 20px;
         background-color: #fff;
     }
 }
@@ -749,21 +816,6 @@ h3{
         width: 100%;
         background: white;
         padding-bottom: 10px;
-        .column{
-            flex-wrap: wrap;
-            text-align: center;
-            justify-content: inherit;
-            a{
-                width: 25%;
-                margin-top: 20px;
-                text-align: center;
-            }
-            .price-icon{
-                width: 53px;
-                height: 49px;
-                margin-bottom: 3px;
-            }
-        }
     }
 }
 .bidList-view{
@@ -930,4 +982,49 @@ table{
 }
 .border{
     border-top: 1px solid #ddd;
+}
+.center-secondary{
+    p{
+        text-indent: 2em;
+        font-size: .8rem;
+        line-height: 1.5;
+    }
+    img{
+        margin: 0 0 10px;
+    }
+    h3{
+        font-size: 1rem;
+        font-weight: bold;
+        margin: .5rem 0px;
+    }
+    h4{
+        font-size: .9rem;
+        font-weight: 600;
+    }
+    .icon_help{
+        display: inline-block;
+        width: 19px;
+        height: 15px;
+        background: url("/images/icon_help.jpg") no-repeat center;
+        background-size: 100%;
+    }
+    .contribute-footer{
+        position: absolute;
+        float: left;
+        left: 0;
+    }
+}
+.report-content{
+    img{
+        display: block;
+        height: auto;
+        max-width: 100%;
+    }
+    h4{
+        margin-top: 2rem;
+    }
+    p{
+        text-indent: 2em;
+        line-height: 1.8;
+    }
 }

@@ -28,12 +28,15 @@ var defaultReport={
   infinite:false,
   titleOrReportKey:"",
   reportType:0,
-  ReportTypeDate:[]
+  ReportTypeDate:[],
+  reportTag:true
 }
 export default function report(state=defaultReport,action) {
   switch(action.type){
     case "CHANGEREPORTTYPE" : return ObjectAssign({},state,{ReportTypeDate:action.ReportTypeDate});
     case "LOADREPORTTYPE" : return ObjectAssign({},state,{ReportType:action.ReportType});
+    case "CHANGEREPORTTAG" : return ObjectAssign({},state,{reportTag:true});
+    case "UNCHANGEREPORTTAG" : return ObjectAssign({},state,{reportTag:false});
     case INFINITE : return ObjectAssign({},state,{infinite:false});
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
     case SHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:true});
