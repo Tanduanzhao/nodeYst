@@ -185,7 +185,7 @@ class Main extends Component{
 			slidesToScroll: 1,
 			adaptiveHeight:false,
 			autoplay:true
-		};INTERNAL
+		};
 		var string = null;
 		var slide = (()=>{
 			if(this.props.home.img.length != 0){
@@ -193,8 +193,8 @@ class Main extends Component{
 					console.log(this.props.home.img[index].imgSource)
 					switch(this.props.home.img[index].resourceType){
 						case "EXTERNAL": let url = '/picture/'+encodeURIComponent(this.props.home.img[index].imgSource);return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
-						case "INTERNAL": return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
-						case "ORDER_REPORT":return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
+						case "INTERNAL":<div  key={ele.id+Math.random()}><Link to={this.props.home.img[index].imgSource}><img src={ele.imgUrl}  alt=""/></Link></div>;
+						case "ORDER_REPORT":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
 						case "NO":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
 						default : return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
 					}

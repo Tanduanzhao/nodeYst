@@ -17,7 +17,7 @@ class BidList extends Component{
         this.state={
             loading:false
         };
-        console.log(this.props.bidList.areaName,'前');
+
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
@@ -178,6 +178,9 @@ class BidList extends Component{
         });
         this.props.dispatch({
             type:'UNCHANGEBIDLISTTITLEORREPORTKEY'
+        })
+        this.props.dispatch({
+            type:'RESETBIDLIST'
         })
     }
 

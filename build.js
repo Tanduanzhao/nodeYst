@@ -32,6 +32,7 @@ import Center from './components/center';
 import FeedBack from './components/feedBack';
 import purchase from './components/purchase';
 import help from './components/help';
+import User from './components/user';
 import contribute from './components/contribute';
 import dataIntro from './components/dataIntro';
 
@@ -126,7 +127,9 @@ var _router = (
                    <IndexRoute component={Center}/>
                    <Route path="feedback" component={FeedBack}/>
                     <Route path="help" component={help}/>
+                    <Route path="user" component={User}/>
                     <Route path="contribute" component={contribute}/>
+                    <Route path="dataIntro" component={dataIntro}/>
                 </Route>
                 <Route path="purchase">
                     <IndexRoute component={purchase}/>

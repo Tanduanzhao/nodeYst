@@ -8,7 +8,7 @@ var defaultBidList={
   infinite:false,
   pageNo:1,
   municipality:1,
-  searchName:null,
+  searchName:"",
   getBidAreaInfo:[],
   getProjectStatus:[],
   searchProductStatus:-1,
@@ -16,8 +16,8 @@ var defaultBidList={
   sidx:null,
   request:true,
   active:0,
-  areaName:'全部',
-  areaId:['0']
+  areaName:null,
+  areaId:null
 }
 export default function bidList(state=defaultBidList,action){
   switch(action.type){
@@ -35,6 +35,7 @@ export default function bidList(state=defaultBidList,action){
     case CHANGEBIDLISTTITLEORREPORTKEY : return ObjectAssign({},state,{searchName:action.searchName});
     case CHANGEBIDLISTFILTER : return ObjectAssign({},state,{areaId:action.areaId,searchAreaType:action.searchAreaType,searchProductStatus:action.searchProductStatus,sord:action.sord,sidx:action.sidx,active:action.active});
     case "UNCHANGEBIDLISTTITLEORREPORTKEY" : return ObjectAssign({},state,{searchName:defaultBidList.searchName});
+    case "RESETBIDLIST" : return  ObjectAssign({},defaultBidList,{areaName:state.areaName,areaId:state.areaId});
     default : return state;
   }
 }
