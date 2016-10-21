@@ -1028,3 +1028,7 @@ table{
         line-height: 1.8;
     }
 }
+.scroll-iframe{
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+}
