@@ -85,6 +85,7 @@ export default class Pdf extends Component{
             <div className="root">
                 <div className="bar bar-positive bar-header">
                     <h4 className="title">{this.state.report.title}</h4>
+                </div>
                 <div className="scroll-content has-header padding report-content" dangerouslySetInnerHTML={{__html:this.state.report.content}}>
             
                 </div>
