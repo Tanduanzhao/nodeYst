@@ -124,7 +124,7 @@ class BidList extends Component{
     componentDidMount(){
         this.props.dispatch({
             type:'CHANGEBIDLISTTITLEORREPORTKEY',
-            searchName:this.props.params.productName? (this.props.params.productName+" "+this.props.params.prepName+this.props.params.spec+" "+this.props.params.manufacturerName):null
+            searchName:this.props.params.productName? (this.props.params.productName+" "+this.props.params.prepName+" "+this.props.params.spec+" "+this.props.params.manufacturerName):null
         });
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
