@@ -726,3 +726,15 @@ export const loadRecordContent = function(args){
         }
     })
 }
+//读取报告
+export const loadReport = function(args){
+    ajaxFn({
+        url:'pub/getPubReportHtml',
+        data:{
+            reportId:args.id
+        },
+        callBack:(res)=>{
+            args.callBack(res)
+        }
+    })
+}

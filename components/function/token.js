@@ -3,6 +3,7 @@
 */
 import {loadWx,loadJssdk,getUserAreaInfo} from './ajax';
 import {url2obj} from './common';
+import {WXKEY,HTTPURL} from '../config';
 var isLogin = false;
 export const Token = function(fn,login,isLogin){
     if(isLogin || url2obj().code){
@@ -18,7 +19,7 @@ export const Token = function(fn,login,isLogin){
             callBack:(res) => {
                 wx.config({
                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                    appId: 'wx5b09933bb205ed95', // 必填，公众号的唯一标识
+                    appId: WXKEY, // 必填，公众号的唯一标识
                     timestamp: res.datas.timestamp, // 必填，生成签名的时间戳
                     nonceStr: res.datas.nonceStr, // 必填，生成签名的随机串
                     signature: res.datas.signature, // 必填，签名，见附录1
@@ -49,8 +50,8 @@ export const Token = function(fn,login,isLogin){
                      // 分享
                         var info = {
                             title: '药市通-首个医药行业报告超市',
-                            link: 'http://yst.immortalshealth.com',
-                            imgUrl: 'http://yst.immortalshealth.com/pub/resources/sysres/logo.jpg',
+                            link: HTTPURL,
+                            imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                             desc: ' 提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
                         };
                         wx.onMenuShareTimeline({
@@ -77,6 +78,6 @@ export const Token = function(fn,login,isLogin){
             }
         })
     }else{
-      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5b09933bb205ed95&redirect_uri=http://yst-test.immortalshealth.com&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5b09933bb205ed95&redirect_uri='+HTTPURL+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
     }
 }
