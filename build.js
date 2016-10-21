@@ -110,7 +110,7 @@ var _router = (
                     
                     <Route path="product" component={product}/>
                     <Route path="bidList" component={bidList}/>
-                    <Route path="bidList/:productName" component={bidList}/>
+                    <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>
                 </Route>
                 <Route path="drugContent/:sid">
                   <IndexRoute component={drugContent}/>

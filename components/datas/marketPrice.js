@@ -131,7 +131,7 @@ class List extends Component{
                             <p>规格：{this.props.dataSources.spec}</p>
                             <p>生产企业：{this.props.dataSources.manufacturerName}</p>
                         </div>
-                        <Link to={`/datas/bidList/${encodeURI(encodeURI(this.props.dataSources.productName))}`}  className="list-right btn"> 查看各省中标价</Link>
+                        <Link to={`/datas/bidList/${encodeURI(encodeURI(this.props.dataSources.productName))}/${encodeURI(encodeURI(this.props.dataSources.prepName))}/${encodeURI(encodeURI(this.props.dataSources.spec))}/${encodeURI(encodeURI(this.props.dataSources.manufacturerName))}`}  className="list-right btn"> 查看各省中标价</Link>
                     </div>
                     <div className="row market-price">
                         <div className="col-50"> 广东省最小制剂入市价</div>

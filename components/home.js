@@ -196,7 +196,7 @@ class Main extends Component{
 			return string;
 		})();
 		return(
-			<div  className="main">
+			<div  className="scroll-content has-footer">
 			    {
                     this.props.showPopup ? <Popup popupCancel={this.props.popupCancel} popupSure={this.props.popupSure}/> : null
                 }

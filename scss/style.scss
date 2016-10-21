@@ -29,7 +29,7 @@ body{
 .scroll-content{
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background-color: #f1f1f1;
+    background-color: #fff;
 }
 h1,h2,h3,h4,h5{
     margin: 0;
@@ -513,7 +513,7 @@ h3{
 }
 .main{
     overflow-x: hidden;
-    margin-bottom: 52px;
+    //margin-bottom: 52px;
 }
 .slick-list{
     max-height:125px;

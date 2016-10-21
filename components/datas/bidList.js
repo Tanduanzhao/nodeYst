@@ -124,7 +124,7 @@ class BidList extends Component{
     componentDidMount(){
         this.props.dispatch({
             type:'CHANGEBIDLISTTITLEORREPORTKEY',
-            searchName:this.props.params.productName
+            searchName:this.props.params.productName+" "+this.props.params.prepName+this.props.params.spec+" "+this.props.params.manufacturerName
         });
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
@@ -216,6 +216,12 @@ class HeaderBar extends Component{
         })
     }
     render(){
+        var placeholder=(()=>{
+
+            var children="dddd";
+
+            return children;
+        })();
         return(
             <div className="bar bar-header bar-positive item-input-inset">
                 <div className="buttons">
