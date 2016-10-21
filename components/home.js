@@ -56,7 +56,7 @@ var Slider = require('react-slick');
          })
      }
      componentWillMount(){
-         this._loadRecordContent();
+         if(this.props.home.hasRecord) this._loadRecordContent();
      }
 	 componentDidMount(){
 		 this._loadData();

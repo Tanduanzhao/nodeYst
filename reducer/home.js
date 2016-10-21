@@ -11,6 +11,7 @@ var defaultData = {
  	img:[{}],
     goldBox:false,
     cashBox:false,
+    hasRecord:true,
     isShowRecord:false
 };
 export default function home(state = defaultData,action){
@@ -21,7 +22,7 @@ export default function home(state = defaultData,action){
         case 'UNSHOWCASHBOX' : return ObjectAssign({},state,{cashBox:false});
         case 'SHOWGOLDBOX' : return ObjectAssign({},state,{goldBox:true});
         case 'SHOWCASHBOX' : return ObjectAssign({},state,{cashBox:true});
-        case 'HIDERECORD' : return ObjectAssign({},state,{isShowRecord:false});
+        case 'HIDERECORD' : return ObjectAssign({},state,{isShowRecord:false,hasRecord:false});
         case 'SHOWRECORD' : return ObjectAssign({},state,{isShowRecord:true});
         case 'RESETHOMEREPORT' : return ObjectAssign({},state,{data:defaultData.data});
 		default : return state;
