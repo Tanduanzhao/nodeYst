@@ -1,9 +1,11 @@
 import React,{Component} from 'react';
 import {loadReport} from './function/ajax';
 import {WXKEY,HTTPURL} from './config';
+import Loading from './loading';
 export default class Pdf extends Component{
     constructor(props){
         super(props);
+        
         wx.ready(()=> {
              // 分享
                 var info = {
@@ -35,20 +37,25 @@ export default class Pdf extends Component{
             report:{
                 content:null,
                 title:null
-            }
+            },
+            isLoading:true
         }
     }
     _loadData(){
+        this.setState({
+            isLoading:true
+        });
         loadReport({
             id:this.props.params.id,
             callBack:(res)=>{
                 this.setState({
-                    report:res.datas
+                    report:res.datas,
+                    isLoading:false
                 })
             }
         })
     }
-    componentWillMount(){
+    componentDidMount(){
         this._loadData();
     }
     componentWillUnmount(){
@@ -84,10 +91,13 @@ export default class Pdf extends Component{
         return(
             <div className="root">
                 <div className="bar bar-positive bar-header">
-                    <h4 className="title">{this.state.report.title}</h4>
+                    <h4 className="title">{this.props.params.title}</h4>
                 </div>
-                    <div className="scroll-content has-header padding report-content" dangerouslySetInnerHTML={{__html:this.state.report.content}}>
-                    </div>
+                <div className="scroll-content has-header padding report-content" dangerouslySetInnerHTML={{__html:this.state.report.content}}>
+                </div>
+                {
+                    this.state.isLoading ? <Loading /> : null
+                }
             </div>
         )
     }
