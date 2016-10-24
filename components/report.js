@@ -31,10 +31,13 @@ class Report extends Component {
       request:false
     });
     loadReportList({
-      titleOrReportKey:this.props.report.titleOrReportKey,
+      sidx:this.props.report.sidx,
+      sord:this.props.report.sord,
       pageNo:this.props.report.pageNo,
       searchType:this.props.report.searchType,
       reportType:this.props.report.reportType,
+      costStatus:this.props.report.costStatus,
+      titleOrReportKey:this.props.report.titleOrReportKey,
       callBack:(res)=>{
         this.props.dispatch({
           type:'LOADPRODUCEDATA',
@@ -141,7 +144,10 @@ class Report extends Component {
     this.props.dispatch({
       type:'CHANGETYPE',
       searchType:args.searchType,
-      reportType:encodeURI(encodeURI(args.reportType))
+      reportType:encodeURI(encodeURI(args.reportType)),
+      sord:args.sord,
+      sidx:args.sidx,
+      costStatus:args.costStatus
     });
     setTimeout(()=>{
       this._loadData();

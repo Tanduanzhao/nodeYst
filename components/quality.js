@@ -169,9 +169,22 @@ class Quality extends Component{
                                 <ul className="list">
                                     {
                                         this.props.quality.datas[0].lists.map((ele)=>{
+                                            var trandName = (()=>{
+                                                var string = "";
+                                                if( ele.trandName !="无"|| ele.trandName==null || ele.trandName==undefined){
+                                                    string += "（";
+                                                    string +=ele.trandName;
+                                                    string += " ）";
+                                                }else{
+                                                    string = "";
+                                                }
+                                                return string;
+                                            })();
                                             return(
                                                 <li className="item" key={Math.random(1)}>
-                                                    <h2>{ele.productName}（{ele.trandName}）</h2>
+                                                    <h2>{ele.productName}
+                                                        {trandName}
+                                                    </h2>
                                                     <p>剂型/规格：{ele.prepName} / {ele.spec}</p>
                                                     <p>生产企业：{ele.manufacturerName}</p>
                                                     <p>
