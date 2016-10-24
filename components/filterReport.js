@@ -71,9 +71,9 @@ export default class FilterProduce extends Component{
             <h2 className="item item-divider">费用类型</h2>
             <div className="list padding">
               <ul className="list-horizontal-block">
-                <li style={(this.state.active == null) ? styles.active : null} onClick={()=>{this.setState({costStatus:null})}}>全部</li>
-                <li style={(this.state.active == 1) ? styles.active : null} onClick={()=>{this.setState({costStatus:1})}}>免费报告</li>
-                <li style={(this.state.active == 0) ? styles.active : null} onClick={()=>{this.setState({costStatus:0})}}>收费报告</li>
+                <li style={(this.state.costStatus == null) ? styles.active : null} onClick={()=>{this.setState({costStatus:null})}}>全部</li>
+                <li style={(this.state.costStatus == 1) ? styles.active : null} onClick={()=>{this.setState({costStatus:1})}}>免费报告</li>
+                <li style={(this.state.costStatus == 0) ? styles.active : null} onClick={()=>{this.setState({costStatus:0})}}>收费报告</li>
               </ul>
             </div>
           </div>

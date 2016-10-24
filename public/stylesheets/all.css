@@ -566,8 +566,7 @@ h3 {
           justify-content: space-between;
   -webkit-justify-content: space-between; }
   .item-right h3 {
-    font-size: .6rem;
-    margin-top: 5px;
+    font-size: .65rem;
     -webkit-line-clamp: 1;
     white-space: initial; }
   .item-right p {

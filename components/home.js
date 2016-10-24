@@ -100,7 +100,6 @@ var Slider = require('react-slick');
      }
 	 componentDidMount(){
 		 this._loadData();
-		 
 	 }
      _openProductView(id){
         if (typeof WeixinJSBridge == "undefined")   return false;
