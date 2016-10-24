@@ -20,7 +20,11 @@ var Slider = require('react-slick');
          this._loadData = this._loadData.bind(this);
          this._loadRecordContent = this._loadRecordContent.bind(this);
 	 }
+     componentWillMount(){
+        if(this.props.home.hasRecord) this._loadRecordContent();
+    }
      _loadData(){
+         //读取首页报告
          loadNewrepor({
 			 yearMonth:this.props.yearMonth,
 			 areaId:this.props.areaId,
@@ -36,32 +40,8 @@ var Slider = require('react-slick');
 				 });
 			 }
 		 });
-     }
-     
-     _loadRecordContent(){
-         loadRecordContent({
-             callBack:(res)=>{
-                 this.props.dispatch({
-                     type:'SHOWRECORD'
-                 });
-                 this.setState({
-                     reCordNum:res.datas.content
-                 });
-                 setTimeout(()=>{
-                     this.props.dispatch({
-                         type:'HIDERECORD'
-                     });
-                 },8000)
-             }
-         })
-     }
-     componentWillMount(){
-         if(this.props.home.hasRecord) this._loadRecordContent();
-     }
-	 componentDidMount(){
-		 this._loadData();
-         
-		 loadPicture({
+         //读取图片
+         loadPicture({
 			 yearMonth:this.props.yearMonth,
 			 areaId:this.props.areaId,
 			 searchAreaType:this.state.searchAreaType,
@@ -99,6 +79,28 @@ var Slider = require('react-slick');
                  }
              }
          })
+     }
+     
+     _loadRecordContent(){
+         loadRecordContent({
+             callBack:(res)=>{
+                 this.props.dispatch({
+                     type:'SHOWRECORD'
+                 });
+                 this.setState({
+                     reCordNum:res.datas.content
+                 });
+                 setTimeout(()=>{
+                     this.props.dispatch({
+                         type:'HIDERECORD'
+                     });
+                 },8000)
+             }
+         })
+     }
+	 componentDidMount(){
+		 this._loadData();
+		 
 	 }
      _openProductView(id){
         if (typeof WeixinJSBridge == "undefined")   return false;
@@ -107,11 +109,19 @@ var Slider = require('react-slick');
         WeixinJSBridge.invoke('openProductViewWithPid',{"pid":pid},(res)=>{
             // 返回res.err_msg,取值 
             // open_product_view_with_id:ok 打开成功
-//            alert(res.err_msg);
-            if (res.err_msg == "open_product_view_with_id:ok"){
+            if (res.err_msg != "open_product_view_with_id:ok" && /android/.test(navigator.userAgent.toLowerCase())){
+//                alert(2);
                 WeixinJSBridge.invoke('openProductView',{
                     "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
-                    },(res)=>{ 
+                    },(res)=>{
+                        this.setState({
+                            showPopup:true
+                        });
+                });
+            }else if(res.err_msg == "open_product_view_with_id:ok" && /ios | ipad | mac/.test(navigator.userAgent.toLowerCase())){
+                WeixinJSBridge.invoke('openProductView',{
+                    "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
+                    },(res)=>{
                     this.setState({
                         showPopup:true
                     });
@@ -119,29 +129,32 @@ var Slider = require('react-slick');
             }
         })
      }
-         _popupCancel(){
-            this.setState({
-            showPopup:false
-            })
-            }
-        _popupSure(){
-            this.setState({
-            showPopup:false
-            });
-            this.props.dispatch({
-              type:'RESETHOMEREPORT'
-            });
-            setTimeout(()=> this._loadData(),100);
+     _popupCancel(){
+        this.setState({
+        showPopup:false
+        })
+        }
+    _popupSure(){
+        this.setState({
+        showPopup:false
+        });
+        this.props.dispatch({
+          type:'RESETHOMEREPORT'
+        });
+        setTimeout(()=> this._loadData(),100);
     }
 	render(){
+        
 		return(
 			<div className="root home">
                 {
                     this.props.home.isShowRecord ? <Record dataSources={this.state.reCordNum}/> : false
                 }
-				<Main {...this.props} showPopup={this.state.showPopup} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)} openProductView={this._openProductView.bind(this)}/>
+                {   
+                    !this.props.userInfo.isLogin ? null : <Main {...this.props} showPopup={this.state.showPopup} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)} openProductView={this._openProductView.bind(this)}/>
+                }
 				{
-                    this.state.loading ? <Loading/> : null
+                    (this.state.loading || !this.props.userInfo.isLogin) ? <Loading/> : null
                 }
 				<FooterBar {...this.props}/>
 				
@@ -413,9 +426,8 @@ class Hotrepor extends Component{
 
 class Record extends Component{
     render(){
-		console.log(this.props.dataSources);
         return(
-            <div style={{position:'absolute',left:'0',top:'0',zIndex:'999',width:'100%',paddingLeft:'10px',lineHeight:'2',fontSize:'12px',backgroundColor:'rgba(255,255,255,.7)'}}>
+            <div style={{position:'absolute',left:'0',top:'0',zIndex:'99',width:'100%',paddingLeft:'10px',lineHeight:'2',fontSize:'12px',backgroundColor:'rgba(255,255,255,.7)'}}>
                 {this.props.dataSources}
             </div>
         )
@@ -424,7 +436,8 @@ class Record extends Component{
 
 function select(state){
 	return{
-		home:state.home
+		home:state.home,
+        userInfo:state.userInfo
 	}
 }
 export default connect(select)(Home);

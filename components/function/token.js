@@ -6,6 +6,7 @@ import {url2obj} from './common';
 import {WXKEY,HTTPURL} from '../config';
 var isLogin = false;
 export const Token = function(fn,login,isLogin){
+    console.log('111111');
     if(isLogin || url2obj().code){
         loadWx({
           code:url2obj().code,
@@ -39,10 +40,31 @@ export const Token = function(fn,login,isLogin){
                             })
                         },
                         cancel:function(res){
-                            alert(res);
+                            getUserAreaInfo({
+                                latitude:'23.129387',
+                                longitude: '113.31559',
+                                callBack:(res)=>{
+                                    fn(res);
+                                }
+                            })
                         },
                         error:function(res){
-                            alert('error');
+                            getUserAreaInfo({
+                                latitude:'23.129387',
+                                longitude: '113.31559',
+                                callBack:(res)=>{
+                                    fn(res);
+                                }
+                            })
+                        },
+                        fail:function(res){
+                            getUserAreaInfo({
+                                latitude:'23.129387',
+                                longitude: '113.31559',
+                                callBack:(res)=>{
+                                    fn(res);
+                                }
+                            })
                         }
                      })
                      
@@ -78,6 +100,8 @@ export const Token = function(fn,login,isLogin){
             }
         })
     }else{
+      console.log('222222');
       location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+WXKEY+'&redirect_uri='+HTTPURL+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+        return;
     }
 }

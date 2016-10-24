@@ -17,7 +17,7 @@ function ajaxFn(params){
         if(res.state == 1){
             params.callBack(res);
         }else{
-            alert(res.message);
+//            alert(res.message);
             params.callBack();
         }
     })
