@@ -29,7 +29,11 @@ var defaultReport={
   titleOrReportKey:"",
   reportType:0,
   ReportTypeDate:[],
-  reportTag:true
+  reportTag:true,
+  sord:null,
+  sidx:null,
+  active:0,
+  costStatus:null
 }
 export default function report(state=defaultReport,action) {
   switch(action.type){
@@ -42,7 +46,7 @@ export default function report(state=defaultReport,action) {
     case SHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:false});
     case LOADPRODUCEDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
-    case CHANGETYPE : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType});
+    case CHANGETYPE : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType,sord:action.sord,sidx:action.sidx,costStatus:action.costStatus});
     case GOREPORT : return ObjectAssign({},state,{data:action.data,searchType:action.searchType,pageNo:action.pageNo});
     case CHANGETITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:action.titleOrReportKey});
     case CLEARTITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:null});

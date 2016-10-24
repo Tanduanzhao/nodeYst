@@ -62,7 +62,7 @@ class Main extends Component{
                 <p>
                     3.	稿件采用后发现非个人原创，稿费不予支付。
                     如涉及到侵权，由此带来的法律纠纷及后果，
-                    我司保留追究责任的权利
+                    我司保留追究责任的权利。
                 </p>
                 <img  className="contribute-footer" src="/images/contribute02.jpg" alt=""/>
             </div>
