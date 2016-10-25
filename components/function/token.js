@@ -10,6 +10,7 @@ export const Token = function(fn,login,isLogin){
     if(isLogin || url2obj().code){
         loadWx({
           code:url2obj().code,
+          recommender:"sss",
           callBack:(res)=>{
               login(res);
           }

@@ -57,7 +57,7 @@ import Anti from './components/anti';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
 import {Token} from './components/function/token';
-Token((res) => {  
+Token((res) => {
     store.dispatch({
         type:'CHANGE',
         areaName:res.datas.areaName,
@@ -79,7 +79,7 @@ Token((res) => {
     store.dispatch({
         type:'LOADUSERINFO',
         datas:res.datas
-    });
+    })
 });
 
 var _router = (
@@ -116,7 +116,7 @@ var _router = (
                         <Route path="anti" component={Anti}/>
                         <Route path="anti/:gradeId/:catalogEditionId" component={Anti}/>
                     </Route>
-                    
+
                     <Route path="product" component={product}/>
                     <Route path="bidList" component={bidList}/>
                     <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>

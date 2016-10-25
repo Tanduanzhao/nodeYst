@@ -11,6 +11,7 @@ import EmptyComponent from './emptyComponent';
 import {loadNewrepor,loadPicture,insertUserAction,getReportType,loadReportList} from './function/ajax';
 import Popup from './popup';
 import ReportList from './reportList';
+import {OpenProductView} from './function/common';
 
 class Report extends Component {
   constructor(props){
@@ -73,7 +74,7 @@ class Report extends Component {
     getReportType({
       callBack:(res)=>{
         this.props.dispatch({
-          type:'CHANGEREPORTTYPE',
+          type:'CHANGEREPORTTYPEDATE',
           ReportTypeDate:res.datas,
         });
       }
@@ -100,9 +101,7 @@ class Report extends Component {
         pageNo:1
       });
     this.props.dispatch({
-      type:'CHANGETYPE',
-      searchType:1,
-      reportType:0
+      type:'RESETREPORT',
     });
     this.props.dispatch({
       type:'CHANGEREPORTTAG'
@@ -111,23 +110,10 @@ class Report extends Component {
     
     
    _openProductView(id){
-        if (typeof WeixinJSBridge == "undefined")   return false;
-        var pid = id;
-//        var pid = "pDF3iY_G88cM_d-wuImym3tkVfG5";//只需要传递
-        WeixinJSBridge.invoke('openProductViewWithPid',{"pid":pid},(res)=>{
-            // 返回res.err_msg,取值 
-            // open_product_view_with_id:ok 打开成功
-//            alert(res.err_msg);
-            if (res.err_msg == "open_product_view_with_id:ok"){
-                WeixinJSBridge.invoke('openProductView',{
-                    "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
-                    },(res)=>{ 
-                    this.setState({
-                        showPopup:true
-                    });
-                });
-            }
-        });
+     OpenProductView(id,()=>{
+           this.context.router.push('/purchase');
+         }
+     )
     }
   _fn(args) {
     this.setState({
@@ -142,9 +128,10 @@ class Report extends Component {
       type:'UNSHOWFILTERPRODUCE'
     })
     this.props.dispatch({
-      type:'CHANGETYPE',
+      type:'CHANGEREPORTTYPE',
       searchType:args.searchType,
       reportType:encodeURI(encodeURI(args.reportType)),
+      active:args.active,
       sord:args.sord,
       sidx:args.sidx,
       costStatus:args.costStatus
@@ -345,5 +332,7 @@ function select(state){
     searchAreaType:state.provicen.searchAreaType
   }
 }
-
+Report.contextTypes = {
+  router:React.PropTypes.object.isRequired
+}
 export default connect(select)(Report);

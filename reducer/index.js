@@ -8,7 +8,6 @@ var defaultIndex = {
         businessSales:[],
         businessBreedUp:[],
         businessConcept:[]
-        
     }
 }
 export default function index(state=defaultIndex,action){

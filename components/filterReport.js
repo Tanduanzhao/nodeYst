@@ -22,7 +22,7 @@ export default class FilterProduce extends Component{
     });
   }
   _sureButton(){
-    console.log(this.state.searchType);
+    console.log(this.state.active);
     this.props.fn(this.state);
   }
   _spanhandleClick(id,e,t){
@@ -34,6 +34,7 @@ export default class FilterProduce extends Component{
     })
   }
   render(){
+    console.log(this.state.active,"active");
     return(
       <div className="modal-backdrop">
         <div className="modal-backdrop-bg"></div>
@@ -64,16 +65,16 @@ export default class FilterProduce extends Component{
             <div className="list padding">
               <ul className="list-horizontal-block">
                 <li style={(this.state.active == 0) ? styles.active : null} onClick={()=>{this.setState({sord:"desc",sidx:"publishDate",active:0})}}>最新时间</li>
-                <li style={(this.state.active == 1) ? styles.active : null} onClick={()=>{this.setState({sord:"asc",sidx:"bidPrice",active:1})}}>最低价格</li>
-                <li style={(this.state.active == 2 ) ? styles.active : null} onClick={()=>{this.setState({sord:"desc",sidx:"bidPrice",active:2})}}>最高价格</li>
+                <li style={(this.state.active == 1) ? styles.active : null} onClick={()=>{this.setState({sord:"asc",sidx:"price",active:1})}}>最低价格</li>
+                <li style={(this.state.active == 2 ) ? styles.active : null} onClick={()=>{this.setState({sord:"desc",sidx:"price",active:2})}}>最高价格</li>
               </ul>
             </div>
             <h2 className="item item-divider">费用类型</h2>
             <div className="list padding">
               <ul className="list-horizontal-block">
                 <li style={(this.state.costStatus == null) ? styles.active : null} onClick={()=>{this.setState({costStatus:null})}}>全部</li>
-                <li style={(this.state.costStatus == 1) ? styles.active : null} onClick={()=>{this.setState({costStatus:1})}}>免费报告</li>
-                <li style={(this.state.costStatus == 0) ? styles.active : null} onClick={()=>{this.setState({costStatus:0})}}>收费报告</li>
+                <li style={(this.state.costStatus == 0) ? styles.active : null} onClick={()=>{this.setState({costStatus:0})}}>免费报告</li>
+                <li style={(this.state.costStatus == 1) ? styles.active : null} onClick={()=>{this.setState({costStatus:1})}}>收费报告</li>
               </ul>
             </div>
           </div>

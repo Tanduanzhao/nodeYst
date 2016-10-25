@@ -7,156 +7,135 @@ import Box from './box';
 import Loading from './loading';
 import Popup from './popup';
 import ReportList from './reportList';
+import {OpenProductView} from './function/common';
 
 var Slider = require('react-slick');
- class Home extends Component{
-	 constructor(props) {
-		 super(props);
-		 this.state ={
-			 loading:true,
-             showPopup:false,
-             reCordNum:0
-		 };
-         this._loadData = this._loadData.bind(this);
-         this._loadRecordContent = this._loadRecordContent.bind(this);
-	 }
-     componentWillMount(){
-        if(this.props.home.hasRecord) this._loadRecordContent();
-    }
-     _loadData(){
-         //读取首页报告
-         loadNewrepor({
-			 yearMonth:this.props.yearMonth,
-			 areaId:this.props.areaId,
-			 searchAreaType:this.props.searchAreaType,
-			 callBack:(res)=>{
+class Home extends Component{
+	constructor(props) {
+		super(props);
+		this.state ={
+			loading:true,
+			showPopup:false,
+			reCordNum:0
+		};
+		this._loadData = this._loadData.bind(this);
+		this._loadRecordContent = this._loadRecordContent.bind(this);
+	}
+	componentWillMount(){
+		if(this.props.home.hasRecord) this._loadRecordContent();
+	}
+	_loadData(){
+		//读取首页报告
+		loadNewrepor({
+			yearMonth:this.props.yearMonth,
+			areaId:this.props.areaId,
+			searchAreaType:this.props.searchAreaType,
+			callBack:(res)=>{
 				console.log(res.datas)
-				 this.props.dispatch({
-					 type:'LOADHOMEDATA',
-					 data: res.datas
-				 });
-				 this.setState({
-					 loading:false
-				 });
-			 }
-		 });
-         //读取图片
-         loadPicture({
-			 yearMonth:this.props.yearMonth,
-			 areaId:this.props.areaId,
-			 searchAreaType:this.state.searchAreaType,
-			 imgType: "MAIN_ADVERTISEMENT",
-			 callBack:(res)=>{
-				 this.props.dispatch({
-					 type:'LOADHOMEIMG',
-					 img: res.datas
-				 });
-				 this.setState({
-					 loading:false
-				 });
-			 }
-		 });
-         //获取金银活动箱子状态
-         loadJoinActivity({
-             callBack:(res)=>{
-                 if(res.datas.isJoinCashBox == '0'){
-                    this.props.dispatch({
-                        type:'SHOWCASHBOX'
-                    });
-                 }else{
-                     this.props.dispatch({
-                        type:'UNSHOWCASHBOX'
-                    });
-                 }
-                 if(res.datas.isJoinGlodBox == '0'){
-                    this.props.dispatch({
-                        type:'SHOWGOLDBOX'
-                    });
-                 }else{
-                     this.props.dispatch({
-                        type:'UNSHOWGOLDBOX'
-                    });
-                 }
-             }
-         })
-     }
-     
-     _loadRecordContent(){
-         loadRecordContent({
-             callBack:(res)=>{
-                 this.props.dispatch({
-                     type:'SHOWRECORD'
-                 });
-                 this.setState({
-                     reCordNum:res.datas.content
-                 });
-                 setTimeout(()=>{
-                     this.props.dispatch({
-                         type:'HIDERECORD'
-                     });
-                 },8000)
-             }
-         })
-     }
-	 componentDidMount(){
-		 this._loadData();
-	 }
-     _openProductView(id){
-        if (typeof WeixinJSBridge == "undefined")   return false;
-        var pid = id;
-//        var pid = "pDF3iY_G88cM_d-wuImym3tkVfG5";//只需要传递
-        WeixinJSBridge.invoke('openProductViewWithPid',{"pid":pid},(res)=>{
-            // 返回res.err_msg,取值 
-            // open_product_view_with_id:ok 打开成功
-            if (res.err_msg != "open_product_view_with_id:ok" && /android/.test(navigator.userAgent.toLowerCase())){
-//                alert(2);
-                WeixinJSBridge.invoke('openProductView',{
-                    "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
-                    },(res)=>{
-                        this.setState({
-                            showPopup:true
-                        });
-                });
-            }else if(res.err_msg == "open_product_view_with_id:ok" && /ios | ipad | mac/.test(navigator.userAgent.toLowerCase())){
-                WeixinJSBridge.invoke('openProductView',{
-                    "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
-                    },(res)=>{
-                    this.setState({
-                        showPopup:true
-                    });
-                });
-            }
-        })
-     }
-     _popupCancel(){
-        this.setState({
-        showPopup:false
-        })
-        }
-    _popupSure(){
-        this.setState({
-        showPopup:false
-        });
-        this.props.dispatch({
-          type:'RESETHOMEREPORT'
-        });
-        setTimeout(()=> this._loadData(),100);
-    }
+				this.props.dispatch({
+					type:'LOADHOMEDATA',
+					data: res.datas
+				});
+				this.setState({
+					loading:false
+				});
+			}
+		});
+		//读取图片
+		loadPicture({
+			yearMonth:this.props.yearMonth,
+			areaId:this.props.areaId,
+			searchAreaType:this.state.searchAreaType,
+			imgType: "MAIN_ADVERTISEMENT",
+			callBack:(res)=>{
+				this.props.dispatch({
+					type:'LOADHOMEIMG',
+					img: res.datas
+				});
+				this.setState({
+					loading:false
+				});
+			}
+		});
+		//获取金银活动箱子状态
+		loadJoinActivity({
+			callBack:(res)=>{
+				if(res.datas.isJoinCashBox == '0'){
+					this.props.dispatch({
+						type:'SHOWCASHBOX'
+					});
+				}else{
+					this.props.dispatch({
+						type:'UNSHOWCASHBOX'
+					});
+				}
+				if(res.datas.isJoinGlodBox == '0'){
+					this.props.dispatch({
+						type:'SHOWGOLDBOX'
+					});
+				}else{
+					this.props.dispatch({
+						type:'UNSHOWGOLDBOX'
+					});
+				}
+			}
+		})
+	}
+
+	_loadRecordContent(){
+		loadRecordContent({
+			callBack:(res)=>{
+				this.props.dispatch({
+					type:'SHOWRECORD'
+				});
+				this.setState({
+					reCordNum:res.datas.content
+				});
+				setTimeout(()=>{
+					this.props.dispatch({
+						type:'HIDERECORD'
+					});
+				},8000)
+			}
+		})
+	}
+	componentDidMount(){
+		this._loadData();
+	}
+	_openProductView(id){
+		OpenProductView(id,()=>{
+			this.context.router.push('/purchase');
+		}
+		)
+	}
+	_popupCancel(){
+		this.setState({
+			showPopup:false
+		})
+	}
+	_popupSure(){
+		this.setState({
+			showPopup:false
+		});
+		this.props.dispatch({
+			type:'RESETHOMEREPORT'
+		});
+		setTimeout(()=> this._loadData(),100);
+	}
 	render(){
-        
 		return(
 			<div className="root home">
-                {
-                    this.props.home.isShowRecord ? <Record dataSources={this.state.reCordNum}/> : false
-                }
-                {   
-                    !this.props.userInfo.isLogin ? null : <Main {...this.props} showPopup={this.state.showPopup} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)} openProductView={this._openProductView.bind(this)}/>
-                }
 				{
-                    (this.state.loading || !this.props.userInfo.isLogin) ? <Loading/> : null
-                }
+					this.props.home.isShowRecord ? <Record dataSources={this.state.reCordNum}/> : false
+				}
+				{
+					!this.props.userInfo.isLogin ? null : <Main {...this.props} showPopup={this.state.showPopup} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)} openProductView={this._openProductView.bind(this)}/>
+				}
+				{
+					(this.state.loading || !this.props.userInfo.isLogin) ? <Loading/> : null
+				}
 				<FooterBar {...this.props}/>
-				
+
 			</div>
 		)
 	}
@@ -218,9 +197,9 @@ class Main extends Component{
 		})();
 		return(
 			<div  className="scroll-content has-footer">
-			    {
-                    this.props.showPopup ? <Popup popupCancel={this.props.popupCancel} popupSure={this.props.popupSure}/> : null
-                }
+				{
+					this.props.showPopup ? <Popup popupCancel={this.props.popupCancel} popupSure={this.props.popupSure}/> : null
+				}
 				{slide}
 				<Column {...this.props}/>
 				<div className="item item-divider home-item-title">
@@ -262,17 +241,17 @@ class Column extends Component{
 					<img src="/images/column01.jpg" alt=""/>
 					分析报告
 				</Link>
-				<Link to="/datas/marketPrice">
-					<img src="/images/column07.jpg" alt="" className="price-icon"/>
-					入市价
+				<Link to="/datas/policy">
+					<img src="/images/column03.jpg" alt=""/>
+					政策准入
 				</Link>
 				<Link to="/datas/bidList">
 					<img src="/images/column02.jpg" alt=""/>
 					中标数据
 				</Link>
-				<Link to="/datas/policy">
-					<img src="/images/column03.jpg" alt=""/>
-					政策准入
+				<Link to="/datas/marketPrice">
+					<img src="/images/column07.jpg" alt="" className="price-icon"/>
+					入市价
 				</Link>
 				<Link to="/datas/product">
 					<img src="/images/column05.jpg" alt=""/>
@@ -314,42 +293,42 @@ class Newrepor extends Component{
 				price: 0
 			}
 		}
-        let isCanViewReport = false;
-          if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
-                  isCanViewReport = false;
-          }else{
-              isCanViewReport = true;
-          }
+		let isCanViewReport = false;
+		if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
+			isCanViewReport = false;
+		}else{
+			isCanViewReport = true;
+		}
 		return(
 			<div>
-			    {
-               isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}  className="item">
-                    <div  className="item-left">
-                        <img src={this.props.dataSources.mainImg} alt=""/>
-                    </div>
-                    <div className="item-right">
-                        <h3>{this.props.dataSources.title}</h3>
-                        <p>¥{this.state.price}</p>
-                        <div className="item-right-footer">
-                            {number}
-                            {tag}
-                        </div>
-                    </div>
-                </Link>:
-                <a onClick={()=>this.props.openProductView(this.props.dataSources.id)}  className="item">
-                    <div  className="item-left">
-                        <img src={this.props.dataSources.mainImg} alt=""/>
-                    </div>
-                    <div className="item-right">
-                        <h3>{this.props.dataSources.title}</h3>
-                        <p>¥{this.state.price}</p>
-                        <div className="item-right-footer">
-                            {number}
-                            {tag}
-                        </div>
-                    </div>
-                </a>
-            }
+				{
+					isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}  className="item">
+						<div  className="item-left">
+							<img src={this.props.dataSources.mainImg} alt=""/>
+						</div>
+						<div className="item-right">
+							<h3>{this.props.dataSources.title}</h3>
+							<p>¥{this.state.price}</p>
+							<div className="item-right-footer">
+								{number}
+								{tag}
+							</div>
+						</div>
+					</Link>:
+						<a onClick={()=>this.props.openProductView(this.props.dataSources.id)}  className="item">
+							<div  className="item-left">
+								<img src={this.props.dataSources.mainImg} alt=""/>
+							</div>
+							<div className="item-right">
+								<h3>{this.props.dataSources.title}</h3>
+								<p>¥{this.state.price}</p>
+								<div className="item-right-footer">
+									{number}
+									{tag}
+								</div>
+							</div>
+						</a>
+				}
 			</div>
 		)
 	}
@@ -386,57 +365,61 @@ class Hotrepor extends Component{
 				price: 0
 			}
 		}
-        let isCanViewReport = false;
-          if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
-                  isCanViewReport = false;
-          }else{
-              isCanViewReport = true;
-          }
+		let isCanViewReport = false;
+		if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
+			isCanViewReport = false;
+		}else{
+			isCanViewReport = true;
+		}
 		return(
 			<div className="col-50">
 				{
-                    isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
-                        <div className="report-img">
-                            <img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
-                        </div>
-                        <h3> {this.props.dataSources.title}</h3>
-                        <div className="report-card-price">¥{this.state.price}</div>
-                        <p className="report-card-footer">
-                            {number}
-                            {tag}
-                        </p>
-                    </Link>:
-                    <a onClick={()=>this.props.openProductView(this.props.dataSources.id)}>
-                        <div className="report-img">
-                            <img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
-                        </div>
-                        <h3> {this.props.dataSources.title}</h3>
-                        <div className="report-card-price">¥{this.state.price}</div>
-                        <p className="report-card-footer">
-                            {number}
-                            {tag}
-                        </p>
-                    </a>
-                }
+					isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
+						<div className="report-img">
+							<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
+						</div>
+						<h3> {this.props.dataSources.title}</h3>
+						<div className="report-card-price">¥{this.state.price}</div>
+						<p className="report-card-footer">
+							{number}
+							{tag}
+						</p>
+					</Link>:
+						<a onClick={()=>this.props.openProductView(this.props.dataSources.id)}>
+							<div className="report-img">
+								<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
+							</div>
+							<h3> {this.props.dataSources.title}</h3>
+							<div className="report-card-price">¥{this.state.price}</div>
+							<p className="report-card-footer">
+								{number}
+								{tag}
+							</p>
+						</a>
+				}
 			</div>
 		)
 	}
 }
 
 class Record extends Component{
-    render(){
-        return(
-            <div style={{position:'absolute',left:'0',top:'0',zIndex:'99',width:'100%',paddingLeft:'10px',lineHeight:'2',fontSize:'12px',backgroundColor:'rgba(255,255,255,.7)'}}>
-                {this.props.dataSources}
-            </div>
-        )
-    }
+	render(){
+		return(
+			<div style={{position:'absolute',left:'0',top:'0',zIndex:'99',width:'100%',paddingLeft:'10px',lineHeight:'2',fontSize:'12px',backgroundColor:'rgba(255,255,255,.7)'}}>
+				{this.props.dataSources}
+			</div>
+		)
+	}
 }
 
 function select(state){
 	return{
 		home:state.home,
-        userInfo:state.userInfo
+		userInfo:state.userInfo
 	}
+}
+
+Home.contextTypes = {
+	router:React.PropTypes.object.isRequired
 }
 export default connect(select)(Home);
