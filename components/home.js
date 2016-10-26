@@ -107,7 +107,7 @@ class Home extends Component{
 				this.setState({
 					showPopup:true
 				});
-		}
+			}
 		)
 	}
 	_popupCancel(){
@@ -187,9 +187,9 @@ class Main extends Component{
 		var slide = (()=>{
 			if(this.props.home.img.length != 0){
 				string = <Slider {...settings} {...this.props}>{this.props.home.img.map((ele,index)=> {
-					switch(this.props.home.img[index].resourceType){
-						case "EXTERNAL": let url = '/picture/'+encodeURIComponent(this.props.home.img[index].imgSource);return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
-						case "INTERNAL":<div  key={ele.id+Math.random()}><Link to={this.props.home.img[index].imgSource}><img src={ele.imgUrl}  alt=""/></Link></div>;
+					switch(ele.resourceType){
+						case "EXTERNAL": let url = '/picture/'+encodeURIComponent(ele.imgSource);return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
+						case "INTERNAL":return <div  key={ele.id+Math.random()}><Link to={ele.imgSource}><img src={ele.imgUrl}  alt=""/></Link></div>;
 						case "ORDER_REPORT":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
 						case "NO":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
 						default : return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
