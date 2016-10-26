@@ -1,20 +1,22 @@
 /*
     微信授权
 */
+import {connect} from 'react-redux';
 import {loadWx,loadJssdk,getUserAreaInfo} from './ajax';
 import {url2obj} from './common';
 import {WXKEY,HTTPURL} from '../config';
 var isLogin = false;
 export const Token = function(fn,login,isLogin){
-    console.log('111111');
+    console.log(isLogin,'111111');
     if(isLogin || url2obj().code){
         loadWx({
           code:url2obj().code,
-          recommender:"sss",
+          recommender:url2obj().recommender,
           callBack:(res)=>{
               login(res);
           }
         })
+        console.log(name,"sss");
         //获取微信授权
         loadJssdk({
             uri:location.href,
@@ -68,12 +70,10 @@ export const Token = function(fn,login,isLogin){
                             })
                         }
                      })
-                     
-                     
                      // 分享
                         var info = {
                             title: '药市通-首个医药行业报告超市',
-                            link: HTTPURL,
+                            link: HTTPURL+"?recommender="+name,
                             imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                             desc: ' 提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
                         };
@@ -102,7 +102,11 @@ export const Token = function(fn,login,isLogin){
         })
     }else{
       console.log('222222');
-      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+WXKEY+'&redirect_uri='+HTTPURL+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+        var _recommender = url2obj().recommender;
+        if(_recommender == undefined){
+            _recommender = "";
+        }
+      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+WXKEY+'&redirect_uri='+HTTPURL+'?recommender='+_recommender+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
         return;
     }
 }

@@ -36,7 +36,6 @@ class BidList extends Component{
             searchName:this.props.bidList.searchName,
             searchProductStatus:this.props.bidList.searchProductStatus,
             callBack:(res)=>{
-                if(this._calledComponentWillUnmount) return false;
                 this.setState({
                     loading:false
                 });

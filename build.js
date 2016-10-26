@@ -80,8 +80,8 @@ Token((res) => {
         type:'LOADUSERINFO',
         datas:res.datas
     })
+    name=res.datas.id;
 });
-
 var _router = (
 	<Provider store={store}>
 		<Router history={browserHistory}>

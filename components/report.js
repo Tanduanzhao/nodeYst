@@ -101,17 +101,17 @@ class Report extends Component {
         pageNo:1
       });
     this.props.dispatch({
-      type:'RESETREPORT',
+      type:'RESETREPORT'
     });
     this.props.dispatch({
       type:'CHANGEREPORTTAG'
     });
   }
-    
-    
    _openProductView(id){
      OpenProductView(id,()=>{
-           this.context.router.push('/purchase');
+           this.setState({
+             showPopup:true
+           });
          }
      )
     }
@@ -147,7 +147,7 @@ class Report extends Component {
     this.props.dispatch({
       type:'LOADPRODUCEDATA',
       data:[],
-      pageNo:1,
+      pageNo:1
     });
     setTimeout(()=> this._loadData(),100);
   }
@@ -158,15 +158,16 @@ class Report extends Component {
         })
     }
     _popupSure(){
-        this.setState({
-            showPopup:false
-        });
-        this.props.dispatch({
-          type:'LOADPRODUCEDATA',
-          data:[],
-          pageNo:1,
-        });
-        setTimeout(()=> this._loadData(),100);
+        //this.setState({
+        //    showPopup:false
+        //});
+      this.context.router.push('/purchase');
+        //this.props.dispatch({
+        //  type:'LOADPRODUCEDATA',
+        //  data:[],
+        //  pageNo:1,
+        //});
+        //setTimeout(()=> this._loadData(),100);
     }
   render() {
     return (
@@ -174,14 +175,14 @@ class Report extends Component {
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header report-view">
           <Main openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
-            {
-                this.state.showPopup ? <Popup popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
-            }
         </div>
         <FooterBar {...this.props}/>
         {
           this.props.report.isShowFilter ?
             <FilterReport fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.provicenData}/> : null
+        }
+        {
+          this.state.showPopup ? <Popup {...this.props}  popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
         }
       </div>
     )

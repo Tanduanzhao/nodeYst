@@ -4,10 +4,14 @@ import FooterBar from './footerBar';
 import {Link} from 'react-router';
 import {loadHome,loadUserInfo} from './function/ajax';
 import {OpenProductView} from './function/common';
+import Popup from './popup';
 
  class Vip extends Component{
 	 constructor(props){
 		 super(props);
+         this.state={
+             showPopup:false
+         };
 	 }
      _pushHandle(){
          this.context.router.goBack();
@@ -19,7 +23,6 @@ import {OpenProductView} from './function/common';
          }
          OpenProductView(id,()=>{loadUserInfo({
              callBack:(res)=>{
-                 console.log(res.datas.userVip)
                  this.props.dispatch({
                      type:'LOADUSERINFO',
                      imgUrl:res.datas.imgUrl,
@@ -27,15 +30,31 @@ import {OpenProductView} from './function/common';
                      userName:res.datas.userName,
                      isVip:res.datas.userVip
                  });
-                 this.context.router.push('/center');
+                 this.setState({
+                     showPopup:true
+                 });
              }
          })}
          )
+     }
+     _popupCancel(){
+         this.setState({
+             showPopup:false
+         })
+     }
+     _popupSure() {
+         //this.setState({
+         //    showPopup: false
+         //});
+         this.context.router.push('/center');
      }
 	render(){
 		return(
 			<div className="root vip">
 				<div className="scroll-content">
+                    {
+                        this.state.showPopup ? <Popup  {...this.props} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
+                    }
 				    <div className="banner">
                         <img src="images/vip_header.jpg"/>
                         <button className="close" onClick={this._pushHandle.bind(this)}></button>

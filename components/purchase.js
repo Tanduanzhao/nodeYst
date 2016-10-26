@@ -18,7 +18,7 @@ class purchase extends Component {
     this.state={
       searchType:this.props.purchase.searchType,
       loading:true,
-      BuyReportList:true,
+      BuyReportList:true
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -30,6 +30,7 @@ class purchase extends Component {
       searchType:this.props.purchase.searchType,
       reportType:this.props.purchase.reportType,
       callBack:(res)=>{
+        if(this._calledComponentWillUnmount) return false;
         this.props.dispatch({
           type:'LOADPURCHASEDATA',
           data:this.props.purchase.data.concat(res.datas),
@@ -62,8 +63,8 @@ class purchase extends Component {
     this.ele = this.refs.content;
     console.log(this.refs.content);
     this.ele.addEventListener('scroll',this._infiniteScroll);
-    console.log(this.state.searchType)
-    this._loadData()
+    console.log(this.state.searchType);
+    this._loadData();
     getReportType({
       callBack:(res)=>{
         this.props.dispatch({
@@ -77,7 +78,7 @@ class purchase extends Component {
     this.props.dispatch({
       type:'LOADPURCHASEDATA',
       data:[],
-      pageNo:1,
+      pageNo:1
     });
   }
   _fn(args) {

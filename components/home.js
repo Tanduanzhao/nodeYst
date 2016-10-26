@@ -104,7 +104,9 @@ class Home extends Component{
 	}
 	_openProductView(id){
 		OpenProductView(id,()=>{
-			this.context.router.push('/purchase');
+				this.setState({
+					showPopup:true
+				});
 		}
 		)
 	}
@@ -114,13 +116,14 @@ class Home extends Component{
 		})
 	}
 	_popupSure(){
-		this.setState({
-			showPopup:false
-		});
+		//this.setState({
+		//	showPopup:false
+		//});
+		this.context.router.push('/purchase');
 		this.props.dispatch({
 			type:'RESETHOMEREPORT'
 		});
-		setTimeout(()=> this._loadData(),100);
+		//setTimeout(()=> this._loadData(),100);
 	}
 	render(){
 		return(
@@ -129,10 +132,13 @@ class Home extends Component{
 					this.props.home.isShowRecord ? <Record dataSources={this.state.reCordNum}/> : false
 				}
 				{
-					!this.props.userInfo.isLogin ? null : <Main {...this.props} showPopup={this.state.showPopup} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)} openProductView={this._openProductView.bind(this)}/>
+					!this.props.userInfo.isLogin ? null : <Main {...this.props} openProductView={this._openProductView.bind(this)}/>
 				}
 				{
 					(this.state.loading || !this.props.userInfo.isLogin) ? <Loading/> : null
+				}
+				{
+					this.state.showPopup ? <Popup {...this.props}  popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
 				}
 				<FooterBar {...this.props}/>
 
@@ -181,7 +187,6 @@ class Main extends Component{
 		var slide = (()=>{
 			if(this.props.home.img.length != 0){
 				string = <Slider {...settings} {...this.props}>{this.props.home.img.map((ele,index)=> {
-					console.log(this.props.home.img[index].imgSource)
 					switch(this.props.home.img[index].resourceType){
 						case "EXTERNAL": let url = '/picture/'+encodeURIComponent(this.props.home.img[index].imgSource);return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
 						case "INTERNAL":<div  key={ele.id+Math.random()}><Link to={this.props.home.img[index].imgSource}><img src={ele.imgUrl}  alt=""/></Link></div>;
@@ -197,9 +202,6 @@ class Main extends Component{
 		})();
 		return(
 			<div  className="scroll-content has-footer">
-				{
-					this.props.showPopup ? <Popup popupCancel={this.props.popupCancel} popupSure={this.props.popupSure}/> : null
-				}
 				{slide}
 				<Column {...this.props}/>
 				<div className="item item-divider home-item-title">
@@ -405,7 +407,7 @@ class Hotrepor extends Component{
 class Record extends Component{
 	render(){
 		return(
-			<div style={{position:'absolute',left:'0',top:'0',zIndex:'99',width:'100%',paddingLeft:'10px',lineHeight:'2',fontSize:'12px',backgroundColor:'rgba(255,255,255,.7)'}}>
+			<div style={{position:'absolute',left:'0',top:'0',zIndex:'98',width:'100%',paddingLeft:'10px',lineHeight:'2',fontSize:'12px',backgroundColor:'rgba(255,255,255,.7)'}}>
 				{this.props.dataSources}
 			</div>
 		)
