@@ -51,7 +51,7 @@ class Main extends Component{
                 <h3>三、稿费结算</h3>
                 <p>
                     1.	原创报告的稿酬标准为“药市通平台个人报
-                    告收益*80%”。
+                    告收益*50%”。
                 </p>
                 <p>
                     2.	稿费采取月结制，每月1日统计个人报告收
@@ -62,7 +62,7 @@ class Main extends Component{
                 <p>
                     3.	稿件采用后发现非个人原创，稿费不予支付。
                     如涉及到侵权，由此带来的法律纠纷及后果，
-                    我司保留追究责任的权利
+                    我司保留追究责任的权利。
                 </p>
                 <img  className="contribute-footer" src="/images/contribute02.jpg" alt=""/>
             </div>

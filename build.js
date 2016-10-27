@@ -1,4 +1,3 @@
-import {Token} from './components/function/token';
 import React,{Component} from 'react';
 
 import ReactDOM from 'react/lib/ReactDOM';
@@ -57,6 +56,7 @@ import LowPrice from './components/lowPrice';
 import Anti from './components/anti';
 
 var store = createStore(ystReducers,applyMiddleware(thunk));
+import {Token} from './components/function/token';
 Token((res) => {
     store.dispatch({
         type:'CHANGE',
@@ -74,12 +74,13 @@ Token((res) => {
         yearMonth:res.datas.yearMonth
     });
 
-    ReactDOM.render(_router, ele, null);
+//    ReactDOM.render(_router, ele, null);
 },(res)=>{
     store.dispatch({
         type:'LOADUSERINFO',
         datas:res.datas
-    });
+    })
+    name=res.datas.id;
 });
 var _router = (
 	<Provider store={store}>
@@ -115,7 +116,7 @@ var _router = (
                         <Route path="anti" component={Anti}/>
                         <Route path="anti/:gradeId/:catalogEditionId" component={Anti}/>
                     </Route>
-                    
+
                     <Route path="product" component={product}/>
                     <Route path="bidList" component={bidList}/>
                     <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>
@@ -153,4 +154,4 @@ var _router = (
 	</Provider>
 );
 var ele = document.getElementById('app');
-//ReactDOM.render(_router, ele, null);
+ReactDOM.render(_router, ele, null);

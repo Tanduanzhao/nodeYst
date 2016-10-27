@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 export default class Popup extends Component{
     render(){
         return(
-            <div style={{width:'100%',height:'100%'}}>
+            <div style={{width:'100%',height:'100%',position: 'absolute',top:'0',left:'0'}}>
                 <div className="backdrop visible active"></div>
                 <div className="popup-container popup-showing active">
                     <div className="popup">

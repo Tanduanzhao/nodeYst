@@ -11,6 +11,7 @@ import EmptyComponent from './emptyComponent';
 import {loadNewrepor,loadPicture,insertUserAction,getReportType,loadReportList} from './function/ajax';
 import Popup from './popup';
 import ReportList from './reportList';
+import {OpenProductView} from './function/common';
 
 class Report extends Component {
   constructor(props){
@@ -31,10 +32,13 @@ class Report extends Component {
       request:false
     });
     loadReportList({
-      titleOrReportKey:this.props.report.titleOrReportKey,
+      sidx:this.props.report.sidx,
+      sord:this.props.report.sord,
       pageNo:this.props.report.pageNo,
       searchType:this.props.report.searchType,
       reportType:this.props.report.reportType,
+      costStatus:this.props.report.costStatus,
+      titleOrReportKey:this.props.report.titleOrReportKey,
       callBack:(res)=>{
         this.props.dispatch({
           type:'LOADPRODUCEDATA',
@@ -70,7 +74,7 @@ class Report extends Component {
     getReportType({
       callBack:(res)=>{
         this.props.dispatch({
-          type:'CHANGEREPORTTYPE',
+          type:'CHANGEREPORTTYPEDATE',
           ReportTypeDate:res.datas,
         });
       }
@@ -97,34 +101,19 @@ class Report extends Component {
         pageNo:1
       });
     this.props.dispatch({
-      type:'CHANGETYPE',
-      searchType:1,
-      reportType:0
+      type:'RESETREPORT'
     });
     this.props.dispatch({
       type:'CHANGEREPORTTAG'
     });
   }
-    
-    
    _openProductView(id){
-        if (typeof WeixinJSBridge == "undefined")   return false;
-        var pid = id;
-//        var pid = "pDF3iY_G88cM_d-wuImym3tkVfG5";//只需要传递
-        WeixinJSBridge.invoke('openProductViewWithPid',{"pid":pid},(res)=>{
-            // 返回res.err_msg,取值 
-            // open_product_view_with_id:ok 打开成功
-//            alert(res.err_msg);
-            if (res.err_msg == "open_product_view_with_id:ok"){
-                WeixinJSBridge.invoke('openProductView',{
-                    "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
-                    },(res)=>{ 
-                    this.setState({
-                        showPopup:true
-                    });
-                });
-            }
-        });
+     OpenProductView(id,()=>{
+           this.setState({
+             showPopup:true
+           });
+         }
+     )
     }
   _fn(args) {
     this.setState({
@@ -139,9 +128,13 @@ class Report extends Component {
       type:'UNSHOWFILTERPRODUCE'
     })
     this.props.dispatch({
-      type:'CHANGETYPE',
+      type:'CHANGEREPORTTYPE',
       searchType:args.searchType,
-      reportType:encodeURI(encodeURI(args.reportType))
+      reportType:encodeURI(encodeURI(args.reportType)),
+      active:args.active,
+      sord:args.sord,
+      sidx:args.sidx,
+      costStatus:args.costStatus
     });
     setTimeout(()=>{
       this._loadData();
@@ -154,7 +147,7 @@ class Report extends Component {
     this.props.dispatch({
       type:'LOADPRODUCEDATA',
       data:[],
-      pageNo:1,
+      pageNo:1
     });
     setTimeout(()=> this._loadData(),100);
   }
@@ -165,15 +158,16 @@ class Report extends Component {
         })
     }
     _popupSure(){
-        this.setState({
-            showPopup:false
-        });
-        this.props.dispatch({
-          type:'LOADPRODUCEDATA',
-          data:[],
-          pageNo:1,
-        });
-        setTimeout(()=> this._loadData(),100);
+        //this.setState({
+        //    showPopup:false
+        //});
+      this.context.router.push('/purchase');
+        //this.props.dispatch({
+        //  type:'LOADPRODUCEDATA',
+        //  data:[],
+        //  pageNo:1,
+        //});
+        //setTimeout(()=> this._loadData(),100);
     }
   render() {
     return (
@@ -181,14 +175,14 @@ class Report extends Component {
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header report-view">
           <Main openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
-            {
-                this.state.showPopup ? <Popup popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
-            }
         </div>
         <FooterBar {...this.props}/>
         {
           this.props.report.isShowFilter ?
             <FilterReport fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.provicenData}/> : null
+        }
+        {
+          this.state.showPopup ? <Popup {...this.props}  popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
         }
       </div>
     )
@@ -339,5 +333,7 @@ function select(state){
     searchAreaType:state.provicen.searchAreaType
   }
 }
-
+Report.contextTypes = {
+  router:React.PropTypes.object.isRequired
+}
 export default connect(select)(Report);

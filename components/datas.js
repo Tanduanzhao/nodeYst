@@ -64,7 +64,8 @@ class Slide extends Component{
             slidesToShow: 1,
             slidesToScroll: 1,
             adaptiveHeight:false,
-            autoplay:true
+            autoplay:true,
+            autoplaySpeed:4000
         };
         return(
             <Slider {...settings} {...this.props}>
@@ -140,39 +141,39 @@ class Column extends Component{
                     <img src="/images/column13.jpg" alt=""/>
                     辅助用药
                 </Link>
-                <Link to="/datas/policy">
+                <Link to="/datas/policy/quality">
                     <img src="/images/column14.jpg" alt=""/>
                     专利
                 </Link>
-                <Link to="/datas/policy">
+                <Link to="/datas/policy/quality">
                     <img src="/images/column15.jpg" alt=""/>
                     过期专利
                 </Link>
-                <Link to="/datas/policy">
+                <Link to="/datas/policy/quality">
                     <img src="/images/column16.jpg" alt=""/>
                     一类新药
                 </Link>
-                <Link to="/datas/policy">
+                <Link to="/datas/policy/quality">
                     <img src="/images/column17.jpg" alt=""/>
                     首仿
                 </Link>
-                <Link to="/datas/policy">
+                <Link to="/datas/policy/quality">
                     <img src="/images/column18.jpg" alt=""/>
                     欧盟认证
                 </Link>
-                <Link to="/datas/policy">
+                <Link to="/datas/policy/quality">
                     <img src="/images/column19.jpg" alt=""/>
                     美国认证
                 </Link>
-                <Link to="/datas/policy">
+                <Link to="/datas/policy/quality">
                     <img src="/images/column20.jpg" alt=""/>
                     日本认证
                 </Link>
-                <Link to="/datas/policy">
+                <Link to="/datas/policy/quality">
                     <img src="/images/column21.jpg" alt=""/>
                     国家科技奖
                 </Link>
-                <Link to="/datas/policy">
+                <Link to="/datas/policy/quality">
                     <img src="/images/column22.jpg" alt=""/>
                     中药保密处方
                 </Link>

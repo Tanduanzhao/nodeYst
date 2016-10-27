@@ -47,10 +47,13 @@ h3{
 }
 .row.horizontal{
     flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
     align-items: flex-start;
+    -webkit-align-items: flex-start;
     >.col{
         width: 33.33%;
         flex: auto;
+        -webkit-flex: auto;
         padding-bottom: pxTorem(15);
         padding-top: pxTorem(15);
     }
@@ -63,6 +66,7 @@ h3{
 .row{
     background-color: #fff;
     align-items: center;
+    -webkit-align-items: center;
     +.row{
         margin-top:inherit;
         padding: inherit
@@ -78,6 +82,7 @@ h3{
 .breed{
     .row{
         align-items: center;
+        -webkit-align-items: center;
     }
 }
 .footer-row{
@@ -560,8 +565,8 @@ h3{
     justify-content: space-between;
     -webkit-justify-content: space-between;
     h3{
-        font-size: .6rem;
-        margin-top: 5px;
+        font-size: .65rem;
+        //margin-top: 5px;
         -webkit-line-clamp: 1;
         white-space: initial;
     }
@@ -626,6 +631,9 @@ h3{
        width: 100%;
        display: block;
    }
+    .popup-body{
+        color: black;
+    }
     .banner{
         width: 100%;
         position: relative;
@@ -1031,4 +1039,12 @@ table{
 .scroll-iframe{
     -webkit-overflow-scrolling: touch;
     overflow-y: scroll;
+}
+.loading{
+    display:flex;
+    display: -webkit-flex;
+    justify-content: center;
+    -webkit-justify-content: center;
+    align-items: center;
+    -webkit-align-items: center;
 }

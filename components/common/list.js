@@ -15,10 +15,10 @@ export default class List extends Component {
 		var changeCost = (()=> {
 			if (this.props.data.changeCost >= 0) {
 				string =
-					<span className="assertive" style={{marginLeft:'1rem'}}>增长额： {this.props.data.changeCost}</span>
+					<span className="assertive" style={{marginLeft:'1rem'}}>增长额： {this.props.data.changeCost}万</span>
 			} else {
 				string =
-					<span className="balanced" style={{marginLeft:'1rem'}}>增长额： {this.props.data.changeCost}</span>
+					<span className="balanced" style={{marginLeft:'1rem'}}>增长额： {this.props.data.changeCost}万</span>
 			}
 			return string;
 		})();

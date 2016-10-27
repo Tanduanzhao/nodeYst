@@ -2,11 +2,16 @@ import React,{Component,PropTypes} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
-import {loadHome} from './function/ajax';
+import {loadHome,loadUserInfo} from './function/ajax';
+import {OpenProductView} from './function/common';
+import Popup from './popup';
 
  class Vip extends Component{
 	 constructor(props){
 		 super(props);
+         this.state={
+             showPopup:false
+         };
 	 }
      _pushHandle(){
          this.context.router.goBack();
@@ -16,28 +21,40 @@ import {loadHome} from './function/ajax';
              alert("请同意服务协议")
              return false
          }
-         if (typeof WeixinJSBridge == "undefined")  return false;
-         var pid = id;
-//        var pid = "pDF3iY_G88cM_d-wuImym3tkVfG5";//只需要传递
-         WeixinJSBridge.invoke('openProductViewWithPid',{"pid":pid},(res)=>{
-             // 返回res.err_msg,取值
-             // open_product_view_with_id:ok 打开成功
-//            alert(res.err_msg);
-             if (res.err_msg == "open_product_view_with_id:ok"){
-                 WeixinJSBridge.invoke('openProductView',{
-                     "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
-                 },(res)=>{
-                     this.setState({
-                         showPopup:true
-                     });
+         OpenProductView(id,()=>{loadUserInfo({
+             callBack:(res)=>{
+                 this.props.dispatch({
+                     type:'LOADUSERINFO',
+                     imgUrl:res.datas.imgUrl,
+                     id:res.datas.id,
+                     userName:res.datas.userName,
+                     isVip:res.datas.userVip
+                 });
+                 this.setState({
+                     showPopup:true
                  });
              }
-         });
+         })}
+         )
+     }
+     _popupCancel(){
+         this.setState({
+             showPopup:false
+         })
+     }
+     _popupSure() {
+         //this.setState({
+         //    showPopup: false
+         //});
+         this.context.router.push('/center');
      }
 	render(){
 		return(
 			<div className="root vip">
 				<div className="scroll-content">
+                    {
+                        this.state.showPopup ? <Popup  {...this.props} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
+                    }
 				    <div className="banner">
                         <img src="images/vip_header.jpg"/>
                         <button className="close" onClick={this._pushHandle.bind(this)}></button>

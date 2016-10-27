@@ -9,7 +9,7 @@ import {loadBidListContent,getBidAreaInfo,getProjectStatus} from '../function/aj
 import Loading from '../loading';
 import EmptyComponent from '../emptyComponent';
 import FilterBidList from '../filterBidList';
-import {Token} from '../function/tokenbidList.js';
+
 import More from './more';
 class BidList extends Component{
     constructor(props){
@@ -36,7 +36,6 @@ class BidList extends Component{
             searchName:this.props.bidList.searchName,
             searchProductStatus:this.props.bidList.searchProductStatus,
             callBack:(res)=>{
-                if(this._calledComponentWillUnmount) return false;
                 this.setState({
                     loading:false
                 });

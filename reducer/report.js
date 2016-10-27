@@ -1,5 +1,5 @@
 var ObjectAssign = require('object-assign');
-import {SHOWFILTERPRODUCE,UNSHOWFILTERPRODUCE,LOADPRODUCEDATA,GOREPORT,CHANGETYPE,CHANGETITLEORREPORTKEY,INFINITE,UNINFINITE,CLEARTITLEORREPORTKEY} from '../components/config/variable';
+import {SHOWFILTERPRODUCE,UNSHOWFILTERPRODUCE,LOADPRODUCEDATA,GOREPORT,CHANGEREPORTTYPE,CHANGETITLEORREPORTKEY,INFINITE,UNINFINITE,CLEARTITLEORREPORTKEY} from '../components/config/variable';
 //省份信息
 var defaultProvicen = {
 	areaName:'广州市',
@@ -29,11 +29,15 @@ var defaultReport={
   titleOrReportKey:"",
   reportType:0,
   ReportTypeDate:[],
-  reportTag:true
+  reportTag:true,
+  sord:null,
+  sidx:null,
+  active:0,
+  costStatus:null
 }
 export default function report(state=defaultReport,action) {
   switch(action.type){
-    case "CHANGEREPORTTYPE" : return ObjectAssign({},state,{ReportTypeDate:action.ReportTypeDate});
+    case "CHANGEREPORTTYPEDATE" : return ObjectAssign({},state,{ReportTypeDate:action.ReportTypeDate});
     case "LOADREPORTTYPE" : return ObjectAssign({},state,{ReportType:action.ReportType});
     case "CHANGEREPORTTAG" : return ObjectAssign({},state,{reportTag:true});
     case "UNCHANGEREPORTTAG" : return ObjectAssign({},state,{reportTag:false});
@@ -42,10 +46,11 @@ export default function report(state=defaultReport,action) {
     case SHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:false});
     case LOADPRODUCEDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
-    case CHANGETYPE : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType});
+    case CHANGEREPORTTYPE : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType,active:action.active,sord:action.sord,sidx:action.sidx,costStatus:action.costStatus});
     case GOREPORT : return ObjectAssign({},state,{data:action.data,searchType:action.searchType,pageNo:action.pageNo});
     case CHANGETITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:action.titleOrReportKey});
     case CLEARTITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:null});
+    case "RESETREPORT" : return  ObjectAssign({},defaultReport);
     default : return state;
   }
 }

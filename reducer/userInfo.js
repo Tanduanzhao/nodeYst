@@ -14,8 +14,8 @@ export default function userInfo(state = defaultUserInfo,action){
     switch(action.type){
         case LOGIN : return ObjectAssign({},state,{isLogin:true});
         case 'OPENVIP' : return ObjectAssign({},state,{isVip:true});
-        case LOADUSERINFO : return ObjectAssign({},state,{imgUrl:action.datas.imgUrl,id:action.datas.id,userName:action.datas.userName,isVip:action.datas.userVip});
-            default : return state;
+        case LOADUSERINFO : return ObjectAssign({},state,{imgUrl:action.datas.imgUrl,id:action.datas.id,userName:action.datas.userName,isVip:action.datas.userVip,isLogin:true});
+        default : return state;
     }
     
 }
