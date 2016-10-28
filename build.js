@@ -137,7 +137,7 @@ var _router = (
                 <Route path="home">
                     <IndexRoute component={Index}/>
                 </Route>
-                <Route path="pdf/:id/:title" component={Pdf}></Route>
+                <Route path="pdf/:id/:title/:price" component={Pdf}></Route>
                 <Route path="picture/:url" component={Picture}></Route>
                 <Route path="vip">
                     <IndexRoute component={vip}/>

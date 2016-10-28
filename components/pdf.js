@@ -126,7 +126,7 @@ export default class Pdf extends Component{
                 {
                     this.state.reportVersion=="brief"
                         ?<div onClick={()=>this._openProductView(this.state.id)}className="bar bar-footer bar-assertive row purchase-report ">
-                            <button className="button-clear col-50 purchase-price">¥200</button>
+                            <button className="button-clear col-50 purchase-price">¥{this.props.params.price}</button>
                             <button className="button-clear col-50">报告购买</button>
                         </div>
                         :  null
