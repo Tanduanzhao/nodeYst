@@ -13,7 +13,8 @@ export default class FilterProduce extends Component{
       active:this.props.report.active,
       sord:this.props.report.sord,
       sidx:this.props.report.sidx,
-      costStatus:this.props.report.costStatus
+      costStatus:this.props.report.costStatus,
+      reportTag:this.props.report.reportTag
     };
   }
   _cancelButton(){
@@ -22,7 +23,7 @@ export default class FilterProduce extends Component{
     });
   }
   _sureButton(){
-    console.log(this.state.active);
+    console.log(this.state.reportTag);
     this.props.fn(this.state);
   }
   _spanhandleClick(id,e,t){
@@ -56,9 +57,9 @@ export default class FilterProduce extends Component{
             <h2 className="item item-divider">报告类型</h2>
             <div className="list padding">
               <ul className="list-horizontal-block">
-                <li style={(this.state.searchType == 1) ? styles.active : null} onClick={()=>{this.setState({searchType:1})}}>全部</li>
-                <li style={(this.state.searchType == 0) ? styles.active : null} onClick={()=>{this.setState({searchType:0})}}>最新报告</li>
-                <li style={(this.state.searchType == 2) ? styles.active : null} onClick={()=>{this.setState({searchType:2})}}>热门报告</li>
+                <li style={(this.state.searchType == 1) ? styles.active : null} onClick={()=>{this.setState({searchType:1,reportTag:true})}}>全部</li>
+                <li style={(this.state.searchType == 0) ? styles.active : null} onClick={()=>{this.setState({searchType:0,reportTag:false})}}>最新报告</li>
+                <li style={(this.state.searchType == 2) ? styles.active : null} onClick={()=>{this.setState({searchType:2,reportTag:false})}}>热门报告</li>
               </ul>
             </div>
             <h2 className="item item-divider">排序</h2>

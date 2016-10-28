@@ -2,10 +2,12 @@ import React,{Component} from 'react';
 import {loadReport} from './function/ajax';
 import {WXKEY,HTTPURL} from './config';
 import Loading from './loading';
+import {OpenProductView} from './function/common';
+import Popup from './popup';
 export default class Pdf extends Component{
     constructor(props){
         super(props);
-        
+
         wx.ready(()=> {
              // 分享
                 var info = {
@@ -38,7 +40,10 @@ export default class Pdf extends Component{
                 content:null,
                 title:null
             },
-            isLoading:true
+            isLoading:true,
+            reportVersion:"total",
+            showPopup:false,
+            id:this.props.params.id
         }
     }
     _loadData(){
@@ -50,7 +55,8 @@ export default class Pdf extends Component{
             callBack:(res)=>{
                 this.setState({
                     report:res.datas,
-                    isLoading:false
+                    isLoading:false,
+                    reportVersion:res.datas.reportVersion
                 })
             }
         })
@@ -87,18 +93,51 @@ export default class Pdf extends Component{
                 });
         });
     }
+    _openProductView(id,self){
+    	OpenProductView(id,()=>{
+    			this.setState({
+    				showPopup:true
+    			});
+    		}
+    	)
+    }
+    _popupCancel(){
+        this.setState({
+            showPopup:false
+        })
+    }
+    _popupSure() {
+        //this.setState({
+        //    showPopup: false
+        //});
+        this.context.router.push('/purchase');
+    }
     render(){
         return(
             <div className="root">
+                {
+                    this.state.showPopup ? <Popup  {...this.props} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
+                }
                 <div className="bar bar-positive bar-header">
                     <h4 className="title">{this.props.params.title}</h4>
                 </div>
                 <div className="scroll-content has-header padding report-content" dangerouslySetInnerHTML={{__html:this.state.report.content}}>
                 </div>
                 {
+                    this.state.reportVersion=="brief"
+                        ?<div onClick={()=>this._openProductView(this.state.id)}className="bar bar-footer bar-assertive row purchase-report ">
+                            <button className="button-clear col-50 purchase-price">¥200</button>
+                            <button className="button-clear col-50">报告购买</button>
+                        </div>
+                        :  null
+                }
+                {
                     this.state.isLoading ? <Loading /> : null
                 }
             </div>
         )
     }
+}
+Pdf.contextTypes = {
+    router:React.PropTypes.object.isRequired
 }

@@ -2,12 +2,12 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
-import {loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent} from './function/ajax';
+import {loadWx,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent} from './function/ajax';
 import Box from './box';
 import Loading from './loading';
 import Popup from './popup';
 import ReportList from './reportList';
-import {OpenProductView} from './function/common';
+import {OpenProductView,url2obj} from './function/common';
 
 var Slider = require('react-slick');
 class Home extends Component{
@@ -100,31 +100,45 @@ class Home extends Component{
 		})
 	}
 	componentDidMount(){
-		this._loadData();
-	}
-	_openProductView(id){
-		OpenProductView(id,()=>{
-				this.setState({
-					showPopup:true
+		loadWx({
+			code:url2obj().code,
+			recommender:url2obj().recommender,
+			callBack:(res)=>{
+				this.props.dispatch({
+					type:'LOADUSERINFO',
+					datas:res.datas
+				})
+				name=res.datas.id;
+				setTimeout(()=>{
+					this._loadData();
 				});
-		}
-		)
-	}
-	_popupCancel(){
-		this.setState({
-			showPopup:false
+			}
 		})
+
 	}
-	_popupSure(){
-		//this.setState({
-		//	showPopup:false
-		//});
-		this.context.router.push('/purchase');
-		this.props.dispatch({
-			type:'RESETHOMEREPORT'
-		});
-		//setTimeout(()=> this._loadData(),100);
-	}
+	//_openProductView(id,self){
+	//	OpenProductView(id,()=>{
+	//			this.setState({
+	//				showPopup:true
+	//			});
+	//		}
+	//	)
+	//}
+	//_popupCancel(){
+	//	this.setState({
+	//		showPopup:false
+	//	})
+	//}
+	//_popupSure(){
+	//	//this.setState({
+	//	//	showPopup:false
+	//	//});
+	//	this.context.router.push('/purchase');
+	//	this.props.dispatch({
+	//		type:'RESETHOMEREPORT'
+	//	});
+	//	//setTimeout(()=> this._loadData(),100);
+	//}
 	render(){
 		return(
 			<div className="root home">
@@ -132,7 +146,7 @@ class Home extends Component{
 					this.props.home.isShowRecord ? <Record dataSources={this.state.reCordNum}/> : false
 				}
 				{
-					!this.props.userInfo.isLogin ? null : <Main {...this.props} openProductView={this._openProductView.bind(this)}/>
+					!this.props.userInfo.isLogin ? null : <Main {...this.props}/>//openProductView={this._openProductView.bind(this)}
 				}
 				{
 					(this.state.loading || !this.props.userInfo.isLogin) ? <Loading/> : null
@@ -187,9 +201,9 @@ class Main extends Component{
 		var slide = (()=>{
 			if(this.props.home.img.length != 0){
 				string = <Slider {...settings} {...this.props}>{this.props.home.img.map((ele,index)=> {
-					switch(this.props.home.img[index].resourceType){
-						case "EXTERNAL": let url = '/picture/'+encodeURIComponent(this.props.home.img[index].imgSource);return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
-						case "INTERNAL":<div  key={ele.id+Math.random()}><Link to={this.props.home.img[index].imgSource}><img src={ele.imgUrl}  alt=""/></Link></div>;
+					switch(ele.resourceType){
+						case "EXTERNAL": let url = '/picture/'+encodeURIComponent(ele.imgSource);return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
+						case "INTERNAL":return <div  key={ele.id+Math.random()}><Link to={ele.imgSource}><img src={ele.imgUrl}  alt=""/></Link></div>;
 						case "ORDER_REPORT":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
 						case "NO":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
 						default : return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
@@ -213,7 +227,7 @@ class Main extends Component{
 				</div>
 				<ul className="list new_report">
 					{
-						this.props.home.data.newReportMap.datas.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} dataSources={ele} key={ele.id}/>)
+						this.props.home.data.newReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)//openProductView = {this.props.openProductView}
 					}
 				</ul>
 				<div className="item item-divider home-item-title">
@@ -225,7 +239,7 @@ class Main extends Component{
 				</div>
 				<div className="list new_report">
 					{
-						this.props.home.data.hotReportMap.datas.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} dataSources={ele} key={ele.id}/>)
+						this.props.home.data.hotReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)//openProductView = {this.props.openProductView}
 					}
 
 				</div>
@@ -264,145 +278,145 @@ class Column extends Component{
 	}
 }
 
-class Newrepor extends Component{
-	constructor(props){
-		super(props);
-	};
-	render(){
-		var string = null;
-		var tag = (()=>{
-			if(this.props.dataSources.costStatus == "1"){
-				string = <i className="item-icon">报告试读</i>;
-			}else{
-				string = <i className="item-icon">点击查看</i>;
-			}
-			return string;
-		})();
-		var number = (()=>{
-			if(this.props.dataSources.costStatus == "1"){
-				string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人购买</span>;
-			}else{
-				string =<span style={{textAlign:"left"}}>{this.props.dataSources.num}人查看</span>;
-			}
-			return string;
-		})();
-		if(this.props.dataSources.costStatus == "1"){
-			this.state= {
-				price: this.props.dataSources.price
-			}
-		}else{
-			this.state= {
-				price: 0
-			}
-		}
-		let isCanViewReport = false;
-		if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
-			isCanViewReport = false;
-		}else{
-			isCanViewReport = true;
-		}
-		return(
-			<div>
-				{
-					isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}  className="item">
-						<div  className="item-left">
-							<img src={this.props.dataSources.mainImg} alt=""/>
-						</div>
-						<div className="item-right">
-							<h3>{this.props.dataSources.title}</h3>
-							<p>¥{this.state.price}</p>
-							<div className="item-right-footer">
-								{number}
-								{tag}
-							</div>
-						</div>
-					</Link>:
-						<a onClick={()=>this.props.openProductView(this.props.dataSources.id)}  className="item">
-							<div  className="item-left">
-								<img src={this.props.dataSources.mainImg} alt=""/>
-							</div>
-							<div className="item-right">
-								<h3>{this.props.dataSources.title}</h3>
-								<p>¥{this.state.price}</p>
-								<div className="item-right-footer">
-									{number}
-									{tag}
-								</div>
-							</div>
-						</a>
-				}
-			</div>
-		)
-	}
-}
-
-class Hotrepor extends Component{
-	constructor(props){
-		super(props);
-	};
-	render(){
-		var string = null;
-		var tag = (()=>{
-			if(this.props.dataSources.costStatus == "1"){
-				string = <i className="report-card-icon">报告试读</i>;
-			}else{
-				string = <i className="report-card-icon">点击查看</i>;
-			}
-			return string;
-		})();
-		var number = (()=>{
-			if(this.props.dataSources.costStatus == "1"){
-				string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人购买</span>;
-			}else{
-				string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人查看</span>;
-			}
-			return string;
-		})();
-		if(this.props.dataSources.costStatus == "1"){
-			this.state= {
-				price: this.props.dataSources.price
-			}
-		}else{
-			this.state= {
-				price: 0
-			}
-		}
-		let isCanViewReport = false;
-		if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
-			isCanViewReport = false;
-		}else{
-			isCanViewReport = true;
-		}
-		return(
-			<div className="col-50">
-				{
-					isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
-						<div className="report-img">
-							<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
-						</div>
-						<h3> {this.props.dataSources.title}</h3>
-						<div className="report-card-price">¥{this.state.price}</div>
-						<p className="report-card-footer">
-							{number}
-							{tag}
-						</p>
-					</Link>:
-						<a onClick={()=>this.props.openProductView(this.props.dataSources.id)}>
-							<div className="report-img">
-								<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
-							</div>
-							<h3> {this.props.dataSources.title}</h3>
-							<div className="report-card-price">¥{this.state.price}</div>
-							<p className="report-card-footer">
-								{number}
-								{tag}
-							</p>
-						</a>
-				}
-			</div>
-		)
-	}
-}
+//class Newrepor extends Component{
+//	constructor(props){
+//		super(props);
+//	};
+//	render(){
+//		var string = null;
+//		var tag = (()=>{
+//			if(this.props.dataSources.costStatus == "1"){
+//				string = <i className="item-icon">报告试读</i>;
+//			}else{
+//				string = <i className="item-icon">点击查看</i>;
+//			}
+//			return string;
+//		})();
+//		var number = (()=>{
+//			if(this.props.dataSources.costStatus == "1"){
+//				string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人购买</span>;
+//			}else{
+//				string =<span style={{textAlign:"left"}}>{this.props.dataSources.num}人查看</span>;
+//			}
+//			return string;
+//		})();
+//		if(this.props.dataSources.costStatus == "1"){
+//			this.state= {
+//				price: this.props.dataSources.price
+//			}
+//		}else{
+//			this.state= {
+//				price: 0
+//			}
+//		}
+//		let isCanViewReport = false;
+//		if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
+//			isCanViewReport = false;
+//		}else{
+//			isCanViewReport = true;
+//		}
+//		return(
+//			<div>
+//				{
+//					isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}  className="item">
+//						<div  className="item-left">
+//							<img src={this.props.dataSources.mainImg} alt=""/>
+//						</div>
+//						<div className="item-right">
+//							<h3>{this.props.dataSources.title}</h3>
+//							<p>¥{this.state.price}</p>
+//							<div className="item-right-footer">
+//								{number}
+//								{tag}
+//							</div>
+//						</div>
+//					</Link>:
+//						<a onClick={()=>this.props.openProductView(this.props.dataSources.id)}  className="item">
+//							<div  className="item-left">
+//								<img src={this.props.dataSources.mainImg} alt=""/>
+//							</div>
+//							<div className="item-right">
+//								<h3>{this.props.dataSources.title}</h3>
+//								<p>¥{this.state.price}</p>
+//								<div className="item-right-footer">
+//									{number}
+//									{tag}
+//								</div>
+//							</div>
+//						</a>
+//				}
+//			</div>
+//		)
+//	}
+//}
+//
+//class Hotrepor extends Component{
+//	constructor(props){
+//		super(props);
+//	};
+//	render(){
+//		var string = null;
+//		var tag = (()=>{
+//			if(this.props.dataSources.costStatus == "1"){
+//				string = <i className="report-card-icon">报告试读</i>;
+//			}else{
+//				string = <i className="report-card-icon">点击查看</i>;
+//			}
+//			return string;
+//		})();
+//		var number = (()=>{
+//			if(this.props.dataSources.costStatus == "1"){
+//				string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人购买</span>;
+//			}else{
+//				string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人查看</span>;
+//			}
+//			return string;
+//		})();
+//		if(this.props.dataSources.costStatus == "1"){
+//			this.state= {
+//				price: this.props.dataSources.price
+//			}
+//		}else{
+//			this.state= {
+//				price: 0
+//			}
+//		}
+//		let isCanViewReport = false;
+//		if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
+//			isCanViewReport = false;
+//		}else{
+//			isCanViewReport = true;
+//		}
+//		return(
+//			<div className="col-50">
+//				{
+//					isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
+//						<div className="report-img">
+//							<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
+//						</div>
+//						<h3> {this.props.dataSources.title}</h3>
+//						<div className="report-card-price">¥{this.state.price}</div>
+//						<p className="report-card-footer">
+//							{number}
+//							{tag}
+//						</p>
+//					</Link>:
+//						<a onClick={()=>this.props.openProductView(this.props.dataSources.id)}>
+//							<div className="report-img">
+//								<img src={this.props.dataSources.mainImg} style={{display:'block',width: "100%"}}/>
+//							</div>
+//							<h3> {this.props.dataSources.title}</h3>
+//							<div className="report-card-price">¥{this.state.price}</div>
+//							<p className="report-card-footer">
+//								{number}
+//								{tag}
+//							</p>
+//						</a>
+//				}
+//			</div>
+//		)
+//	}
+//}
 
 class Record extends Component{
 	render(){

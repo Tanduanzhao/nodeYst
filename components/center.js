@@ -19,7 +19,8 @@ class Center extends Component{
 
 class Main extends Component{
     render(){
-        console.log(this.props.userInfo.isVip,'vip');
+        console.log(this.props.userInfo.vipEndDate,'vip');
+        console.log(this.props.userInfo.vip,'vip');
         return(
             <div className="scroll-content has-footer center">
                 <div className="list">
@@ -28,7 +29,20 @@ class Main extends Component{
                         <h2>{this.props.userInfo.userName}</h2>
                         <p>
                             {
-                                this.props.userInfo.isVip != '0' ? <img className="vipLogo" src="/images/vipLogo.png" alt=""/>:<img className="vipLogo" src="/images/mass.png" alt=""/>
+                                //this.props.userInfo.isVip != '0' ? <img className="vipLogo" src="/images/vipLogo.png" alt=""/>:<img className="vipLogo" src="/images/mass.png" alt=""/>
+                                (()=>{
+                                    switch(this.props.userInfo.isVip){
+                                        case '0': return <img className="vipLogo" src="/images/mass.png" alt=""/>;
+                                        case '1':return <img className="vipLogo" src="/images/vipLogo.png" alt=""/>;
+                                        case '2':return <img className="vipLogo" src="/images/superVipLogo.png" alt=""/>;
+                                        default : return <img className="vipLogo" src="/images/mass.png" alt=""/>;
+                                    }
+                                })()
+                            }
+                            {
+                                this.props.userInfo.isVip != '0'
+                                 ? <span className="time">到期时间:{this.props.userInfo.vipEndDate}</span>
+                                :null
                             }
                         </p>
                     </div>

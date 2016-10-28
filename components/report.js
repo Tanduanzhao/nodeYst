@@ -28,6 +28,7 @@ class Report extends Component {
     this._infiniteScroll = this._infiniteScroll.bind(this);
   }
   _loadData(){
+    console.log(this.state.reportTag,"reportTag")
     this.setState({
       request:false
     });
@@ -116,6 +117,16 @@ class Report extends Component {
      )
     }
   _fn(args) {
+    console.log(args.reportTag,"args")
+    if(!args.reportTag){
+      this.setState({
+        reportTag:false
+      });
+    }else{
+      this.setState({
+        reportTag:true
+      });
+    }
     this.setState({
       loading:true
     });
@@ -134,7 +145,8 @@ class Report extends Component {
       active:args.active,
       sord:args.sord,
       sidx:args.sidx,
-      costStatus:args.costStatus
+      costStatus:args.costStatus,
+      reportTag:args.reportTag
     });
     setTimeout(()=>{
       this._loadData();
@@ -174,7 +186,7 @@ class Report extends Component {
       <div className="root">
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header report-view">
-          <Main openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
+          <Main {...this.props} openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
         </div>
         <FooterBar {...this.props}/>
         {

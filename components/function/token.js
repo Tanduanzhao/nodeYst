@@ -6,16 +6,9 @@ import {loadWx,loadJssdk,getUserAreaInfo} from './ajax';
 import {url2obj} from './common';
 import {WXKEY,HTTPURL} from '../config';
 var isLogin = false;
-export const Token = function(fn,login,isLogin){
+export const Token = function(fn){
     console.log(isLogin,'111111');
     if(isLogin || url2obj().code){
-        loadWx({
-          code:url2obj().code,
-          recommender:url2obj().recommender,
-          callBack:(res)=>{
-              login(res);
-          }
-        })
         console.log(name,"sss");
         //获取微信授权
         loadJssdk({

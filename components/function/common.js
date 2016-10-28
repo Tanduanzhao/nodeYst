@@ -42,19 +42,8 @@ export function OpenProductView(id,cb){
     WeixinJSBridge.invoke('openProductViewWithPid',{"pid":pid},(res)=>{
         // 返回res.err_msg,取值
         // open_product_view_with_id:ok 打开成功
-        if (res.err_msg != "open_product_view_with_id:ok" && /android/.test(navigator.userAgent.toLowerCase())){
-
-            WeixinJSBridge.invoke('openProductView',{
-                "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
-            },(res)=>{
-                cb();
-            });
-        }else if(res.err_msg == "open_product_view_with_id:ok" && /ios | ipad | mac/.test(navigator.userAgent.toLowerCase())){
-            WeixinJSBridge.invoke('openProductView',{
-                "productInfo":"{\"product_id\":\""+pid+"\",\"product_type\":0}"
-            },(res)=>{
-                cb();
-            });
+        if(res.err_msg == "open_product_view:ok" || res.err_msg == "open_product_view_with_id:ok"){
+             cb();
         }
     })
 }
