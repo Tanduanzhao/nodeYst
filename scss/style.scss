@@ -637,7 +637,7 @@ h3{
     .banner{
         width: 100%;
         position: relative;
-        height: 8.25rem;
+        //height: 8.25rem;
         display: block;
         overflow: hidden;
         img{
@@ -666,8 +666,10 @@ h3{
             color:#f6a416;
             font-weight: 600;
             margin-bottom: 1rem;
+            letter-spacing: 1px;
         }
         button{
+            display: inline-block;
             text-align: center;
             background-color: #f6a416;
             color: #fff;
@@ -677,12 +679,17 @@ h3{
             border-radius: 5px;
         }
         img{
-            width: 45px;
+            //width: 45px;
+            width: 35px;
             vertical-align: middle;
             display: inline-block;
         }
+        .level-price{
+            width: 45px;
+        }
         .row{
-            padding:0
+            padding:0;
+            margin: 4px 0;
         }
         span{
             vertical-align: middle;
@@ -691,14 +698,15 @@ h3{
             color: #f6a416;
             font-weight: 600;
             width: 100%;
-            padding-left: 10px;
+            letter-spacing: 1px;
+            //padding-left: 10px;
             text-align: left;
         }
     }
     .protocol{
         color:black;
         font-size: .6rem;
-        margin-top: 6px;
+        margin-top: 10px;
         input{
             vertical-align: middle;
         }
@@ -711,7 +719,8 @@ h3{
 }
 @media screen and (max-width:322px){
     .vip  .level span{
-        font-size: .6rem;
+        font-size: .55rem;
+        padding-left: 7px;
     }
     .vip .level button{
         font-size: 0.55rem;

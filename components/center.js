@@ -29,6 +29,14 @@ class Main extends Component{
                         <p>
                             {
                                 this.props.userInfo.isVip != '0' ? <img className="vipLogo" src="/images/vipLogo.png" alt=""/>:<img className="vipLogo" src="/images/mass.png" alt=""/>
+                                //(()=>{
+                                //    switch(this.props.userInfo.isVip){
+                                //        case '1':return <img className="vipLogo" src="/images/vipLogo.png" alt=""/>;
+                                //        case '2':return <img className="vipLogo" src="/images/vipLogo.png" alt=""/>;
+                                //        case '3':return <img className="vipLogo" src="/images/vipLogo.png" alt=""/>;
+                                //        default : return <img className="vipLogo" src="/images/mass.png" alt=""/>;
+                                //    }
+                                //})()
                             }
                         </p>
                     </div>

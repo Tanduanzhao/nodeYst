@@ -66,7 +66,7 @@ import Popup from './popup';
                                 <ul className="row">
                                 <li className="col-20"><img src="images/level.jpg" alt=""/></li>
                                 <li className="col-50"><span>月度 有效期1个月</span></li>
-                                <li className="col"><img src="images/level_price.jpg" alt=""/></li>
+                                <li className="col"><img className="level-price" src="images/level_price.jpg" alt=""/></li>
                                 </ul>
                             </li>
                             <li className="col-20"><button className="col"  onClick={this._ProductView.bind(this,"pxFGiwzFAD8mjP9sPRv416VBs3Is")}>立即开通</button></li>
@@ -74,9 +74,9 @@ import Popup from './popup';
                         <ul className="row">
                             <li className="col-80">
                                 <ul className="row">
-                                    <li className="col-20"><img src="images/level.jpg" alt=""/></li>
+                                    <li className="col-20"><img src="images/level02.jpg" alt=""/></li>
                                     <li className="col-50"><span>季度 有效期3个月</span></li>
-                                    <li className="col"><img src="images/level_price02.jpg" alt=""/></li>
+                                    <li className="col"><img className="level-price" src="images/level_price02.jpg" alt=""/></li>
                                 </ul>
                             </li>
                             <li className="col-20"><button className="col"  onClick={this._ProductView.bind(this,"pxFGiw7CWclXnIvqF6JqlcguRc-8")}>立即开通</button></li>
@@ -84,9 +84,19 @@ import Popup from './popup';
                         <ul className="row">
                             <li className="col-80">
                                 <ul className="row">
-                                    <li className="col-20"><img src="images/level.jpg" alt=""/></li>
+                                    <li className="col-20"><img src="images/level03.jpg" alt=""/></li>
                                     <li className="col-50"><span>年度 有效期1年</span></li>
-                                    <li className="col"><img src="images/level_price03.jpg" alt=""/></li>
+                                    <li className="col"><img className="level-price" src="images/level_price03.jpg" alt=""/></li>
+                                </ul>
+                            </li>
+                            <li className="col-20"><button className="col"  onClick={this._ProductView.bind(this,"pxFGiwyfqw59qONiyD5Gq5Ro__2g")}>立即开通</button></li>
+                        </ul>
+                        <ul className="row">
+                            <li className="col-80">
+                                <ul className="row">
+                                    <li className="col-20"><img src="images/level04.jpg" alt=""/></li>
+                                    <li className="col-50"><span>超级VIP 有效期1年</span></li>
+                                    <li className="col"><img className="level-price" src="images/level_price04.jpg" alt=""/></li>
                                 </ul>
                             </li>
                             <li className="col-20"><button className="col"  onClick={this._ProductView.bind(this,"pxFGiwyfqw59qONiyD5Gq5Ro__2g")}>立即开通</button></li>
