@@ -701,6 +701,7 @@ h3{
             letter-spacing: 1px;
             //padding-left: 10px;
             text-align: left;
+            margin-left: 10px;
         }
     }
     .protocol{
@@ -986,6 +987,13 @@ table{
     .vipLogo{
         width: 67.5px;
     }
+    .time{
+        margin-left: 10px;
+        color: #fff;
+        font-size: 12px;
+        vertical-align: super;
+        letter-spacing: 1px;
+    }
 }
 .center-viwe {
     .item-icon-left{
@@ -1056,4 +1064,16 @@ table{
     -webkit-justify-content: center;
     align-items: center;
     -webkit-align-items: center;
+}
+.purchase-report{
+    padding: 0 1px;
+    .button-clear{
+        color: #fff;
+        font-weight: 600;
+    }
+    .purchase-price{
+        background: #fff;
+        height: 100%;
+        color: #e42112;
+    }
 }

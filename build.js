@@ -75,12 +75,6 @@ Token((res) => {
     });
 
 //    ReactDOM.render(_router, ele, null);
-},(res)=>{
-    store.dispatch({
-        type:'LOADUSERINFO',
-        datas:res.datas
-    })
-    name=res.datas.id;
 });
 var _router = (
 	<Provider store={store}>
