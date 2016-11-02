@@ -29,6 +29,7 @@ class Main extends Component{
     render(){
         return(
             <div className="scroll-content has-header padding bg-fff center-secondary">
+                <img src="/images/user-title.jpg" alt=""/>
                 <p>
                     广东医睦科技有限公司（简称“医睦科技”）位于广州市珠江新城核心CBD商务区，是一家聚焦医疗领域信息化应用技术和服务的提供商。
                 </p>
@@ -42,7 +43,7 @@ class Main extends Component{
                     我们的使命：不断为企业提供行业领先的信息化产品和高品质服务，帮助提高企业的效益及效率，最终实现社会价值和企业价值。
                 </p>
                 <h3>合作单位</h3>
-                <img src="/images/user01.jpg" alt=""/>
+                <img src="/images/user01.png" alt=""/>
             </div>
         )
     }

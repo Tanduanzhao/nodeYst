@@ -30,6 +30,7 @@ export default class PolicySonFilter extends Component {
         this.props.fn(this.state);
     }
     _ahandleClick(id,index){
+        console.log(this.state.keys);
         if(id == 0){
             console.log(this.state.keys);
             console.log(this.state.keys.indexOf('0') != -1);
@@ -63,7 +64,7 @@ export default class PolicySonFilter extends Component {
                     keys:valINarr(this.state.keys,index)
                 });
             }
-            
+
         }
         setTimeout(()=>{
             this.__filterChioce(this.state.keys);
@@ -160,10 +161,13 @@ export default class PolicySonFilter extends Component {
         }
 	}
     componentDidMount(){
+        console.log(this.props.dataSources);
         if(!this.props.qualityLevelTypeIds){
             //匹配目录
             for(let i=0;i<this.props.dataSources.length;i++){
                 if(this.props.dataSources[i].areaId == this.props.areaId[0]){
+                    console.log(this.props.dataSources[i].areaId,"dataSources");
+                    console.log(this.props.areaId[0],"areaId");
                     this.setState({
                         keys:this.state.keys.concat([i])
                     });

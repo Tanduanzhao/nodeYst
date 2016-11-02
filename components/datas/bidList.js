@@ -15,7 +15,8 @@ class BidList extends Component{
     constructor(props){
         super(props);
         this.state={
-            loading:false
+            loading:false,
+            provinceId:this.props.bidList.provinceId
         };
 
         this._loadData = this._loadData.bind(this);
@@ -39,9 +40,9 @@ class BidList extends Component{
                 this.setState({
                     loading:false
                 });
-                    this.props.dispatch({
-                        type:'requestss'
-                    });
+                this.props.dispatch({
+                    type:'requestss'
+                });
                 if (res){
                     this.props.dispatch({
                         type:'LOADBIFLISTCONTENTDATA',
@@ -121,6 +122,12 @@ class BidList extends Component{
         }
     }
     componentDidMount(){
+        console.log(this.props.isVip,"isVip")
+        console.log(this.state.provinceId,"componentDidMountprovinceId")
+        this.props.dispatch({
+            type:'RESETBIDLISTAREAId',
+            areaId:this.props.bidList.provinceId
+        });
         if(this.props.params.productName){
             this.props.dispatch({
                 type:'LOADBIFLISTCONTENTDATA',
@@ -128,7 +135,14 @@ class BidList extends Component{
                 pageNo:1,
             });
             this.props.dispatch({
-                type:'areaIdall'
+                type:'RESETBIDLISTAREAId',
+                areaId:["0"]
+            });
+            //this.props.dispatch({
+            //    type:'areaIdall'
+            //});
+            this.props.dispatch({
+                type:'mpAreaID'
             });
         }
         this.props.dispatch({
@@ -184,23 +198,24 @@ class BidList extends Component{
     }
 
     render(){
-            return (
-                <div className="root" style={{"overflow":"auto"}}>
-                    <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)} _showProvicenHandle={this._showProvicenHandle.bind(this)}/>
-                    <div ref="content" className="scroll-content has-header">
-                        <Main data={this.props.bidList.data} loading={this.state.loading}/>
-                        <More {...this.props}/>
-                    </div>
-                    {
-                        this.props.bidList.isShowFilter ? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
-                    }
-                    {
-                        this.state.loading ? <Loading/> : null
-                    }
+        var sss=this.props.bidList.provinceId
+        return (
+            <div className="root" style={{"overflow":"auto"}}>
+                <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)} _showProvicenHandle={this._showProvicenHandle.bind(this)}/>
+                <div ref="content" className="scroll-content has-header">
+                    <Main data={this.props.bidList.data} loading={this.state.loading}/>
+                    <More {...this.props}/>
                 </div>
-            )
-        }
+                {
+                    this.props.bidList.isShowFilter&&!this.state.loading? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props} sss={sss}/> : null
+                }
+                {
+                    this.state.loading ? <Loading/> : null
+                }
+            </div>
+        )
     }
+}
 class Main extends Component{
     constructor(props){
         super(props);
@@ -236,9 +251,9 @@ class HeaderBar extends Component{
                 children=decodeURI(decodeURI(arr[0]))
 
             }else{
-                 children="请输入搜索关键词"
+                children="请输入搜索关键词"
             }
-           return children;
+            return children;
         })();
         return(
             <div className="bar bar-header bar-positive item-input-inset">
@@ -285,7 +300,8 @@ function select(state){
     return{
         provicenData:state.provicen.data,
         bidList:state.bidList,
-        isVip:state.userInfo.isVip
+        isVip:state.userInfo.isVip,
+        provicenId:state.bidList.provinceId
     }
 }
 BidList.contextTypes = {

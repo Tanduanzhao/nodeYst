@@ -59,27 +59,34 @@ var store = createStore(ystReducers,applyMiddleware(thunk));
 import {Token} from './components/function/token';
 Token((res) => {
     store.dispatch({
-        type:'CHANGE',
-        areaName:res.datas.areaName,
-        areaId:res.datas.areaId,
-        searchAreaType:res.datas.searchAreaType
+        type: 'CHANGE',
+        areaName: res.datas.areaName,
+        areaId: res.datas.areaId,
+        searchAreaType: res.datas.searchAreaType
+    });
+    console.log( res.datas.provinceId)
+    store.dispatch({
+        type: 'CHANGEALLPROVINCEIDNAME',
+        provinceName: res.datas.provinceName,
+        provinceId: res.datas.provinceId
     });
     store.dispatch({
-        type:'CHANGEALLPROVINCE',
-        provinceName:res.datas.provinceName,
-        provinceId:res.datas.provinceId
-    });
-    store.dispatch({
-        type:'CHANGEDATA',
-        yearMonth:res.datas.yearMonth
+        type: 'CHANGEDATA',
+        yearMonth: res.datas.yearMonth
     });
 
 //    ReactDOM.render(_router, ele, null);
-});
+},(res)=>{
+        store.dispatch({
+            type:'LOADUSERINFO',
+            datas:res.datas
+        });
+    name=res.datas.id;
+    });
 var _router = (
 	<Provider store={store}>
-		<Router history={browserHistory}>
-			<Route>
+        <Router history={browserHistory}>
+            <Route>
                 <Route path='/' component={Home}/>
                 <Route path='optional'>
                     <Route path='classify/:sid' component={Optional}/>
@@ -116,11 +123,11 @@ var _router = (
                     <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>
                 </Route>
                 <Route path="drugContent/:sid">
-                  <IndexRoute component={drugContent}/>
+                    <IndexRoute component={drugContent}/>
                 </Route>
                 <Route path="center">
-                   <IndexRoute component={Center}/>
-                   <Route path="feedback" component={FeedBack}/>
+                    <IndexRoute component={Center}/>
+                    <Route path="feedback" component={FeedBack}/>
                     <Route path="help" component={help}/>
                     <Route path="user" component={User}/>
                     <Route path="contribute" component={contribute}/>
@@ -130,7 +137,7 @@ var _router = (
                     <IndexRoute component={purchase}/>
                 </Route>
                 <Route path="report">
-                  <IndexRoute component={report}/>
+                    <IndexRoute component={report}/>
                     <Route path="free" component={free}/>
                     <Route path="charge" component={charge}/>
                 </Route>
@@ -144,7 +151,7 @@ var _router = (
                     <Route path="protocol" component={protocol}/>
                 </Route>
             </Route>
-		</Router>
+        </Router>
 	</Provider>
 );
 var ele = document.getElementById('app');

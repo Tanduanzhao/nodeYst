@@ -12,10 +12,36 @@ export default class FilterProduce extends Component{
       sidx:this.props.bidList.sidx,
       searchProductStatus:this.props.bidList.searchProductStatus,
       active:this.props.bidList.active,
-      areaId:this.props.bidList.areaId
+      areaId:this.props.bidList.areaId,
+      keys:[]
     };
   }
-  _cancelButton(){
+  //shouldComponentUpdate(nextProp,nextState){
+  //  console.log(nextProp)
+  //  console.log(nextState)
+  //  this.setState({
+  //    areaId: this.props.bidList.areaId
+  //  });
+  //}
+  componentDidMount(){
+    this.setState({
+      keys:this.state.keys.concat(this.props.bidList.areaId)
+    });
+  }
+  componentWillUnmount(){
+    //console.log(this.props.bidList.provinceId,"provinceId");
+    //console.log(this.state.areaId,"areaId")
+    //console.log(this.props.sss,"ssss");
+    //this.setState({
+    //  areaId: this.props.sss
+    //});
+    //console.log(this.state.areaId,"areaId");
+  }
+  _cancel(){
+    //console.log(this.props.bidList.provinceId,"sss")
+    //this.setState({
+    //  areaId: this.props.bidList.provinceId
+    //});
     this.props.dispatch({
       type:'UNSHOWFILTERPBIDLIST'
     })
@@ -24,39 +50,85 @@ export default class FilterProduce extends Component{
     console.log(this.state.active)
     this.props.fn(this.state);
   }
-  _spanhandleClick(id,e,t){
-    this.setState({
-      areaId :id,
-      areaName: e,
-      searchAreaType:t
-    })
+  areaIdArr(arr,val){
+    var narr = [];
+      narr = arr;
+    if(narr.indexOf(val) == -1){
+      narr.push(val);
+    }
+    return narr;
   }
   _ahandleClick(id,index) {
-    console.log(id)
-    this.setState({
-      areaId: valINarr(this.state.areaId, id)
-    });
-  }
-  componentDidMount(){
-    if(!this.props.bidList.getProjectStatus){
-      //匹配目录
-      for(let i=0;i<this.props.bidList.getProjectStatus.length;i++){
-        if(this.props.bidList.getProjectStatus[i].id == this.props.id[0]){
+    //console.log(id,"id")
+    //console.log(index=="0"&&this.state.areaId.indexOf("0")==-1,"dd")
+    //console.log(this.state.areaId.indexOf("0"),"length")
+    if (index == "0") {
+      if (this.state.areaId.indexOf("0") == -1) {
+       //let areaId = [];
+        for (var i = 0; i < this.props.bidList.getBidAreaInfo.length; i++) {
+          //areaId.push(this.props.bidList.getBidAreaInfo[i].id);
           this.setState({
-            areaId:this.state.areaId.concat([i])
+            keys: this.areaIdArr(this.state.keys,this.props.bidList.getBidAreaInfo[i].id)
           });
-          break;
         }
+        //this.setState({
+        //  areaId: areaId
+        //});
+      } else {
+        this.setState({
+          keys: []
+        });
+      }
+    }else {
+      if(this.state.keys.indexOf("0") != -1){
+        console.log(this.state.keys,"dddd")
+        this.setState({
+          keys:[]
+        });
+        setTimeout(()=>{
+          this.setState({
+            keys: valINarr(this.state.keys, id)
+          });
+        })
+      }else{
+        console.log(this.state.keys,"ttttttt")
+        this.setState({
+          keys:valINarr(this.state.keys, id)
+        });
       }
     }
+    setTimeout(()=>{
+      this.setState({
+        areaId: this.state.keys
+      });
+    })
   }
+  //_spanhandleClick(id,e,t){
+  //  this.setState({
+  //    areaId :id,
+  //    areaName: e,
+  //    searchAreaType:t
+  //  })
+  //}
+  //componentDidMount(){
+  //  if(!this.props.bidList.getProjectStatus){
+  //    //匹配目录
+  //    for(let i=0;i<this.props.bidList.getProjectStatus.length;i++){
+  //      if(this.props.bidList.getProjectStatus[i].id == this.props.id[0]){
+  //        this.setState({
+  //          areaId:this.state.areaId.concat([i])
+  //        });
+  //        break;
+  //      }
+  //    }
+  //  }
+  //}
   render(){
-    console.log(this.state.areaId)
     return(
       <div className="modal-backdrop">
         <div className="modal-backdrop-bg"></div>
         <div className="modal">
-          <NormalHeaderBar cancelButton={this._cancelButton.bind(this)} sureButton={this._sureButton.bind(this)} title="请选择"/>
+          <NormalHeaderBar cancelButton={this._cancel.bind(this)} sureButton={this._sureButton.bind(this)} title="请选择"/>
           <div className="scroll-content has-header" style={{backgroundColor:'#fff'}}>
             <h2 className="item item-divider">项目状态</h2>
             <div className="list padding">
@@ -83,6 +155,8 @@ export default class FilterProduce extends Component{
                 <ul className="list-horizontal-block">
                 {
                   this.props.bidList.getBidAreaInfo.map((ele,index)=> {
+                    //console.log(this.state.areaId,"getBidAreaInfo")
+                    //console.log(ele.id,"ddd")
                     return (<li key={ele.id} style={(this.state.areaId.indexOf(ele.id) != -1) ? styles.active : null} onClick={this._ahandleClick.bind(this,ele.id,index)}>{ele.areaName}</li>)
                   })
                 }

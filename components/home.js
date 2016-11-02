@@ -100,20 +100,21 @@ class Home extends Component{
 		})
 	}
 	componentDidMount(){
-		loadWx({
-			code:url2obj().code,
-			recommender:url2obj().recommender,
-			callBack:(res)=>{
-				this.props.dispatch({
-					type:'LOADUSERINFO',
-					datas:res.datas
-				})
-				name=res.datas.id;
-				setTimeout(()=>{
-					this._loadData();
-				});
-			}
-		})
+		//loadWx({
+		//	code:url2obj().code,
+		//	recommender:url2obj().recommender,
+		//	callBack:(res)=>{
+		//		this.props.dispatch({
+		//			type:'LOADUSERINFO',
+		//			datas:res.datas
+		//		})
+		//		name=res.datas.id;
+		//		setTimeout(()=>{
+		//			this._loadData();
+		//		});
+		//	}
+		//})
+		this._loadData();
 
 	}
 	//_openProductView(id,self){

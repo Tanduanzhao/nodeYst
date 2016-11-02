@@ -158,7 +158,7 @@ class List extends Component{
             return string;
         })();
         return(
-            <div className="item">
+            <Link to={`/optional/concept/${this.props.dataSources.conceptId}`} className="item">
                 <div>
                     {this.props.dataSources.conceptName}
                     {change}
@@ -167,7 +167,7 @@ class List extends Component{
                     <span>市场规模：{this.props.dataSources.sales}万</span>
                     <span style={{marginLeft:'1rem'}}>市场份额： {this.props.dataSources.marketMth}%</span>
                 </p>
-            </div>
+            </Link>
         )
     }
 }

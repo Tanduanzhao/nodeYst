@@ -3,6 +3,7 @@
 */
 
 import React,{Component} from 'react';
+import {Link} from 'react-router';
 export default class ClassifySingle extends Component{
 	render(){
         var string = null;
@@ -27,14 +28,14 @@ export default class ClassifySingle extends Component{
         if(this.props.data){
             const sid = this.props.data.salesId || this.props.data.conceptId;
             return(
-                <div className="col text-center">
+                <Link to={`/optional/classify/${sid}`} className="col text-center">
                     <h3><span className="tag">{this.props.data.icoType}</span>{this.props.data.cwmName || this.props.data.conceptName || this.props.data.salesName}</h3>
                     <h5 className="text zb">{this.props.data.sales}万</h5>
                     <div className="row footer-row">
                         {changeCost}
                         {change}
                     </div>
-                </div>
+                </Link>
             )
         }else{
             return(

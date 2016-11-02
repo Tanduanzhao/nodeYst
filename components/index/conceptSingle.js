@@ -3,6 +3,7 @@
 */
 
 import React,{Component} from 'react';
+import {Link} from 'react-router';
 export default class ConceptSingle extends Component{
 	render(){
         var string = null;
@@ -35,7 +36,7 @@ export default class ConceptSingle extends Component{
         if(this.props.data){
             const cid = this.props.data.conceptId;
             return(
-                <div className="col text-center">
+                <Link to={`/optional/concept/${cid}`} className="col text-center">
                     <h3>
                       {tag}
                       {this.props.data.conceptName}
@@ -45,7 +46,7 @@ export default class ConceptSingle extends Component{
                         {changeCost}
                         {change}
                     </div>
-                </div>
+                </Link>
             )
         }else{
             return(

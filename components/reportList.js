@@ -59,7 +59,7 @@ export default class ReportList extends Component {
 			<div>
 				{
 					//isCanViewReport ?
-						<Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}/${this.props.dataSources.price}`}  className="item">
+						<Link to={`/pdf/${this.props.dataSources.id}/${encodeURIComponent(this.props.dataSources.title)}/${this.props.dataSources.price}`}  className="item">
 						<div  className="item-left">
 							<img src={this.props.dataSources.mainImg} alt=""/>
 						</div>
