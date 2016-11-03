@@ -198,7 +198,6 @@ class BidList extends Component{
     }
 
     render(){
-        var sss=this.props.bidList.provinceId
         return (
             <div className="root" style={{"overflow":"auto"}}>
                 <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)} _showProvicenHandle={this._showProvicenHandle.bind(this)}/>
@@ -207,7 +206,7 @@ class BidList extends Component{
                     <More {...this.props}/>
                 </div>
                 {
-                    this.props.bidList.isShowFilter&&!this.state.loading? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props} sss={sss}/> : null
+                    this.props.bidList.isShowFilter&&!this.state.loading? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
                 }
                 {
                     this.state.loading ? <Loading/> : null

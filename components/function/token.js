@@ -11,12 +11,12 @@ export const Token = function(fn,login){
     if(isLogin || url2obj().code){
         console.log(name,"sss");
         //获取微信授权
-        loadWx({
-            code:url2obj().code,
-            callBack:(res)=>{
-                login(res);
-            }
-        })
+        //loadWx({
+        //    code:url2obj().code,
+        //    callBack:(res)=>{
+        //        login(res);
+        //    }
+        //})
         loadJssdk({
             uri:location.href,
             callBack:(res) => {
@@ -71,7 +71,7 @@ export const Token = function(fn,login){
                      })
                      // 分享
                         var info = {
-                            title: '药市通-首个医药行业报告超市',
+                            title: '药市通-首个医药圈的信息分享平台',
                             link: HTTPURL+"?recommender="+name,
                             imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                             desc: ' 提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
@@ -100,7 +100,6 @@ export const Token = function(fn,login){
             }
         })
     }else{
-      console.log('222222');
         var _recommender = url2obj().recommender;
         if(_recommender == undefined){
             _recommender = "";

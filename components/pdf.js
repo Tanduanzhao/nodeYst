@@ -7,14 +7,14 @@ import Popup from './popup';
 export default class Pdf extends Component{
     constructor(props){
         super(props);
-
+        console.log(name,"sss");
         wx.ready(()=> {
              // 分享
                 var info = {
                     title: this.props.params.title,
-                    link: HTTPURL,
+                    link: HTTPURL+"?recommender="+name,
                     imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
-                    desc: '小伙伴们和我一起去逛逛医药圈的报告超市--药市通~'
+                    desc: '小伙伴们和我一起去逛逛医药圈的信息分享平台--药市通~'
                 };
                 wx.onMenuShareTimeline({
                     title: info.title, // 分享标题
@@ -68,7 +68,7 @@ export default class Pdf extends Component{
         wx.ready(()=> {
              // 分享
                 var info = {
-                    title: '药市通-首个医药行业报告超市',
+                    title: '药市通-首个医药圈的信息分享平台',
                     link: HTTPURL,
                     imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                     desc: '提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
