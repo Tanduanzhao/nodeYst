@@ -64,7 +64,9 @@ class purchase extends Component {
     console.log(this.refs.content);
     this.ele.addEventListener('scroll',this._infiniteScroll);
     console.log(this.state.searchType);
-    this._loadData();
+    var interval=setInterval(()=>{
+        if(this.props.userInfo){this._loadData(); clearInterval(interval);}
+    },1000)
     getReportType({
       callBack:(res)=>{
         this.props.dispatch({
@@ -242,7 +244,8 @@ function select(state){
     yearMonth:state.data.yearMonth,
     uri:state.router.uri,
     purchase:state.purchase,
-    searchAreaType:state.provicen.searchAreaType
+    searchAreaType:state.provicen.searchAreaType,
+    userInfo:state.userInfo
   }
 }
 

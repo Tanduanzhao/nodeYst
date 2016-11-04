@@ -83,6 +83,7 @@ Token((res) => {
     //        type:'LOADUSERINFO',
     //        datas:res.datas
     //    });
+    //    alert("dddd")
     //name=res.datas.id;
     //}
 );
