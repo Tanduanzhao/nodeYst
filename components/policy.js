@@ -42,7 +42,7 @@ class Policy extends Component{
     }
     //判断屏幕是否加载满
     _isNeedLoadData(){
-        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && this.props.policy.loadState <= 6 && !this.state.isLoading){
+        if(this.ele.scrollHeight-this.ele.scrollTop <= (this.ele.clientHeight*3) && this.props.policy.loadState <= 6 && !this.state.isLoading){
             //匹配this.props.policy.loadState分步加载6大模块
             console.log(this.props.policy.loadState);
             switch(this.props.policy.loadState){

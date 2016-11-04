@@ -7,15 +7,15 @@ import {getBusinessFeedBackInfo,insertBusinessFeedBackInfo} from './function/aja
 class FeedBack extends Component{
     componentDidMount(){
         getBusinessFeedBackInfo({
-            callBack:(res)=>{
-                if((typeof res.datas) != 'undefined'){
-                    this.props.dispatch({
-                        type:'LOADFEEDBACK',
-                        message:res.datas
-                    });
+                callBack:(res)=>{
+                    if((typeof res.datas) != 'undefined'){
+                        this.props.dispatch({
+                            type:'LOADFEEDBACK',
+                            message:res.datas
+                        });
+                    }
                 }
-            }
-        });
+            });
     }
     _sendMessage(){
         insertBusinessFeedBackInfo({
@@ -33,6 +33,11 @@ class FeedBack extends Component{
                 }
             }
         })
+    }
+    componentWillUnmount(){
+        this.props.dispatch({
+            type:'RESETFEEDBACK'
+        });
     }
     render(){
         return(

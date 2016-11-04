@@ -15,24 +15,24 @@ export default class More extends Component {
 	}
     
 	_changeBox(){
-		console.log(this.refs.username.value)
-		this.props.dispatch({
-			type:'CHANGEDRUGSEARCHNAME',
-			searchName:encodeURI(encodeURI(this.refs.username.value))
-		})
+		console.log(this.refs.username.value);
+		//this.props.dispatch({
+		//	type:'CHANGEDRUGSEARCHNAME',
+		//	searchName:encodeURI(encodeURI(this.refs.username.value))
+		//})
 	}
 	get(e){
 		e.stopPropagation();
 	}
 	glodBox(e){
-		if(!(/^1\d{10}$/.test(this.refs.phone.value))){
-			alert("请输入正确的手机号码");
-			return false
-		}
-		if(!(/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/.test(this.refs.email.value))){
-			alert("请输入正确的邮箱");
-			return false
-		}
+		//if(!(/^1\d{10}$/.test(this.refs.phone.value))){
+		//	alert("请输入正确的手机号码");
+		//	return false
+		//}
+		//if(!(/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/.test(this.refs.email.value))){
+		//	alert("请输入正确的邮箱");
+		//	return false
+		//}
 		$.ajax({
 			url:httpAddress +"partakeActivity/glodBox",
 			data:{

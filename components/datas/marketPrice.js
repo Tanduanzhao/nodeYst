@@ -122,6 +122,17 @@ class Main extends Component{
 
 class List extends Component{
     render(){
+        var entryDate = (()=>{
+            if(this.props.dataSources.entryDate != null ||  this.props.dataSources.entryDate!=undefined){
+                var children="";
+                children+="（" ;
+                children+=this.props.dataSources.entryDate;
+                children+= "）";
+            }else{
+                children="";
+            }
+            return children;
+        })();
         return(
                 <li  className="card">
                     <h2><img src="/images/bidList-icon.png" alt=""/>{this.props.dataSources.productName}</h2>
@@ -135,26 +146,17 @@ class List extends Component{
                     </div>
                     <div className="row market-price">
                         <div className="col-50"> 广东省最小制剂入市价</div>
-                        <div className="col-50">{this.props.dataSources.entryPrice} （{this.props.dataSources.entryDate}）</div>
-                    </div>
-                    <div className="market-list price-list">
-                        <div className="list-left">
-                            <p>最低三省均值：{this.props.dataSources.minThreeMean}</p>
-                            <p>最低五省均值：{this.props.dataSources.minFiveMean}</p>
+                        <div className="col-50">{this.props.dataSources.entryPrice}
+                            {entryDate}
                         </div>
-                        <div className="list-right">
-                            {
-                                this.props.dataSources.zuidiwusheng == null ? null : this.props.dataSources.zuidiwusheng.map((v)=>{
-                                    return (
-                                        <div key={v.id}>
-                                            {v.bidPrice} ({v.areaName} {v.publishDate})
-                                        </div>
-                                    )
-                                })
+                    </div>
+                    {
+                        (()=>{
+                            if(this.props.dataSources.zuidiwusheng!=null||this.props.dataSources.zuidiwusheng!=undefined){
+                                return <MarketList {...this.props} dataSources={this.props.dataSources}/>
                             }
-
-                        </div>
-                    </div>
+                        })()
+                    }
                 </li>
 
         )
@@ -184,6 +186,29 @@ class HeaderBar extends Component{
                 <button className="button button-clear" onClick={this.props.searchHandle}>
                     搜索
                 </button>
+            </div>
+        )
+    }
+}
+class MarketList extends Component{
+    render(){
+        return(
+            <div className="market-list price-list">
+                <div className="list-left">
+                    <p>最低三省均值：{this.props.dataSources.minThreeMean}</p>
+                    <p>最低五省均值：{this.props.dataSources.minFiveMean}</p>
+                </div>
+                <div className="list-right">
+                    {
+                        this.props.dataSources.zuidiwusheng == null ? null : this.props.dataSources.zuidiwusheng.map((v)=>{
+                            return (
+                                <div key={v.id}>
+                                    {v.bidPrice} ({v.areaName} {v.publishDate})
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
         )
     }

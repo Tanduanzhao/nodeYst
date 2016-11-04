@@ -98,7 +98,7 @@ export const CHANGEPOLICYPROVICEN = 'CHANGEPOLICYPROVICEN';
 //切换政策准入省份
 
 export const GOREPORT = 'GOREPORT';
-export const CHANGETYPE = 'CHANGETYPE';
+export const CHANGEREPORTTYPE = 'CHANGEREPORTTYPE';
 
 export const  LOADPRODUCTDATA = ' LOADPRODUCTDATA';
 //加载产品数据

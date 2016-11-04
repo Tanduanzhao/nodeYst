@@ -17,7 +17,7 @@ function ajaxFn(params){
         if(res.state == 1){
             params.callBack(res);
         }else{
-            alert(res.message);
+//            alert(res.message);
             params.callBack();
         }
     })
@@ -212,7 +212,8 @@ export const loadWx = function(args){
     ajaxFn({
         url:'business/getInitWxUser',
         data:{
-            code:args.code
+            code:args.code,
+            recommender:args.recommender
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -308,6 +309,9 @@ export const loadReportList = function(args){
             pageNo:args.pageNo || null,
             searchType:args.searchType,
             titleOrReportKey:args.titleOrReportKey,
+            sidx:args.sidx ,
+            sord:args.sord ,
+            costStatus:args.costStatus
         },
         callBack:(res)=>{
             args.callBack(res);

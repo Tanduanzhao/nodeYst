@@ -20,25 +20,26 @@ class Index extends Component{
 	}
     componentDidMount(){
         loadProvince(this.props.dispatch);
-        
-        loadIndex(this.props.dispatch,{
-            yearMonth:this.props.yearMonth,
-            areaId:this.props.areaId,
-            searchAreaType:this.props.searchAreaType,
-            callBack:(res)=>{
-                this.props.dispatch({
-                     type:'LOADDATA',
-                     data:res.datas
-                });
-                this.props.dispatch({
-                    type:'CHANGEDATA',
-                    yearMonth:res.datas.yearMonth
-                });
-                this.setState({
-                    loading:false
-                });
-            }
-        });
+        if(this.props.initData.length!=0){
+            loadIndex(this.props.dispatch,{
+                yearMonth:this.props.yearMonth,
+                areaId:this.props.areaId,
+                searchAreaType:this.props.searchAreaType,
+                callBack:(res)=>{
+                    this.props.dispatch({
+                        type:'LOADDATA',
+                        data:res.datas
+                    });
+                    this.props.dispatch({
+                        type:'CHANGEDATA',
+                        yearMonth:res.datas.yearMonth
+                    });
+                    this.setState({
+                        loading:false
+                    });
+                }
+            });
+        }
     }
     componentWillUnmount(){
         this.props.dispatch({
