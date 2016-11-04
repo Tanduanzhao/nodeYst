@@ -7,7 +7,6 @@ import {url2obj} from './common';
 import {WXKEY,HTTPURL} from '../config';
 var isLogin = false;
 export const Token = function(fn,login){
-    console.log(isLogin,'111111');
     if(isLogin || url2obj().code){
         console.log(name,"sss");
         //获取微信授权
