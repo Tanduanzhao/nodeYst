@@ -10,7 +10,9 @@ import Loading from './loading';
 import EmptyComponent from './emptyComponent';
 import ReportList from './reportList';
 
-import {loadProduct,getReportType} from './function/ajax';
+//import {url2obj} from './function/common';
+
+import {loadProduct,getReportType,loadWx} from './function/ajax';
 
 class purchase extends Component {
   constructor(props){
@@ -18,7 +20,8 @@ class purchase extends Component {
     this.state={
       searchType:this.props.purchase.searchType,
       loading:true,
-      BuyReportList:true
+      BuyReportList:true,
+      userInfo:this.props.userInfo.userName
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -64,9 +67,10 @@ class purchase extends Component {
     console.log(this.refs.content);
     this.ele.addEventListener('scroll',this._infiniteScroll);
     console.log(this.state.searchType);
-    var interval=setInterval(()=>{
-        if(this.props.userInfo){this._loadData(); clearInterval(interval);}
-    },1000)
+    //var interval=setInterval(()=>{
+    //    if(this.state.userInfo){this._loadData(); clearInterval(interval);}
+    //},1000)
+    this._loadData();
     getReportType({
       callBack:(res)=>{
         this.props.dispatch({

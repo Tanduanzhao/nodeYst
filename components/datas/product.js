@@ -56,25 +56,36 @@ class product extends Component{
             searchName:this.props.product.searchName,
             callBack:(res)=>{
                 if(this._calledComponentWillUnmount) return false;
-                console.log(res.datas,"dd")
-                console.log(this.props.product.data,"sss")
-                this.props.dispatch({
-                    type:'LOADPRODUCTDATA',
-                    data:this.props.product.data.concat(res.datas),
-                    pageNo:this.props.product.pageNo+1
-                });
-                this.setState({
-                    request:true
-                });
+                console.log(res,"dd")
+                //console.log(res.totalPage,"sss")
                 this.setState({
                     loading:false
                 });
-            }
+                if(res){
+                    if(res.pageNo >= res.totalPage){
+                        this.props.dispatch({
+                            type:'UNINFINITEDRUG'
+                        });
+                    }else{
+                        this.props.dispatch({
+                            type:'INFINITEDRUG'
+                        });
+                    }
+                    this.props.dispatch({
+                        type:'LOADPRODUCTDATA',
+                        data:this.props.product.data.concat(res.datas),
+                        pageNo:this.props.product.pageNo+1
+                    });
+                    this.setState({
+                        request:true
+                    });
+                }
+                }
         });
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        console.dir(this.ele);
+        console.dir(this.props.product.infinite);
         console.log(this.ele.firstChild.clientHeight-this.ele.scrollTop , document.body.clientHeight-this.ele.offsetTop)
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.product.infinite  && this.state.request){
             this._loadData();
@@ -83,9 +94,7 @@ class product extends Component{
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        if(this.props.product.data.length == 0){
-            this._loadData();
-        }
+        this._loadData();
     }
     componentWillUnmount(){
         this.props.dispatch({
@@ -93,6 +102,9 @@ class product extends Component{
         })
         this.props.dispatch({
             type:'UNSHOWFILTERPRODUCT',
+        });
+        this.props.dispatch({
+            type:'RESETPRODUCT',
         });
         //this.props.dispatch({
         //    type:'LOADPRODUCTDATA',
@@ -147,7 +159,7 @@ class product extends Component{
 class Main extends Component{
     constructor(props){
         super(props);
-        console.log( this.props.data,"ss")
+        console.log( this.props.data.length,"length")
     }
     render(){
         if (this.props.data.length != 0) {
