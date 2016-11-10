@@ -26,11 +26,13 @@ import drugList from './components/datas/drugList';
 import drugContent from './components/datas/drugContent';
 import marketPrice from './components/datas/marketPrice';
 import bidList from './components/datas/bidList';
+import bidListall from './components/datas/bidListall';
 import product from './components/datas/product';
 
 import Center from './components/center';
 import FeedBack from './components/feedBack';
 import purchase from './components/purchase';
+import Collect from './components/collect';
 import help from './components/help';
 import User from './components/user';
 import contribute from './components/contribute';
@@ -83,6 +85,7 @@ Token((res) => {
     //        type:'LOADUSERINFO',
     //        datas:res.datas
     //    });
+    //    alert("dddd")
     //name=res.datas.id;
     //}
 );
@@ -210,6 +213,9 @@ export class Reactrouter extends Component{
                             <Route path="bidList" component={bidList}/>
                             <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>
                         </Route>
+                        <Route path="bidListall/:productName/:prepName/:spec/:manufacturerName/:id">
+                            <IndexRoute component={bidListall}/>
+                        </Route>
                         <Route path="drugContent/:sid">
                             <IndexRoute component={drugContent}/>
                         </Route>
@@ -223,6 +229,9 @@ export class Reactrouter extends Component{
                         </Route>
                         <Route path="purchase">
                             <IndexRoute component={purchase}/>
+                        </Route>
+                        <Route path="collect">
+                            <IndexRoute component={Collect}/>
                         </Route>
                         <Route path="report">
                             <IndexRoute component={report}/>

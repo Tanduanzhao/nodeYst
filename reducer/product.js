@@ -21,6 +21,7 @@ export default function product(state=defaultProduct,action){
     case CLEADRUGSEARCHNAME : return ObjectAssign({},state,{searchName:null});
     case INFINITEDRUG : return ObjectAssign({},state,{infinite:false});
     case UNINFINITEDRUG : return ObjectAssign({},state,{infinite:true});
+    case "RESETPRODUCT" : return defaultProduct;
     default : return state;
   }
 }

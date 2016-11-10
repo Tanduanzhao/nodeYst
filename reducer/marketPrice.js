@@ -34,6 +34,7 @@ export default function marketPrice(state=defaultMarketPrice,action){
     case CLEADRUGSEARCHNAME : return ObjectAssign({},state,{searchName:null});
     case INFINITEDRUG : return ObjectAssign({},state,{infinite:false});
     case UNINFINITEDRUG : return ObjectAssign({},state,{infinite:true});
+    case "RESETMARKETPRICE" : return defaultMarketPrice;
     default : return state;
   }
 }

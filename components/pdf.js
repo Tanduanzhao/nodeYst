@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {loadReport} from './function/ajax';
+import {loadReport,keepReport,cancelKeepReport} from './function/ajax';
 import {WXKEY,HTTPURL} from './config';
 import Loading from './loading';
 import {OpenProductView} from './function/common';
@@ -7,12 +7,12 @@ import Popup from './popup';
 export default class Pdf extends Component{
     constructor(props){
         super(props);
-        console.log(name,"sss");
+        console.log(this.props.params.id,"sss");
         wx.ready(()=> {
              // 分享
                 var info = {
                     title: this.props.params.title,
-                    link: HTTPURL+"?recommender="+name,
+                    link: HTTPURL+'/pdf/'+this.props.params.id+"?recommender="+name,
                     imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                     desc: '小伙伴们和我一起去逛逛医药圈的信息分享平台--药市通~'
                 };
@@ -43,7 +43,8 @@ export default class Pdf extends Component{
             isLoading:true,
             reportVersion:"total",
             showPopup:false,
-            id:this.props.params.id
+            id:this.props.params.id,
+            isKeep:false
         }
     }
     _loadData(){
@@ -56,7 +57,8 @@ export default class Pdf extends Component{
                 this.setState({
                     report:res.datas,
                     isLoading:false,
-                    reportVersion:res.datas.reportVersion
+                    reportVersion:res.datas.reportVersion,
+                    isKeep:res.datas.isKeep
                 })
             }
         })
@@ -112,14 +114,43 @@ export default class Pdf extends Component{
         //});
         this.context.router.push('/purchase');
     }
+    keepReport(){
+        console.log(this.props.params.id)
+        if(this.state.isKeep != 1){
+            keepReport({
+                reportId:this.props.params.id,
+                callBack:(res)=>{
+                    if(res.state==1)
+                        this.setState({
+                            isKeep:1
+                        })
+                }
+            })
+        }else{
+            console.log("ssss")
+            cancelKeepReport({
+                reportId:this.props.params.id,
+                callBack:(res)=>{
+                    if(res.state==1)
+                        this.setState({
+                            isKeep:0
+                        })
+                }
+            })
+        }
+    }
     render(){
+        console.log(this.state.isKeep,"ss");
         return(
             <div className="root">
                 {
                     this.state.showPopup ? <Popup  {...this.props} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
                 }
                 <div className="bar bar-positive bar-header">
-                    <h4 className="title">{this.props.params.title}</h4>
+                    <button className="button" onClick={this.keepReport.bind(this)}>
+                        <i className={(this.state.isKeep != 1) ? "fa fa-star-o fa-2x": "fa fa-star fa-2x"}></i>
+                    </button>
+                    <h4 className="title" style={{paddingLeft:'52px',textAlign: 'left'}}>{this.props.params.title}</h4>
                 </div>
                 <div className="scroll-content has-header padding report-content" dangerouslySetInnerHTML={{__html:this.state.report.content}}>
                 </div>
