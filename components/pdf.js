@@ -147,10 +147,11 @@ export default class Pdf extends Component{
                     this.state.showPopup ? <Popup  {...this.props} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
                 }
                 <div className="bar bar-positive bar-header">
-                    <button className="button" onClick={this.keepReport.bind(this)}>
-                        <i className={(this.state.isKeep != 1) ? "fa fa-star-o fa-2x": "fa fa-star fa-2x"}></i>
-                    </button>
-                    <h4 className="title" style={{paddingLeft:'52px',textAlign: 'left'}}>{this.props.params.title}</h4>
+                    <h4 className="title">
+                        <button className="button title_button" onClick={this.keepReport.bind(this)}>
+                            <i className={(this.state.isKeep != 1) ? "fa fa-star-o fa-2x": "fa fa-star fa-2x"}></i>
+                        </button>
+                        {this.props.params.title}</h4>
                 </div>
                 <div className="scroll-content has-header padding report-content" dangerouslySetInnerHTML={{__html:this.state.report.content}}>
                 </div>
