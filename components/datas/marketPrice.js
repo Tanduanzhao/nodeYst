@@ -1,5 +1,5 @@
 /*
-   广东省入市价
+ 广东省入市价
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
@@ -15,7 +15,7 @@ class MarketPrice extends Component{
         this.state= {
             loading: false,
             request:true
-            }
+        }
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
@@ -90,16 +90,16 @@ class MarketPrice extends Component{
     }
     render(){
         return(
-          <div className="root">
-              <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
-              <div ref="content" className="scroll-content has-header">
-                  <Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
-              </div>
-              <More {...this.props}/>
-              {  
-                this.state.loading?<Loading/>: null
-               }
-          </div>
+            <div className="root">
+                <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
+                <div ref="content" className="scroll-content has-header">
+                    <Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
+                </div>
+                <More {...this.props}/>
+                {
+                    this.state.loading?<Loading/>: null
+                }
+            </div>
         )
     }
 }
@@ -108,15 +108,15 @@ class Main extends Component{
         super(props);
     }
     render(){
-            return(
-                this.props.data.length == 0 ? <EmptyComponent/> : <ul className="list bid-list">
-                        <ul className="list bid-list">
-                            {
-                                this.props.data.map((ele)=> <List dataSources={ele} key={ele.id}/>)
-                            }
-                        </ul>
-                    </ul>
-            )
+        return(
+            this.props.data.length == 0 ? <EmptyComponent/> : <ul className="list bid-list">
+                <ul className="list bid-list">
+                    {
+                        this.props.data.map((ele)=> <List dataSources={ele} key={ele.id+Math.random()}/>)
+                    }
+                </ul>
+            </ul>
+        )
     }
 }
 
@@ -133,31 +133,52 @@ class List extends Component{
             }
             return children;
         })();
+        var specAttrName = (()=>{
+            if(this.props.dataSources.specAttrName != ""&& this.props.dataSources.specAttrName != null&&this.props.dataSources.specAttrName != undefined ){
+                var children="";
+                children+="（" ;
+                children+=this.props.dataSources.specAttrName;
+                children+= "）";
+            }else{
+                children="";
+            }
+            return children;
+        })();
         return(
-                <li  className="card">
-                    <h2><img src="/images/bidList-icon.png" alt=""/>{this.props.dataSources.productName}</h2>
-                    <div className="market-list">
-                        <div className="list-left">
-                            <p>剂型：{this.props.dataSources.prepName}</p>
-                            <p>规格：{this.props.dataSources.spec}</p>
-                            <p>生产企业：{this.props.dataSources.manufacturerName}</p>
-                        </div>
-                        <Link to={`/datas/bidList/${encodeURI(encodeURI(this.props.dataSources.productName))}/${encodeURI(encodeURI(this.props.dataSources.prepName))}/${encodeURI(encodeURI(this.props.dataSources.spec))}/${encodeURI(encodeURI(this.props.dataSources.manufacturerName))}`}  className="list-right btn"> 查看各省中标价</Link>
+            <li  className="card">
+                <h2><img src="/images/bidList-icon.png" alt=""/>{this.props.dataSources.productName}</h2>
+                <div className="market-list">
+                    <div className="list-left">
+                        <p>剂型：{this.props.dataSources.prepName}</p>
+                        <p>规格：{this.props.dataSources.spec}
+                            {specAttrName}
+                        </p>
+                        <p>生产企业：{this.props.dataSources.manufacturerName}</p>
+                        {
+                            this.props.dataSources.catalogId!=null&& this.props.dataSources.catalogId!=""&& this.props.dataSources.catalogId!=undefined
+                                ?<div>
+                                <p>目录ID：{this.props.dataSources.catalogId}</p>
+                                <p>目录名称：{this.props.dataSources.catalogName}</p>
+                                <p>目录类型：{this.props.dataSources.catalogType}</p>
+                            </div>:null
+                        }
                     </div>
-                    <div className="row market-price">
-                        <div className="col-50"> 广东省最小制剂入市价</div>
-                        <div className="col-50">{this.props.dataSources.entryPrice}
-                            {entryDate}
-                        </div>
+                    <Link to={`/datas/bidList/${encodeURI(encodeURI(this.props.dataSources.productName))}/${encodeURI(encodeURI(this.props.dataSources.prepName))}/${encodeURI(encodeURI(this.props.dataSources.spec))}/${encodeURI(encodeURI(this.props.dataSources.manufacturerName))}`}  className="list-right btn"> 查看各省中标价</Link>
+                </div>
+                <div className="row market-price">
+                    <div className="col-50"> 广东省最小制剂入市价</div>
+                    <div className="col-50">{this.props.dataSources.entryPrice}
+                        {entryDate}
                     </div>
-                    {
-                        (()=>{
-                            if(this.props.dataSources.zuidiwusheng!=null||this.props.dataSources.zuidiwusheng!=undefined){
-                                return <MarketList {...this.props} dataSources={this.props.dataSources}/>
-                            }
-                        })()
-                    }
-                </li>
+                </div>
+                {
+                    (()=>{
+                        if(this.props.dataSources.minThreeMean!=null||this.props.dataSources.minThreeMean!=undefined){
+                            return <MarketList {...this.props} dataSources={this.props.dataSources}/>
+                        }
+                    })()
+                }
+            </li>
 
         )
     }
@@ -190,6 +211,7 @@ class HeaderBar extends Component{
         )
     }
 }
+
 class MarketList extends Component{
     render(){
         return(
@@ -202,7 +224,7 @@ class MarketList extends Component{
                     {
                         this.props.dataSources.zuidiwusheng == null ? null : this.props.dataSources.zuidiwusheng.map((v)=>{
                             return (
-                                <div key={v.id}>
+                                <div key={v.id+Math.random()}>
                                     {v.bidPrice} ({v.areaName} {v.publishDate})
                                 </div>
                             )

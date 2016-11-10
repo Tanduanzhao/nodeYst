@@ -60,6 +60,10 @@ class Main extends Component{
                         <img src="/images/purchase_icon.jpg" alt=""/>
                         已购报告
                     </Link>
+                    <Link to="collect" className="item item-icon-left">
+                        <img src="/images/collect.jpg" alt=""/>
+                        我的收藏
+                    </Link>
                     <Link to="center/feedback" className="item item-icon-left">
                         <img src="/images/idea_icon.jpg" alt=""/>
                         意见反馈

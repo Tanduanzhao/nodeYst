@@ -4,17 +4,14 @@ export default class FilterProduce extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      areaId:this.props.report.areaId,
-      areaName:this.props.report.areaName,
-      searchAreaType:this.props.report.searchAreaType,
-      yearMonth:this.props.report.yearMonth,
-      reportType:this.props.report.reportType,
-      searchType:this.props.report.searchType,
-      active:this.props.report.active,
-      sord:this.props.report.sord,
-      sidx:this.props.report.sidx,
-      costStatus:this.props.report.costStatus,
-      reportTag:this.props.report.reportTag
+      searchAreaType:this.props.dataSources.searchAreaType,
+      reportType:this.props.dataSources.reportType,
+      searchType:this.props.dataSources.searchType,
+      active:this.props.dataSources.active,
+      sord:this.props.dataSources.sord,
+      sidx:this.props.dataSources.sidx,
+      costStatus:this.props.dataSources.costStatus,
+      dataSourcesTag:this.props.dataSources.reportTag
     };
   }
   _cancelButton(){
@@ -25,14 +22,6 @@ export default class FilterProduce extends Component{
   _sureButton(){
     console.log(this.state.reportTag);
     this.props.fn(this.state);
-  }
-  _spanhandleClick(id,e,t){
-    this.setState({
-      areaId :id,
-      areaName: e,
-      searchAreaType:t,
-      searchType: null
-    })
   }
   render(){
     console.log(this.state.active,"active");
@@ -46,7 +35,7 @@ export default class FilterProduce extends Component{
             <div className="list padding">
               <ul className="list-horizontal-block">
                 {
-                  this.props.report.ReportTypeDate.map((ele,index)=>{
+                  this.props.dataSources.ReportTypeDate.map((ele,index)=>{
                     return(
                         <li key={index} style={(this.state.reportType == ele.id) ? styles.active : null} onClick={()=>{this.setState({reportType:ele.id})}}>{ele.typeName}</li>
                     )

@@ -189,12 +189,23 @@ class List extends Component{
             }
             return string;
         })();
+        var specAttrName = (()=>{
+            if(this.props.dataSources.specAttrName != ""&& this.props.dataSources.specAttrName != null&&this.props.dataSources.specAttrName != undefined){
+                var children="";
+                children+="（" ;
+                children+=this.props.dataSources.specAttrName;
+                children+= "）";
+            }else{
+                children="";
+            }
+            return children;
+        })();
         return(
             <div>
                 <h2>产品名称： {this.props.dataSources.productName}{trandName}</h2>
             <li  className="card">
                 <ul className="list">
-                    <li>剂型/规格：{this.props.dataSources.prepName}/{this.props.dataSources.spec}</li>
+                    <li>剂型/规格：{this.props.dataSources.prepName}/{this.props.dataSources.spec}{specAttrName}</li>
                     <li>批准文号/注册证号：{this.props.dataSources.pzwh}</li>
                     <li>生产企业：{this.props.dataSources.manufacturerName}</li>
                 </ul>
