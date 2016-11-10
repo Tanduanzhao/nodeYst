@@ -23,5 +23,6 @@ module.exports = function(app) {
     app.get('/pdf/*',index);
     app.get('/picture',index);
     app.get('/picture/*',index);
+    app.get('/collect',index);
     app.post('/getToken',getToken);
 }

@@ -495,7 +495,7 @@ class Main extends Component{
                                return(
                                     <div key={Math.random(2)}>
                                        <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
-                                        <div className="item" style={{boxSizing:'content-box'}}>
+                                        <div className="item" style={{boxSizing:'content-box',padding:'16px 4px'}}>
                                             <table className="table-border" width="100%">
                                                 <thead>
                                                     <tr>
@@ -532,7 +532,7 @@ class Main extends Component{
                           return(
                             <div key={Math.random(2)}>
                                 <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
-                                <div className="item" style={{boxSizing:'content-box'}}>
+                                <div className="item" style={{boxSizing:'content-box',padding:'16px 2px'}}>
                                     <table className="table-border" width="100%">
                                         <thead>
                                             <tr>

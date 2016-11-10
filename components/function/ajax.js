@@ -742,3 +742,67 @@ export const loadReport = function(args){
         }
     })
 }
+
+//加载收藏报告
+export const getReportKeepList = function(args){
+    ajaxFn({
+        url:'business/getReportKeepList',
+        data:{
+            reportType:args.reportType || null,
+            pageNo:args.pageNo || null,
+            searchType:args.searchType,
+            titleOrReportKey:args.titleOrReportKey,
+            sidx:args.sidx ,
+            sord:args.sord ,
+            costStatus:args.costStatus
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//收藏报告
+export const keepReport = function(args){
+    ajaxFn({
+        url:'business/keepReport',
+        data:{
+            reportId:args.reportId
+        },
+        callBack:(res)=>{
+            args.callBack(res)
+        }
+    })
+}
+
+//取消收藏报告
+export const cancelKeepReport = function(args){
+    ajaxFn({
+        url:'business/cancelKeepReport',
+        data:{
+            reportId:args.reportId
+        },
+        callBack:(res)=>{
+            args.callBack(res)
+        }
+    })
+}
+
+   //中标详情页数据加载
+export const getAllBidList = function(args){
+    ajaxFn({
+        url:'business/getAllBidList',
+        data:{
+            codeProId:args.codeProId || null,
+            areaId:args.areaId || null,
+            sord:args.sord || null,
+            sidx:args.sidx || null,
+            pageNo:args.pageNo || null,
+            searchName:args.searchName || null,
+            searchProductStatus:args.searchProductStatus || null,
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
