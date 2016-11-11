@@ -39,18 +39,21 @@ export default class ReportList extends Component {
 	}
 	render(){
 		var string = null;
+        var iconTag = null;
 		var tag = (()=>{
 			if(this.props.BuyReportList || this.props.dataSources.buyReport == 1){
 				string = <i className="item-icon">点击查看</i>;
 			}else{
 				if(this.props.dataSources.costStatus == "1"){
 					string = <i className="item-icon">报告试读</i>;
+                    iconTag = <span className="icon-tag"></span>
 				}else{
 					string = <i className="item-icon">点击查看</i>;
 				}
 			}
 			return string;
 		})();
+        
 		if(this.props.reportTag || this.props.BuyReportList){
 			var number = (()=>{
 				if(this.props.dataSources.costStatus == "1"){
@@ -95,7 +98,7 @@ export default class ReportList extends Component {
 								<img src={this.props.dataSources.mainImg} alt=""/>
 						</div>
 						<div className="item-right">
-							<h3 className="item-wrap">{this.props.dataSources.title}</h3>
+							<h3 className="item-nowrap">{iconTag} {this.props.dataSources.title}</h3>
 							<p>¥{this.state.price}</p>
 							<div className="item-right-footer">
 								{number}
