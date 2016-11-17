@@ -46,7 +46,8 @@ export default class ReportList extends Component {
 			}else{
 				if(this.props.dataSources.costStatus == "1"){
 					string = <i className="item-icon">报告试读</i>;
-                    iconTag = <span className="icon-tag"></span>
+//            增加活动标签区域        
+//                    iconTag = <span className="icon-tag"></span>
 				}else{
 					string = <i className="item-icon">点击查看</i>;
 				}
