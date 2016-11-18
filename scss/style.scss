@@ -578,8 +578,17 @@ h3{
     h3{
         font-size: .65rem;
         //margin-top: 5px;
-        -webkit-line-clamp: 1;
+        line-height: 20px;
+        -webkit-line-clamp: 2;
         white-space: initial;
+        .icon-tag{
+            display: inline-block;
+            min-height: 20px;
+            vertical-align: middle;
+            min-width: 50px;
+            background: url(/images/icon_tag.png) center 1px no-repeat;
+            background-size: contain;
+        }
     }
     .item-wrap{
         display: flex;
