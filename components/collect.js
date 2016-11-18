@@ -1,5 +1,5 @@
 /*
- 报告列表
+ 收藏页面
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
@@ -13,6 +13,7 @@ import Popup from './popup';
 import Collectpopup from './collectpopup';
 import ReportList from './reportList';
 import {OpenProductView} from './function/common';
+import CollectPrompt from './collectPrompt';
 
 class Collect extends Component {
   constructor(props){
@@ -22,7 +23,9 @@ class Collect extends Component {
       loading:true,
       request:true,
       showPopup:false,
-      reportTag:this.props.report.reportTag
+      reportTag:this.props.report.reportTag,
+      showPromptMes:false,
+      showPrompt:false
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -50,6 +53,13 @@ class Collect extends Component {
       titleOrReportKey:this.props.report.titleOrReportKey,
       callBack:(res)=>{
         console.log(res);
+        if(this.state.showPrompt){
+          setTimeout(()=>{
+            this.setState({
+              showPrompt:0
+            })
+          },1000)
+        }
         this.props.dispatch({
           type:'LOADCOLLECT',
           data:this.props.report.data.concat(res.datas),
@@ -154,6 +164,10 @@ class Collect extends Component {
       this.context.router.push('/purchase');
     }
     _collectPopupCancel(){
+      this.setState({
+        showPrompt:1,
+        showPromptMes:"取消收藏"
+      })
       cancelKeepReport({
         reportId:this.props.report.showCollectPopupID,
         callBack:(res)=>{
@@ -209,6 +223,9 @@ class Collect extends Component {
         }
         {
           this.props.report.showCollectPopup ? <Collectpopup collectPopupCancel={this._collectPopupCancel.bind(this)}  collectPopupCancelall={this._collectPopupCancelall.bind(this)}/> : null
+        }
+        {
+          this.state.showPrompt ? <CollectPrompt {...this.props} showPromptMes={this.state.showPromptMes}/> : null
         }
       </div>
     )

@@ -1,14 +1,18 @@
 import $ from 'jquery';
 import {httpAddress} from '../config.js';
 import {encode} from './common';
-//异步读取数据
+import {createStore,applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import ystReducers from '../../reducer/reducer.js';
+export var store = createStore(ystReducers,applyMiddleware(thunk));
+
 function ajaxFn(params){
     var params = {
         url:params.url || null,
         method:params.method || 'POST',
         data:params.data || {},
         callBack:params.callBack || function(){}
-    }
+    };
     $.ajax({
         url:httpAddress +params.url,
         method:params.method,
@@ -800,6 +804,20 @@ export const getAllBidList = function(args){
             pageNo:args.pageNo || null,
             searchName:args.searchName || null,
             searchProductStatus:args.searchProductStatus || null,
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//获取地理位置信息
+export const insertReportShare = function(args){
+    ajaxFn({
+        url:'business/insertReportShare',
+        data:{
+            shareUserId:args.shareUserId,
+            reportId:args.reportId
         },
         callBack:(res)=>{
             args.callBack(res);

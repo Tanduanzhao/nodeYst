@@ -3,13 +3,12 @@ import React,{Component} from 'react';
 import ReactDOM from 'react/lib/ReactDOM';
 
 import {Router,Route,Link,browserHistory,IndexRoute} from 'react-router';
-import {createStore,applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
+//import {createStore,applyMiddleware} from 'redux';
+//import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
+//import ystReducers from './reducer/reducer.js';
 
-import ystReducers from './reducer/reducer.js';
-
-import {loadWx} from './components/function/ajax';
+import {store,loadWx,insertReportShare} from './components/function/ajax';
 import {url2obj} from './components/function/common';
 
 import Index from './components/index.js';
@@ -57,8 +56,32 @@ import Insurance from './components/insurance';
 import Assist from './components/assist';
 import LowPrice from './components/lowPrice';
 import Anti from './components/anti';
+import {WXKEY,HTTPURL} from './components/config';
 
-var store = createStore(ystReducers,applyMiddleware(thunk));
+if(url2obj().recommender){
+    insertReportShare({
+        shareUserId:sessionStorage.getItem("recommender"),
+        reportId: sessionStorage.getItem("reportId"),
+        callBack:(res)=>{}
+    })
+}
+window.onload =function(){
+    if(url2obj().recommender!=""){
+        pushHistory();
+    }
+};
+window.addEventListener("popstate",function(e){
+    if(url2obj().recommender){
+        location.href = HTTPURL;
+    }
+});
+
+//在history加链接?
+function pushHistory(){
+    window.history.pushState("title","title",HTTPURL);
+}
+
+//var store = createStore(ystReducers,applyMiddleware(thunk));
 import {Token} from './components/function/token';
 Token((res) => {
     store.dispatch({
@@ -67,7 +90,7 @@ Token((res) => {
         areaId: res.datas.areaId,
         searchAreaType: res.datas.searchAreaType
     });
-    console.log( res.datas.provinceId)
+    console.log( res.datas.provinceId);
     store.dispatch({
         type: 'CHANGEALLPROVINCEIDNAME',
         provinceName: res.datas.provinceName,
@@ -80,98 +103,99 @@ Token((res) => {
 
 //    ReactDOM.render(_router, ele, null);
 }
-    //,(res)=>{
-    //    store.dispatch({
-    //        type:'LOADUSERINFO',
-    //        datas:res.datas
-    //    });
-    //    alert("dddd")
-    //name=res.datas.id;
-    //}
+    ,(res)=>{
+        store.dispatch({
+            type:'LOADUSERINFO',
+            datas:res.datas
+        });
+        //alert("dddd")
+        name=res.datas.id;
+    }
+    ,store
 );
-//var _router = (
-//	<Provider store={store}>
-//        <Router history={browserHistory}>
-//            <Route>
-//                <Route path='/' component={Home}/>
-//                <Route path='optional'>
-//                    <Route path='classify/:sid' component={Optional}/>
-//                    <Route path='concept/:cid' component={Concept}/>
-//                </Route>
-//                <Route path="rise">
-//                    <Route path="classify" component={RiseClassify}/>
-//                    <Route path="concept" component={RiseConcept}/>
-//                    <Route path="breed" component={RiseBreed}/>
-//                </Route>
-//                <Route path="datas">
-//                    <IndexRoute component={Datas}/>
-//                    <Route path="hospitalList" component={HospitalList}/>
-//                    <Route path="drugList" component={drugList}/>
-//                    <Route path="marketPrice" component={marketPrice}/>
-//                    <Route path="policy">
-//                        <IndexRoute component={Policy}/>
-//                        <Route path="quality" component={Quality}/>
-//                        <Route path="quality/:gradeId" component={Quality}/>
-//                        <Route path="base" component={Base}/>
-//                        <Route path="base/:gradeId/:catalogEditionId" component={Base}/>
-//                        <Route path="insurance" component={Insurance}/>
-//                        <Route path="insurance/:gradeId/:catalogEditionId" component={Insurance}/>
-//                        <Route path="assist" component={Assist}/>
-//                        <Route path="assist/:gradeId/:catalogEditionId" component={Assist}/>
-//                        <Route path="lowPrice" component={LowPrice}/>
-//                        <Route path="lowPrice/:gradeId/:catalogEditionId" component={LowPrice}/>
-//                        <Route path="anti" component={Anti}/>
-//                        <Route path="anti/:gradeId/:catalogEditionId" component={Anti}/>
-//                    </Route>
-//
-//                    <Route path="product" component={product}/>
-//                    <Route path="bidList" component={bidList}/>
-//                    <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>
-//                </Route>
-//                <Route path="drugContent/:sid">
-//                    <IndexRoute component={drugContent}/>
-//                </Route>
-//                <Route path="center">
-//                    <IndexRoute component={Center}/>
-//                    <Route path="feedback" component={FeedBack}/>
-//                    <Route path="help" component={help}/>
-//                    <Route path="user" component={User}/>
-//                    <Route path="contribute" component={contribute}/>
-//                    <Route path="dataIntro" component={dataIntro}/>
-//                </Route>
-//                <Route path="purchase">
-//                    <IndexRoute component={purchase}/>
-//                </Route>
-//                <Route path="report">
-//                    <IndexRoute component={report}/>
-//                    <Route path="free" component={free}/>
-//                    <Route path="charge" component={charge}/>
-//                </Route>
-//                <Route path="home">
-//                    <IndexRoute component={Index}/>
-//                </Route>
-//                <Route path="pdf/:id/:title/:price" component={Pdf}></Route>
-//                <Route path="picture/:url" component={Picture}></Route>
-//                <Route path="vip">
-//                    <IndexRoute component={vip}/>
-//                    <Route path="protocol" component={protocol}/>
-//                </Route>
-//            </Route>
-//        </Router>
-//	</Provider>
-//);
+var _router = (
+	<Provider store={store}>
+        <Router history={browserHistory}>
+            <Route>
+                <Route path='/' component={Home}/>
+                <Route path='optional'>
+                    <Route path='classify/:sid' component={Optional}/>
+                    <Route path='concept/:cid' component={Concept}/>
+                </Route>
+                <Route path="rise">
+                    <Route path="classify" component={RiseClassify}/>
+                    <Route path="concept" component={RiseConcept}/>
+                    <Route path="breed" component={RiseBreed}/>
+                </Route>
+                <Route path="datas">
+                    <IndexRoute component={Datas}/>
+                    <Route path="hospitalList" component={HospitalList}/>
+                    <Route path="drugList" component={drugList}/>
+                    <Route path="marketPrice" component={marketPrice}/>
+                    <Route path="policy">
+                        <IndexRoute component={Policy}/>
+                        <Route path="quality" component={Quality}/>
+                        <Route path="quality/:gradeId" component={Quality}/>
+                        <Route path="base" component={Base}/>
+                        <Route path="base/:gradeId/:catalogEditionId" component={Base}/>
+                        <Route path="insurance" component={Insurance}/>
+                        <Route path="insurance/:gradeId/:catalogEditionId" component={Insurance}/>
+                        <Route path="assist" component={Assist}/>
+                        <Route path="assist/:gradeId/:catalogEditionId" component={Assist}/>
+                        <Route path="lowPrice" component={LowPrice}/>
+                        <Route path="lowPrice/:gradeId/:catalogEditionId" component={LowPrice}/>
+                        <Route path="anti" component={Anti}/>
+                        <Route path="anti/:gradeId/:catalogEditionId" component={Anti}/>
+                    </Route>
+
+                    <Route path="product" component={product}/>
+                    <Route path="bidList" component={bidList}/>
+                    <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>
+                </Route>
+                <Route path="drugContent/:sid">
+                    <IndexRoute component={drugContent}/>
+                </Route>
+                <Route path="center">
+                    <IndexRoute component={Center}/>
+                    <Route path="feedback" component={FeedBack}/>
+                    <Route path="help" component={help}/>
+                    <Route path="user" component={User}/>
+                    <Route path="contribute" component={contribute}/>
+                    <Route path="dataIntro" component={dataIntro}/>
+                </Route>
+                <Route path="purchase">
+                    <IndexRoute component={purchase}/>
+                </Route>
+                <Route path="report">
+                    <IndexRoute component={report}/>
+                    <Route path="free" component={free}/>
+                    <Route path="charge" component={charge}/>
+                </Route>
+                <Route path="home">
+                    <IndexRoute component={Index}/>
+                </Route>
+                <Route path="pdf/:id/:title/:price" component={Pdf}></Route>
+                <Route path="picture/:url" component={Picture}></Route>
+                <Route path="vip">
+                    <IndexRoute component={vip}/>
+                    <Route path="protocol" component={protocol}/>
+                </Route>
+            </Route>
+        </Router>
+	</Provider>
+);
 export class Reactrouter extends Component{
     componentDidMount(){
-        loadWx({
-            code:url2obj().code,
-            callBack:(res)=>{
-                store.dispatch({
-                            type:'LOADUSERINFO',
-                            datas:res.datas
-                        });
-                    name=res.datas.id;
-            }
-        })
+        //loadWx({
+        //    code:url2obj().code,
+        //    callBack:(res)=>{
+        //        store.dispatch({
+        //                    type:'LOADUSERINFO',
+        //                    datas:res.datas
+        //                });
+        //            name=res.datas.id;
+        //    }
+        //})
     }
     render() {
         return (
@@ -208,7 +232,6 @@ export class Reactrouter extends Component{
                                 <Route path="anti" component={Anti}/>
                                 <Route path="anti/:gradeId/:catalogEditionId" component={Anti}/>
                             </Route>
-
                             <Route path="product" component={product}/>
                             <Route path="bidList" component={bidList}/>
                             <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>

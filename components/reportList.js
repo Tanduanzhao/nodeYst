@@ -58,18 +58,18 @@ export default class ReportList extends Component {
 		if(this.props.reportTag || this.props.BuyReportList){
 			var number = (()=>{
 				if(this.props.dataSources.costStatus == "1"){
-					string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人购买</span>;
+					string = <span style={{textAlign:"left"}}><i className="fa fa-shopping-cart"></i>{this.props.dataSources.orderNum}人购买<i className="fa fa-eye fa-mglf"></i>{this.props.dataSources.readNum}人查看</span>;
 				}else{
-					string =<span style={{textAlign:"left"}}>{this.props.dataSources.number}人查看</span>;
+					string =<span style={{textAlign:"left"}}><i className="fa fa-eye"></i>{this.props.dataSources.readNum}人查看</span>;
 				}
 				return string;
 			})();
 		}else{
 			var number = (()=>{
 				if(this.props.dataSources.costStatus == "1"){
-					string = <span style={{textAlign:"left"}}>{this.props.dataSources.num}人购买</span>;
+					string = <span style={{textAlign:"left"}}><i className="fa fa-shopping-cart"></i>{this.props.dataSources.orderNum}人购买<i className="fa fa-eye fa-mglf"></i>{this.props.dataSources.readNum}人查看</span>;
 				}else{
-					string =<span style={{textAlign:"left"}}>{this.props.dataSources.num}人查看</span>;
+					string =<span style={{textAlign:"left"}}><i className="fa fa-eye"></i>{this.props.dataSources.readNum}人查看</span>;
 				}
 				return string;
 			})();

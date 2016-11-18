@@ -147,14 +147,15 @@ class BidList extends Component{
         }
         this.props.dispatch({
             type:'CHANGEBIDLISTTITLEORREPORTKEY',
-            searchName:this.props.params.productName? (this.props.params.productName+" "+this.props.params.prepName+" "+this.props.params.spec+" "+this.props.params.manufacturerName):null
+            searchName:this.props.params.productName? (encodeURI(encodeURI(this.props.params.productName))+" "+encodeURI(encodeURI(this.props.params.prepName))+" "+encodeURI(encodeURI(this.props.params.spec))+" "+encodeURI(encodeURI(this.props.params.manufacturerName))):null
         });
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
         if(this.props.params.productName || this.props.bidList.data.length == 0) {
-            setTimeout(()=> {
-                this._loadData();
-            }, 10);
+            //setTimeout(()=> {
+            //    this._loadData();
+            //}, 10);
+            this._loadData();
             getBidAreaInfo({
                 pageNo: this.props.bidList.pageNo,
                 searchName: this.props.bidList.searchName,

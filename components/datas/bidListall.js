@@ -27,7 +27,7 @@ class BidListAll extends Component{
             loading:true
         });
         this.props.dispatch({
-            type:'request'
+            type:'requestall'
         });
         getAllBidList({
             codeProId:this.props.params.id,
@@ -42,12 +42,15 @@ class BidListAll extends Component{
                     loading:false
                 });
                 this.props.dispatch({
-                    type:'requestss'
+                    type:'requestssall'
                 });
                 if (res){
+                    console.log(res.datas);
                     this.props.dispatch({
                         type:'LOADBIFLISTCONTENTDATAALL',
-                        data:this.props.bidList.data.concat(res.datas),
+                        data:this.props.bidList.data.concat(res.datas.items),
+                        areas:res.datas.areas,
+                        specAttrName:res.datas.specAttrName,
                         pageNo:this.props.bidList.pageNo+1
                     });
                     if(res.totalSize <= this.props.bidList.data.length){
@@ -77,7 +80,7 @@ class BidListAll extends Component{
                 type:'UNSHOWFILTERPBIDLIST'
             });
             dispatch({
-                type:'CHANGEBIDLISTFILTER',
+                type:'CHANGEBIDLISTFILTERALL',
                 sord:args.sord,
                 sidx:args.sidx,
                 areaId:args.areaId,
@@ -123,8 +126,7 @@ class BidListAll extends Component{
         }
     }
     componentDidMount(){
-        console.log(this.props.isVip,"isVip")
-        console.log(this.state.provinceId,"componentDidMountprovinceId")
+        console.log("componentDidMountprovinceId")
         this.props.dispatch({
             type:'RESETBIDLISTAREAId',
             areaId:this.props.bidList.provinceId
@@ -139,9 +141,6 @@ class BidListAll extends Component{
                 type:'RESETBIDLISTAREAId',
                 areaId:["0"]
             });
-            //this.props.dispatch({
-            //    type:'areaIdall'
-            //});
             this.props.dispatch({
                 type:'mpAreaID'
             });
@@ -153,9 +152,7 @@ class BidListAll extends Component{
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
         if(this.props.params.productName || this.props.bidList.data.length == 0) {
-            setTimeout(()=> {
-                this._loadData();
-            }, 10);
+            this._loadData();
             getBidAreaInfo({
                 pageNo: this.props.bidList.pageNo,
                 searchName: this.props.bidList.searchName,
@@ -178,23 +175,9 @@ class BidListAll extends Component{
 
     }
     componentWillUnmount(){
-        //this.props.dispatch({
-        //    type:'LOADBIFLISTCONTENTDATA',
-        //    data:[],
-        //    pageNo:1,
-        //});
-        this.props.dispatch({
-            type:'UNSHOWFILTERPBIDLIST'
-        })
         this.ele.removeEventListener('scroll',this._infiniteScroll);
         this.props.dispatch({
-            type:'UNSHOWFILTERPRODUCE'
-        });
-        this.props.dispatch({
-            type:'UNCHANGEBIDLISTTITLEORREPORTKEY'
-        })
-        this.props.dispatch({
-            type:'RESETBIDLIST'
+            type:'RESETBIDLISTALL'
         })
     }
 
@@ -202,15 +185,15 @@ class BidListAll extends Component{
         return (
             <div className="root" style={{"overflow":"auto"}}>
                 <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)} _showProvicenHandle={this._showProvicenHandle.bind(this)}/>
-                <div ref="content" className="scroll-content has-header">
+                <div ref="content" className="scroll-content has-header marketall">
                     <Main {...this.props} data={this.props.bidList.data} loading={this.state.loading}/>
                     <More {...this.props}/>
                 </div>
                 {
-                    this.props.bidList.isShowFilter&&!this.state.loading? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
+                    this.state.loading ? <Loading/> : null
                 }
                 {
-                    this.state.loading ? <Loading/> : null
+                    this.props.bidList.isShowFilter&&!this.state.loading? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
                 }
             </div>
         )
@@ -221,27 +204,44 @@ class Main extends Component{
         super(props);
     }
     render(){
+        console.log(this.props.data);
+        var specAttrName = (()=>{
+            if(this.props.bidList.specAttrName != ""&& this.props.bidList.specAttrName != null&&this.props.bidList.specAttrName != undefined ){
+                var children="";
+                children+="（" ;
+                children+=this.props.bidList.specAttrName;
+                children+= "）";
+            }else{
+                children="";
+            }
+            return children;
+        })();
         var bidList = 0;
         if(this.props.data.length != 0){
             return(
                 <div>
-                    <div className="market-list card">
+                    <div className="market-list card defmargin">
                         <div className="list-left">
-                            <p>剂型：{this.props.data.prepName}</p>
-                            <p>规格：{this.props.data.prepName}</p>
-                            <p>生产企业：{this.props.data.prepName}</p>
+                            <p>剂型：{decodeURI(decodeURI(this.props.params.prepName))}</p>
+                            <p>规格：{decodeURI(decodeURI(this.props.params.spec))}{specAttrName}</p>
+                            <p>生产企业：{decodeURI(decodeURI(this.props.params.manufacturerName))}</p>
                         </div>
-                        <Link  className="list-right btn"> 查看各省中标价</Link>
+                        <Link  to={`/datas/bidList/${this.props.params.productName}/${this.props.params.prepName}/${this.props.params.spec}/${this.props.params.manufacturerName}`} className="list-right btn" > 查看原始数据</Link>
                         <div className="row market-price">
-                            中标省份数：19
+                            中标省份数：{this.props.bidList.areas}
                         </div>
                     </div>
-                    <h3 className="item item-divider home-item-title">
-                        <strong>最新报告</strong>
+                    <h3 className="item item-divider bidall">
+                        <div className="row">
+                            <div className="col-40">省份</div>
+                            <div className="col-60">最小制剂中标价（公布时间）</div>
+                        </div>
                     </h3>
+                    <ul className="list">
                     {
                         this.props.data.map((ele,index)=> <List dataSources={ele} key={`bidList_${bidList++}+${ele.id}`}/>)
                     }
+                    </ul>
                 </div>
             )
         }else{
@@ -272,18 +272,12 @@ class HeaderBar extends Component{
 class List extends Component{
     render(){
         return(
-                <ul className="list">
-                    <li className="item">
-                        <div className="row">
-                            <div className="col-40">sss</div>
-                            <div className="col-60">dddd</div>
-                        </div>
-                    </li>
-                    <li className="item">ddd</li>
-                    <li className="item">ddd</li>
-                    <li className="item">ddd</li>
-                    <li className="item">ddd</li>
-                </ul>
+            <li className="item item-text-wrap">
+                <div className="row" style={(this.props.dataSources.productStatus==1)?null:{color:"#999"}}>
+                    <div className="col-40">{this.props.dataSources.areaName}</div>
+                    <div className="col-60">{this.props.dataSources.bidPrice}({this.props.dataSources.publishDate})</div>
+                </div>
+            </li>
         )
     }
 }

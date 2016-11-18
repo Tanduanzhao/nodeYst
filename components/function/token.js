@@ -2,20 +2,23 @@
     微信授权
 */
 import {connect} from 'react-redux';
-import {loadWx,loadJssdk,getUserAreaInfo} from './ajax';
+import {loadWx,loadJssdk,getUserAreaInfo,insertReportShare} from './ajax';
 import {url2obj} from './common';
 import {WXKEY,HTTPURL} from '../config';
 var isLogin = false;
-export const Token = function(fn,login){
-    if(isLogin || url2obj().code){
-        console.log(name,"sss");
-        //获取微信授权
-        //loadWx({
-        //    code:url2obj().code,
-        //    callBack:(res)=>{
-        //        login(res);
-        //    }
-        //})
+export const Token = function(fn,login,store){
+    console.log(store.getState(),'111111');
+    if(store.getState().userInfo.isLogin||url2obj().code){
+        console.log("sss");
+        if(!store.getState().userInfo.isLogin){
+            //获取微信授权
+            loadWx({
+                code:url2obj().code,
+                callBack:(res)=>{
+                    login(res);
+                }
+            })
+        }
         loadJssdk({
             uri:location.href,
             callBack:(res) => {
@@ -100,10 +103,19 @@ export const Token = function(fn,login){
         })
     }else{
         var _recommender = url2obj().recommender;
+        var reportId = url2obj().id;
+        var URL;
         if(_recommender == undefined){
             _recommender = "";
+            URL=HTTPURL
+        }else{
+            URL=HTTPURL+location.pathname;
+            if(sessionStorage.getItem("reportId")){
+                sessionStorage.setItem("recommender", _recommender);
+                sessionStorage.setItem("reportId", url2obj().reportId);
+            }
         }
-      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+WXKEY+'&redirect_uri='+HTTPURL+'?recommender='+_recommender+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+        location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+WXKEY+'&redirect_uri='+URL+'?recommender='+_recommender+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
         return;
     }
 }

@@ -31,7 +31,7 @@ class Home extends Component{
 			areaId:this.props.areaId,
 			searchAreaType:this.props.searchAreaType,
 			callBack:(res)=>{
-				console.log(res.datas)
+				console.log(res.datas,"ss")
 				this.props.dispatch({
 					type:'LOADHOMEDATA',
 					data: res.datas

@@ -163,7 +163,7 @@ class List extends Component{
                             </div>:null
                         }
                     </div>
-                    <Link to={`/datas/bidList/${encodeURI(encodeURI(this.props.dataSources.productName))}/${encodeURI(encodeURI(this.props.dataSources.prepName))}/${encodeURI(encodeURI(this.props.dataSources.spec))}/${encodeURI(encodeURI(this.props.dataSources.manufacturerName))}`}  className="list-right btn"> 查看各省中标价</Link>
+                    <Link to={`/bidListall/${encodeURI(encodeURI(this.props.dataSources.productName))}/${encodeURI(encodeURI(this.props.dataSources.prepName))}/${encodeURI(encodeURI(this.props.dataSources.spec))}/${encodeURI(encodeURI(this.props.dataSources.manufacturerName))}/${encodeURI(encodeURI(this.props.dataSources.id))}`}  className="list-right btn"> 查看各省中标价</Link>
                 </div>
                 <div className="row market-price">
                     <div className="col-50"> 广东省最小制剂入市价</div>
