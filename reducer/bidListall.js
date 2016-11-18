@@ -20,16 +20,18 @@ var defaultBidListall={
   areaId:null,
   provinceId:["ZZOQD0000000000000000000000020"],
   provinceName:null,
-  mpAreaID:null
+  mpAreaID:null,
+  areas:null,
+  specAttrName:null
 }
 export default function bidListall(state=defaultBidListall,action){
   switch(action.type){
-    case "LOADBIFLISTCONTENTDATA" : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
+    case "LOADBIFLISTCONTENTDATAALL" : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo,areas:action.areas,specAttrName:action.specAttrName});
     case "getBidAreaInfo" : return ObjectAssign({},state,{getBidAreaInfo:action.getBidAreaInfo});
     case "getProjectStatus" : return ObjectAssign({},state,{getProjectStatus:action.getProjectStatus});
     case INFINITE : return ObjectAssign({},state,{infinite:false});
-    case "request": return ObjectAssign({},state,{request:false});
-    case "requestss": return ObjectAssign({},state,{request:true});
+    case "requestall": return ObjectAssign({},state,{request:false});
+    case "requestssall": return ObjectAssign({},state,{request:true});
     case "mpAreaID": return ObjectAssign({},state,{mpAreaID:true});
     //case "CHANGEALLPROVINCE": return ObjectAssign({},state,{areaName:action.provinceName,areaId:[action.provinceId]});
     case "CHANGEALLPROVINCEIDNAME": return ObjectAssign({},state,{provinceName:action.provinceName,provinceId:[action.provinceId]});
@@ -37,11 +39,11 @@ export default function bidListall(state=defaultBidListall,action){
     case SHOWFILTERBIDLIST : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPBIDLIST : return ObjectAssign({},state,{isShowFilter:false});
     case CHANGEBIDLISTTITLEORREPORTKEY : return ObjectAssign({},state,{searchName:action.searchName});
-    case CHANGEBIDLISTFILTER : return ObjectAssign({},state,{areaId:action.areaId,searchAreaType:action.searchAreaType,searchProductStatus:action.searchProductStatus,sord:action.sord,sidx:action.sidx,active:action.active});
+    case "CHANGEBIDLISTFILTERALL" : return ObjectAssign({},state,{areaId:action.areaId,searchAreaType:action.searchAreaType,searchProductStatus:action.searchProductStatus,sord:action.sord,sidx:action.sidx,active:action.active});
     //case "UNCHANGEBIDLISTTITLEORREPORTKEY" : return ObjectAssign({},state,{searchName:defaultBidList.searchName});
     //case "RESETBIDLIST" : return  ObjectAssign({},defaultBidList,{areaName:state.areaName,areaId:state.areaId});
     case "RESETBIDLISTAREAId" : return  ObjectAssign({},defaultBidListall,{areaId:action.areaId});
-    case "RESETBIDLIST" : return  ObjectAssign({},defaultBidListall,{provinceName:state.provinceName,provinceId:state.provinceId})
+    case "RESETBIDLISTALL" : return  ObjectAssign({},defaultBidListall,{provinceName:state.provinceName,provinceId:state.provinceId})
     default : return state;
   }
 }

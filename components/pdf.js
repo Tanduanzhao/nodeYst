@@ -4,15 +4,16 @@ import {WXKEY,HTTPURL} from './config';
 import Loading from './loading';
 import {OpenProductView} from './function/common';
 import Popup from './popup';
+import Gotop from './goTop';
+import CollectPrompt from './collectPrompt';
 export default class Pdf extends Component{
     constructor(props){
         super(props);
-        console.log(this.props.params.id,"sss");
         wx.ready(()=> {
              // 分享
                 var info = {
                     title: this.props.params.title,
-                    link: HTTPURL+'/pdf/'+this.props.params.id+"?recommender="+name,
+                    link: HTTPURL+'/pdf/'+this.props.params.id+'/'+encodeURIComponent(this.props.params.title)+'/'+this.props.params.price+"?recommender="+name+"&reportId="+this.props.params.id,
                     imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                     desc: '小伙伴们和我一起去逛逛医药圈的信息分享平台--药市通~'
                 };
@@ -44,7 +45,8 @@ export default class Pdf extends Component{
             reportVersion:"total",
             showPopup:false,
             id:this.props.params.id,
-            isKeep:false
+            isKeep:false,
+            showPromptMes:false
         }
     }
     _loadData(){
@@ -64,6 +66,7 @@ export default class Pdf extends Component{
         })
     }
     componentDidMount(){
+        this.ele = this.refs.content;
         this._loadData();
     }
     componentWillUnmount(){
@@ -115,15 +118,22 @@ export default class Pdf extends Component{
         this.context.router.push('/purchase');
     }
     keepReport(){
-        console.log(this.props.params.id)
+        clearInterval(setTimeout);
         if(this.state.isKeep != 1){
             keepReport({
                 reportId:this.props.params.id,
                 callBack:(res)=>{
                     if(res.state==1)
                         this.setState({
-                            isKeep:1
+                            isKeep:1,
+                            showPrompt:1,
+                            showPromptMes:"已收藏"
                         })
+                  setTimeout(()=>{
+                        this.setState({
+                            showPrompt:0
+                        })
+                    },1000)
                 }
             })
         }else{
@@ -133,11 +143,21 @@ export default class Pdf extends Component{
                 callBack:(res)=>{
                     if(res.state==1)
                         this.setState({
-                            isKeep:0
+                            isKeep:0,
+                            showPrompt:1,
+                            showPromptMes:"取消收藏"
                         })
+                    setTimeout(()=>{
+                        this.setState({
+                            showPrompt:0
+                        })
+                    },1000)
                 }
             })
         }
+    }
+    scrollTop(){
+        this.ele.scrollTop=0
     }
     render(){
         console.log(this.state.isKeep,"ss");
@@ -146,14 +166,18 @@ export default class Pdf extends Component{
                 {
                     this.state.showPopup ? <Popup  {...this.props} popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
                 }
+                {
+                    this.state.showPrompt ? <CollectPrompt {...this.props} showPromptMes={this.state.showPromptMes}/> : null
+                }
+                <Gotop {...this.props} scrollTop={this.scrollTop.bind(this)}/>
                 <div className="bar bar-positive bar-header">
                     <h4 className="title">
-                        <button className="button title_button" onClick={this.keepReport.bind(this)}>
+                        <button className="button title_button" onClick={this.keepReport.bind(this)} >
                             <i className={(this.state.isKeep != 1) ? "fa fa-star-o fa-2x": "fa fa-star fa-2x"}></i>
                         </button>
                         {this.props.params.title}</h4>
                 </div>
-                <div className="scroll-content has-header padding report-content" dangerouslySetInnerHTML={{__html:this.state.report.content}}>
+                <div  ref="content" className="scroll-content has-header padding report-content" dangerouslySetInnerHTML={{__html:this.state.report.content}}>
                 </div>
                 {
                     this.state.reportVersion=="brief"

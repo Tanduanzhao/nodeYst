@@ -24,5 +24,7 @@ module.exports = function(app) {
     app.get('/picture',index);
     app.get('/picture/*',index);
     app.get('/collect',index);
+    app.get('/bidListall',index);
+    app.get('/bidListall/*',index);
     app.post('/getToken',getToken);
 }

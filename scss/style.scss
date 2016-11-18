@@ -615,6 +615,12 @@ h3{
             color: #0894ec;
             border-radius: 5px;
         }
+        .fa{
+            margin-right: 3px;
+        }
+        .fa-mglf{
+            margin-left: 20px;
+        }
     }
 }
 .home-item-title{
@@ -765,6 +771,7 @@ h3{
         }
     }
 }
+
 .market-list{
     overflow: hidden;
     padding-left: 12px;
@@ -798,6 +805,31 @@ h3{
     padding-left: 12px;
     .col-50{
         font-size: .6rem;
+    }
+}
+.marketall{
+    .list-left{
+        padding: 6px 0;
+    }
+    .market-price{
+        padding-left: 0;
+        border-bottom: 0;
+    }
+    .row{
+        font-size: 14px;
+    }
+    .item-text-wrap{
+        padding: 8px 14px;
+    }
+    .btn{
+       margin-right: 10px;
+    }
+}
+.bidall{
+    background: #f6feff;
+    padding: 8px 14px;
+    .row{
+        background: #f6feff;
     }
 }
 .price-list{
@@ -1107,4 +1139,7 @@ table{
 .title_button{
     float: left;
     margin-top: 6px;
+}
+.defmargin{
+    margin: 0;
 }

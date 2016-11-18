@@ -38,7 +38,7 @@ export default class More extends Component {
 			data:{
                 username:this.refs.username.value || null,
                 phone:this.refs.phone.value || null,
-                email:this.refs.email.value || null
+                //email:this.refs.email.value || null
             },
 			success:(res)=>{
                 if(res.state == '1'){
@@ -91,10 +91,6 @@ export default class More extends Component {
 									<label className=" item-input">
 										<span>手机*</span>
 										<input ref="phone" type="text" onChange={this._changeBox.bind(this)}/>
-									</label>
-									<label className=" item-input">
-										<span>邮箱*</span>
-										<input ref="email" type="text" onChange={this._changeBox.bind(this)}/>
 									</label>
 								</div>
 								<span className="get"  onClick={this.glodBox.bind(this)}>马上领取</span>
