@@ -31,11 +31,11 @@ class Home extends Component{
 			areaId:this.props.areaId,
 			searchAreaType:this.props.searchAreaType,
 			callBack:(res)=>{
-				console.log(res.datas,"ss")
 				this.props.dispatch({
 					type:'LOADHOMEDATA',
 					data: res.datas
 				});
+				alert("datas")
 				this.setState({
 					loading:false
 				});
@@ -60,23 +60,25 @@ class Home extends Component{
 		//获取金银活动箱子状态
 		loadJoinActivity({
 			callBack:(res)=>{
-				if(res.datas.isJoinCashBox == '0'){
-					this.props.dispatch({
-						type:'SHOWCASHBOX'
-					});
-				}else{
-					this.props.dispatch({
-						type:'UNSHOWCASHBOX'
-					});
-				}
-				if(res.datas.isJoinGlodBox == '0'){
-					this.props.dispatch({
-						type:'SHOWGOLDBOX'
-					});
-				}else{
-					this.props.dispatch({
-						type:'UNSHOWGOLDBOX'
-					});
+				if(res){
+					if(res.datas.isJoinCashBox == '0'){
+						this.props.dispatch({
+							type:'SHOWCASHBOX'
+						});
+					}else{
+						this.props.dispatch({
+							type:'UNSHOWCASHBOX'
+						});
+					}
+					if(res.datas.isJoinGlodBox == '0'){
+						this.props.dispatch({
+							type:'SHOWGOLDBOX'
+						});
+					}else{
+						this.props.dispatch({
+							type:'UNSHOWGOLDBOX'
+						});
+					}
 				}
 			}
 		})
@@ -115,7 +117,6 @@ class Home extends Component{
 		//	}
 		//})
 		this._loadData();
-
 	}
 	//_openProductView(id,self){
 	//	OpenProductView(id,()=>{
@@ -141,6 +142,8 @@ class Home extends Component{
 	//	//setTimeout(()=> this._loadData(),100);
 	//}
 	render(){
+		console.log(this.props.userInfo.isLogin,"isLogin")
+		console.log(this.state.loading,"stateloading")
 		return(
 			<div className="root home">
 				{
@@ -150,7 +153,7 @@ class Home extends Component{
 					!this.props.userInfo.isLogin ? null : <Main {...this.props}/>//openProductView={this._openProductView.bind(this)}
 				}
 				{
-					(this.state.loading || !this.props.userInfo.isLogin) ? <Loading/> : null
+					(this.state.loading) ? <Loading/> : null
 				}
 				{
 					this.state.showPopup ? <Popup {...this.props}  popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null

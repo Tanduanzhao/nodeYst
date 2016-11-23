@@ -104,12 +104,12 @@ Token((res) => {
 //    ReactDOM.render(_router, ele, null);
 }
     ,(res)=>{
-        store.dispatch({
-            type:'LOADUSERINFO',
-            datas:res.datas
-        });
-        //alert("dddd")
-        name=res.datas.id;
+        //store.dispatch({
+        //    type:'LOADUSERINFO',
+        //    datas:res.datas
+        //});
+        ////alert("dddd")
+        //name=res.datas.id;
     }
     ,store
 );

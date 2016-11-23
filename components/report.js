@@ -16,7 +16,6 @@ import {OpenProductView} from './function/common';
 class Report extends Component {
   constructor(props){
     super(props);
-    console.log(this.props.params.id)
     this.state={
       searchType:this.props.report.searchType,
       loading:true,
@@ -28,7 +27,6 @@ class Report extends Component {
     this._infiniteScroll = this._infiniteScroll.bind(this);
   }
   _loadData(){
-    console.log(this.state.reportTag,"reportTag")
     this.setState({
       request:false
     });
@@ -67,7 +65,6 @@ class Report extends Component {
   _infiniteScroll(){
     //全部高度-滚动高度 == 屏幕高度-顶部偏移
     if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.report.infinite && this.state.request){
-      console.log("sdddd",this.props.report.infinite)
       this._loadData();
     }
   }
