@@ -52,25 +52,25 @@ class Main extends Component{
                         <img src="/images/open_icon.jpg" alt=""/>
                         开通会员
                     </Link>
-                    <Link to="center/contribute" className="item item-icon-left">
-                        <img src="/images/contribute_icon.jpg" alt=""/>
-                        我要投稿
-                    </Link>
                     <Link to="purchase" className="item item-icon-left">
                         <img src="/images/purchase_icon.jpg" alt=""/>
                         已购报告
+                    </Link>
+                    <Link to="subscribePage" className="item item-icon-left">
+                        <img src="/images/subscribePage.jpg" alt=""/>
+                        已订专栏
                     </Link>
                     <Link to="collect" className="item item-icon-left">
                         <img src="/images/collect.jpg" alt=""/>
                         我的收藏
                     </Link>
+                    <Link to="center/contribute" className="item item-icon-left">
+                        <img src="/images/contribute_icon.jpg" alt=""/>
+                        我要投稿
+                    </Link>
                     <Link to="center/feedback" className="item item-icon-left">
                         <img src="/images/idea_icon.jpg" alt=""/>
                         意见反馈
-                    </Link>
-                    <Link to="center/help" className="item item-icon-left">
-                        <img src="/images/help_icon.jpg" alt=""/>
-                        帮助中心
                     </Link>
                     <Link to="center/user" className="item item-icon-left">
                         <img src="/images/user.jpg" alt=""/>

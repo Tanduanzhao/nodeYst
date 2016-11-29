@@ -555,6 +555,13 @@ h3{
         justify-content: space-between;
         -webkit-justify-content: space-between;
     }
+    .item-row{
+        display: flex;
+        display: -webkit-flex;
+        padding: .5rem;
+        justify-content: space-between;
+        -webkit-justify-content: space-between;
+    }
 }
 .item-left{
     height:  4rem;
@@ -573,8 +580,8 @@ h3{
     -webkit-flex: 1;
     flex-direction: column;
     -webkit-flex-direction: column;
-    justify-content: space-between;
-    -webkit-justify-content: space-between;
+    justify-content: space-around;
+    -webkit-justify-content: space-around;
     h3{
         font-size: .65rem;
         //margin-top: 5px;
@@ -589,6 +596,54 @@ h3{
             background: url(/images/icon_tag.png) center 1px no-repeat;
             background-size: contain;
         }
+    }
+    .title{
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-justify-content: space-between;
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: center;
+        -webkit-align-items: center;
+        text-align: left;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        display: -webkit-flex;
+        font-size: .65rem;
+        color: #888;
+        line-height: 20px;
+        font-weight: bold;
+        margin: 0;
+    }
+    .subscribe-icon{
+        background: #f69546;
+        font-size: .45rem;
+        background: #eee;
+        padding: .2rem .3rem;
+        color: #0894ec;
+        border-radius: 5px;
+    }
+    //.text{
+    //    font-size: .6rem;
+    //    color: #a1a1a1;
+    //}
+    .introduce{
+        font-size: .55rem;
+        line-height: 20px;
+        -webkit-line-clamp: 2;
+        white-space: initial;
+        color: #a1a1a1;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .article{
+        font-size: .55rem;
+        white-space: initial;//换行
+        word-break: break-all;//断开单词。主要解决了长串英文的问题
     }
     .item-wrap{
         display: flex;
@@ -631,6 +686,18 @@ h3{
             margin-left: 20px;
         }
     }
+    .item-footer-right{
+        justify-content: flex-end;
+        -webkit-justify-content: flex-end;
+        .item-icon{
+            background: #f69546;
+            color: #fff;
+        }
+        .item-icon-free{
+            background: #387ef5;
+            color: #fff;
+        }
+    }
 }
 .home-item-title{
     font-size: .6rem;
@@ -645,6 +712,18 @@ h3{
     }
     .hot-title{
         width: 0.95rem;
+    }
+}
+.parseReport-list{
+    padding: 10px 16px;
+    .parseReport-item{
+        color: #666;
+        font-size: .65rem;
+        display: inline-block;
+        line-height: 1.25rem;
+        .fa-play-circle{
+            color:#f69546;
+        }
     }
 }
 .bg-fff{
@@ -1106,6 +1185,7 @@ table{
     vertical-align: sub;
 }
 .report-content{
+    padding: 10px 0;
     padding-bottom: 44px;
     img{
         display: block;
@@ -1115,10 +1195,20 @@ table{
     }
     h4{
         margin-top: 2rem;
+        font-size: .7rem;
+    }
+    h5{
+        margin-top: 2rem;
+        font-size: .6rem;
+    }
+    h6{
+        margin-top: 2rem;
+        font-size: .5rem;
     }
     p{
         text-indent: 2em;
         line-height: 1.8;
+        font-size: .7rem;
     }
 }
 .scroll-iframe{
@@ -1148,6 +1238,100 @@ table{
 .title_button{
     float: left;
     margin-top: 6px;
+}
+.subscribeAll{
+    .img-title{
+        position: relative;
+        overflow: hidden;
+        .title{
+            width: 100%;
+            float: left;
+        }
+        .bar-title{
+            position: absolute;
+            border: 0;
+            bottom: 1.5rem;
+            width: 100%;
+            color: #fff;
+            font-weight: bold;
+            padding: 8px 15px;
+            background: rgba(180,180,180,.8);
+        }
+    }
+    .list-title{
+        border-top: 0;
+        padding: 8px 16px;
+        font-size: .65rem;
+        h3{
+            display: inline-block;
+            font-weight: bold;
+            margin: 0;
+        }
+       .list-title-right{
+           float: right;
+       }
+    }
+    .subscribeAll-body{
+        padding: 8px 16px;
+    }
+}
+.nestedHTML{
+    padding: 10px;
+}
+.foot{
+    .list-title{
+        padding: 8px 16px;
+    }
+}
+.product-details-collect{
+    display:flex ;
+    display:-webkit-flex ;
+    justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    align-items: center;
+    -webkit-align-items: center;
+    text-align: right;
+    margin: 15px 10px;
+    .fa{
+        flex: 10;
+        -webkit-flex: 10;
+        margin-right: 5px;
+    }
+    .thumbs-up{
+        flex: 1;
+        -webkit-flex: 1;
+        margin-left: 10px;
+    }
+    .thumbs-up-color{
+        color: #387ef5;
+    }
+}
+.comments{
+    padding: 20px;
+    overflow: hidden;
+    textarea{
+        width: 100%;
+        resize: none;
+        padding: 5px;
+        height: 150px;
+        text-align: justify;
+        border: 1px solid #c1c1c1;
+    }
+    button{
+        float: right;
+        font-size: .45rem;
+        color: #fff;
+        background: #387ef5;
+        padding: .2rem .4rem;
+        border-radius: 5px;
+        margin-top: 10px;
+        border: 0;
+    }
+}
+.report_classify{
+    img{
+        width: 100%;
+    }
 }
 .defmargin{
     margin: 0;

@@ -356,7 +356,65 @@ export const loadPicture = function(args){
             searchName:args.searchName || null,
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
-            imgType:args.imgType || null,
+            imgType:args.imgType || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//专栏订阅列表
+export const getCiReportColumnList = function(args){
+    ajaxFn({
+        url:'business/getCiReportColumnList',
+        data:{
+            titleOrReportKey:args.titleOrReportKey|| null,
+            pageNo:args.pageNo || null,
+            pageSize:args.pageSize || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//专栏订阅分类列表
+export const getReportColumnTypeList = function(args){
+    ajaxFn({
+        url:'business/getReportColumnTypeList',
+        data:{
+            columnId:args.columnId|| null,
+            titleOrReportKey:args.titleOrReportKey|| null,
+            pageNo:args.pageNo || null,
+            pageSize:args.pageSize || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//专栏订阅详情
+export const getColumnReportList = function(args){
+    ajaxFn({
+        url:'business/getColumnReportList',
+        data:{
+            columnId:args.columnId|| null,
+            titleOrReportKey:args.titleOrReportKey|| null,
+            pageNo:args.pageNo || null,
+            pageSize:args.pageSize || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//课程点赞
+export const insertLikeReport = function(args){
+    ajaxFn({
+        url:'business/insertLikeReport',
+        data:{
+            reportId:args.reportId|| null
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -375,7 +433,8 @@ export const loadReportList = function(args){
             titleOrReportKey:args.titleOrReportKey,
             sidx:args.sidx ,
             sord:args.sord ,
-            costStatus:args.costStatus
+            costStatus:args.costStatus,
+            pageSize:args.pageSize || null
         },
         callBack:(res)=>{
             args.callBack(res);

@@ -277,7 +277,7 @@ class Main extends Component{
         return(
             <ul className="list new_report">
               {
-                this.props.data.map((ele,index)=> <ReportList  {...this.props} openProductView = {this.props.openProductView} reportTag={this.props.reportTag} collect={this.state.collect}dataSources={ele} key={ele.id+Math.random()}/>)
+                this.props.data.map((ele,index)=> <ReportList  {...this.props} openProductView = {this.props.openProductView} reportTag={this.props.reportTag} collect={this.state.collect} dataSources={ele} key={ele.id+Math.random()}/>)
               }
             </ul>
         )

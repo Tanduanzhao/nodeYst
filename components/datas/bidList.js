@@ -116,14 +116,13 @@ class BidList extends Component{
         }
     }
     _infiniteScroll(){
+        console.log(this.ele.scrollTop);
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite && this.props.bidList.request){
             this._loadData();
         }
     }
     componentDidMount(){
-        console.log(this.props.isVip,"isVip")
-        console.log(this.state.provinceId,"componentDidMountprovinceId")
         this.props.dispatch({
             type:'RESETBIDLISTAREAId',
             areaId:this.props.bidList.provinceId

@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {Link} from 'react-router';
+import {store} from './function/ajax';
 export default class ReportList extends Component {
 	constructor(props){
 		super(props);
@@ -7,15 +8,6 @@ export default class ReportList extends Component {
 			showPopup:false
 		};
 	}
-	//touchEnd(){
-	//	console.log(this.downtime);
-	//	var date=new Date();
-	//	var uptime=date.getTime();
-	//	console.log(uptime-this.downtime);
-	//	if(uptime-this.downtime>=2000){//时间超过1秒
-	//		this.uptime();
-	//	}
-	//}
 	uptime(){
 		this.props.dispatch({
 			type:'SHOWCOLLECTPOPUP',
@@ -83,44 +75,31 @@ export default class ReportList extends Component {
 				price: this.props.dataSources.price
 			}
 		}
-		//let isCanViewReport = false;
-		//if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
-		//	isCanViewReport = false;
-		//}else{
-		//	isCanViewReport = true;
-		//}
 		return(
 			<div>
-				{
-					//isCanViewReport ?
-					//<Link onTouchEnd={this.touchEnd.bind(this)} onTouchStart={this.touchStart.bind(this)}  to={`/pdf/${this.props.dataSources.id}/${encodeURIComponent(this.props.dataSources.title)}/${this.props.dataSources.price}`}  className="item">
 					<Link onTouchStart={this.touchStart.bind(this)}  to={`/pdf/${this.props.dataSources.id}/${encodeURIComponent(this.props.dataSources.title)}/${this.props.dataSources.price}`}  className="item">
 						<div className="item-left">
 								<img src={this.props.dataSources.mainImg} alt=""/>
 						</div>
-						<div className="item-right">
-							<h3 className="item-nowrap">{iconTag} {this.props.dataSources.title}</h3>
-							<p>¥{this.state.price}</p>
-							<div className="item-right-footer">
-								{number}
-								{tag}
-							</div>
-						</div>
+						{
+							this.props.collect
+								?<div className="item-right">
+									<div className="title">分析报告</div>
+									<h3 className="item-nowrap">{iconTag} {this.props.dataSources.title}</h3>
+									<div className="item-right-footer">
+										{this.props.dataSources.publishDate}
+									</div>
+								</div>
+								:<div className="item-right">
+									<h3 className="item-nowrap">{iconTag} {this.props.dataSources.title}</h3>
+									<p>¥{this.state.price}</p>
+									<div className="item-right-footer">
+										{number}
+										{tag}
+									</div>
+								</div>
+						}
 					</Link>
-					//:<a onClick={()=>this.props.openProductView(this.props.dataSources.id)}  className="item">
-					//		<div  className="item-left">
-					//			<img src={this.props.dataSources.mainImg} alt=""/>
-					//		</div>
-					//		<div className="item-right">
-					//			<h3>{this.props.dataSources.title}</h3>
-					//			<p>¥{this.state.price}</p>
-					//			<div className="item-right-footer">
-					//				{number}
-					//				{tag}
-					//			</div>
-					//		</div>
-					//	</a>
-				}
 			</div>
 		)
 	}

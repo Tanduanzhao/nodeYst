@@ -107,6 +107,7 @@ export const Token = function(fn,login,store){
         var URL;
         if(_recommender == undefined){
             _recommender = "";
+            //URL=HTTPURL+location.pathname;
             URL=HTTPURL
         }else{
             URL=HTTPURL+location.pathname;

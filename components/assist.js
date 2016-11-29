@@ -157,16 +157,16 @@ class Assist extends Component{
                                     return(
                                         <div key={Math.random(2)}>
                                             <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",p:ele.areaName}}/>
-                                            <div className="item" style={{boxSizing:'content-box'}}>
+                                            <div className="item" style={{boxSizing:'content-box',padding:' 8px'}}>
                                                 {
-                                                    ele.lists.length == 0 ? <EmptyComponent/> : <table className="table-border" width="100%">
+                                                    ele.lists.length == 0 ? <EmptyComponent/> : <table style={{tableLayout : 'fixed'}} className="table-border" width="100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>药品名称</th>
-                                                                <th>剂型</th>
-                                                                <th>规格</th>
-                                                                <th>包装</th>
-                                                                <th>生产企业</th>
+                                                                <th style={{padding:"0.2rem"}}>药品名称</th>
+                                                                <th style={{padding:"0.2rem"}}>剂型</th>
+                                                                <th style={{padding:"0.2rem"}} width="60px">规格</th>
+                                                                <th style={{padding:"0.2rem"}}>包装</th>
+                                                                <th style={{padding:"0.2rem"}}>生产企业</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>

@@ -9,6 +9,8 @@ var defaultData = {
 		hotReportMap:{datas:[]}
 	},
  	img:[{}],
+    ParseReport:[],
+    ColumnList:[],
     goldBox:false,
     cashBox:false,
     hasRecord:true,
@@ -18,6 +20,8 @@ export default function home(state = defaultData,action){
 	switch(action.type){
 		case LOADHOMEDATA : return ObjectAssign({},state,{data:action.data});
 		case LOADHOMEIMG : return ObjectAssign({},state,{img:action.img});
+        case "LOADHOMEPARSEREPORT" : return ObjectAssign({},state,{ParseReport:action.ParseReport});
+        case "LOADHOMECOLUMNLIST" : return ObjectAssign({},state,{ColumnList:action.ColumnList});
         case 'UNSHOWGOLDBOX' : return ObjectAssign({},state,{goldBox:false});
         case 'UNSHOWCASHBOX' : return ObjectAssign({},state,{cashBox:false});
         case 'SHOWGOLDBOX' : return ObjectAssign({},state,{goldBox:true});

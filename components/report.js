@@ -80,30 +80,34 @@ class Report extends Component {
   }
   componentDidMount(){
     this.ele = this.refs.content;
-    console.log(this.refs.content);
+    console.log(this.props.report.data);
     this.ele.addEventListener('scroll',this._infiniteScroll);
-    console.log(this.state.searchType);
-    this._loadData();
-    this._getReportType();
+    console.log(this.props.report.fixedScroll);
+    //this._loadData();
+    //this._getReportType();
+    if(this.props.report.fixedScroll!=2){
+      this._loadData();
+      this._getReportType();
+      this.props.dispatch({
+        type:'CHAGNGEFIXEDSCROLL',
+        fixedScroll:2
+      })
+    }else{
+      this.setState({
+        loading:false
+      });
+    }
   }
   componentWillUnmount(){
-    this.props.dispatch({
-      type:'UNSHOWFILTERPRODUCE'
-    });
-    this.props.dispatch({
-      type:'CLEARTITLEORREPORTKEY'
-    });
+    if(this.props.report.fixedScroll != 2){
       this.props.dispatch({
-        type:'LOADPRODUCEDATA',
-        data:[],
-        pageNo:1
+        type: 'RESETREPORT'
       });
+    }
     this.props.dispatch({
-      type:'RESETREPORT'
-    });
-    this.props.dispatch({
-      type:'CHANGEREPORTTAG'
-    });
+      type:'CHAGNGEFIXEDSCROLL',
+      fixedScroll:1
+    })
   }
    _openProductView(id){
      OpenProductView(id,()=>{
@@ -160,7 +164,7 @@ class Report extends Component {
     });
     setTimeout(()=> this._loadData(),100);
   }
-    
+
     _popupCancel(){
         this.setState({
             showPopup:false
@@ -266,7 +270,7 @@ class List extends Component{
   }
   render(){
       console.log(this.props.dataSources.costStatus,'ct');
-      console.log(this.props.dataSources.buyReport,'br');
+      console.log(this.props.dataSources.buyReport,'sss');
     var string = null;
     var tag = (()=>{
       if(this.props.dataSources.costStatus == "1"){
