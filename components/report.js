@@ -64,6 +64,10 @@ class Report extends Component {
   }
   _infiniteScroll(){
     //全部高度-滚动高度 == 屏幕高度-顶部偏移
+    console.log(this.ele.firstChild.clientHeight,"clientHeight")
+    console.log(this.ele.scrollTop,"scrollTop")
+    console.log(this.ele.firstChild.clientHeight-this.ele.scrollTop ,"requestss")
+    console.log(document.body.clientHeight-this.ele.offsetTop ,"ssss")
     if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.report.infinite && this.state.request){
       this._loadData();
     }

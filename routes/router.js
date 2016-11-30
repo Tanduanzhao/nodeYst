@@ -30,5 +30,7 @@ module.exports = function(app) {
     app.get('/subscribePage/*',index);
     app.get('/subscribePageAll',index);
     app.get('/subscribePageAll/*',index);
+    app.get('/subscribeContent',index);
+    app.get('/subscribeContent/*',index);
     app.post('/getToken',getToken);
 }

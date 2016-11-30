@@ -399,9 +399,11 @@ export const getColumnReportList = function(args){
         url:'business/getColumnReportList',
         data:{
             columnId:args.columnId|| null,
-            titleOrReportKey:args.titleOrReportKey|| null,
             pageNo:args.pageNo || null,
-            pageSize:args.pageSize || null
+            reportType:args.reportType || null,
+            pageSize:args.pageSize || null,
+            costStatus:args.costStatus || null,
+            titleOrReportKey:args.titleOrReportKey|| null
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -435,6 +437,47 @@ export const loadReportList = function(args){
             sord:args.sord ,
             costStatus:args.costStatus,
             pageSize:args.pageSize || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//获取评论详情
+export const selectReportReplys = function(args){
+    ajaxFn({
+        url:'business/selectReportReplys',
+        data:{
+            pageNo:args.pageNo||null,
+            reportId:args.reportId||null,
+            columnId:args.columnId||null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+export const selectReportDetail = function(args){
+    ajaxFn({
+        url:'business/selectReportDetail',
+        data:{
+            reportId:args.reportId||null,
+            columnId:args.columnId||null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//发送评论
+export const insertReplyReport = function(args){
+    ajaxFn({
+        url:'business/insertReplyReport',
+        data:{
+            reportId:args.reportId||null,
+            replyContent:args.replyContent||null,
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -550,6 +593,9 @@ export const insertUserAction = function(args){
 export const getReportType = function(args){
     ajaxFn({
         url:'business/getReportType',
+        data:{
+            columnId:args.columnId || null
+        },
         callBack:(res)=>{
             args.callBack(res);
         }
@@ -877,7 +923,8 @@ export const getReportKeepList = function(args){
             titleOrReportKey:args.titleOrReportKey,
             sidx:args.sidx ,
             sord:args.sord ,
-            costStatus:args.costStatus
+            costStatus:args.costStatus,
+            columnBigType:args.columnBigType
         },
         callBack:(res)=>{
             args.callBack(res);

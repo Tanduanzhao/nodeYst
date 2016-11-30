@@ -4,8 +4,8 @@ export default class FilterProduce extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      costStatus:null,
-      column:1
+      costStatus:this.props.dataSources.costStatus,
+      column:this.props.dataSources.column
     };
   }
   _cancelButton(){
@@ -18,7 +18,7 @@ export default class FilterProduce extends Component{
     this.props.fn(this.state);
   }
   render(){
-    console.log(this.state.active,"active");
+    console.log(this.state.costStatus,"active");
     return(
       <div className="modal-backdrop">
         <div className="modal-backdrop-bg"></div>
@@ -28,9 +28,13 @@ export default class FilterProduce extends Component{
             <h2 className="item item-divider">专栏栏目</h2>
             <div className="list padding">
               <ul className="list-horizontal-block">
-                <li style={(this.state.column == 1) ? styles.active : null} onClick={()=>{this.setState({column:1})}}>招商思维</li>
-                <li style={(this.state.column == 0) ? styles.active : null} onClick={()=>{this.setState({column:0})}}>实战技巧</li>
-                <li style={(this.state.column == 2) ? styles.active : null} onClick={()=>{this.setState({column:2})}}>医药政策</li>
+                {
+                  this.props.dataSources.subscribeTypeDate.map((ele,index)=>{
+                    return(
+                        <li key={index} style={(this.state.column == ele.id) ? styles.active : null} onClick={()=>{this.setState({column:ele.id})}}>{ele.typeName}</li>
+                    )
+                  })
+                }
               </ul>
             </div>
             <h2 className="item item-divider">费用类型</h2>

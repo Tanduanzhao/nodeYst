@@ -22,7 +22,8 @@ var defaultCollect={
   active:0,
   costStatus:null,
   showCollectPopup:false,
-  showCollectPopupID:false
+  showCollectPopupID:false,
+  columnBigType:null
 }
 export default function collect(state=defaultCollect,action) {
   switch(action.type){
@@ -33,7 +34,7 @@ export default function collect(state=defaultCollect,action) {
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
     case "CHANGECOLLECTREPORTTYPEDATE" : return ObjectAssign({},state,{ReportTypeDate:action.ReportTypeDate});
     case "CHANGECOLLECTTITLEORREPORTKEY" : return ObjectAssign({},state,{titleOrReportKey:action.titleOrReportKey});
-    case "SELECTCHANGERCOLLECT" : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType,active:action.active,sord:action.sord,sidx:action.sidx,costStatus:action.costStatus,reportTag:action.reportTag});
+    case "SELECTCHANGERCOLLECT" : return ObjectAssign({},state,{columnBigType:action.columnBigType,searchType:action.searchType,reportType:action.reportType,active:action.active,sord:action.sord,sidx:action.sidx,costStatus:action.costStatus,reportTag:action.reportTag});
     case "SHOWCOLLECTPOPUP" : return ObjectAssign({},state,{showCollectPopup:action.showCollectPopup,showCollectPopupID:action.showCollectPopupID});
     case "RESETREPORT" : return  defaultCollect;
     default : return state;

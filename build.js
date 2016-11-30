@@ -61,6 +61,8 @@ import SubscribePage from './components/subscribePage';
 import SubscribePageAll from './components/subscribePageAll';
 import SubscribePageList from './components/subscribePageList';
 import SubscribeContent from './components/subscribeContent';
+import SubtrainPageAll from './components/subtrainPageAll';
+
 
 import {WXKEY,HTTPURL} from './components/config';
 
@@ -221,11 +223,14 @@ export class Reactrouter extends Component{
                         <Route path="subscribePageAll/:id">
                             <IndexRoute component={SubscribePageAll}/>
                         </Route>
-                        <Route path="subscribePageList/:id">
+                        <Route path="subscribePageList/:id/:reportType">
                             <IndexRoute component={SubscribePageList}/>
                         </Route>
-                        <Route path="subscribeContent/:id">
+                        <Route path="subscribeContent/:id/:reportId/:typeName">
                             <IndexRoute component={SubscribeContent}/>
+                        </Route>
+                        <Route path="subtrainPageAll/:id">
+                            <IndexRoute component={SubtrainPageAll}/>
                         </Route>
                         <Route path="pdf/:id/:title/:price" component={Pdf}></Route>
                         <Route path="picture/:url" component={Picture}></Route>

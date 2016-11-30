@@ -5,7 +5,8 @@ var defaultSubscribePageAll={
   data:[],
   pageNo:1,
   infinite:false,
-  titleOrReportKey:null
+  titleOrReportKey:null,
+  briefContent:true
 }
 export default function subscribePageAll(state=defaultSubscribePageAll,action) {
   switch(action.type){
@@ -13,6 +14,8 @@ export default function subscribePageAll(state=defaultSubscribePageAll,action) {
     case "CHANGESUBSCRIBEPAGEALLTITLEORREPORTKEY" : return ObjectAssign({},state,{titleOrReportKey:action.titleOrReportKey});
     case INFINITE : return ObjectAssign({},state,{infinite:false});
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
+    case "SHOWBRIEFCONTENT" : return ObjectAssign({},state,{briefContent:true});
+    case "UNSHOWBRIEFCONTENT" : return ObjectAssign({},state,{briefContent:false});
     case "RESETSUBSCRIBEPAGEALL" : return  ObjectAssign({},defaultSubscribePageAll);
     default : return state;
   }
