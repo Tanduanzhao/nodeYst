@@ -1432,6 +1432,8 @@ table{
             color: #fff;
         }
     }
+    -webkit-transition: background 0.5s;
+    transition: background 0.5s; 
 }
 .header-img{
     img{
