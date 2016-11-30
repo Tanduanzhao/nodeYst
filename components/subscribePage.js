@@ -59,7 +59,7 @@ class SubscribePage extends Component {
             }
         });
     }
-  _infiniteScroll(){
+     _infiniteScroll(){
     if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.subscribePage.infinite && this.state.request){
       this._loadData();
     }

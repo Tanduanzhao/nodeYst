@@ -15,7 +15,8 @@ class SubscribePageList extends Component {
     super(props);
     this.state={
         request:true,
-        loading:true
+        loading:true,
+        id:this.props.params.id
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -23,20 +24,24 @@ class SubscribePageList extends Component {
     componentDidMount(){
         this.ele = this.refs.content;
         this._loadData();
+        this._getReportType();
     }
     _loadData(){
         this.setState({
             request:false
         });
+        console.log(this.props.subscribePageList.pageNo,"costStatusss")
         //读取专栏订阅详情
         getColumnReportList({
             columnId:this.props.params.id,
+            reportType:this.props.params.reportType,
+            costStatus:this.props.subscribePageList.costStatus,
             pageNo:this.props.subscribePageList.pageNo,
             titleOrReportKey:this.props.subscribePageList.titleOrReportKey,
             callBack:(res)=>{
                 console.log(res.datas)
                 this.props.dispatch({
-                    type:'LOADSUBSCRIBEPAGEALLDATA',
+                    type:'LOADSUBSCRIBEPAGELISTDATA',
                     data:res.datas,
                     pageNo:this.props.subscribePageList.pageNo+1
                 });
@@ -45,6 +50,17 @@ class SubscribePageList extends Component {
                 });
                 this.setState({
                     request:true
+                });
+            }
+        });
+    }
+    _getReportType(){
+        getReportType({
+            columnId:this.props.params.id,
+            callBack:(res)=>{
+                this.props.dispatch({
+                    type:'CHANGESUBSCRIBEPAGELISTTYPEDATE',
+                    subscribeTypeDate:res.datas
                 });
             }
         });
@@ -59,7 +75,7 @@ class SubscribePageList extends Component {
             loading:true
         });
         this.props.dispatch({
-            type:'LOADSUBSCRIBEPAGEALLDATA',
+            type:'LOADSUBSCRIBEPAGELISTDATA',
             data:[],
             pageNo:1
         });
@@ -76,15 +92,18 @@ class SubscribePageList extends Component {
         });
         this.props.dispatch((dispatch) => {
             dispatch({
-                type:'LOADSUBSCRIBEPAGEALLDATA',
+                type:'LOADSUBSCRIBEPAGELISTDATA',
                 data:[],
                 pageNo:1
             });
             dispatch({
                 type:'UNSHOWFILTERPSUBSCRIBEPAGE'
             });
+            console.log(args.costStatus)
             dispatch({
-                type:'CHANGESUBSCRIBEPAGEFILTER'
+                type:'CHANGESUBSCRIBEPAGELISTEFILTER',
+                costStatus:args.costStatus,
+                column:args.column
             });
             setTimeout(()=>{
                 this._loadData();
@@ -97,19 +116,25 @@ class SubscribePageList extends Component {
         });
     }
   render() {
-      console.log(this.props.subscribePageList.data,"date")
+
     return (
       <div className="root">
-        <HeaderBar {...this.props}  searchHandle={this._searchHandle.bind(this)} showProvicenHandle={this._showProvicenHandle.bind(this)}/>
-        <div  ref="content"  className="scroll-content has-header subscribeAll has-footer">
-          <Main {...this.props} data={this.props.subscribePageList.data} loading={this.state.loading}/>
-        </div>
-          <div className="bar bar-footer bar-assertive row purchase-report ">
-              <button className="button-clear col-50 purchase-price">¥sss}</button>
-              <button className="button-clear col-50">报告购买</button>
-          </div>
           {
-              this.props.subscribePageList.isShowFilter&&!this.state.loading? <FilterSubscribeList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
+              //<HeaderBar {...this.props}  searchHandle={this._searchHandle.bind(this)} showProvicenHandle={this._showProvicenHandle.bind(this)}/>
+          }
+       <div  ref="content"  className="scroll-content subscribeAll">
+          <Main {...this.props} data={this.props.subscribePageList.data} id={this.state.id}  briefContentList={this.props.subscribePageList.briefContentList} loading={this.state.loading}/>
+        </div>
+          {
+              this.props.subscribePageList.data.buyReport==0
+                  ? <div className="bar bar-footer row purchase-bar" style={{display:"none"}}>
+                        <button>¥ 6999/年</button>
+                         <button className="purchase-subscribe">专栏订阅</button>
+                     </div>
+                  :  null
+          }
+          {
+              this.props.subscribePageList.isShowFilter&&!this.state.loading? <FilterSubscribeList fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.subscribePageList}/> : null
           }
       </div>
     )
@@ -144,6 +169,11 @@ class Main extends Component{
   constructor(props){
     super(props);
   }
+    _hiddenbriefContent(){
+        this.props.briefContentList
+            ?   this.props.dispatch({type: 'UNSHOWBRIEFCONTENTLIST'})
+            : this.props.dispatch({type: 'SHOWBRIEFCONTENTLIST'})
+    }
   render(){
     if(this.props.loading) {
       return <Loading/>
@@ -152,22 +182,44 @@ class Main extends Component{
             <div>
                 <div className="img-title">
                     <img className="title" src={this.props.data.columnInstroImg} alt=""/>
-                    <div className="bar-title">吴炳洪･《老吴专栏》</div>
+                    {
+                        this.props.params.id==3?null
+                            : <div className="bar-title">
+                                {this.props.data.title}
+                                <div className="bar-typeName">{this.props.data.typeName}</div>
+                            </div>
+                    }
                 </div>
                 <div className="list">
-                    <div className="item list-title">
-                        <h3>栏目报告</h3>
-                       <div className="list-title-right">14786人订阅</div>
+                    <div className="item item-divider home-item-title">
+                        <strong>
+                            {
+                                this.props.params.id==3?"课程简介":"栏目简介"
+                            }
+                        </strong>
+                        <div className="list-title-right">
+                            {
+                                //<i className="fa fa-eye"></i>
+                                //14786人订阅
+                            }
+                            <i   className={this.props.briefContentList ? "ion-chevron-up": "ion-chevron-down"} style={{ color:'#0894ec',marginLeft: '6px'}} onClick={this._hiddenbriefContent.bind(this)}></i>
+                        </div>
                     </div>
-                    <p className="subscribeAll-body">
-                        Phasellus porta fermentum est et eleifend. Pellentesque dapibus fermentum tortor, non fermentum sem vehicula sit amet. Vivamus sed justo nisl. Nunc suscipit scelerisque ex, at mattis ipsum elementum sed. Cras eget neque ut justo dignissim tempus. In eu mi sagittis, fringilla lorem ac, porttitor ante. Duis fermentum, leo eget gravida cursus, eros mi congue est, et aliquam lectus enim ac ipsum. Cras eu lacus non odio laoreet fringilla. Curabitur eget enim vitae velit tincidunt aliquam. Aliquam nec tortor eu sapien efficitur rhoncus eu vel ante.
-                    </p>
-                    <div className="item list-title">
-                        <h3>专栏栏目</h3>
+                    {
+                        this.props.briefContentList
+                            ? <p className="subscribeAll-body">{this.props.data.typeMainContent}</p>
+                            :null
+                    }
+                    <div className="item item-divider home-item-title">
+                        <strong>
+                            {
+                                this.props.params.id==3?"课程内容":"栏目报告"
+                            }
+                        </strong>
                     </div>
                     <ul className="list new_report">
                         {
-                            this.props.data.lists.map((ele,index)=> <List dataSources={ele} key={ele.id+Math.random()}/>)
+                            this.props.data.lists.map((ele,index)=> <List id={this.props.id} typeName={this.props.data.typeName} dataSources={ele} key={ele.id+Math.random()}/>)
                         }
                     </ul>
                 </div>
@@ -196,16 +248,18 @@ class List extends Component{
             return children;
         })();
         return (
-            <Link className="item" to={`/subscribeContent/${this.props.dataSources.id}`}>
+            <Link className="item" to={`/subscribeContent/${this.props.id}/${this.props.dataSources.id}/${this.props.typeName}`}>
                 <div className="item-left">
                     <img src={this.props.dataSources.mainImg} alt=""/>
                 </div>
                 <div className="item-right">
                     <h3 className="item-nowrap title">{this.props.dataSources.title}</h3>
-                    <div className="introduce">{this.props.dataSources.columnBriefContent}</div>
-                    <div className="item-right-footer item-footer-right">
-                        {viewicon}
-                    </div>
+                    <div className="introduce">{this.props.dataSources.reportDigest}</div>
+                    {
+                        //<div className="item-right-footer item-footer-right">
+                        //    {viewicon}
+                        //</div>
+                    }
                 </div>
             </Link>
         )

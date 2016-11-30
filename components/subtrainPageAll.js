@@ -7,10 +7,10 @@ import {Link} from 'react-router';
 import FilterReport from './filterReport';
 import Loading from './loading';
 import EmptyComponent from './emptyComponent';
-import {getReportColumnTypeList,loadNewrepor,loadPicture,insertUserAction,getReportType,loadReportList} from './function/ajax';
+import {getColumnReportList,loadNewrepor,loadPicture,insertUserAction,getReportType,loadReportList} from './function/ajax';
 import SubscribeAllList from './subscribeAllList';
 
-class SubscribePageAll extends Component {
+class SubtrainPageAll extends Component {
   constructor(props){
     super(props);
     this.state={
@@ -29,7 +29,7 @@ class SubscribePageAll extends Component {
             request:false
         });
         //专栏订阅分类列表
-        getReportColumnTypeList({
+        getColumnReportList({
             columnId:this.props.params.id,
             pageNo:this.props.subscribePageAll.pageNo,
             titleOrReportKey:this.props.subscribePageAll.titleOrReportKey,
@@ -127,18 +127,11 @@ class Main extends Component{
             <div>
                 <div className="img-title">
                     <img className="title" src={this.props.data.columnInstroImg} alt=""/>
-                    {
-                        this.props.params.id==3?null
-                            : <div className="bar-title">{this.props.data.title}</div>
-                    }
+                    <div className="bar-title">{this.props.data.title}</div>
                 </div>
                 <div className="list">
                     <div className="item item-divider home-item-title">
-                        <strong>
-                            {
-                                this.props.params.id==3?"大汇简介":"专栏简介"
-                            }
-                        </strong>
+                        <strong>大汇简介</strong>
                         <div className="list-title-right">
                             {
                                 //<i className="fa fa-eye"></i>
@@ -153,11 +146,7 @@ class Main extends Component{
                             :null
                     }
                     <div className="item item-divider home-item-title">
-                        <strong>
-                            {
-                                this.props.params.id==3?"培训课程":"专栏栏目"
-                            }
-                        </strong>
+                        <strong>培训课程</strong>
                     </div>
                     <ul className="list new_report">
                         {
@@ -175,7 +164,7 @@ function select(state){
       subscribePageAll:state.subscribePageAll
   }
 }
-SubscribePageAll.contextTypes = {
+SubtrainPageAll.contextTypes = {
   router:React.PropTypes.object.isRequired
 }
-export default connect(select)(SubscribePageAll);
+export default connect(select)(SubtrainPageAll);

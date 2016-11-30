@@ -5,7 +5,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
-import FilterReport from './filterReport';
+import FilterCollect from './filterCollect';
 import Loading from './loading';
 import EmptyComponent from './emptyComponent';
 import {getReportKeepList,insertUserAction,getReportType,cancelKeepReport} from './function/ajax';
@@ -50,6 +50,7 @@ class Collect extends Component {
       searchType:this.props.report.searchType,
       reportType:this.props.report.reportType,
       costStatus:this.props.report.costStatus,
+      columnBigType:this.props.report.columnBigType,
       titleOrReportKey:this.props.report.titleOrReportKey,
       callBack:(res)=>{
         console.log(res);
@@ -137,7 +138,8 @@ class Collect extends Component {
       sord:args.sord,
       sidx:args.sidx,
       costStatus:args.costStatus,
-      reportTag:args.reportTag
+      reportTag:args.reportTag,
+      columnBigType:args.columnBigType
     });
     setTimeout(()=>{
       this._loadData();
@@ -213,7 +215,7 @@ class Collect extends Component {
         <FooterBar {...this.props}/>
         {
           this.props.report.isShowFilter ?
-            <FilterReport fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.report}/> : null
+            <FilterCollect fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.report}/> : null
         }
         {
           this.state.loading ? <Loading/> : null

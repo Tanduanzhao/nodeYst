@@ -210,8 +210,8 @@ class Main extends Component{
 			<div  className="scroll-content has-footer">
 				{slide}
 				<Column {...this.props}/>
-				<ParseReport {...this.props}/>
 				<Subscribe {...this.props}/>
+				<ParseReport {...this.props}/>
 				<div className="item item-divider home-item-title">
 					<strong>最新报告</strong>
 					<img src="/images/new_report.jpg" alt="" className="hot-title"/>
@@ -235,6 +235,12 @@ class Main extends Component{
 					{
 						this.props.home.data.hotReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)//openProductView = {this.props.openProductView}
 					}
+				</div>
+				<div className="item item-divider home-item-title">
+					<strong>合作公众号</strong>
+				</div>
+				<div className="partners">
+					<img src="/images/partners.png" alt=""/>
 				</div>
 				<Box {...this.props}/>
 			</div>
@@ -276,9 +282,10 @@ class ParseReport extends Component{
 		return(
 			<div>
 				<div className="item item-divider home-item-title">
-					<strong>分析报告<span style={{margin:"0 5px"}}>|</span>免费</strong>
-					<Link to="/report" style={{position: "absolute",right:"1rem"}} >
-						查看全部
+					<strong>分析报告</strong>
+					<img src="/images/free.jpg" alt="" className="hot-title"/>
+					<Link  to="/report" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}>
+						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
 				</div>
 				<ul className="parseReport-list">
@@ -286,18 +293,33 @@ class ParseReport extends Component{
 						this.props.home.ParseReport.map((ele,index)=> <Link  to={`/pdf/${ele.id}/${encodeURIComponent(ele.title)}/${ele.price}`}  className="parseReport-item" key={ele.id+Math.random()}><i className="fa fa-play-circle"></i> 《{ele.title}》</Link >)
 					}
 				</ul>
+				{
+					//<ul className="list new_report">
+					//	{
+					//		this.props.home.ParseReport.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)
+					//	}
+					//</ul>
+				}
 			</div>
 		)
 	}
 }
 class Subscribe extends Component{
+	free(nub){
+		this.props.dispatch({
+			type:'GOREPORTTYPE',
+			data:[],
+			reportType: nub,
+			pageNo:1
+		});
+	}
 	render(){
 		return(
 			<div>
 				<div className="item item-divider home-item-title">
 					<strong>专栏订阅</strong>
-					<Link to="/subscribePage" style={{position: "absolute",right:"1rem"}} >
-						查看全部
+					<Link  to="/subscribePage" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}>
+						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
 				</div>
 				<ul className="list new_report">
@@ -307,12 +329,12 @@ class Subscribe extends Component{
 				</ul>
 				<div  className="report_classify">
 					<div className="row">
-						<div className="col col-50"><img src="/images/report_classify01.jpg" alt=""/></div>
-						<div className="col col-50"><img src="/images/report_classify02.jpg" alt=""/></div>
+						<Link to="/report"  onClick={this.free.bind(this,467095550)} className="col col-50"><img src="/images/report_classify01.jpg" alt=""/></Link>
+						<Link to="/report"  onClick={this.free.bind(this,467095549)} className="col col-50"><img src="/images/report_classify02.jpg" alt=""/></Link>
 					</div>
 					<div className="row">
-						<div className="col col-50"><img src="/images/report_classify03.jpg" alt=""/></div>
-						<div className="col col-50"><img src="/images/report_classify04.jpg" alt=""/></div>
+						<Link to="/report"  onClick={this.free.bind(this,467095546)} className="col col-50"><img src="/images/report_classify03.jpg" alt=""/></Link>
+						<Link to="/report"  onClick={this.free.bind(this,467095548)} className="col col-50"><img src="/images/report_classify04.jpg" alt=""/></Link>
 					</div>
 				</div>
 			</div>
