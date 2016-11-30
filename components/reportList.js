@@ -80,7 +80,7 @@ export default class ReportList extends Component {
 			<div>
 				{
 					this.props.collect&&this.props.dataSources.columnId!="1"
-						?<Link onTouchStart={this.touchStart.bind(this)} to={`/subscribeContent/${this.props.dataSources.columnId}/${this.props.dataSources.id}`}  className="item">
+						?<Link onTouchStart={this.touchStart.bind(this)} to={`/subscribeContent/${this.props.dataSources.columnId}/${this.props.dataSources.id}/${this.props.dataSources.typeName}`}  className="item">
 						<div className="item-left">
 							<img src={this.props.dataSources.mainImg} alt=""/>
 						</div>

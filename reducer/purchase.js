@@ -35,6 +35,7 @@ export default function purchase(state=defaultPurchase,action) {
     case "CHANGEPURCHASETYPE" : return ObjectAssign({},state,{ReportTypeDate:action.ReportTypeDate});
     case "LOADREPORTTYPE" : return ObjectAssign({},state,{ReportType:action.ReportType});
     case INFINITE : return ObjectAssign({},state,{infinite:false});
+    case "RESETPURCHASETYPE" : return defaultPurchase;
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
     case SHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:false});

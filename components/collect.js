@@ -202,7 +202,10 @@ class Collect extends Component {
   }
   componentWillUnmount(){
     this.props.dispatch({
-      type:'RESETREPORT'
+      type:'RESETREPORTCOLLECT'
+    });
+    this.props.dispatch({
+      type:'UNSHOWFILTERPRODUCE'
     });
   }
   render() {

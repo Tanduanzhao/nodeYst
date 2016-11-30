@@ -36,7 +36,7 @@ export default function collect(state=defaultCollect,action) {
     case "CHANGECOLLECTTITLEORREPORTKEY" : return ObjectAssign({},state,{titleOrReportKey:action.titleOrReportKey});
     case "SELECTCHANGERCOLLECT" : return ObjectAssign({},state,{columnBigType:action.columnBigType,searchType:action.searchType,reportType:action.reportType,active:action.active,sord:action.sord,sidx:action.sidx,costStatus:action.costStatus,reportTag:action.reportTag});
     case "SHOWCOLLECTPOPUP" : return ObjectAssign({},state,{showCollectPopup:action.showCollectPopup,showCollectPopupID:action.showCollectPopupID});
-    case "RESETREPORT" : return  defaultCollect;
+    case "RESETREPORTCOLLECT" : return  defaultCollect;
     default : return state;
   }
 }
