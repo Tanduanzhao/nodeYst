@@ -21,6 +21,8 @@ class Report extends Component {
       loading:true,
       request:true,
       showPopup:false,
+      isOpacity:true,
+      opacityNum:0,
       reportTag:this.props.report.reportTag
     };
     this._loadData = this._loadData.bind(this);
@@ -67,6 +69,17 @@ class Report extends Component {
     if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.report.infinite && this.state.request){
       this._loadData();
     }
+    if(this.ele.scrollTop>=this.refs.headerImg.clientHeight){
+        this.setState({
+            isOpacity:false,
+            opacityNum:1
+        });
+    }else{
+        this.setState({
+            isOpacity:true,
+            opacityNum:this.ele.scrollTop/this.refs.headerImg.clientHeight
+        })
+    }
   }
   _getReportType(){
     getReportType({
@@ -79,10 +92,11 @@ class Report extends Component {
     });
   }
   componentDidMount(){
+      
     this.ele = this.refs.content;
-    console.log(this.props.report.data);
+//    console.dir(this.refs.headerImg);
     this.ele.addEventListener('scroll',this._infiniteScroll);
-    console.log(this.props.report.fixedScroll);
+//    console.log(this.props.report.fixedScroll);
     //this._loadData();
     //this._getReportType();
     if(this.props.report.fixedScroll!=2){
@@ -185,9 +199,13 @@ class Report extends Component {
   render() {
     return (
       <div className="root">
-        <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
-        <div  ref="content"  className="scroll-content has-header report-view">
-          <Main {...this.props} openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
+        <HeaderBar {...this.props} opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} searchHandle={this._searchHandle.bind(this)}/>
+        <div ref="content"  className="scroll-content scroll-report report-view">
+          <div className="header-img" ref="headerImg">
+              <img width="100%" src="../images/report_bg.jpg"/>
+          </div>
+          <Main ref="main" {...this.props} openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}>
+          </Main>
         </div>
         <FooterBar {...this.props}/>
         {
@@ -215,7 +233,7 @@ class HeaderBar extends Component{
   }
   render(){
     return(
-      <div className="bar bar-header bar-positive item-input-inset">
+      <div className={`bar bar-header bar-positive item-input-inset ${this.props.isOpacity ? 'bar-opacity' : null}`} style={{backgroundColor:`rgba(56,126,245,${this.props.opacityNum})`}}>
         <div className="buttons">
           <button className="button" onClick={this._showProvicenHandle.bind(this)}>
             <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
@@ -242,11 +260,14 @@ class Main extends Component{
     }else{
       if(this.props.data.length != 0){
         return(
-            <ul className="list new_report">
-              {
-                this.props.data.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} reportTag={this.props.reportTag} dataSources={ele} key={ele.id+Math.random()}/>)
-              }
-            </ul>
+            <div>
+                {this.props.children}
+                <ul className="list new_report">
+                  {
+                    this.props.data.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} reportTag={this.props.reportTag} dataSources={ele} key={ele.id+Math.random()}/>)
+                  }
+                </ul>
+            </div>
         )
       }else{
         return <EmptyComponent/>

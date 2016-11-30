@@ -1336,3 +1336,26 @@ table{
 .defmargin{
     margin: 0;
 }
+.bar{
+    &.bar-opacity{
+        background-color: rgba(255,255,255,0);
+        background-image: none;
+        .button{
+            background-color: transparent;
+        }
+        .item-input-wrapper{
+            background-color: rgba(238,238,238,.2);
+        }
+        .placeholder-icon{
+            color: #fff;
+        }
+    }
+}
+.header-img{
+    img{
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+    }
+}

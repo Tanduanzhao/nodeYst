@@ -15,7 +15,9 @@ class SubscribePage extends Component {
     super(props);
     this.state={
         request:true,
-        loading:true
+        loading:true,
+        isOpacity:true,
+        opacityNum:0
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -61,6 +63,17 @@ class SubscribePage extends Component {
     if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.subscribePage.infinite && this.state.request){
       this._loadData();
     }
+    if(this.ele.scrollTop>=this.refs.headerImg.clientHeight){
+        this.setState({
+            isOpacity:false,
+            opacityNum:1
+        });
+    }else{
+        this.setState({
+            isOpacity:true,
+            opacityNum:this.ele.scrollTop/this.refs.headerImg.clientHeight
+        })
+    }
   }
     _searchHandle(){
         this.setState({
@@ -82,8 +95,13 @@ class SubscribePage extends Component {
       console.log(this.props.subscribePage.data,"date")
     return (
       <div className="root">
-        <HeaderBar {...this.props}  searchHandle={this._searchHandle.bind(this)}/>
-        <div  ref="content"  className="scroll-content has-header report-view">
+        {
+         //   <HeaderBar {...this.props} opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} searchHandle={this._searchHandle.bind(this)}/>
+        }
+        <div  ref="content"  className="scroll-content scroll-report report-view">
+          <div className="header-img" ref="headerImg">
+              <img width="100%" src="../images/sub_scribe_page_bg.jpg"/>
+          </div>
           <Main {...this.props} data={this.props.subscribePage.data} loading={this.state.loading}/>
         </div>
       </div>
@@ -99,7 +117,7 @@ class HeaderBar extends Component{
   }
   render(){
     return(
-      <div className="bar bar-header bar-positive item-input-inset">
+      <div className={`bar bar-header bar-positive item-input-inset ${this.props.isOpacity ? 'bar-opacity' : null}`} style={{backgroundColor:`rgba(56,126,245,${this.props.opacityNum})`}}>
         <label className="item-input-wrapper">
           <i className="icon ion-ios-search placeholder-icon"></i>
           <input ref="subscribePageSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
