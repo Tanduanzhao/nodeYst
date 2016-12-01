@@ -247,7 +247,7 @@ class subscribeContent extends Component{
                             <div  className="columnTitle">
                                 {this.props.subscribeContent.dataAll.columnName}
                                 {this.props.params.id==2?<span>{this.props.subscribeContent.dataAll.columnTitle}</span>:null}
-                                {this.props.params.id==3?<span>{this.props.subscribeContent.dataAll.columnBriefContent}</span>:null}
+                                {this.props.params.id==3?<span>{this.props.subscribeContent.dataAll.columnMainContent}</span>:null}
                             </div>
                         </div>
                         <div className="nestedHTML" dangerouslySetInnerHTML={{__html:this.props.subscribeContent.dataAll.reportContent}}>
