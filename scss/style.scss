@@ -1398,9 +1398,16 @@ table{
 }
 .partners{
     padding: 28px 21px;
-    img{
+    .partners-class{
         width:70px;
-        height: 70px;
+    }
+    img{
+        width:100%;
+        display: block;
+    }
+    p{
+        font-size: .6rem;
+        text-align: center;
     }
 }
 .reportTitle{
@@ -1408,7 +1415,7 @@ table{
     padding: 0px 16px 10px 16px;
     .columnTitle{
         font-size: .45rem;
-        color: #d1d1d1;
+        color: #999;
         margin-top: 3px;
         span{
             margin-left: 20px;

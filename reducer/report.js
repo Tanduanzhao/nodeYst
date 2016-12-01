@@ -53,6 +53,7 @@ export default function report(state=defaultReport,action) {
     case CHANGEREPORTTYPE : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType,active:action.active,sord:action.sord,sidx:action.sidx,costStatus:action.costStatus,reportTag:action.reportTag});
     case GOREPORT : return ObjectAssign({},state,{data:action.data,searchType:action.searchType,pageNo:action.pageNo});
     case "GOREPORTTYPE" : return ObjectAssign({},state,{data:action.data,reportType:action.reportType,pageNo:action.pageNo});
+    case "GOREPORTFREE" : return ObjectAssign({},state,{data:action.data,costStatus:action.costStatus,pageNo:action.pageNo});
     case CHANGETITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:action.titleOrReportKey});
     //case CLEARTITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:null});
     case "RESETREPORT" : return  ObjectAssign({},defaultReport,{fixedScroll:state.fixedScroll});

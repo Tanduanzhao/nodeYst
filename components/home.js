@@ -240,7 +240,10 @@ class Main extends Component{
 					<strong>合作公众号</strong>
 				</div>
 				<div className="partners">
-					<img src="/images/partners.png" alt=""/>
+					<div className="partners-class">
+						<img src="/images/partners.png" alt=""/>
+						<p>赛柏蓝</p>
+					</div>
 				</div>
 				<Box {...this.props}/>
 			</div>
@@ -278,13 +281,21 @@ class Column extends Component{
 }
 
 class ParseReport extends Component{
+	freeReport(nub) {
+		this.props.dispatch({
+			type: 'GOREPORTFREE',
+			data: [],
+			costStatus: 0,
+			pageNo: 1
+		});
+	}
 	render(){
 		return(
 			<div>
 				<div className="item item-divider home-item-title">
 					<strong>分析报告</strong>
 					<img src="/images/free.jpg" alt="" className="hot-title"/>
-					<Link  to="/report" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}>
+					<Link  to="/report"  onClick={this.freeReport.bind(this)}  style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}>
 						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
 				</div>
