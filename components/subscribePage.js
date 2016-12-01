@@ -99,10 +99,12 @@ class SubscribePage extends Component {
          //   <HeaderBar {...this.props} opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} searchHandle={this._searchHandle.bind(this)}/>
         }
         <div  ref="content"  className="scroll-content scroll-report report-view">
-          <div className="header-img" ref="headerImg">
-              <img width="100%" src="../images/sub_scribe_page_bg.jpg"/>
+          <div>
+              <div className="header-img" ref="headerImg">
+                  <img width="100%" src="../images/sub_scribe_page_bg.jpg"/>
+              </div>
+              <Main {...this.props} data={this.props.subscribePage.data} loading={this.state.loading}/>
           </div>
-          <Main {...this.props} data={this.props.subscribePage.data} loading={this.state.loading}/>
         </div>
       </div>
     )

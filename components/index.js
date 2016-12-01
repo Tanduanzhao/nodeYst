@@ -153,10 +153,12 @@ class Index extends Component{
 			<div className="root">
                 <HeaderBar opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
                 <div ref="content" className="scroll-content ionic-scroll has-tabs">
-                    <div className="header-img" ref="headerImg">
-                        <img width="100%" src="../images/index_bg.jpg"/>
+                    <div>
+                        <div className="header-img" ref="headerImg">
+                            <img width="100%" src="../images/index_bg.jpg"/>
+                        </div>
+                        <Main loading={this.state.loading} {...this.props} data={this.props.initData}/>
                     </div>
-                    <Main loading={this.state.loading} {...this.props} data={this.props.initData}/>
                 </div>
                 <FooterBar {...this.props}/>
 				{

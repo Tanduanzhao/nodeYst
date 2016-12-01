@@ -16,7 +16,6 @@ export default class ReportList extends Component {
 		})
 	}
 	touchStart(event){
-		console.log(this.props.collect,"Sss");
 		if(this.props.collect){
 			var downtime,uptime;
 			var date=new Date();
@@ -75,7 +74,6 @@ export default class ReportList extends Component {
 				price: this.props.dataSources.price
 			}
 		}
-		console.log(this.props.collect,"this.props.collect")
 		return(
 			<div>
 				{

@@ -78,7 +78,6 @@ class Home extends Component{
 		//读取专栏订阅列表
 		getCiReportColumnList({
 			callBack:(res)=>{
-				console.log(res.datas)
 				this.props.dispatch({
 					type:'LOADHOMECOLUMNLIST',
 					ColumnList: res.datas

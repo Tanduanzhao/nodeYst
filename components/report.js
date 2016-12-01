@@ -66,10 +66,6 @@ class Report extends Component {
   }
   _infiniteScroll(){
     //全部高度-滚动高度 == 屏幕高度-顶部偏移
-    console.log(this.ele.firstChild.clientHeight,"clientHeight")
-    console.log(this.ele.scrollTop,"scrollTop")
-    console.log(this.ele.firstChild.clientHeight-this.ele.scrollTop ,"requestss")
-    console.log(document.body.clientHeight-this.ele.offsetTop ,"ssss")
     if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.report.infinite && this.state.request){
       this._loadData();
     }
@@ -208,11 +204,13 @@ class Report extends Component {
       <div className="root">
         <HeaderBar {...this.props} opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} searchHandle={this._searchHandle.bind(this)}/>
         <div ref="content"  className="scroll-content scroll-report report-view">
-          <div className="header-img" ref="headerImg">
+          <div>
+            <div className="header-img" ref="headerImg">
               <img width="100%" src="../images/report_bg.jpg"/>
+            </div>
+            <Main ref="main" {...this.props} openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}>
+            </Main>
           </div>
-          <Main ref="main" {...this.props} openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}>
-          </Main>
         </div>
         <FooterBar {...this.props}/>
         {
