@@ -24,6 +24,10 @@ import assist from './assist';
 import lowPrice from './lowPrice';
 import anti from './anti';
 import collect from './collect';
+import subscribePage from './subscribePage';
+import subscribePageAll from './subscribePageAll';
+import subscribePageList from './subscribePageList';
+import subscribeContent from './subscribeContent';
 //合并仓库
 
 const ystReducers = combineReducers({
@@ -51,6 +55,10 @@ const ystReducers = combineReducers({
     lowPrice,
     anti,
     collect,
-    bidListall
+    bidListall,
+    subscribePage,
+    subscribePageAll,
+    subscribePageList,
+    subscribeContent
 })
 export default ystReducers;

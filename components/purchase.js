@@ -86,6 +86,16 @@ class purchase extends Component {
       data:[],
       pageNo:1
     });
+    this.props.dispatch({
+      type:'RESETPURCHASETYPE',
+      data:[],
+      pageNo:1
+    });
+    this.props.dispatch({
+      type:'UNSHOWFILTERPRODUCE',
+      data:[],
+      pageNo:1
+    });
   }
   _fn(args) {
     this.setState({

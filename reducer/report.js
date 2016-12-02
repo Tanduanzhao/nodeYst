@@ -33,14 +33,18 @@ var defaultReport={
   sord:null,
   sidx:null,
   active:0,
-  costStatus:null
+  costStatus:null,
+  fixedScroll:0,
+  pdf:false
 }
 export default function report(state=defaultReport,action) {
   switch(action.type){
     case "CHANGEREPORTTYPEDATE" : return ObjectAssign({},state,{ReportTypeDate:action.ReportTypeDate});
     case "LOADREPORTTYPE" : return ObjectAssign({},state,{ReportType:action.ReportType});
-    case "CHANGEREPORTTAG" : return ObjectAssign({},state,{reportTag:true});
+    //case "CHANGEREPORTTAG" : return ObjectAssign({},state,{reportTag:true});
     case "UNCHANGEREPORTTAG" : return ObjectAssign({},state,{reportTag:false});
+    case "CHAGNGEFIXEDSCROLL" : return ObjectAssign({},state,{fixedScroll:action.fixedScroll});
+    case "CHAGNGEFIXEDSCROLLPDF" : return ObjectAssign({},state,{pdf:action.pdf});
     case INFINITE : return ObjectAssign({},state,{infinite:false});
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
     case SHOWFILTERPRODUCE : return ObjectAssign({},state,{isShowFilter:true});
@@ -48,9 +52,11 @@ export default function report(state=defaultReport,action) {
     case LOADPRODUCEDATA : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
     case CHANGEREPORTTYPE : return ObjectAssign({},state,{searchType:action.searchType,reportType:action.reportType,active:action.active,sord:action.sord,sidx:action.sidx,costStatus:action.costStatus,reportTag:action.reportTag});
     case GOREPORT : return ObjectAssign({},state,{data:action.data,searchType:action.searchType,pageNo:action.pageNo});
+    case "GOREPORTTYPE" : return ObjectAssign({},state,{data:action.data,reportType:action.reportType,pageNo:action.pageNo});
+    case "GOREPORTFREE" : return ObjectAssign({},state,{data:action.data,costStatus:action.costStatus,pageNo:action.pageNo});
     case CHANGETITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:action.titleOrReportKey});
-    case CLEARTITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:null});
-    case "RESETREPORT" : return  ObjectAssign({},defaultReport);
+    //case CLEARTITLEORREPORTKEY : return ObjectAssign({},state,{titleOrReportKey:null});
+    case "RESETREPORT" : return  ObjectAssign({},defaultReport,{fixedScroll:state.fixedScroll});
     default : return state;
   }
 }

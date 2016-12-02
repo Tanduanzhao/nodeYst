@@ -71,6 +71,9 @@ class MarketPrice extends Component{
             data:[],
             pageNo:1
         });
+        this.props.dispatch({
+            type:'RESETMARKETPRICE'
+        });
     }
     _searchHandle(){
         if(this.props.isVip == '0'){

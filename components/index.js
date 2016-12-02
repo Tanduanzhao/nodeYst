@@ -15,10 +15,29 @@ class Index extends Component{
 	constructor(props) {
 	  super(props);
       this.state ={
-          loading:true
+          loading:true,
+          isOpacity:true,
+          opacityNum:0,
       }
+      this._infiniteScroll = this._infiniteScroll.bind(this);
 	}
+    _infiniteScroll(){
+        if(this.ele.scrollTop>=this.refs.headerImg.clientHeight){
+            this.setState({
+                isOpacity:false,
+                opacityNum:1
+            });
+        }else{
+            this.setState({
+                isOpacity:true,
+                opacityNum:this.ele.scrollTop/this.refs.headerImg.clientHeight
+            })
+        }
+    }
     componentDidMount(){
+        this.ele = this.refs.content;
+//        console.dir(this.refs.headerImg);
+        this.ele.addEventListener('scroll',this._infiniteScroll);
         loadProvince(this.props.dispatch);
         if(this.props.initData.length!=0){
             loadIndex(this.props.dispatch,{
@@ -132,8 +151,15 @@ class Index extends Component{
         
 		return(
 			<div className="root">
-                <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
-                <Main loading={this.state.loading} {...this.props} data={this.props.initData}/>
+                <HeaderBar opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
+                <div ref="content" className="scroll-content ionic-scroll has-tabs">
+                    <div>
+                        <div className="header-img" ref="headerImg">
+                            <img width="100%" src="../images/index_bg.jpg"/>
+                        </div>
+                        <Main loading={this.state.loading} {...this.props} data={this.props.initData}/>
+                    </div>
+                </div>
                 <FooterBar {...this.props}/>
 				{
 					this.props.showProvicen ? <Provicen fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
@@ -154,14 +180,15 @@ class Main extends Component{
         super(props);
     }
 	render(){
-        var module = [<Chart key="chart" dataSources={this.props.data.businessCwm}/>,
+        var module = this.props.loading ? <loading/> : [<Chart key="chart" dataSources={this.props.data.businessCwm}/>,
                 <Classify key="classify" dataSources={this.props.data.businessSales}/>,
                 <Concept key="concept" dataSources={this.props.data.businessConcept}/>,
                 <Breed key="breed" dataSources={this.props.data.businessBreedUp}/>];
 		return(
-			<div className="scroll-content ionic-scroll has-header has-tabs">
-                {this.props.loading ? <Loading/> : module}
+			<div>
+			    {module}
 			</div>
+			
 		)
 	}
 }

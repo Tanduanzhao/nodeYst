@@ -26,5 +26,11 @@ module.exports = function(app) {
     app.get('/collect',index);
     app.get('/bidListall',index);
     app.get('/bidListall/*',index);
+    app.get('/subscribePage',index);
+    app.get('/subscribePage/*',index);
+    app.get('/subscribePageAll',index);
+    app.get('/subscribePageAll/*',index);
+    app.get('/subscribeContent',index);
+    app.get('/subscribeContent/*',index);
     app.post('/getToken',getToken);
 }

@@ -5,23 +5,83 @@ import {createStore,applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import ystReducers from '../../reducer/reducer.js';
 export var store = createStore(ystReducers,applyMiddleware(thunk));
-
+import {Token} from './token';
+import {url2obj} from './common';
 function ajaxFn(params){
+//    if(store.getState().userInfo.isLogin||url2obj().code){
+//        console.log(store.getState().userInfo.isLogin,"ss")
+//        var params = {
+//            url:params.url || null,
+//            method:params.method || 'POST',
+//            data:params.data || {},
+//            callBack:params.callBack || function(){}
+//        };
+//        $.ajax({
+//            url:httpAddress+'business/getInitWxUser',
+//            data:{
+//                code:url2obj().code
+//            },
+//            success:function(res){
+//                console.log(url2obj().code)
+//                console.log(res)
+//                if(res.datas){
+//                    store.dispatch({
+//                        type:'LOADUSERINFO',
+//                        datas:res.datas
+//                    });
+//                    name=res.datas.id;
+//                    alert("ajax")
+//                    $.ajax({
+//                        url:httpAddress +params.url,
+//                        method:params.method,
+//                        data:params.data
+//                    }).then(function(res){
+//                        if(res.state == 1){
+//                            params.callBack(res);
+//                        }else{
+////            alert(res.message);
+//                            params.callBack();
+//                        }
+//                    })
+//                }
+//            }
+//
     var params = {
-        url:params.url || null,
-        method:params.method || 'POST',
-        data:params.data || {},
-        callBack:params.callBack || function(){}
-    };
+            url:params.url || null,
+            method:params.method || 'POST',
+            data:params.data || {},
+            callBack:params.callBack || function(){}
+        };
     $.ajax({
         url:httpAddress +params.url,
         method:params.method,
         data:params.data
     }).then(function(res){
-        if(res.state == 1){
-            params.callBack(res);
+        if(!store.getState().userInfo.isLogin){
+            $.ajax({
+                url: httpAddress + 'business/getInitWxUser',
+                data: {
+                    code: url2obj().code
+                },
+                success: function (res) {
+                    if (res.datas) {
+                        store.dispatch({
+                            type: 'LOADUSERINFO',
+                            datas: res.datas
+                        });
+                        name = res.datas.id;
+                    }
+                }
+            })
+        }
+        if(res.state == 1 ){
+            if(store.getState().userInfo.isLogin){
+                params.callBack(res);
+            }else{
+                ajaxFn(params)
+            }
         }else{
-//            alert(res.message);
+            // alert(res.message);
             params.callBack();
         }
     })
@@ -296,7 +356,67 @@ export const loadPicture = function(args){
             searchName:args.searchName || null,
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
-            imgType:args.imgType || null,
+            imgType:args.imgType || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//专栏订阅列表
+export const getCiReportColumnList = function(args){
+    ajaxFn({
+        url:'business/getCiReportColumnList',
+        data:{
+            titleOrReportKey:args.titleOrReportKey|| null,
+            pageNo:args.pageNo || null,
+            pageSize:args.pageSize || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//专栏订阅分类列表
+export const getReportColumnTypeList = function(args){
+    ajaxFn({
+        url:'business/getReportColumnTypeList',
+        data:{
+            columnId:args.columnId|| null,
+            titleOrReportKey:args.titleOrReportKey|| null,
+            pageNo:args.pageNo || null,
+            pageSize:args.pageSize || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//专栏订阅详情
+export const getColumnReportList = function(args){
+    ajaxFn({
+        url:'business/getColumnReportList',
+        data:{
+            columnId:args.columnId|| null,
+            pageNo:args.pageNo || null,
+            reportType:args.reportType || null,
+            pageSize:args.pageSize || null,
+            costStatus:args.costStatus || null,
+            titleOrReportKey:args.titleOrReportKey|| null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//课程点赞
+export const insertLikeReport = function(args){
+    ajaxFn({
+        url:'business/insertLikeReport',
+        data:{
+            reportId:args.reportId|| null
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -315,7 +435,49 @@ export const loadReportList = function(args){
             titleOrReportKey:args.titleOrReportKey,
             sidx:args.sidx ,
             sord:args.sord ,
-            costStatus:args.costStatus
+            costStatus:args.costStatus,
+            pageSize:args.pageSize || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//获取评论详情
+export const selectReportReplys = function(args){
+    ajaxFn({
+        url:'business/selectReportReplys',
+        data:{
+            pageNo:args.pageNo||null,
+            reportId:args.reportId||null,
+            columnId:args.columnId||null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+export const selectReportDetail = function(args){
+    ajaxFn({
+        url:'business/selectReportDetail',
+        data:{
+            reportId:args.reportId||null,
+            columnId:args.columnId||null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//发送评论
+export const insertReplyReport = function(args){
+    ajaxFn({
+        url:'business/insertReplyReport',
+        data:{
+            reportId:args.reportId||null,
+            replyContent:args.replyContent||null,
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -431,6 +593,9 @@ export const insertUserAction = function(args){
 export const getReportType = function(args){
     ajaxFn({
         url:'business/getReportType',
+        data:{
+            columnId:args.columnId || null
+        },
         callBack:(res)=>{
             args.callBack(res);
         }
@@ -758,7 +923,8 @@ export const getReportKeepList = function(args){
             titleOrReportKey:args.titleOrReportKey,
             sidx:args.sidx ,
             sord:args.sord ,
-            costStatus:args.costStatus
+            costStatus:args.costStatus,
+            columnBigType:args.columnBigType
         },
         callBack:(res)=>{
             args.callBack(res);

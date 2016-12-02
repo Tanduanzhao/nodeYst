@@ -273,7 +273,7 @@ class List extends Component{
     render(){
         return(
             <li className="item item-text-wrap">
-                <div className="row" style={(this.props.dataSources.productStatus==1)?null:{color:"#999"}}>
+                <div className="row" style={(this.props.dataSources.productStatus!=0)?null:{color:"#999"}}>
                     <div className="col-40">{this.props.dataSources.areaName}</div>
                     <div className="col-60">{this.props.dataSources.bidPrice}({this.props.dataSources.publishDate})</div>
                 </div>

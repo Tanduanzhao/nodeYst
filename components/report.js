@@ -16,19 +16,19 @@ import {OpenProductView} from './function/common';
 class Report extends Component {
   constructor(props){
     super(props);
-    console.log(this.props.params.id)
     this.state={
       searchType:this.props.report.searchType,
       loading:true,
       request:true,
       showPopup:false,
+      isOpacity:true,
+      opacityNum:0,
       reportTag:this.props.report.reportTag
     };
     this._loadData = this._loadData.bind(this);
     this._infiniteScroll = this._infiniteScroll.bind(this);
   }
   _loadData(){
-    console.log(this.state.reportTag,"reportTag")
     this.setState({
       request:false
     });
@@ -67,8 +67,18 @@ class Report extends Component {
   _infiniteScroll(){
     //全部高度-滚动高度 == 屏幕高度-顶部偏移
     if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.report.infinite && this.state.request){
-      console.log("sdddd",this.props.report.infinite)
       this._loadData();
+    }
+    if(this.ele.scrollTop>=this.refs.headerImg.clientHeight){
+        this.setState({
+            isOpacity:false,
+            opacityNum:1
+        });
+    }else{
+        this.setState({
+            isOpacity:true,
+            opacityNum:this.ele.scrollTop/this.refs.headerImg.clientHeight
+        })
     }
   }
   _getReportType(){
@@ -82,31 +92,39 @@ class Report extends Component {
     });
   }
   componentDidMount(){
+      
     this.ele = this.refs.content;
-    console.log(this.refs.content);
+//    console.dir(this.refs.headerImg);
     this.ele.addEventListener('scroll',this._infiniteScroll);
-    console.log(this.state.searchType);
+//    console.log(this.props.report.fixedScroll);
     this._loadData();
     this._getReportType();
+    //if(this.props.report.fixedScroll!=2){
+    //  this._loadData();
+    //  this._getReportType();
+    //  this.props.dispatch({
+    //    type:'CHAGNGEFIXEDSCROLL',
+    //    fixedScroll:2
+    //  })
+    //}else{
+    //  this.setState({
+    //    loading:false
+    //  });
+    //}
   }
   componentWillUnmount(){
     this.props.dispatch({
-      type:'UNSHOWFILTERPRODUCE'
-    });
-    this.props.dispatch({
-      type:'CLEARTITLEORREPORTKEY'
-    });
-      this.props.dispatch({
-        type:'LOADPRODUCEDATA',
-        data:[],
-        pageNo:1
-      });
-    this.props.dispatch({
-      type:'RESETREPORT'
-    });
-    this.props.dispatch({
-      type:'CHANGEREPORTTAG'
-    });
+          type: 'RESETREPORT'
+        });
+    //if(this.props.report.fixedScroll != 2){
+    //  this.props.dispatch({
+    //    type: 'RESETREPORT'
+    //  });
+    //}
+    //this.props.dispatch({
+    //  type:'CHAGNGEFIXEDSCROLL',
+    //  fixedScroll:1
+    //})
   }
    _openProductView(id){
      OpenProductView(id,()=>{
@@ -163,7 +181,7 @@ class Report extends Component {
     });
     setTimeout(()=> this._loadData(),100);
   }
-    
+
     _popupCancel(){
         this.setState({
             showPopup:false
@@ -184,9 +202,15 @@ class Report extends Component {
   render() {
     return (
       <div className="root">
-        <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
-        <div  ref="content"  className="scroll-content has-header report-view">
-          <Main {...this.props} openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
+        <HeaderBar {...this.props} opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} searchHandle={this._searchHandle.bind(this)}/>
+        <div ref="content"  className="scroll-content scroll-report report-view">
+          <div>
+            <div className="header-img" ref="headerImg">
+              <img width="100%" src="../images/report_bg.jpg"/>
+            </div>
+            <Main ref="main" {...this.props} openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}>
+            </Main>
+          </div>
         </div>
         <FooterBar {...this.props}/>
         {
@@ -214,7 +238,7 @@ class HeaderBar extends Component{
   }
   render(){
     return(
-      <div className="bar bar-header bar-positive item-input-inset">
+      <div className={`bar bar-header bar-positive item-input-inset ${this.props.isOpacity ? 'bar-opacity' : null}`} style={{backgroundColor:`rgba(56,126,245,${this.props.opacityNum})`}}>
         <div className="buttons">
           <button className="button" onClick={this._showProvicenHandle.bind(this)}>
             <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
@@ -241,11 +265,14 @@ class Main extends Component{
     }else{
       if(this.props.data.length != 0){
         return(
-            <ul className="list new_report">
-              {
-                this.props.data.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} reportTag={this.props.reportTag} dataSources={ele} key={ele.id+Math.random()}/>)
-              }
-            </ul>
+            <div>
+                {this.props.children}
+                <ul className="list new_report">
+                  {
+                    this.props.data.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} reportTag={this.props.reportTag} dataSources={ele} key={ele.id+Math.random()}/>)
+                  }
+                </ul>
+            </div>
         )
       }else{
         return <EmptyComponent/>
@@ -269,7 +296,7 @@ class List extends Component{
   }
   render(){
       console.log(this.props.dataSources.costStatus,'ct');
-      console.log(this.props.dataSources.buyReport,'br');
+      console.log(this.props.dataSources.buyReport,'sss');
     var string = null;
     var tag = (()=>{
       if(this.props.dataSources.costStatus == "1"){

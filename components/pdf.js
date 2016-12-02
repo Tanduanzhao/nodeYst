@@ -13,7 +13,7 @@ export default class Pdf extends Component{
              // 分享
                 var info = {
                     title: this.props.params.title,
-                    link: HTTPURL+'/pdf/'+this.props.params.id+'/'+encodeURIComponent(this.props.params.title)+'/'+this.props.params.price+"?recommender="+name+"&reportId="+this.props.params.id,
+                    link: HTTPURL+'/pdf/'+this.props.params.id+'/'+encodeURI(encodeURI(this.props.params.title))+'/'+this.props.params.price+"?recommender="+name+"&reportId="+this.props.params.id,
                     imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                     desc: '小伙伴们和我一起去逛逛医药圈的信息分享平台--药市通~'
                 };
@@ -177,7 +177,8 @@ export default class Pdf extends Component{
                         </button>
                         {this.props.params.title}</h4>
                 </div>
-                <div  ref="content" className="scroll-content has-header padding report-content" dangerouslySetInnerHTML={{__html:this.state.report.content}}>
+                <div  ref="content" className="scroll-content has-header padding report-content">
+                    <div className="nestedHTML" dangerouslySetInnerHTML={{__html:this.state.report.content}}></div>
                 </div>
                 {
                     this.state.reportVersion=="brief"

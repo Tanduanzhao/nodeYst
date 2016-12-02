@@ -56,6 +56,14 @@ import Insurance from './components/insurance';
 import Assist from './components/assist';
 import LowPrice from './components/lowPrice';
 import Anti from './components/anti';
+
+import SubscribePage from './components/subscribePage';
+import SubscribePageAll from './components/subscribePageAll';
+import SubscribePageList from './components/subscribePageList';
+import SubscribeContent from './components/subscribeContent';
+import SubtrainPageAll from './components/subtrainPageAll';
+
+
 import {WXKEY,HTTPURL} from './components/config';
 
 if(url2obj().recommender){
@@ -73,6 +81,22 @@ window.onload =function(){
 window.addEventListener("popstate",function(e){
     if(url2obj().recommender){
         location.href = HTTPURL;
+    }
+    var str =location.href.split('/');
+    console.log(store.getState().report.fixedScroll,"fixedScroll")
+    console.log(store.getState().report.pdf,"pdff")
+    console.log(location.pathname=="/","str")
+    if(str[str.length-1]=="report"){
+        store.dispatch({
+            type:'CHAGNGEFIXEDSCROLL',
+            fixedScroll:2
+        })
+    }
+    if(location.pathname == "/"){
+        store.dispatch({
+            type:'CHAGNGEFIXEDSCROLL',
+            fixedScroll:1
+        })
     }
 });
 
@@ -104,85 +128,14 @@ Token((res) => {
 //    ReactDOM.render(_router, ele, null);
 }
     ,(res)=>{
-        store.dispatch({
-            type:'LOADUSERINFO',
-            datas:res.datas
-        });
-        //alert("dddd")
-        name=res.datas.id;
+        //store.dispatch({
+        //    type:'LOADUSERINFO',
+        //    datas:res.datas
+        //});
+        ////alert("dddd")
+        //name=res.datas.id;
     }
     ,store
-);
-var _router = (
-	<Provider store={store}>
-        <Router history={browserHistory}>
-            <Route>
-                <Route path='/' component={Home}/>
-                <Route path='optional'>
-                    <Route path='classify/:sid' component={Optional}/>
-                    <Route path='concept/:cid' component={Concept}/>
-                </Route>
-                <Route path="rise">
-                    <Route path="classify" component={RiseClassify}/>
-                    <Route path="concept" component={RiseConcept}/>
-                    <Route path="breed" component={RiseBreed}/>
-                </Route>
-                <Route path="datas">
-                    <IndexRoute component={Datas}/>
-                    <Route path="hospitalList" component={HospitalList}/>
-                    <Route path="drugList" component={drugList}/>
-                    <Route path="marketPrice" component={marketPrice}/>
-                    <Route path="policy">
-                        <IndexRoute component={Policy}/>
-                        <Route path="quality" component={Quality}/>
-                        <Route path="quality/:gradeId" component={Quality}/>
-                        <Route path="base" component={Base}/>
-                        <Route path="base/:gradeId/:catalogEditionId" component={Base}/>
-                        <Route path="insurance" component={Insurance}/>
-                        <Route path="insurance/:gradeId/:catalogEditionId" component={Insurance}/>
-                        <Route path="assist" component={Assist}/>
-                        <Route path="assist/:gradeId/:catalogEditionId" component={Assist}/>
-                        <Route path="lowPrice" component={LowPrice}/>
-                        <Route path="lowPrice/:gradeId/:catalogEditionId" component={LowPrice}/>
-                        <Route path="anti" component={Anti}/>
-                        <Route path="anti/:gradeId/:catalogEditionId" component={Anti}/>
-                    </Route>
-
-                    <Route path="product" component={product}/>
-                    <Route path="bidList" component={bidList}/>
-                    <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>
-                </Route>
-                <Route path="drugContent/:sid">
-                    <IndexRoute component={drugContent}/>
-                </Route>
-                <Route path="center">
-                    <IndexRoute component={Center}/>
-                    <Route path="feedback" component={FeedBack}/>
-                    <Route path="help" component={help}/>
-                    <Route path="user" component={User}/>
-                    <Route path="contribute" component={contribute}/>
-                    <Route path="dataIntro" component={dataIntro}/>
-                </Route>
-                <Route path="purchase">
-                    <IndexRoute component={purchase}/>
-                </Route>
-                <Route path="report">
-                    <IndexRoute component={report}/>
-                    <Route path="free" component={free}/>
-                    <Route path="charge" component={charge}/>
-                </Route>
-                <Route path="home">
-                    <IndexRoute component={Index}/>
-                </Route>
-                <Route path="pdf/:id/:title/:price" component={Pdf}></Route>
-                <Route path="picture/:url" component={Picture}></Route>
-                <Route path="vip">
-                    <IndexRoute component={vip}/>
-                    <Route path="protocol" component={protocol}/>
-                </Route>
-            </Route>
-        </Router>
-	</Provider>
 );
 export class Reactrouter extends Component{
     componentDidMount(){
@@ -263,6 +216,21 @@ export class Reactrouter extends Component{
                         </Route>
                         <Route path="home">
                             <IndexRoute component={Index}/>
+                        </Route>
+                        <Route path="subscribePage">
+                            <IndexRoute component={SubscribePage}/>
+                        </Route>
+                        <Route path="subscribePageAll/:id">
+                            <IndexRoute component={SubscribePageAll}/>
+                        </Route>
+                        <Route path="subscribePageList/:id/:reportType">
+                            <IndexRoute component={SubscribePageList}/>
+                        </Route>
+                        <Route path="subscribeContent/:id/:reportId/:typeName">
+                            <IndexRoute component={SubscribeContent}/>
+                        </Route>
+                        <Route path="subtrainPageAll/:id">
+                            <IndexRoute component={SubtrainPageAll}/>
                         </Route>
                         <Route path="pdf/:id/:title/:price" component={Pdf}></Route>
                         <Route path="picture/:url" component={Picture}></Route>

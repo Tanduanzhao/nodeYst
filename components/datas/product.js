@@ -98,19 +98,8 @@ class product extends Component{
     }
     componentWillUnmount(){
         this.props.dispatch({
-            type:'CLEADRUGSEARCHNAME'
-        })
-        this.props.dispatch({
-            type:'UNSHOWFILTERPRODUCT',
-        });
-        this.props.dispatch({
             type:'RESETPRODUCT',
         });
-        //this.props.dispatch({
-        //    type:'LOADPRODUCTDATA',
-        //    data:[],
-        //    pageNo:1,
-        //});
     }
 
     _searchHandle(){

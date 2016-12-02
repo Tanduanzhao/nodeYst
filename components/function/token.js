@@ -10,15 +10,15 @@ export const Token = function(fn,login,store){
     console.log(store.getState(),'111111');
     if(store.getState().userInfo.isLogin||url2obj().code){
         console.log("sss");
-        if(!store.getState().userInfo.isLogin){
-            //获取微信授权
-            loadWx({
-                code:url2obj().code,
-                callBack:(res)=>{
-                    login(res);
-                }
-            })
-        }
+        //if(!store.getState().userInfo.isLogin){
+        //    //获取微信授权
+        //    loadWx({
+        //        code:url2obj().code,
+        //        callBack:(res)=>{
+        //            login(res);
+        //        }
+        //    })
+        //}
         loadJssdk({
             uri:location.href,
             callBack:(res) => {
@@ -107,6 +107,7 @@ export const Token = function(fn,login,store){
         var URL;
         if(_recommender == undefined){
             _recommender = "";
+            //URL=HTTPURL+location.pathname;
             URL=HTTPURL
         }else{
             URL=HTTPURL+location.pathname;

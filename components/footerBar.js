@@ -25,6 +25,13 @@ default class FooterBar extends Component {
 					searchType:1,
 					reportType:0
 				});
+				//this.props.dispatch({
+				//	type:'CHAGNGEFIXEDSCROLL',
+				//	fixedScroll:1
+				//})
+				//this.props.dispatch({
+				//	type: 'RESETREPORT'
+				//});
 			}
 		}, {
 			uri: 'home',
