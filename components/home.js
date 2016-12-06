@@ -87,7 +87,7 @@ class Home extends Component{
 		//获取金银活动箱子状态
 		loadJoinActivity({
 			callBack:(res)=>{
-				if(res){
+				if(res.state == 1){
 					if(res.datas.isJoinCashBox == '0'){
 						this.props.dispatch({
 							type:'SHOWCASHBOX'

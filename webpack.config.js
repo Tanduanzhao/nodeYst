@@ -2,8 +2,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
 	entry: {
-		index: './build.js',
-        vendors:['react','jquery']
+		index: './build.js'
 	},
     devtool:false,
 	output: {
@@ -31,11 +30,5 @@ module.exports = {
                   NODE_ENV: JSON.stringify(process.env.NODE_ENV),
               },
             }),
-        new webpack.optimize.CommonsChunkPlugin('vendors','vendors.js'),
-        new webpack.optimize.UglifyJsPlugin({
-          compress: {
-            warnings: false
-          }
-        })
         ]
 }
