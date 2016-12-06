@@ -1211,20 +1211,23 @@ table{
         margin: 0 auto;
     }
     h4{
-        margin-top: 2rem;
+        //margin-top: 2rem;
+        line-height: 1.3rem;
         font-size: .7rem;
     }
     h5{
-        margin-top: 2rem;
+        //margin-top: 2rem;
+        line-height: 1.3rem;
         font-size: .6rem;
     }
     h6{
-        margin-top: 2rem;
+        //margin-top: 2rem;
+        line-height: 1.3rem;
         font-size: .5rem;
     }
     p{
         text-indent: 2em;
-        line-height: 1.8;
+        line-height: 1.3rem;
         font-size: .7rem;
     }
 }
