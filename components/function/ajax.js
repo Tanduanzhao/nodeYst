@@ -8,7 +8,7 @@ export var store = createStore(ystReducers,applyMiddleware(thunk));
 import {Token} from './token';
 import {url2obj} from './common';
 //请求队列
-var ajaxQueues = [];
+var ajaxQueues = [],isGetUsering = false;
 function ajaxFn(params){
     var params = {
             url:params.url || null,
@@ -16,8 +16,11 @@ function ajaxFn(params){
             data:params.data || {},
             callBack:params.callBack || function(){}
         };
+    //每次请求把请求加入队列
+    ajaxQueues.push(params);
     
-    function isCanAjax(params){
+    //异步请求主体
+    function bodyAjax(params){
         $.ajax({
             url:httpAddress +params.url,
             method:params.method,
@@ -27,39 +30,9 @@ function ajaxFn(params){
         })
     }
     
-    
-    
-    
-    
-    
-    
-    
-    if(!store.getState().userInfo.isLogin){
-        //每次请求如果没有获取到用户的情况把请求加入队列
-        ajaxQueues.push(params);
-        isCanAjax({
-            url:'business/getInitWxUser',
-            data:{
-                code: url2obj().code
-            },
-            callBack:function(){
-                if (res.datas) {
-                    store.dispatch({
-                        type: 'LOADUSERINFO',
-                        datas: res.datas
-                    });
-                    name = res.datas.id;
-                    setTimeout(()=>{
-                        ajaxFn(params);
-                    })
-                }
-            }
-        });
-        return;
-    }else{
-        //循环请求队列
+    function beginAjax(){
         ajaxQueues.forEach((e)=>{
-            isCanAjax({
+            bodyAjax({
                 url:e.url,
                 method:e.method,
                 data:e.data,
@@ -70,6 +43,33 @@ function ajaxFn(params){
         });
         //清空循环队列
         ajaxQueues = [];
+    }
+    
+    if(!store.getState().userInfo.isLogin && !isGetUsering){
+        
+        isGetUsering = true;
+        bodyAjax({
+            url:'business/getInitWxUser',
+            data:{
+                code: url2obj().code
+            },
+            callBack:function(res){
+                isGetUsering = false;
+                if (res.datas) {
+                    store.dispatch({
+                        type: 'LOADUSERINFO',
+                        datas: res.datas
+                    });
+                    name = res.datas.id;
+                    setTimeout(()=>{
+                        beginAjax();
+                    })
+                }
+            }
+        });
+    }else{
+        //循环请求队列
+        beginAjax();
     }
 }
 //首页数据加载
