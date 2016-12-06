@@ -178,7 +178,16 @@ export default class Pdf extends Component{
                         {this.props.params.title}</h4>
                 </div>
                 <div  ref="content" className="scroll-content has-header padding report-content">
-                    <div className="nestedHTML" dangerouslySetInnerHTML={{__html:this.state.report.content}}></div>
+                    <div>
+                        <div className="nestedHTML" dangerouslySetInnerHTML={{__html:this.state.report.content}}></div>
+                        <div  className={this.state.reportVersion=="brief"?"qr-code qr-code-bottom":"qr-code"}>
+                            <span  style={{fontSize:' 15px'}}> 药市通</span> <br/>
+                            <span>____________________________________________</span><br/>
+                            <span style={{display:'inline-block',marginTop:'8px', marginBottom: '10px'}}>首个医药圈的信息分享平台</span>
+                            <p><img src="/images/weixi.png" alt=""/></p>
+                            （长按图片识别二维码）
+                        </div>
+                    </div>
                 </div>
                 {
                     this.state.reportVersion=="brief"

@@ -339,7 +339,7 @@ class Subscribe extends Component{
 				</ul>
 				<div  className="report_classify">
 					<div className="row">
-						<Link to="/report"  onClick={this.free.bind(this,467095550)} className="col col-50"><img src="/images/report_classify01.jpg" alt=""/></Link>
+						<Link to="/report"  onClick={this.free.bind(this,467095547)} className="col col-50"><img src="/images/report_classify01.jpg" alt=""/></Link>
 						<Link to="/report"  onClick={this.free.bind(this,467095549)} className="col col-50"><img src="/images/report_classify02.jpg" alt=""/></Link>
 					</div>
 					<div className="row">
