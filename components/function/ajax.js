@@ -8,83 +8,52 @@ export var store = createStore(ystReducers,applyMiddleware(thunk));
 import {Token} from './token';
 import {url2obj} from './common';
 function ajaxFn(params){
-//    if(store.getState().userInfo.isLogin||url2obj().code){
-//        console.log(store.getState().userInfo.isLogin,"ss")
-//        var params = {
-//            url:params.url || null,
-//            method:params.method || 'POST',
-//            data:params.data || {},
-//            callBack:params.callBack || function(){}
-//        };
-//        $.ajax({
-//            url:httpAddress+'business/getInitWxUser',
-//            data:{
-//                code:url2obj().code
-//            },
-//            success:function(res){
-//                console.log(url2obj().code)
-//                console.log(res)
-//                if(res.datas){
-//                    store.dispatch({
-//                        type:'LOADUSERINFO',
-//                        datas:res.datas
-//                    });
-//                    name=res.datas.id;
-//                    alert("ajax")
-//                    $.ajax({
-//                        url:httpAddress +params.url,
-//                        method:params.method,
-//                        data:params.data
-//                    }).then(function(res){
-//                        if(res.state == 1){
-//                            params.callBack(res);
-//                        }else{
-////            alert(res.message);
-//                            params.callBack();
-//                        }
-//                    })
-//                }
-//            }
-//
     var params = {
             url:params.url || null,
             method:params.method || 'POST',
             data:params.data || {},
             callBack:params.callBack || function(){}
         };
-    $.ajax({
-        url:httpAddress +params.url,
-        method:params.method,
-        data:params.data
-    }).then(function(res){
-        if(!store.getState().userInfo.isLogin){
-            $.ajax({
-                url: httpAddress + 'business/getInitWxUser',
-                data: {
-                    code: url2obj().code
-                },
-                success: function (res) {
-                    if (res.datas) {
-                        store.dispatch({
-                            type: 'LOADUSERINFO',
-                            datas: res.datas
-                        });
-                        name = res.datas.id;
-                    }
+    
+    function isCanAjax(params){
+        $.ajax({
+            url:httpAddress +params.url,
+            method:params.method,
+            data:params.data
+        }).then((res)=>{
+            params.callBack(res);
+        })
+    }
+    
+    if(!store.getState().userInfo.isLogin){
+        isCanAjax({
+            url:httpAddress + 'business/getInitWxUser',
+            data:{
+                code: url2obj().code
+            },
+            callBack:function(){
+                if (res.datas) {
+                    store.dispatch({
+                        type: 'LOADUSERINFO',
+                        datas: res.datas
+                    });
+                    name = res.datas.id;
+                    setTimeout(()=>{
+                        ajaxFn(params);
+                    })
                 }
-            })
-        }
-        if(res.state == 1 ){
-            if(store.getState().userInfo.isLogin){
-                params.callBack(res);
-            }else{
-                ajaxFn(params)
             }
-        }else{
-            // alert(res.message);
-            params.callBack();
-        }
-    })
+        })
+    }else{
+        isCanAjax({
+            url:httpAddress +params.url,
+            method:params.method,
+            data:params.data,
+            callBack:function(res){
+                params.callBack(res);
+            }
+        })
+    }
 }
 //首页数据加载
 export const loadIndex = function(dispatch,args){
