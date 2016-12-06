@@ -7,6 +7,8 @@ import ystReducers from '../../reducer/reducer.js';
 export var store = createStore(ystReducers,applyMiddleware(thunk));
 import {Token} from './token';
 import {url2obj} from './common';
+//请求队列
+var ajaxQueues = [];
 function ajaxFn(params){
     var params = {
             url:params.url || null,
@@ -25,9 +27,18 @@ function ajaxFn(params){
         })
     }
     
+    
+    
+    
+    
+    
+    
+    
     if(!store.getState().userInfo.isLogin){
+        //每次请求如果没有获取到用户的情况把请求加入队列
+        ajaxQueues.push(params);
         isCanAjax({
-            url:httpAddress + 'business/getInitWxUser',
+            url:'business/getInitWxUser',
             data:{
                 code: url2obj().code
             },
@@ -43,16 +54,22 @@ function ajaxFn(params){
                     })
                 }
             }
-        })
+        });
+        return;
     }else{
-        isCanAjax({
-            url:httpAddress +params.url,
-            method:params.method,
-            data:params.data,
-            callBack:function(res){
-                params.callBack(res);
-            }
-        })
+        //循环请求队列
+        ajaxQueues.forEach((e)=>{
+            isCanAjax({
+                url:e.url,
+                method:e.method,
+                data:e.data,
+                callBack:function(res){
+                    e.callBack(res);
+                }
+            })
+        });
+        //清空循环队列
+        ajaxQueues = [];
     }
 }
 //首页数据加载
