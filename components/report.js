@@ -135,7 +135,7 @@ class Report extends Component {
      )
     }
   _fn(args) {
-    console.log(args.reportTag,"args")
+    console.log(args.reportTag,"argsssss")
     if(!args.reportTag){
       this.setState({
         reportTag:false
@@ -205,6 +205,9 @@ class Report extends Component {
         <HeaderBar {...this.props} opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} searchHandle={this._searchHandle.bind(this)}/>
         <div ref="content"  className="scroll-content scroll-report report-view">
           <div>
+            {
+              (this.state.loading) ? <Loading/> : null
+            }
             <div className="header-img" ref="headerImg">
               <img width="100%" src="../images/report_bg.jpg"/>
             </div>
@@ -239,10 +242,14 @@ class HeaderBar extends Component{
   render(){
     return(
       <div className={`bar bar-header bar-positive item-input-inset ${this.props.isOpacity ? 'bar-opacity' : null}`} style={{backgroundColor:`rgba(56,126,245,${this.props.opacityNum})`}}>
-        <div className="buttons">
-          <button className="button" onClick={this._showProvicenHandle.bind(this)}>
-            <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
-          </button>
+        <div className="buttons"  onClick={this._showProvicenHandle.bind(this)} style={{ fontSize: '.75rem'}}>
+          {
+            //<button className="button" onClick={this._showProvicenHandle.bind(this)}>
+            //  <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
+            //</button>
+          }
+          <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
+          <span  style={{margin:' 0 5px'}}>筛选</span>
         </div>
         <label className="item-input-wrapper">
           <i className="icon ion-ios-search placeholder-icon"></i>
@@ -260,9 +267,6 @@ class Main extends Component{
     super(props);
   }
   render(){
-    if(this.props.loading) {
-      return <Loading/>
-    }else{
       if(this.props.data.length != 0){
         return(
             <div>
@@ -277,86 +281,87 @@ class Main extends Component{
       }else{
         return <EmptyComponent/>
       }
-    }
   }
 }
-class List extends Component{
-  constructor(props){
-    super(props);
-    };
-  insertUserAction(e){
-    insertUserAction({
-      reportId:this.props.dataSources.id,
-      costStatus:this.props.dataSources.costStatus,
-      callBack:(res)=> {
-        console.log(res)
-      }
-    });
-
-  }
-  render(){
-      console.log(this.props.dataSources.costStatus,'ct');
-      console.log(this.props.dataSources.buyReport,'sss');
-    var string = null;
-    var tag = (()=>{
-      if(this.props.dataSources.costStatus == "1"){
-        string = <i className="report-card-icon">报告试读</i>;
-      }else{
-        string = <i className="report-card-icon">点击查看</i>;
-      }
-      return string;
-    })();
-    var number = (()=>{
-      if(this.props.dataSources.costStatus == "1"){
-        string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人购买</span>;
-      }else{
-        string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人查看</span>;
-      }
-      return string;
-    })();
-    if(this.props.dataSources.costStatus == "1"){
-      this.state= {
-        price: this.props.dataSources.price
-      }
-    }else{
-      this.state= {
-        price: 0
-      }
-    }
-    let isCanViewReport = false;
-      if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
-              isCanViewReport = false;
-      }else{
-          isCanViewReport = true;
-      }
-    return(
-        <div className="col-50">
-            {
-                isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
-                    <div className="report-img">
-                      <img src={this.props.dataSources.mainImg}/>
-                    </div>
-                    <h3> {this.props.dataSources.title}</h3>
-                    <div className="report-card-price">¥{this.state.price}</div>
-                    <p className="report-card-footer">
-                      {number}
-                      {tag}
-                    </p>
-                  </Link> : <a onClick={()=>this.props.openProductView(this.props.dataSources.id)}>
-                    <div className="report-img">
-                      <img src={this.props.dataSources.mainImg}/>
-                    </div>
-                    <h3> {this.props.dataSources.title}</h3>
-                    <div className="report-card-price">¥{this.state.price}</div>
-                    <p className="report-card-footer">
-                      {number}
-                      {tag}
-                    </p>
-                  </a>
-            }
-        </div>
-    )
-  }
+{
+  //class List extends Component{
+  //  constructor(props){
+  //    super(props);
+  //  };
+  //  insertUserAction(e){
+  //    insertUserAction({
+  //      reportId:this.props.dataSources.id,
+  //      costStatus:this.props.dataSources.costStatus,
+  //      callBack:(res)=> {
+  //        console.log(res)
+  //      }
+  //    });
+  //
+  //  }
+  //  render(){
+  //    console.log(this.props.dataSources.costStatus,'ct');
+  //    console.log(this.props.dataSources.buyReport,'sss');
+  //    var string = null;
+  //    var tag = (()=>{
+  //      if(this.props.dataSources.costStatus == "1"){
+  //        string = <i className="report-card-icon">报告试读</i>;
+  //      }else{
+  //        string = <i className="report-card-icon">点击查看</i>;
+  //      }
+  //      return string;
+  //    })();
+  //    var number = (()=>{
+  //      if(this.props.dataSources.costStatus == "1"){
+  //        string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人购买</span>;
+  //      }else{
+  //        string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人查看</span>;
+  //      }
+  //      return string;
+  //    })();
+  //    if(this.props.dataSources.costStatus == "1"){
+  //      this.state= {
+  //        price: this.props.dataSources.price
+  //      }
+  //    }else{
+  //      this.state= {
+  //        price: 0
+  //      }
+  //    }
+  //    let isCanViewReport = false;
+  //    if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
+  //      isCanViewReport = false;
+  //    }else{
+  //      isCanViewReport = true;
+  //    }
+  //    return(
+  //        <div className="col-50">
+  //          {
+  //            isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
+  //              <div className="report-img">
+  //                <img src={this.props.dataSources.mainImg}/>
+  //              </div>
+  //              <h3> {this.props.dataSources.title}</h3>
+  //              <div className="report-card-price">¥{this.state.price}</div>
+  //              <p className="report-card-footer">
+  //                {number}
+  //                {tag}
+  //              </p>
+  //            </Link> : <a onClick={()=>this.props.openProductView(this.props.dataSources.id)}>
+  //              <div className="report-img">
+  //                <img src={this.props.dataSources.mainImg}/>
+  //              </div>
+  //              <h3> {this.props.dataSources.title}</h3>
+  //              <div className="report-card-price">¥{this.state.price}</div>
+  //              <p className="report-card-footer">
+  //                {number}
+  //                {tag}
+  //              </p>
+  //            </a>
+  //          }
+  //        </div>
+  //    )
+  //  }
+  //}
 }
 function select(state){
   return{

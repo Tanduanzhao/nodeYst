@@ -137,10 +137,13 @@ class Home extends Component{
 					this.props.home.isShowRecord ? <Record dataSources={this.state.reCordNum}/> : false
 				}
 				{
-					!this.props.userInfo.isLogin ? null : <Main {...this.props}/>//openProductView={this._openProductView.bind(this)}
+					this.state.loading? <Loading/> : null
 				}
 				{
-					(this.state.loading) ? <Loading/> : null
+					//!this.props.userInfo.isLogin ? null : <Main {...this.props}/>//openProductView={this._openProductView.bind(this)}
+				}
+				{
+					 <Main {...this.props}/>
 				}
 				{
 					this.state.showPopup ? <Popup {...this.props}  popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
@@ -300,7 +303,7 @@ class ParseReport extends Component{
 				</div>
 				<ul className="parseReport-list">
 					{
-						this.props.home.ParseReport.map((ele,index)=> <Link  to={`/pdf/${ele.id}/${encodeURIComponent(ele.title)}/${ele.price}`}  className="parseReport-item" key={ele.id+Math.random()}><i className="fa fa-play-circle"></i> 《{ele.title}》</Link >)
+						this.props.home.ParseReport.map((ele,index)=> <Link  to={`/pay/pdf/${ele.id}/${encodeURIComponent(ele.title)}/${ele.price}`}  className="parseReport-item" key={ele.id+Math.random()}>《{ele.title}》</Link >)
 					}
 				</ul>
 				{

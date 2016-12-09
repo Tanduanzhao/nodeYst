@@ -574,7 +574,7 @@ h3 {
   display: -ms-flexbox;
   display: flex;
   display: -webkit-flex;
-  padding: .5rem;
+  padding: .6rem;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -714,7 +714,7 @@ h3 {
       color: #fff; }
 
 .home-item-title {
-  font-size: .6rem;
+  font-size: .65rem;
   color: #0894ec;
   padding-top: 6px;
   padding-bottom: 6px;
@@ -950,6 +950,29 @@ h3 {
     background: white;
     padding-bottom: 10px; }
 
+.function {
+  position: fixed;
+  bottom: 58px;
+  right: 12px;
+  z-index: 9; }
+  .function .gotop {
+    width: 1.6rem;
+    height: 1.6rem;
+    background: url(/images/gotop.png) center no-repeat;
+    background-size: 100%; }
+  .function .collect {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-top: 23px;
+    background: url(/images/iscollect.png) center no-repeat;
+    background-size: 100%; }
+  .function .unCollect {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-top: 23px;
+    background: url(/images/collect.png) center no-repeat;
+    background-size: 100%; }
+
 .bidList-view .item {
   border-top: 1px solid #eee;
   margin-top: 0;
@@ -1138,17 +1161,17 @@ table.table-border td, table.table-border th {
     max-width: 100%;
     margin: 0 auto; }
   .nestedHTML h4 {
-    margin-top: 2rem;
+    line-height: 1.3rem;
     font-size: .7rem; }
   .nestedHTML h5 {
-    margin-top: 2rem;
+    line-height: 1.3rem;
     font-size: .6rem; }
   .nestedHTML h6 {
-    margin-top: 2rem;
+    line-height: 1.3rem;
     font-size: .5rem; }
   .nestedHTML p {
     text-indent: 2em;
-    line-height: 1.8;
+    line-height: 1.3rem;
     font-size: .7rem; }
 
 .scroll-iframe {
@@ -1224,6 +1247,10 @@ table.table-border td, table.table-border th {
 
 .foot .list-title {
   padding: 8px 16px; }
+  .foot .list-title i {
+    display: inline-block;
+    width: .8rem;
+    background: url("/images/messages.png") no-repeat center; }
 
 .product-details-collect {
   display: -webkit-box;
@@ -1321,13 +1348,15 @@ table.table-border td, table.table-border th {
 
 .reportTitle {
   font-size: .7rem;
-  padding: 0px 16px 10px 16px; }
+  font-weight: bold;
+  padding: 15px 16px 10px 16px; }
   .reportTitle .columnTitle {
     font-size: .45rem;
     color: #999;
-    margin-top: 3px; }
+    margin-top: 3px;
+    font-weight: initial; }
     .reportTitle .columnTitle span {
-      margin-left: 20px; }
+      margin-right: 20px; }
 
 .defmargin {
   margin: 0; }

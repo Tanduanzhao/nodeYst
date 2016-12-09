@@ -256,10 +256,14 @@ class HeaderBar extends Component{
         })();
         return(
             <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons">
-                    <button className="button" onClick={this.props._showProvicenHandle}>
-                        <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
-                    </button>
+                <div className="buttons" onClick={this.props._showProvicenHandle} style={{ fontSize: '.75rem'}}>
+                    {
+                        //<button className="button" onClick={this.props._showProvicenHandle}>
+                        //    <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
+                        //</button>
+                    }
+                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
+                    <span  style={{margin:' 0 5px'}}>筛选</span>
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>

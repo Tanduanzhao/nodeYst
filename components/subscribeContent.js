@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import { default as Video, Controls, Play, Mute, Seek, Fullscreen, Time, Overlay } from 'react-html5video';
 import {insertLikeReport,selectReportReplys,insertReplyReport,keepReport,cancelKeepReport,selectReportDetail} from './function/ajax';
 import Loading from './loading';
+import GotTop from './gotTop';
 import CollectPrompt from './collectPrompt';
 class subscribeContent extends Component {
     constructor(props) {
@@ -22,58 +23,47 @@ class subscribeContent extends Component {
             id: this.props.params.id,
             isKeep: false,
             request: true,
-            showPromptMes: false
+            showPromptMes: false,
+            sendMessage:false
         }
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _loadData(){
+        this.setState({
+            request:false
+        });
         selectReportReplys({
-            reportId: this.props.params.reportId,
-            columnId: this.props.params.id,
-            pageNo: this.props.subscribeContent.pageNo,
-            callBack: (res)=> {
-                if (res.state == 1) {
-                    //this.props.dispatch({
-                    //    type:'LOADSUBSCRIBECONTRNTDATA',
-                    //    message:res.datas
-                    //});
-                    //if(this.state.pageNo != res.totalPage-1){
-                    //    this.setState({
-                    //        pageNo:this.state.pageNo+1
-                    //    })
-                    //}else{
-                    //    this.setState({
-                    //        infinite:false
-                    //    })
-                    //}
+            reportId:this.props.params.reportId,
+            columnId:this.props.params.id,
+            pageNo:this.state.pageNo,
+            callBack:(res)=>{
+                if(res.state == 1){
                     this.props.dispatch({
-                        type: 'LOADSUBSCRIBECONTRNTDATA',
-                        message: this.props.subscribeContent.data.concat(res.datas),
-                        pageNo: this.props.subscribeContent.pageNo + 1
+                        type:'LOADSUBSCRIBECONTRNTDATASS',
+                        message:res.datas
                     });
-                    console.log(res.totalSize <= this.props.subscribeContent.data.length, "==");
-                    console.log(res.totalSize, "totalSize");
-                    console.log(this.props.subscribeContent.data.length, "length");
-                    if (res.totalSize <= this.props.subscribeContent.data.length) {
-                        this.setState({
-                            request: true
+                    if(this.state.sendMessage){
+                        this.props.dispatch({
+                            type:'LOADSUBSCRIBECONTRNTDATA',
+                            message:res.datas
                         });
-                    } else {
-                        this.setState({
-                            request: false
-                        });
+                        this.refs.subscribeTextarea.value = null
                     }
-                    //if(res.totalSize <= this.props.subscribeContent.data.length){
-                    //    this.setState({
-                    //        request:false
-                    //    });
-                    //}else{
-                    //    this.setState({
-                    //        request:true
-                    //    });
-                    //}
-                } else {
+                    if(res.totalSize <= this.props.subscribeContent.data.length){
+                        this.setState({
+                            infinite:false
+                        })
+                    }else{
+                        this.setState({
+                            pageNo:this.state.pageNo+1
+                        })
+                    }
+                    this.setState({
+                        request:true,
+                        sendMessage:false
+                    });
+                }else{
                     alert('网络故障');
                 }
             }
@@ -107,62 +97,10 @@ class subscribeContent extends Component {
     }
 
     _infiniteScroll() {
-        console.log(this.ele.firstChild.clientHeight - this.ele.scrollTop, "requests");
-        console.log( document.body.clientHeight - this.ele.offsetTop , "requests");
-        console.log(this.ele.firstChild.clientHeight, "firstChild");
-        console.log( this.ele.scrollTop, "scrollTop");
-        console.log( this.ele.offsetTop , "offsetTop");
-        console.log( document.body.clientHeight , "clientHeight");
-        console.log( this.state.infinite  , "infinite");
-        console.log( this.state.request  , "request");
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if (this.ele.firstChild.clientHeight - this.ele.scrollTop-1 <= document.body.clientHeight - this.ele.offsetTop && this.state.infinite && this.state.request) {
-            console.log(this.props.subscribeContent.pageNo, "pageNo");
+        console.log( this.state.pageNo  , "pageNo");
+        if (this.ele.firstChild.clientHeight-2 - this.ele.scrollTop <= document.body.clientHeight - this.ele.offsetTop && this.state.infinite && this.state.request) {
             this._loadData();
-            //selectReportReplys({
-            //    reportId: this.props.params.reportId,
-            //    pageNo: this.props.subscribeContent.pageNo,
-            //    columnId: this.props.params.id,
-            //    callBack: (res)=> {
-            //        if (res.state == 1) {
-            //            //this.props.dispatch({
-            //            //    type:'LOADSUBSCRIBECONTRNTDATASS',
-            //            //    message:res.datas                        });
-            //            //this.setState({
-            //            //    request:true
-            //            //});
-            //            console.log(res.totalSize <= this.props.subscribeContent.data.length, "length");
-            //            console.log(this.props.subscribeContent.data.length, "subscribeContent");
-            //            console.log(res.totalSize, "subscribe");
-            //            console.log(this.props.subscribeContent.data, "datas");
-            //            //if(this.state.pageNo != res.totalPage-1){
-            //            //    this.setState({
-            //            //        pageNo:this.state.pageNo+1
-            //            //    })
-            //            //}else{
-            //            //    this.setState({
-            //            //        infinite:false
-            //            //    })
-            //            //}
-            //            this.props.dispatch({
-            //                type: 'LOADSUBSCRIBECONTRNTDATA',
-            //                message: this.props.subscribeContent.data.concat(res.datas),
-            //                pageNo: this.props.subscribeContent.pageNo + 1
-            //            });
-            //            if (res.totalSize <= this.props.subscribeContent.data.length) {
-            //                this.setState({
-            //                    request: false
-            //                });
-            //            } else {
-            //                this.setState({
-            //                    request: true
-            //                });
-            //            }
-            //        } else {
-            //            alert('网络故障');
-            //        }
-            //    }
-            //})
         }
     }
 
@@ -218,17 +156,6 @@ class subscribeContent extends Component {
                 }
             })
         }
-        //}else{
-        //    insertLikeReport({
-        //        reportId:this.props.params.reportId,
-        //        callBack:(res)=>{
-        //            if(res.state==1)
-        //                this.setState({
-        //                    isLike:0
-        //                })
-        //        }
-        //    })
-        //}
     }
 
     _sendMessage() {
@@ -241,40 +168,20 @@ class subscribeContent extends Component {
             callBack: (res)=> {
                 this.setState({
                     pageNo: 1,
+                    sendMessage:true,
                     infinite: true
                 });
                 setTimeout(()=> {
-                    selectReportReplys({
-                        reportId: this.props.params.reportId,
-                        pageNo: this.state.pageNo,
-                        columnId: this.props.params.id,
-                        callBack: (res)=> {
-                            if (res.state == 1) {
-                                this.props.dispatch({
-                                    type: 'LOADSUBSCRIBECONTRNTDATA',
-                                    message: res.datas
-                                });
-                                if (this.state.pageNo != res.totalPage - 1) {
-                                    this.setState({
-                                        pageNo: this.state.pageNo + 1
-                                    })
-                                } else {
-                                    this.setState({
-                                        infinite: false
-                                    })
-                                }
-                                this.refs.subscribeTextarea.value = null
-                            } else {
-                                alert('网络故障');
-                            }
-                        }
-                    })
+                    this._loadData();
                 });
             }
         });
 
     }
 
+    scrollTop(){
+        this.ele.scrollTop=0
+    }
     componentWillUnmount() {
         this.props.dispatch({
             type: 'RESETSUBSCRIBECONTRNT'
@@ -295,9 +202,11 @@ class subscribeContent extends Component {
                 }
                 <div className="bar bar-positive bar-header">
                     <h4 className="title">
-                        <button className="button title_button" onClick={this.keepReport.bind(this)}>
-                            <i className={(this.state.isKeep != 1) ? "fa fa-star-o fa-2x": "fa fa-star fa-2x"}></i>
-                        </button>
+                        {
+                            //<button className="button title_button" onClick={this.keepReport.bind(this)}>
+                            //    <i className={(this.state.isKeep != 1) ? "fa fa-star-o fa-2x": "fa fa-star fa-2x"}></i>
+                            //</button>
+                        }
                         {this.props.subscribeContent.dataAll.title} </h4>
                 </div>
                 {
@@ -310,7 +219,11 @@ class subscribeContent extends Component {
                             {this.props.params.typeName}
                             <span>——</span> {this.props.subscribeContent.dataAll.reportTitle}
                             <div className="columnTitle">
-                                {this.props.subscribeContent.dataAll.columnName}
+                                <span>{this.props.subscribeContent.dataAll.publishDate}</span>
+                                {
+                                    this.props.subscribeContent.dataAll.columnName?
+                                        <span>{this.props.subscribeContent.dataAll.columnName}</span>:null
+                                }
                                 {this.props.params.id == 2 ?
                                     <span>{this.props.subscribeContent.dataAll.columnTitle}</span> : null}
                                 {this.props.params.id == 3 ?
@@ -328,29 +241,29 @@ class subscribeContent extends Component {
                                 onClick={this.likeArticle.bind(this)}>{this.state.likeNum}人点赞</span>
                             </div>
                             <div className="item list-title">
-                                <h3>我要留言</h3>
+                                <h3><i></i> 我要留言</h3>
                             </div>
                             <div className="comments">
                                 <textarea name="" id="" cols="30" rows="10" ref="subscribeTextarea"
                                           placeholder="说点什么吧......"></textarea>
                                 <button onClick={this._sendMessage.bind(this)}>提交</button>
                             </div>
-                            <div className="item list-title">
-                                <h3>用户留言</h3>
+                            <div className="item list-title ">
+                                <h3><i></i> 用户留言</h3>
                             </div>
                             <ul className="list new_report">
                                 {
                                     this.props.subscribeContent.data.map((ele)=> {
-                                        return (ele.isReplay == 1) ? <List key={Math.random()} {...this.props}
-                                                                           feedContent={ele.feedContent}/> : (
-                                            <List key={Math.random()}  {...this.props} feedContent={ele.feedContent}
-                                                  dataSources={ele}/>)
+                                        return (ele.isReplay == 1)
+                                            ? <List key={Math.random()} {...this.props} feedContent={ele.feedContent}/>
+                                            : (<List key={Math.random()}  {...this.props} feedContent={ele.feedContent} dataSources={ele}/>)
                                     })
                                 }
                             </ul>
                         </div>
                     </div>
                 </div>
+                <GotTop {...this.props} scrollTop={this.scrollTop.bind(this)} keepReport={this.keepReport.bind(this)}   {...this.props}  isKeep={this.state.isKeep}/>
             </div>
         )
     }
@@ -368,6 +281,7 @@ class VideoComponent extends Component {
         )
     }
 }
+
 class List extends Component {
     constructor(props) {
         super(props);
@@ -392,12 +306,15 @@ class List extends Component {
         )
     }
 }
+
 subscribeContent.contextTypes = {
     router: React.PropTypes.object.isRequired
 }
+
 function select(state) {
     return {
         subscribeContent: state.subscribeContent
     }
 }
+
 export default connect(select)(subscribeContent);

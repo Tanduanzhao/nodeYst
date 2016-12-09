@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import React,{Component,PropTypes} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './footerBar';
@@ -43,10 +44,103 @@ import Popup from './popup';
          })
      }
      _popupSure() {
-         //this.setState({
-         //    showPopup: false
-         //});
          this.context.router.push('/center');
+     }
+     onBridgeReady() {
+         alert(appId);
+         alert(timeStamp);
+         alert(nonceStr);
+         alert(signType);
+         alert(pg);
+         alert(paySign);
+         try {
+             WeixinJSBridge.invoke('getBrandWCPayRequest', {
+                 "appId" : appId,
+                 "timeStamp" : timeStamp,
+                 "nonceStr" : nonceStr,
+                 "package" : "prepay_id=" + pg,
+                 "signType" : signType,
+                 "paySign" : paySign
+             }, (res) => {
+                 //alert(Object.keys());
+                 //for(i in res){
+                 //    alert(res[i]);
+                 //}
+                 //  console.log(res.err_msg,"ss")
+                 alert(res.err_msg);
+                 alert(res.err_msg == "get_brand_wcpay_request:ok");
+                 if (res.err_msg == "get_brand_wcpay_request:ok") {
+                     //alert("111");
+                     //WeixinJSBridge.call('closeWindow');
+                 } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+             });
+         } catch (e) {
+             alert(e);
+         }
+     }
+     //支付方法
+     _sandboxPayService(){
+         function onBridgeReady(data) {
+             var appId = data.appId;
+             var timeStamp = data.timeStamp;
+             var nonceStr = data.nonceStr;
+             var signType = data.signType;
+             var pg = data.pg;
+             var paySign = data.paySign;
+             try {
+                 WeixinJSBridge.invoke('getBrandWCPayRequest', {
+                     "appId" : appId,
+                     "timeStamp" : timeStamp,
+                     "nonceStr" : nonceStr,
+                     "package" : "prepay_id=" + pg,
+                     "signType" : signType,
+                     "paySign" : paySign
+                 }, function(res) {
+                     //alert(res.err_msg);
+                     //alert(res.err_msg == "get_brand_wcpay_request:ok");
+                     if (res.err_msg == "get_brand_wcpay_request:ok") {
+                         //alert("111");
+                         //WeixinJSBridge.call('closeWindow');
+                     } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                 });
+             } catch (e) {
+                 alert(e);
+             }
+         }
+         $.ajax({
+             type: "POST",
+             url:"http://yst-test.immortalshealth.com/modm/sandbox/sandboxPayService",
+             data:{
+                 orderId:'pxFGiwzFAD8mjP9sPRv416VBs3Is'
+             },
+             async: false,
+             error: function(request) {
+                 status = 'error';
+                 message = '系统异常，请稍后重试！';
+             },
+             success: function(ret) {
+                 var state = ret.state;
+                 if(state == "1") {
+                     try {
+                         if (typeof WeixinJSBridge == "undefined") {
+                             if (document.addEventListener) {
+                                 document.addEventListener('WeixinJSBridgeReady',
+                                     onBridgeReady, false);
+                             } else if (document.attachEvent) {
+                                 document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                                 document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                             }
+                         } else {
+                             onBridgeReady(ret.data);
+                         }
+                     } catch (e) {
+                         alert(e);
+                     }
+                     window.event.returnValue = false;
+                     return false;
+                 }
+             }
+         });
      }
 	render(){
 		return(
@@ -69,7 +163,10 @@ import Popup from './popup';
                                 <li className="col"><img className="level-price" src="images/level_price.jpg" alt=""/></li>
                                 </ul>
                             </li>
-                            <li className="col-20"><button className="col"  onClick={this._ProductView.bind(this,"pxFGiwzFAD8mjP9sPRv416VBs3Is")}>立即开通</button></li>
+                            {
+                                //<li className="col-20"><button className="col"  onClick={this._ProductView.bind(this,"pxFGiwzFAD8mjP9sPRv416VBs3Is")}>立即开通</button></li>
+                            }
+                            <li className="col-20"><button className="col"  onClick={this._sandboxPayService.bind(this,"pxFGiwzFAD8mjP9sPRv416VBs3Is")}>立即开通</button></li>
                         </ul>
                         <ul className="row">
                             <li className="col-80">

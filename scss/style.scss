@@ -563,7 +563,7 @@ h3{
     .item-row{
         display: flex;
         display: -webkit-flex;
-        padding: .5rem;
+        padding: .6rem;
         justify-content: space-between;
         -webkit-justify-content: space-between;
     }
@@ -713,7 +713,7 @@ h3{
     }
 }
 .home-item-title{
-    font-size: .6rem;
+    font-size: .65rem;
     color: #0894ec;
     padding-top: 6px;
     padding-bottom: 6px;
@@ -990,6 +990,32 @@ h3{
         width: 100%;
         background: white;
         padding-bottom: 10px;
+    }
+}
+.function{
+    position: fixed;
+    bottom: 58px;
+    right: 12px;
+    z-index: 9;
+    .gotop{
+        width: 1.6rem;
+        height: 1.6rem;
+        background: url(/images/gotop.png) center no-repeat;
+        background-size: 100%;
+    }
+    .collect{
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-top: 23px;
+        background: url(/images/iscollect.png) center no-repeat;
+        background-size: 100%;
+    }
+    .unCollect{
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-top: 23px;
+        background: url(/images/collect.png) center no-repeat;
+        background-size: 100%;
     }
 }
 .bidList-view{
@@ -1317,6 +1343,11 @@ table{
 .foot{
     .list-title{
         padding: 8px 16px;
+       i{
+           display: inline-block;
+           width: .8rem;
+           background: url("/images/messages.png") no-repeat center;
+       }
     }
 }
 .product-details-collect{
@@ -1415,13 +1446,15 @@ table{
 }
 .reportTitle{
     font-size: .7rem;
-    padding: 0px 16px 10px 16px;
+    font-weight: bold;
+    padding:15px 16px 10px 16px;
     .columnTitle{
         font-size: .45rem;
         color: #999;
         margin-top: 3px;
+        font-weight: initial;
         span{
-            margin-left: 20px;
+            margin-right: 20px;
         }
     }
 }
