@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import $ from 'jquery';
 import {loadReport,keepReport,cancelKeepReport} from './../function/ajax';
-import {WXKEY,HTTPURL} from './../config';
+import {WXKEY,HTTPURL,httpAddress} from './../config';
 import Loading from './../loading';
 import {OpenProductView,onBridgeReady} from './../function/common';
 import Popup from './../popup';
@@ -23,6 +23,7 @@ export default class Pdf extends Component{
             showPromptMes:false,
             buyReport:false
         }
+        this._popupSure = this._popupSure.bind(this);
     }
     _loadData(){
         this.setState({
@@ -117,7 +118,7 @@ export default class Pdf extends Component{
     _sandboxPayService(id,sele){
         $.ajax({
             type: "POST",
-            url:"http://yst-test.immortalshealth.com/modm/pay/requestUnifiedorderPayService",
+            url:httpAddress+"pay/requestUnifiedorderPayService",
             data:{
                 productId:id
             },
@@ -202,7 +203,7 @@ export default class Pdf extends Component{
         this.ele.scrollTop=0
     }
     render(){
-        console.log(this.state.report.title,"sssss");
+        console.log( this.context.router,"sssss");
         return(
             <div className="root">
                 {
