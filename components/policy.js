@@ -337,7 +337,7 @@ class Policy extends Component{
     //显示筛选条件
     _showFilter(){
         if(this.props.isVip == '0'){
-            this.context.router.push('/vip');
+            this.context.router.push('/pay/vip');
             return false;
         }else{
             this.setState({
@@ -355,7 +355,7 @@ class Policy extends Component{
     //搜索结果通用名点击查询对应数据
     _searchDatas(key){
         if(this.props.isVip == '0'){
-           this.context.router.push('/vip');
+           this.context.router.push('/pay/vip');
             return false;
         }
 //        console.dir(this.refs.header.ref.policySearchName);

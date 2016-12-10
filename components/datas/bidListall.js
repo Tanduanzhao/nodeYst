@@ -95,7 +95,7 @@ class BidListAll extends Component{
     }
     _searchHandle(){
         if(this.props.isVip == '0'){
-            this.context.router.push('/vip');
+            this.context.router.push('/pay/vip');
             return false;
         }else{
             this.setState({
@@ -111,7 +111,7 @@ class BidListAll extends Component{
     }
     _showProvicenHandle(){
         if(this.props.isVip == '0'){
-            this.context.router.push('/vip');
+            this.context.router.push('/pay/vip');
             return false;
         }else{
             this.props.dispatch({
@@ -127,10 +127,10 @@ class BidListAll extends Component{
     }
     componentDidMount(){
         console.log("componentDidMountprovinceId")
-        this.props.dispatch({
-            type:'RESETBIDLISTAREAId',
-            areaId:this.props.bidList.provinceId
-        });
+        //this.props.dispatch({
+        //    type:'RESETBIDLISTAREAId',
+        //    areaId:this.props.bidList.provinceId
+        //});
         if(this.props.params.productName){
             this.props.dispatch({
                 type:'LOADBIFLISTCONTENTDATAALL',
@@ -184,14 +184,14 @@ class BidListAll extends Component{
     render(){
         return (
             <div className="root" style={{"overflow":"auto"}}>
+                {
+                    this.state.loading ? <Loading/> : null
+                }
                 <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)} _showProvicenHandle={this._showProvicenHandle.bind(this)}/>
                 <div ref="content" className="scroll-content has-header marketall">
                     <Main {...this.props} data={this.props.bidList.data} loading={this.state.loading}/>
                     <More {...this.props}/>
                 </div>
-                {
-                    this.state.loading ? <Loading/> : null
-                }
                 {
                     this.props.bidList.isShowFilter&&!this.state.loading? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
                 }
@@ -259,10 +259,14 @@ class HeaderBar extends Component{
     render(){
         return(
             <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons">
-                    <button className="button" onClick={this.props._showProvicenHandle}>
-                        <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
-                    </button>
+                <div className="buttons"  onClick={this.props._showProvicenHandle} style={{ fontSize: '.75rem',zIndex:'99999'}}>
+                    {
+                        //<button className="button" onClick={this.props._showProvicenHandle}>
+                        //    <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
+                        //</button>
+                    }
+                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
+                    <span  style={{margin:' 0 5px'}}>筛选</span>
                 </div>
                 <div className="title"> {decodeURI(decodeURI(this.props.params.productName))}</div>
             </div>
@@ -287,7 +291,7 @@ function select(state){
         provicenData:state.provicen.data,
         bidList:state.bidListall,
         isVip:state.userInfo.isVip,
-        provicenId:state.bidList.provinceId
+        //provicenId:state.bidList.provinceId
     }
 }
 BidListAll.contextTypes = {

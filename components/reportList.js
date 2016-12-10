@@ -101,7 +101,7 @@ export default class ReportList extends Component {
 							</div>
 						}
 					</Link>
-					:<Link onTouchStart={this.touchStart.bind(this)}  to={`/pdf/${this.props.dataSources.id}/${encodeURIComponent(this.props.dataSources.title)}/${this.props.dataSources.price}`}  className="item">
+					:<Link onTouchStart={this.touchStart.bind(this)}  to={`/pay/pdf/${this.props.dataSources.id}`}  className="item">
 					<div className="item-left">
 					<img src={this.props.dataSources.mainImg} alt=""/>
 					</div>

@@ -563,7 +563,7 @@ h3{
     .item-row{
         display: flex;
         display: -webkit-flex;
-        padding: .5rem;
+        padding: .6rem;
         justify-content: space-between;
         -webkit-justify-content: space-between;
     }
@@ -713,7 +713,7 @@ h3{
     }
 }
 .home-item-title{
-    font-size: .6rem;
+    font-size: .65rem;
     color: #0894ec;
     padding-top: 6px;
     padding-bottom: 6px;
@@ -992,6 +992,32 @@ h3{
         padding-bottom: 10px;
     }
 }
+.function{
+    position: fixed;
+    bottom: 58px;
+    right: 12px;
+    z-index: 9;
+    .gotop{
+        width: 1.6rem;
+        height: 1.6rem;
+        background: url(/images/gotop.png) center no-repeat;
+        background-size: 100%;
+    }
+    .collect{
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-top: 23px;
+        background: url(/images/iscollect.png) center no-repeat;
+        background-size: 100%;
+    }
+    .unCollect{
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-top: 23px;
+        background: url(/images/collect.png) center no-repeat;
+        background-size: 100%;
+    }
+}
 .bidList-view{
     .item{
         border-top: 1px solid #eee;
@@ -1211,20 +1237,23 @@ table{
         margin: 0 auto;
     }
     h4{
-        margin-top: 2rem;
+        //margin-top: 2rem;
+        line-height: 1.3rem;
         font-size: .7rem;
     }
     h5{
-        margin-top: 2rem;
+        //margin-top: 2rem;
+        line-height: 1.3rem;
         font-size: .6rem;
     }
     h6{
-        margin-top: 2rem;
+        //margin-top: 2rem;
+        line-height: 1.3rem;
         font-size: .5rem;
     }
     p{
         text-indent: 2em;
-        line-height: 1.8;
+        line-height: 1.3rem;
         font-size: .7rem;
     }
 }
@@ -1314,6 +1343,11 @@ table{
 .foot{
     .list-title{
         padding: 8px 16px;
+       i{
+           display: inline-block;
+           width: .8rem;
+           background: url("/images/messages.png") no-repeat center;
+       }
     }
 }
 .product-details-collect{
@@ -1412,13 +1446,15 @@ table{
 }
 .reportTitle{
     font-size: .7rem;
-    padding: 0px 16px 10px 16px;
+    font-weight: bold;
+    padding:15px 16px 10px 16px;
     .columnTitle{
         font-size: .45rem;
         color: #999;
         margin-top: 3px;
+        font-weight: initial;
         span{
-            margin-left: 20px;
+            margin-right: 20px;
         }
     }
 }
@@ -1842,4 +1878,12 @@ table{
 .video-time__duration {
     margin-left: 5px;
     color: #919191;
+}
+.qr-code{
+    color: #3366ff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.qr-code-bottom{
+    margin-bottom: 54px;
 }

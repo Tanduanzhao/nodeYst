@@ -13,7 +13,7 @@ export default function subscribeContent(state=defaultSubscribeContent,action) {
     case "LOADSUBSCRIBECONTRNTDATAVVV" : return ObjectAssign({},state,{dataAll:action.message});
     case INFINITE : return ObjectAssign({},state,{infinite:false});
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
-    case "LOADSUBSCRIBECONTRNTDATASS" : return ObjectAssign({},state,{data:state.data.concat(action.message),pageNo:action.pageNo});
+    case "LOADSUBSCRIBECONTRNTDATASS" : return ObjectAssign({},state,{data:state.data.concat(action.message)});
     case "RESETSUBSCRIBECONTRNT" : return  ObjectAssign({},defaultSubscribeContent);
     default : return state;
   }

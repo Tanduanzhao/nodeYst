@@ -43,9 +43,12 @@ import charge from './components/report/charge';
 
 import Home from './components/home';
 
-import vip from './components/vip';
+import vip from './components/pay/vip';
+import vips from './components/vip';
+//import TestPdf from './components/pay/pdf';
 import protocol from './components/protocol';
-import Pdf from './components/pdf';
+import Pdf from './components/pay/pdf';
+import Pdfs from './components/pay/pdfs';
 import Picture from './components/picture';
 
 import ReportContent from "./components/reportContent";
@@ -233,8 +236,14 @@ export class Reactrouter extends Component{
                             <IndexRoute component={SubtrainPageAll}/>
                         </Route>
                         <Route path="pdf/:id/:title/:price" component={Pdf}></Route>
+                        <Route path="pay/pdf/:id" component={Pdf}></Route>
+                        <Route path="pay/pdfs/:id" component={Pdfs}></Route>
                         <Route path="picture/:url" component={Picture}></Route>
                         <Route path="vip">
+                            <IndexRoute component={vip}/>
+                            <Route path="protocol" component={protocol}/>
+                        </Route>
+                        <Route path="pay/vip">
                             <IndexRoute component={vip}/>
                             <Route path="protocol" component={protocol}/>
                         </Route>

@@ -48,7 +48,7 @@ class Main extends Component{
                     </div>
                 </div>
                 <div className="list center-viwe">
-                    <Link to="vip" className="item item-icon-left">
+                    <Link to="pay/vip" className="item item-icon-left">
                         <img src="/images/open_icon.jpg" alt=""/>
                         开通会员
                     </Link>

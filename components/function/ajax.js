@@ -7,84 +7,70 @@ import ystReducers from '../../reducer/reducer.js';
 export var store = createStore(ystReducers,applyMiddleware(thunk));
 import {Token} from './token';
 import {url2obj} from './common';
+//请求队列
+var ajaxQueues = [],isGetUsering = false;
 function ajaxFn(params){
-//    if(store.getState().userInfo.isLogin||url2obj().code){
-//        console.log(store.getState().userInfo.isLogin,"ss")
-//        var params = {
-//            url:params.url || null,
-//            method:params.method || 'POST',
-//            data:params.data || {},
-//            callBack:params.callBack || function(){}
-//        };
-//        $.ajax({
-//            url:httpAddress+'business/getInitWxUser',
-//            data:{
-//                code:url2obj().code
-//            },
-//            success:function(res){
-//                console.log(url2obj().code)
-//                console.log(res)
-//                if(res.datas){
-//                    store.dispatch({
-//                        type:'LOADUSERINFO',
-//                        datas:res.datas
-//                    });
-//                    name=res.datas.id;
-//                    alert("ajax")
-//                    $.ajax({
-//                        url:httpAddress +params.url,
-//                        method:params.method,
-//                        data:params.data
-//                    }).then(function(res){
-//                        if(res.state == 1){
-//                            params.callBack(res);
-//                        }else{
-////            alert(res.message);
-//                            params.callBack();
-//                        }
-//                    })
-//                }
-//            }
-//
     var params = {
             url:params.url || null,
             method:params.method || 'POST',
             data:params.data || {},
             callBack:params.callBack || function(){}
         };
-    $.ajax({
-        url:httpAddress +params.url,
-        method:params.method,
-        data:params.data
-    }).then(function(res){
-        if(!store.getState().userInfo.isLogin){
-            $.ajax({
-                url: httpAddress + 'business/getInitWxUser',
-                data: {
-                    code: url2obj().code
-                },
-                success: function (res) {
-                    if (res.datas) {
-                        store.dispatch({
-                            type: 'LOADUSERINFO',
-                            datas: res.datas
-                        });
-                        name = res.datas.id;
-                    }
+    //每次请求把请求加入队列
+    ajaxQueues.push(params);
+    
+    //异步请求主体
+    function bodyAjax(params){
+        $.ajax({
+            url:httpAddress +params.url,
+            method:params.method,
+            data:params.data
+        }).then((res)=>{
+            params.callBack(res);
+        })
+    }
+    
+    function beginAjax(){
+        ajaxQueues.forEach((e)=>{
+            bodyAjax({
+                url:e.url,
+                method:e.method,
+                data:e.data,
+                callBack:function(res){
+                    e.callBack(res);
                 }
             })
-        }
-        if(res.state == 1 ){
-            if(store.getState().userInfo.isLogin){
-                params.callBack(res);
-            }else{
-                ajaxFn(params)
+        });
+        //清空循环队列
+        ajaxQueues = [];
+    }
+    
+    if(!store.getState().userInfo.isLogin && !isGetUsering){
+        
+        isGetUsering = true;
+        bodyAjax({
+            url:'business/getInitWxUser',
+            data:{
+                code: url2obj().code
+            },
+            callBack:function(res){
+                isGetUsering = false;
+                if (res.datas) {
+                    store.dispatch({
+                        type: 'LOADUSERINFO',
+                        datas: res.datas
+                    });
+                    name = res.datas.id;
+                    setTimeout(()=>{
+                        beginAjax();
+                    })
+                }
             }
-        }else{
-            // alert(res.message);
-            params.callBack();
-        }
-    })
+        });
+    }else{
+        //循环请求队列
+        beginAjax();
+    }
 }
 //首页数据加载
 export const loadIndex = function(dispatch,args){

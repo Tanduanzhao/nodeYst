@@ -16,13 +16,6 @@ export default class FilterProduce extends Component{
       keys:[]
     };
   }
-  //shouldComponentUpdate(nextProp,nextState){
-  //  console.log(nextProp)
-  //  console.log(nextState)
-  //  this.setState({
-  //    areaId: this.props.bidList.areaId
-  //  });
-  //}
   componentDidMount(){
     this.setState({
       keys:this.state.keys.concat(this.props.bidList.areaId)
@@ -103,26 +96,6 @@ export default class FilterProduce extends Component{
       });
     })
   }
-  //_spanhandleClick(id,e,t){
-  //  this.setState({
-  //    areaId :id,
-  //    areaName: e,
-  //    searchAreaType:t
-  //  })
-  //}
-  //componentDidMount(){
-  //  if(!this.props.bidList.getProjectStatus){
-  //    //匹配目录
-  //    for(let i=0;i<this.props.bidList.getProjectStatus.length;i++){
-  //      if(this.props.bidList.getProjectStatus[i].id == this.props.id[0]){
-  //        this.setState({
-  //          areaId:this.state.areaId.concat([i])
-  //        });
-  //        break;
-  //      }
-  //    }
-  //  }
-  //}
   render(){
     return(
       <div className="modal-backdrop">
@@ -136,9 +109,12 @@ export default class FilterProduce extends Component{
                 {
                   this.props.bidList.getProjectStatus.map((ele,index)=>{
                       return(
-                          <li key={index} style={(this.state.searchProductStatus == ele.statusNum) ? styles.active : null} onClick={()=>{this.setState({searchProductStatus:ele.statusNum })}}>{ele.statusName}</li>
+                      <li key={index} style={(this.state.searchProductStatus == ele.statusNum) ? styles.active : null} onClick={()=>{this.setState({searchProductStatus:ele.statusNum })}}>{ele.statusName}</li>
                       )
                   })
+                }
+                {
+                  //<li key={index} style={(this.state.searchProductStatus.indexOf(ele.statusNum) != "-1") ? styles.active : null} onClick={this._ahandleClick.bind(this,ele.statusNum,index)}>{ele.statusName}</li>
                 }
               </ul>
             </div>
@@ -155,8 +131,6 @@ export default class FilterProduce extends Component{
                 <ul className="list-horizontal-block">
                 {
                   this.props.bidList.getBidAreaInfo.map((ele,index)=> {
-                    //console.log(this.state.areaId,"getBidAreaInfo")
-                    //console.log(ele.id,"ddd")
                     return (<li key={ele.id} style={(this.state.areaId.indexOf(ele.id) != -1) ? styles.active : null} onClick={this._ahandleClick.bind(this,ele.id,index)}>{ele.areaName}</li>)
                   })
                 }

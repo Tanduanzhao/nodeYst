@@ -66,8 +66,6 @@ export default class More extends Component {
                 
 			}
 		});
-		
-		
 	}
 	render() {
 		return (

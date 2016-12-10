@@ -40,7 +40,7 @@ class Datas extends Component{
             this.props.dispatch({
                 type:'OPENVIP'
             });
-            this.context.router.push('/vip');
+            this.context.router.push('/pay/vip');
         }
     }
     render(){

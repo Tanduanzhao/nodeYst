@@ -87,7 +87,7 @@ class Home extends Component{
 		//获取金银活动箱子状态
 		loadJoinActivity({
 			callBack:(res)=>{
-				if(res){
+				if(res.state == 1){
 					if(res.datas.isJoinCashBox == '0'){
 						this.props.dispatch({
 							type:'SHOWCASHBOX'
@@ -137,10 +137,13 @@ class Home extends Component{
 					this.props.home.isShowRecord ? <Record dataSources={this.state.reCordNum}/> : false
 				}
 				{
-					!this.props.userInfo.isLogin ? null : <Main {...this.props}/>//openProductView={this._openProductView.bind(this)}
+					this.state.loading? <Loading/> : null
 				}
 				{
-					(this.state.loading) ? <Loading/> : null
+					//!this.props.userInfo.isLogin ? null : <Main {...this.props}/>//openProductView={this._openProductView.bind(this)}
+				}
+				{
+					 <Main {...this.props}/>
 				}
 				{
 					this.state.showPopup ? <Popup {...this.props}  popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
@@ -300,7 +303,7 @@ class ParseReport extends Component{
 				</div>
 				<ul className="parseReport-list">
 					{
-						this.props.home.ParseReport.map((ele,index)=> <Link  to={`/pdf/${ele.id}/${encodeURIComponent(ele.title)}/${ele.price}`}  className="parseReport-item" key={ele.id+Math.random()}><i className="fa fa-play-circle"></i> 《{ele.title}》</Link >)
+						this.props.home.ParseReport.map((ele,index)=> <Link  to={`/pay/pdf/${ele.id}/${encodeURIComponent(ele.title)}/${ele.price}`}  className="parseReport-item" key={ele.id+Math.random()}>《{ele.title}》</Link >)
 					}
 				</ul>
 				{
@@ -339,7 +342,7 @@ class Subscribe extends Component{
 				</ul>
 				<div  className="report_classify">
 					<div className="row">
-						<Link to="/report"  onClick={this.free.bind(this,467095550)} className="col col-50"><img src="/images/report_classify01.jpg" alt=""/></Link>
+						<Link to="/report"  onClick={this.free.bind(this,467095547)} className="col col-50"><img src="/images/report_classify01.jpg" alt=""/></Link>
 						<Link to="/report"  onClick={this.free.bind(this,467095549)} className="col col-50"><img src="/images/report_classify02.jpg" alt=""/></Link>
 					</div>
 					<div className="row">
