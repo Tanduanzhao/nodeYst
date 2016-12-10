@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import FooterBar from './footerBar';
 import {Link} from 'react-router';
 import {loadHome,loadUserInfo} from './function/ajax';
-import {OpenProductView} from './function/common';
+import {OpenProductView,onBridgeReady} from './function/common';
 import Popup from './popup';
 
  class Vip extends Component{
