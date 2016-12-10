@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {loadReport,keepReport,cancelKeepReport} from './function/ajax';
 import {WXKEY,HTTPURL} from './config';
 import Loading from './loading';
-import {OpenProductView} from './function/common';
+import {OpenProductView,onBridgeReady} from './function/common';
 import Popup from './popup';
 import GotTop from './gotTop';
 import CollectPrompt from './collectPrompt';
