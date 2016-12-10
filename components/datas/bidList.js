@@ -91,7 +91,7 @@ class BidList extends Component{
     }
     _searchHandle(){
         if(this.props.isVip == '0'){
-            this.context.router.push('/vip');
+            this.context.router.push('/pay/vip');
             return false;
         }else{
             this.setState({
@@ -107,7 +107,7 @@ class BidList extends Component{
     }
     _showProvicenHandle(){
         if(this.props.isVip == '0'){
-            this.context.router.push('/vip');
+            this.context.router.push('/pay/vip');
             return false;
         }else{
             this.props.dispatch({

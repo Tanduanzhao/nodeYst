@@ -71,7 +71,7 @@ class Insurance extends Component{
     }
     _showFilter(){
         if(this.props.isVip == '0'){
-            this.context.router.push('/vip');
+            this.context.router.push('/pay/vip');
             return false;
         }else {
             this.setState({
@@ -128,7 +128,7 @@ class Insurance extends Component{
     //搜索点击查询对应数据
     _searchDatas(key){
         if(this.props.isVip == '0'){
-           this.context.router.push('/vip');
+           this.context.router.push('/pay/vip');
             return false;
         }
         this.props.dispatch({

@@ -104,7 +104,7 @@ class product extends Component{
 
     _searchHandle(){
         if(this.props.isVip == '0'){
-            this.context.router.push('/vip');
+            this.context.router.push('/pay/vip');
             return false;
         }
         this.setState({
@@ -119,7 +119,7 @@ class product extends Component{
     }
     _showProvicenHandle(){
         if(this.props.isVip == '0'){
-            this.context.router.push('/vip');
+            this.context.router.push('/pay/vip');
             return false;
         }else{
             this.props.dispatch({

@@ -77,7 +77,7 @@ class MarketPrice extends Component{
     }
     _searchHandle(){
         if(this.props.isVip == '0'){
-            this.context.router.push('/vip');
+            this.context.router.push('/pay/vip');
             return false;
         }else{
             this.setState({
