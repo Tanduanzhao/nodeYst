@@ -48,6 +48,70 @@ import Popup from './popup';
          //});
          this.context.router.push('/center');
      }
+     //支付方法
+     _sandboxPayService(){
+         function onBridgeReady(data) {
+             var appId = data.appId;
+             var timeStamp = data.timeStamp;
+             var nonceStr = data.nonceStr;
+             var signType = data.signType;
+             var pg = data.pg;
+             var paySign = data.paySign;
+             try {
+                 WeixinJSBridge.invoke('getBrandWCPayRequest', {
+                     "appId" : appId,
+                     "timeStamp" : timeStamp,
+                     "nonceStr" : nonceStr,
+                     "package" : "prepay_id=" + pg,
+                     "signType" : signType,
+                     "paySign" : paySign
+                 }, function(res) {
+                     //alert(res.err_msg);
+                     //alert(res.err_msg == "get_brand_wcpay_request:ok");
+                     if (res.err_msg == "get_brand_wcpay_request:ok") {
+                         //alert("111");
+                         //WeixinJSBridge.call('closeWindow');
+                     } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                 });
+             } catch (e) {
+                 alert(e);
+             }
+         }
+         $.ajax({
+             type: "POST",
+             url:"http://yst-test.immortalshealth.com/modm/sandbox/sandboxPayService",
+             data:{
+                 orderId:'pxFGiwzFAD8mjP9sPRv416VBs3Is'
+             },
+             async: false,
+             error: function(request) {
+                 status = 'error';
+                 message = '系统异常，请稍后重试！';
+             },
+             success: (ret) => {
+                 var state = ret.state;
+                 if(state == "1") {
+                     try {
+                         if (typeof WeixinJSBridge == "undefined") {
+                             if (document.addEventListener) {
+                                 document.addEventListener('WeixinJSBridgeReady',
+                                     onBridgeReady, false);
+                             } else if (document.attachEvent) {
+                                 document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                                 document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                             }
+                         } else {
+                             onBridgeReady(ret.data);
+                         }
+                     } catch (e) {
+                         alert(e);
+                     }
+                     window.event.returnValue = false;
+                     return false;
+                 }
+             }
+         });
+     }
 	render(){
 		return(
 			<div className="root vip">
