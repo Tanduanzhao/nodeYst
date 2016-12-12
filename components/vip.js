@@ -118,7 +118,7 @@ import Popup from './popup';
                  status = 'error';
                  message = '系统异常，请稍后重试！';
              },
-             success: function(ret) {
+             success: (ret) => {
                  var state = ret.state;
                  if(state == "1") {
                      try {
