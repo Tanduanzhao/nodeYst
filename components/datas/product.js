@@ -5,11 +5,11 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {loadProd} from '../function/ajax';
 import Provicen from '../provicen';
-import FilterProduct from '../filterProduct';
+import FilterProduct from '../filterPage/filterProduct';
 import {Link} from 'react-router';
-import Loading from '../loading';
-import EmptyComponent from '../emptyComponent';
-import More from './more';
+import Loading from '../common/loading';
+import EmptyComponent from '../common/emptyComponent';
+import More from './../common/more';
 class product extends Component{
     constructor(props){
         super(props);

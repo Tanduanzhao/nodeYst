@@ -3,10 +3,7 @@ import index from './index';
 import provicen from './provicen';
 import data from './data';
 import router from './router';
-import hospital from './hospital';
 import feedBack from './feedBack';
-import drug from './drug';
-import drugContent from './drugContent';
 import report from './report';
 import purchase from './purchase';
 import userInfo from './userInfo';
@@ -36,11 +33,8 @@ const ystReducers = combineReducers({
 	data,
 	router,
     report,
-    hospital,
     feedBack,
-    drug,
     userInfo,
-    drugContent,
     defaultArea,
     home,
     marketPrice,

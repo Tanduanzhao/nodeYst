@@ -3,7 +3,7 @@
 */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import FooterBar from './footerBar';
+import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
 import {loadUserInfo} from './function/ajax';
 class Center extends Component{

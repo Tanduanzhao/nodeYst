@@ -4,9 +4,9 @@
 import React,{Component,PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-import FooterBar from './footerBar.js';
+import FooterBar from './common/footerBar.js';
 import {loadPicture} from './function/ajax';
-import Loading from './loading';
+import Loading from './common/loading';
 
 var Slider = require('react-slick');
 class Datas extends Component{

@@ -6,9 +6,9 @@ import {connect} from 'react-redux';
 import {loadBidList} from '../function/ajax';
 import Provicen from '../provicen';
 import {Link} from 'react-router';
-import Loading from '../loading';
-import More from './more';
-import EmptyComponent from '../emptyComponent';
+import Loading from '../common/loading';
+import More from './../common/more';
+import EmptyComponent from '../common/emptyComponent';
 class MarketPrice extends Component{
     constructor(props){
         super(props);

@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 
 import ChartSingle from './chartSingle.js';
-import EmptyComponent from '../emptyComponent'
+import EmptyComponent from '../common/emptyComponent'
 export default class Chart extends Component{
 	render(){
         if(this.props.dataSources.length != 0){

@@ -1,14 +1,13 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import FooterBar from './footerBar';
+import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
 import {loadWx,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent,loadReportList,getCiReportColumnList} from './function/ajax';
-import Box from './box';
-import Loading from './loading';
-import Popup from './popup';
+import Box from './common/box';
+import Loading from './common/loading';
 import ReportList from './reportList';
-import SubscribeList from './subscribeList';
-import {OpenProductView,url2obj} from './function/common';
+import SubscribeList from './subscribePage/subscribeList';
+import {url2obj} from './function/common';
 
 var Slider = require('react-slick');
 class Home extends Component{
@@ -16,7 +15,6 @@ class Home extends Component{
 		super(props);
 		this.state ={
 			loading:true,
-			showPopup:false,
 			reCordNum:0
 		};
 		this._loadData = this._loadData.bind(this);
@@ -140,13 +138,7 @@ class Home extends Component{
 					this.state.loading? <Loading/> : null
 				}
 				{
-					//!this.props.userInfo.isLogin ? null : <Main {...this.props}/>//openProductView={this._openProductView.bind(this)}
-				}
-				{
 					 <Main {...this.props}/>
-				}
-				{
-					this.state.showPopup ? <Popup {...this.props}  popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
 				}
 				<FooterBar {...this.props}/>
 
@@ -223,7 +215,7 @@ class Main extends Component{
 				</div>
 				<ul className="list new_report">
 					{
-						this.props.home.data.newReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)//openProductView = {this.props.openProductView}
+						this.props.home.data.newReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)
 					}
 				</ul>
 				<div className="item item-divider home-item-title">
@@ -235,7 +227,7 @@ class Main extends Component{
 				</div>
 				<div className="list new_report">
 					{
-						this.props.home.data.hotReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)//openProductView = {this.props.openProductView}
+						this.props.home.data.hotReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)
 					}
 				</div>
 				<div className="item item-divider home-item-title">
@@ -303,16 +295,9 @@ class ParseReport extends Component{
 				</div>
 				<ul className="parseReport-list">
 					{
-						this.props.home.ParseReport.map((ele,index)=> <Link  to={`/pay/pdf/${ele.id}/${encodeURIComponent(ele.title)}/${ele.price}`}  className="parseReport-item" key={ele.id+Math.random()}>《{ele.title}》</Link >)
+						this.props.home.ParseReport.map((ele,index)=> <Link  to={`/pay/pdf/${ele.id}`}  className="parseReport-item" key={ele.id+Math.random()}>《{ele.title}》</Link >)
 					}
 				</ul>
-				{
-					//<ul className="list new_report">
-					//	{
-					//		this.props.home.ParseReport.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)
-					//	}
-					//</ul>
-				}
 			</div>
 		)
 	}

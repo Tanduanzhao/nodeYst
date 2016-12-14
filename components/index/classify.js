@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import ClassifySingle from './classifySingle.js';
 import LinkBar from './linkBar.js';
-import EmptyComponent from '../emptyComponent';
+import EmptyComponent from '../common/emptyComponent';
 export default class Classify extends Component{
 	render(){
         console.log(this.props.dataSources.length,'this.props.dataSources');

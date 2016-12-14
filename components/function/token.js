@@ -6,19 +6,8 @@ import {loadWx,loadJssdk,getUserAreaInfo,insertReportShare} from './ajax';
 import {url2obj} from './common';
 import {WXKEY,HTTPURL} from '../config';
 var isLogin = false;
-export const Token = function(fn,login,store){
-    console.log(store.getState(),'111111');
+export const Token = function(fn,store){
     if(store.getState().userInfo.isLogin||url2obj().code){
-        console.log("sss");
-        //if(!store.getState().userInfo.isLogin){
-        //    //获取微信授权
-        //    loadWx({
-        //        code:url2obj().code,
-        //        callBack:(res)=>{
-        //            login(res);
-        //        }
-        //    })
-        //}
         loadJssdk({
             uri:location.href,
             callBack:(res) => {

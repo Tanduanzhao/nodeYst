@@ -976,3 +976,65 @@ export const insertReportShare = function(args){
         }
     })
 }
+
+//金宝箱活动
+export const glodBox = function(args){
+    ajaxFn({
+        url:'partakeActivity/glodBox',
+        data:{
+            username:args.username || null,
+            phone:args.phone || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//银宝箱活动
+export const cashBox = function(args){
+    ajaxFn({
+        url:'partakeActivity/cashBox',
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//请求支付
+export const requestUnifiedorderPayService = function(args){
+    $.ajax({
+        type: "POST",
+        url:httpAddress+"pay/requestUnifiedorderPayService",
+        data:{
+            productId:args.id
+        },
+        async: false,
+        error: function(request) {
+            status = 'error';
+            message = '系统异常，请稍后重试！';
+        },
+        success: (ret)=> {
+            var state = ret.state;
+            if(state == "1") {
+                try {
+                    if (typeof WeixinJSBridge == "undefined") {
+                        if (document.addEventListener) {
+                            document.addEventListener('WeixinJSBridgeReady',
+                                args.callBack(), false);
+                        } else if (document.attachEvent) {
+                            document.attachEvent('WeixinJSBridgeReady',  args.callBack());
+                            document.attachEvent('onWeixinJSBridgeReady',  args.callBack());
+                        }
+                    } else {
+                        args.callBack(ret.data,args.fun)
+                    }
+                } catch (e) {
+                    alert(e);
+                }
+                window.event.returnValue = false;
+                return false;
+            }
+        }
+    });
+}
