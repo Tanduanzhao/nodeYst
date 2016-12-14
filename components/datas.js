@@ -105,6 +105,14 @@ class Column extends Component{
     render(){
         return(
             <ul className="column column-block">
+                <Link to="/datas/groups">
+                    <img src="/images/datas_groups.jpg" alt=""/>
+                    <b className="assertive">目录分组</b>
+                </Link>
+                <Link to="/datas/dataSources">
+                    <img src="/images/datas_dataSources.jpg" alt=""/>
+                    <b className="assertive">入市价源</b>
+                </Link>
                 <Link to="/datas/policy">
                     <img src="/images/column03.jpg" alt=""/>
                     政策准入
