@@ -56,6 +56,7 @@ import SubscribeContent from './components/subscribePage/subscribeContent';
 import SubtrainPageAll from './components/subscribePage/subtrainPageAll';
 
 import Groups from './components/datas/groups';
+import GroupsMes from './components/datas/groupsMes';
 import DataSources from './components/datas/dataSources';
 
 import {WXKEY,HTTPURL} from './components/config';
@@ -159,6 +160,7 @@ export class Reactrouter extends Component{
                             <Route path="bidList" component={bidList}/>
                             <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>
                             <Route path="groups" component={Groups}/>
+                            <Route path="groupsMes/:id/:searchName" component={GroupsMes}/>
                             <Route path="dataSources" component={DataSources}/>
                         </Route>
                         <Route path="bidListall/:productName/:prepName/:spec/:manufacturerName/:id">

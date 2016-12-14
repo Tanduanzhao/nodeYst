@@ -1001,6 +1001,45 @@ export const cashBox = function(args){
     })
 }
 
+//目录分组
+export const getCatalogList = function(args){
+    ajaxFn({
+        url:'business/getCatalogList',
+        data:{
+            searchName:args.searchName || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//入市价数据源
+export const getCatalogInfo = function(args){
+    ajaxFn({
+        url:'business/getCatalogInfo',
+        data:{
+            searchName:args.searchName || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//入市价数据源
+export const getEntryPriceSource = function(args){
+    ajaxFn({
+        url:'business/getEntryPriceSource',
+        data:{
+            searchName:args.searchName || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
 //请求支付
 export const requestUnifiedorderPayService = function(args){
     $.ajax({

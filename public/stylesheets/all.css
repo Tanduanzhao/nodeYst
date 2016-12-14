@@ -1358,6 +1358,11 @@ table.table-border td, table.table-border th {
     .reportTitle .columnTitle span {
       margin-right: 20px; }
 
+.factoryNumber input {
+  width: 50px;
+  height: 24px;
+  border: 1px solid #eee; }
+
 .defmargin {
   margin: 0; }
 

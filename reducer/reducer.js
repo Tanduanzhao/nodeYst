@@ -25,11 +25,16 @@ import subscribePage from './subscribePage';
 import subscribePageAll from './subscribePageAll';
 import subscribePageList from './subscribePageList';
 import subscribeContent from './subscribeContent';
+
+import groups from './groups';
+import groupsMes from './groupsMes';
 //合并仓库
 
 const ystReducers = combineReducers({
 	index,
 	provicen,
+    groups,
+    groupsMes,
 	data,
 	router,
     report,
