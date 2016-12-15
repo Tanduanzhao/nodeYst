@@ -1,15 +1,15 @@
 import React,{Component} from 'react';
-import HeaderBar from './headerBar.js';
-import FooterBar from './footerBar.js';
+import HeaderBar from './common/headerBar.js';
+import FooterBar from './common/footerBar.js';
 import SliderBar from './sliderBar.js';
 import Provicen from './provicen.js';
 
 import {connect} from 'react-redux';
-import {httpAddress} from './config.js';
+//import {httpAddress} from './config.js';
 import {loadIndex,loadProvince,loadWx,loadJssdk} from './function/ajax.js';
 import {url2obj} from './function/common';
 
-import Loading from './loading';
+import Loading from './common/loading';
 
 class Index extends Component{
 	constructor(props) {

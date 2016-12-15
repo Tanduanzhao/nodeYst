@@ -4,9 +4,9 @@
 import React,{Component,PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-import FooterBar from './footerBar.js';
+import FooterBar from './common/footerBar.js';
 import {loadPicture} from './function/ajax';
-import Loading from './loading';
+import Loading from './common/loading';
 
 var Slider = require('react-slick');
 class Datas extends Component{
@@ -105,6 +105,14 @@ class Column extends Component{
     render(){
         return(
             <ul className="column column-block">
+                <Link to="/datas/groups">
+                    <img src="/images/datas_groups.jpg" alt=""/>
+                    <b className="assertive">目录分组</b>
+                </Link>
+                <Link to="/datas/dataSources">
+                    <img src="/images/datas_dataSources.jpg" alt=""/>
+                    <b className="assertive">入市价数据源</b>
+                </Link>
                 <Link to="/datas/policy">
                     <img src="/images/column03.jpg" alt=""/>
                     政策准入

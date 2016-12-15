@@ -6,11 +6,11 @@ import {connect} from 'react-redux';
 import $ from 'jquery';
 import {Link} from 'react-router';
 import {loadBidListContent,getBidAreaInfo,getProjectStatus} from '../function/ajax.js';
-import Loading from '../loading';
-import EmptyComponent from '../emptyComponent';
-import FilterBidList from '../filterBidList';
+import Loading from '../common/loading';
+import EmptyComponent from '../common/emptyComponent';
+import FilterBidList from '../filterPage/filterBidList';
 
-import More from './more';
+import More from './../common/more';
 class BidList extends Component{
     constructor(props){
         super(props);

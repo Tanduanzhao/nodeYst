@@ -3,16 +3,15 @@
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import FooterBar from './footerBar';
+import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
-import FilterCollect from './filterCollect';
-import Loading from './loading';
-import EmptyComponent from './emptyComponent';
-import {getReportKeepList,insertUserAction,getReportType,cancelKeepReport} from './function/ajax';
-import Popup from './popup';
+import FilterCollect from './filterPage/filterCollect';
+import Loading from './common/loading';
+import EmptyComponent from './common/emptyComponent';
+import {getReportKeepList,insertUserAction,getReportType,cancelKeepReport,requestUnifiedorderPayService} from './function/ajax';
 import Collectpopup from './collectpopup';
 import ReportList from './reportList';
-import {OpenProductView} from './function/common';
+import {onBridgeReady} from './function/common';
 import CollectPrompt from './collectPrompt';
 
 class Collect extends Component {
@@ -22,7 +21,6 @@ class Collect extends Component {
       searchType:this.props.report.searchType,
       loading:true,
       request:true,
-      showPopup:false,
       reportTag:this.props.report.reportTag,
       showPromptMes:false,
       showPrompt:false
@@ -90,6 +88,10 @@ class Collect extends Component {
       this._loadData();
     }
   }
+  //支付
+  _sandboxPayService(id,self){
+    requestUnifiedorderPayService({id:id,fun:()=>{this._loadData()},callBack:onBridgeReady})
+  }
   _getReportType(){
     getReportType({
       callBack:(res)=>{
@@ -100,14 +102,6 @@ class Collect extends Component {
       }
     });
   }
-   _openProductView(id){
-     OpenProductView(id,()=>{
-           this.setState({
-             showPopup:true
-           });
-         }
-     )
-    }
   _fn(args) {
     console.log(args.reportTag,"args")
     if(!args.reportTag){
@@ -156,15 +150,6 @@ class Collect extends Component {
     });
     setTimeout(()=> this._loadData(),100);
   }
-
-    _popupCancel(){
-        this.setState({
-            showPopup:false
-        })
-    }
-    _popupSure(){
-      this.context.router.push('/purchase');
-    }
     _collectPopupCancel(){
       this.setState({
         showPrompt:1,
@@ -213,7 +198,7 @@ class Collect extends Component {
       <div className="root">
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header report-view">
-          <Main {...this.props} openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
+          <Main {...this.props} sandboxPayService={this._sandboxPayService.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
         </div>
         <FooterBar {...this.props}/>
         {
@@ -222,9 +207,6 @@ class Collect extends Component {
         }
         {
           this.state.loading ? <Loading/> : null
-        }
-        {
-          this.state.showPopup ? <Popup {...this.props}  popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
         }
         {
           this.props.report.showCollectPopup ? <Collectpopup collectPopupCancel={this._collectPopupCancel.bind(this)}  collectPopupCancelall={this._collectPopupCancelall.bind(this)}/> : null
@@ -252,11 +234,6 @@ class HeaderBar extends Component{
     return(
       <div className="bar bar-header bar-positive item-input-inset">
         <div className="buttons" onClick={this._showProvicenHandle.bind(this)} style={{ fontSize: '.75rem'}}>
-          {
-            //<button className="button" onClick={this._showProvicenHandle.bind(this)}>
-            //  <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
-            //</button>
-          }
           <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
           <span  style={{margin:' 0 5px'}}>筛选</span>
         </div>
@@ -286,7 +263,7 @@ class Main extends Component{
         return(
             <ul className="list new_report">
               {
-                this.props.data.map((ele,index)=> <ReportList  {...this.props} openProductView = {this.props.openProductView} reportTag={this.props.reportTag} collect={this.state.collect} dataSources={ele} key={ele.id+Math.random()}/>)
+                this.props.data.map((ele,index)=> <ReportList  {...this.props} sandboxPayService = {this.props.sandboxPayService} reportTag={this.props.reportTag} collect={this.state.collect} dataSources={ele} key={ele.id+Math.random()}/>)
               }
             </ul>
         )

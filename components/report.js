@@ -3,15 +3,13 @@
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import FooterBar from './footerBar';
+import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
-import FilterReport from './filterReport';
-import Loading from './loading';
-import EmptyComponent from './emptyComponent';
+import FilterReport from './filterPage/filterReport';
+import Loading from './common/loading';
+import EmptyComponent from './common/emptyComponent';
 import {loadNewrepor,loadPicture,insertUserAction,getReportType,loadReportList} from './function/ajax';
-import Popup from './popup';
 import ReportList from './reportList';
-import {OpenProductView} from './function/common';
 
 class Report extends Component {
   constructor(props){
@@ -20,7 +18,6 @@ class Report extends Component {
       searchType:this.props.report.searchType,
       loading:true,
       request:true,
-      showPopup:false,
       isOpacity:true,
       opacityNum:0,
       reportTag:this.props.report.reportTag
@@ -92,7 +89,6 @@ class Report extends Component {
     });
   }
   componentDidMount(){
-      
     this.ele = this.refs.content;
 //    console.dir(this.refs.headerImg);
     this.ele.addEventListener('scroll',this._infiniteScroll);
@@ -126,14 +122,6 @@ class Report extends Component {
     //  fixedScroll:1
     //})
   }
-   _openProductView(id){
-     OpenProductView(id,()=>{
-           this.setState({
-             showPopup:true
-           });
-         }
-     )
-    }
   _fn(args) {
     console.log(args.reportTag,"argsssss")
     if(!args.reportTag){
@@ -181,24 +169,6 @@ class Report extends Component {
     });
     setTimeout(()=> this._loadData(),100);
   }
-
-    _popupCancel(){
-        this.setState({
-            showPopup:false
-        })
-    }
-    _popupSure(){
-        //this.setState({
-        //    showPopup:false
-        //});
-      this.context.router.push('/purchase');
-        //this.props.dispatch({
-        //  type:'LOADPRODUCEDATA',
-        //  data:[],
-        //  pageNo:1,
-        //});
-        //setTimeout(()=> this._loadData(),100);
-    }
   render() {
     return (
       <div className="root">
@@ -211,7 +181,7 @@ class Report extends Component {
             <div className="header-img" ref="headerImg">
               <img width="100%" src="../images/report_bg.jpg"/>
             </div>
-            <Main ref="main" {...this.props} openProductView={this._openProductView.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}>
+            <Main ref="main" {...this.props} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}>
             </Main>
           </div>
         </div>
@@ -219,9 +189,6 @@ class Report extends Component {
         {
           this.props.report.isShowFilter ?
             <FilterReport fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.report}/> : null
-        }
-        {
-          this.state.showPopup ? <Popup {...this.props}  popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
         }
       </div>
     )
@@ -243,11 +210,6 @@ class HeaderBar extends Component{
     return(
       <div className={`bar bar-header bar-positive item-input-inset ${this.props.isOpacity ? 'bar-opacity' : null}`} style={{backgroundColor:`rgba(56,126,245,${this.props.opacityNum})`}}>
         <div className="buttons"  onClick={this._showProvicenHandle.bind(this)} style={{ fontSize: '.75rem'}}>
-          {
-            //<button className="button" onClick={this._showProvicenHandle.bind(this)}>
-            //  <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
-            //</button>
-          }
           <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
           <span  style={{margin:' 0 5px'}}>筛选</span>
         </div>
@@ -273,7 +235,7 @@ class Main extends Component{
                 {this.props.children}
                 <ul className="list new_report">
                   {
-                    this.props.data.map((ele,index)=> <ReportList openProductView = {this.props.openProductView} reportTag={this.props.reportTag} dataSources={ele} key={ele.id+Math.random()}/>)
+                    this.props.data.map((ele,index)=> <ReportList reportTag={this.props.reportTag} dataSources={ele} key={ele.id+Math.random()}/>)
                   }
                 </ul>
             </div>
@@ -282,86 +244,6 @@ class Main extends Component{
         return <EmptyComponent/>
       }
   }
-}
-{
-  //class List extends Component{
-  //  constructor(props){
-  //    super(props);
-  //  };
-  //  insertUserAction(e){
-  //    insertUserAction({
-  //      reportId:this.props.dataSources.id,
-  //      costStatus:this.props.dataSources.costStatus,
-  //      callBack:(res)=> {
-  //        console.log(res)
-  //      }
-  //    });
-  //
-  //  }
-  //  render(){
-  //    console.log(this.props.dataSources.costStatus,'ct');
-  //    console.log(this.props.dataSources.buyReport,'sss');
-  //    var string = null;
-  //    var tag = (()=>{
-  //      if(this.props.dataSources.costStatus == "1"){
-  //        string = <i className="report-card-icon">报告试读</i>;
-  //      }else{
-  //        string = <i className="report-card-icon">点击查看</i>;
-  //      }
-  //      return string;
-  //    })();
-  //    var number = (()=>{
-  //      if(this.props.dataSources.costStatus == "1"){
-  //        string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人购买</span>;
-  //      }else{
-  //        string = <span style={{textAlign:"left"}}>{this.props.dataSources.number}人查看</span>;
-  //      }
-  //      return string;
-  //    })();
-  //    if(this.props.dataSources.costStatus == "1"){
-  //      this.state= {
-  //        price: this.props.dataSources.price
-  //      }
-  //    }else{
-  //      this.state= {
-  //        price: 0
-  //      }
-  //    }
-  //    let isCanViewReport = false;
-  //    if(this.props.dataSources.costStatus == '1' && this.props.dataSources.buyReport == '0'){
-  //      isCanViewReport = false;
-  //    }else{
-  //      isCanViewReport = true;
-  //    }
-  //    return(
-  //        <div className="col-50">
-  //          {
-  //            isCanViewReport ? <Link to={`/pdf/${this.props.dataSources.id}/${this.props.dataSources.title}`}>
-  //              <div className="report-img">
-  //                <img src={this.props.dataSources.mainImg}/>
-  //              </div>
-  //              <h3> {this.props.dataSources.title}</h3>
-  //              <div className="report-card-price">¥{this.state.price}</div>
-  //              <p className="report-card-footer">
-  //                {number}
-  //                {tag}
-  //              </p>
-  //            </Link> : <a onClick={()=>this.props.openProductView(this.props.dataSources.id)}>
-  //              <div className="report-img">
-  //                <img src={this.props.dataSources.mainImg}/>
-  //              </div>
-  //              <h3> {this.props.dataSources.title}</h3>
-  //              <div className="report-card-price">¥{this.state.price}</div>
-  //              <p className="report-card-footer">
-  //                {number}
-  //                {tag}
-  //              </p>
-  //            </a>
-  //          }
-  //        </div>
-  //    )
-  //  }
-  //}
 }
 function select(state){
   return{

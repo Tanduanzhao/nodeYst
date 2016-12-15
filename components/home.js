@@ -1,14 +1,14 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import FooterBar from './footerBar';
+import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
 import {loadWx,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent,loadReportList,getCiReportColumnList} from './function/ajax';
-import Box from './box';
-import Loading from './loading';
-import Popup from './popup';
+import Box from './common/box';
+import Loading from './common/loading';
 import ReportList from './reportList';
-import SubscribeList from './subscribeList';
-import {OpenProductView,url2obj} from './function/common';
+import SubscribeList from './subscribePage/subscribeList';
+import {url2obj} from './function/common';
+import $ from 'jquery';
 
 var Slider = require('react-slick');
 class Home extends Component{
@@ -16,7 +16,6 @@ class Home extends Component{
 		super(props);
 		this.state ={
 			loading:true,
-			showPopup:false,
 			reCordNum:0
 		};
 		this._loadData = this._loadData.bind(this);
@@ -140,13 +139,7 @@ class Home extends Component{
 					this.state.loading? <Loading/> : null
 				}
 				{
-					//!this.props.userInfo.isLogin ? null : <Main {...this.props}/>//openProductView={this._openProductView.bind(this)}
-				}
-				{
 					 <Main {...this.props}/>
-				}
-				{
-					this.state.showPopup ? <Popup {...this.props}  popupCancel={this._popupCancel.bind(this)} popupSure={this._popupSure.bind(this)}/> : null
 				}
 				<FooterBar {...this.props}/>
 
@@ -223,7 +216,7 @@ class Main extends Component{
 				</div>
 				<ul className="list new_report">
 					{
-						this.props.home.data.newReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)//openProductView = {this.props.openProductView}
+						this.props.home.data.newReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)
 					}
 				</ul>
 				<div className="item item-divider home-item-title">
@@ -235,7 +228,7 @@ class Main extends Component{
 				</div>
 				<div className="list new_report">
 					{
-						this.props.home.data.hotReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)//openProductView = {this.props.openProductView}
+						this.props.home.data.hotReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)
 					}
 				</div>
 				<div className="item item-divider home-item-title">
@@ -261,21 +254,21 @@ class Column extends Component{
 					<img src="/images/column01.jpg" alt=""/>
 					分析报告
 				</Link>
-				<Link to="/datas/policy">
-					<img src="/images/column03.jpg" alt=""/>
-					政策准入
+				<Link to="/datas/groups">
+					<img src="/images/datas_groups.jpg" alt=""/>
+					<b className="assertive">目录分组</b>
 				</Link>
-				<Link to="/datas/bidList">
-					<img src="/images/column02.jpg" alt=""/>
-					中标数据
+                <Link to="/datas/dataSources">
+					<img src="/images/datas_dataSources.jpg" alt=""/>
+					<b className="assertive">入市价数据源</b>
 				</Link>
 				<Link to="/datas/marketPrice">
 					<img src="/images/column07.jpg" alt="" className="price-icon"/>
 					入市价
 				</Link>
-				<Link to="/datas/product">
-					<img src="/images/column05.jpg" alt=""/>
-					产品数据
+				<Link to="/datas/bidList">
+					<img src="/images/column02.jpg" alt=""/>
+					中标数据
 				</Link>
 			</ul>
 		)
@@ -303,16 +296,9 @@ class ParseReport extends Component{
 				</div>
 				<ul className="parseReport-list">
 					{
-						this.props.home.ParseReport.map((ele,index)=> <Link  to={`/pay/pdf/${ele.id}/${encodeURIComponent(ele.title)}/${ele.price}`}  className="parseReport-item" key={ele.id+Math.random()}>《{ele.title}》</Link >)
+						this.props.home.ParseReport.map((ele,index)=> <Link  to={`/pay/pdf/${ele.id}`}  className="parseReport-item" key={ele.id+Math.random()}>《{ele.title}》</Link >)
 					}
 				</ul>
-				{
-					//<ul className="list new_report">
-					//	{
-					//		this.props.home.ParseReport.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)
-					//	}
-					//</ul>
-				}
 			</div>
 		)
 	}

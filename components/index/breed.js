@@ -5,7 +5,7 @@ import React,{Component} from 'react';
 
 import List from '../common/list.js';
 import LinkBar from './linkBar.js';
-import EmptyComponent from '../emptyComponent';
+import EmptyComponent from '../common/emptyComponent';
 export default class Breed extends Component{
 	render(){
         if(this.props.dataSources.length != 0){

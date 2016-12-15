@@ -6,7 +6,7 @@ import React,{Component} from 'react';
 
 import ConceptSingle from  './conceptSingle.js';
 import LinkBar from './linkBar.js';
-import EmptyComponent from '../emptyComponent';
+import EmptyComponent from '../common/emptyComponent';
 export default class Concept extends Component{
 	render(){
         

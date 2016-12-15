@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import NormalHeaderBar from './normalHeaderBar.js';
+import NormalHeaderBar from './common/normalHeaderBar.js';
 import {loadIndex} from './function/ajax.js';
 export default class Provicen extends Component{
 	constructor(props) {

@@ -6,9 +6,9 @@ import {connect} from 'react-redux';
 import {loadBidList} from '../function/ajax';
 import Provicen from '../provicen';
 import {Link} from 'react-router';
-import Loading from '../loading';
-import More from './more';
-import EmptyComponent from '../emptyComponent';
+import Loading from '../common/loading';
+import More from './../common/more';
+import EmptyComponent from '../common/emptyComponent';
 class MarketPrice extends Component{
     constructor(props){
         super(props);
@@ -95,13 +95,13 @@ class MarketPrice extends Component{
         return(
             <div className="root">
                 <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
+                {
+                    this.state.loading?<Loading/>: null
+                }
                 <div ref="content" className="scroll-content has-header">
                     <Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
                 </div>
                 <More {...this.props}/>
-                {
-                    this.state.loading?<Loading/>: null
-                }
             </div>
         )
     }

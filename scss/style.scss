@@ -154,14 +154,18 @@ h3{
     justify-content: space-around;
     -webkit-justify-content: space-around;
     align-items: center;
-    padding:9px 12px 12px 12px;
+    text-align: center;
+    padding:9px 0px 12px 0px;
     a{
         flex:1;
         -webkit-flex:1;
         float: left;
-        font-size: .55rem;
         color: #000;
+        font-size: .5rem;
         text-align: center;
+        > b{
+            font-size: .5rem;
+        }
     }
     img{
         display: block;
@@ -184,8 +188,8 @@ h3{
         -webkit-flex: inherit;
     }
     .price-icon{
-        width: 53px;
-        height: 49px;
+        width: 45px;
+        height: 45px;
         margin-bottom: 3px;
     }
 }
@@ -1456,6 +1460,18 @@ table{
         span{
             margin-right: 20px;
         }
+    }
+}
+.factoryNumber input{
+    width: 50px;
+    height: 24px;
+    padding: 0.2em 0.5em;
+    border: 1px solid #eee;
+    &.minFactoryNumber{
+        margin-right: 0.5em;
+    }
+    &.maxFactoryNumber{
+        margin-left: 0.5em;
     }
 }
 .defmargin{

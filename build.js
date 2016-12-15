@@ -3,69 +3,61 @@ import React,{Component} from 'react';
 import ReactDOM from 'react/lib/ReactDOM';
 
 import {Router,Route,Link,browserHistory,IndexRoute} from 'react-router';
-//import {createStore,applyMiddleware} from 'redux';
-//import thunk from 'redux-thunk';
+
 import {Provider} from 'react-redux';
-//import ystReducers from './reducer/reducer.js';
 
 import {store,loadWx,insertReportShare} from './components/function/ajax';
 import {url2obj} from './components/function/common';
 
 import Index from './components/index.js';
-import Optional from './components/optionalClassify.js';
-import Concept from './components/optionalConcept.js';
+import Optional from './components/index/optionalClassify.js';
+import Concept from './components/index/optionalConcept.js';
 
-import RiseClassify from './components/riseClassify.js';
-import RiseConcept from './components/riseConcept.js';
-import RiseBreed from './components/riseBreed.js';
+import RiseClassify from './components/index/riseClassify.js';
+import RiseConcept from './components/index/riseConcept.js';
+import RiseBreed from './components/index/riseBreed.js';
 
 import Datas from './components/datas.js';
-import HospitalList from './components/datas/hospitalList';
-import drugList from './components/datas/drugList';
-import drugContent from './components/datas/drugContent';
 import marketPrice from './components/datas/marketPrice';
 import bidList from './components/datas/bidList';
 import bidListall from './components/datas/bidListall';
 import product from './components/datas/product';
 
 import Center from './components/center';
-import FeedBack from './components/feedBack';
-import purchase from './components/purchase';
+import FeedBack from './components/center/feedBack';
+import purchase from './components/center/purchase';
 import Collect from './components/collect';
-import help from './components/help';
-import User from './components/user';
-import contribute from './components/contribute';
-import dataIntro from './components/dataIntro';
+import help from './components/center/help';
+import User from './components/center/user';
+import contribute from './components/center/contribute';
+import dataIntro from './components/datas/dataIntro';
 
 import report from './components/report';
-import free from './components/report/free';
-import charge from './components/report/charge';
 
 import Home from './components/home';
 
 import vip from './components/pay/vip';
-import vips from './components/vip';
-//import TestPdf from './components/pay/pdf';
-import protocol from './components/protocol';
+import protocol from './components/center/protocol';
 import Pdf from './components/pay/pdf';
-import Pdfs from './components/pay/pdfs';
 import Picture from './components/picture';
 
-import ReportContent from "./components/reportContent";
-import Policy from './components/policy';
-import Quality from './components/quality';
-import Base from './components/base';
-import Insurance from './components/insurance';
-import Assist from './components/assist';
-import LowPrice from './components/lowPrice';
-import Anti from './components/anti';
+import Policy from './components/datas/policy';
+import Quality from './components/datas/datasPolicy/quality';
+import Base from './components/datas/datasPolicy/base';
+import Insurance from './components/datas/datasPolicy/insurance';
+import Assist from './components/datas/datasPolicy/assist';
+import LowPrice from './components/datas/datasPolicy/lowPrice';
+import Anti from './components/datas/datasPolicy/anti';
 
-import SubscribePage from './components/subscribePage';
-import SubscribePageAll from './components/subscribePageAll';
-import SubscribePageList from './components/subscribePageList';
-import SubscribeContent from './components/subscribeContent';
-import SubtrainPageAll from './components/subtrainPageAll';
+import SubscribePage from './components/subscribePage/subscribePage';
+import SubscribePageAll from './components/subscribePage/subscribePageAll';
+import SubscribePageList from './components/subscribePage/subscribePageList';
+import SubscribeContent from './components/subscribePage/subscribeContent';
+import SubtrainPageAll from './components/subscribePage/subtrainPageAll';
 
+import Groups from './components/datas/groups';
+import GroupsMes from './components/datas/groupsMes';
+import DataSources from './components/datas/dataSources';
 
 import {WXKEY,HTTPURL} from './components/config';
 
@@ -127,31 +119,12 @@ Token((res) => {
         type: 'CHANGEDATA',
         yearMonth: res.datas.yearMonth
     });
-
-//    ReactDOM.render(_router, ele, null);
 }
-    ,(res)=>{
-        //store.dispatch({
-        //    type:'LOADUSERINFO',
-        //    datas:res.datas
-        //});
-        ////alert("dddd")
-        //name=res.datas.id;
-    }
     ,store
 );
 export class Reactrouter extends Component{
-    componentDidMount(){
-        //loadWx({
-        //    code:url2obj().code,
-        //    callBack:(res)=>{
-        //        store.dispatch({
-        //                    type:'LOADUSERINFO',
-        //                    datas:res.datas
-        //                });
-        //            name=res.datas.id;
-        //    }
-        //})
+    componentWillMount(){
+        
     }
     render() {
         return (
@@ -170,8 +143,6 @@ export class Reactrouter extends Component{
                         </Route>
                         <Route path="datas">
                             <IndexRoute component={Datas}/>
-                            <Route path="hospitalList" component={HospitalList}/>
-                            <Route path="drugList" component={drugList}/>
                             <Route path="marketPrice" component={marketPrice}/>
                             <Route path="policy">
                                 <IndexRoute component={Policy}/>
@@ -191,12 +162,12 @@ export class Reactrouter extends Component{
                             <Route path="product" component={product}/>
                             <Route path="bidList" component={bidList}/>
                             <Route path="bidList/:productName/:prepName/:spec/:manufacturerName" component={bidList}/>
+                            <Route path="groups" component={Groups}/>
+                            <Route path="groupsMes/:id/:searchName" component={GroupsMes}/>
+                            <Route path="dataSources" component={DataSources}/>
                         </Route>
                         <Route path="bidListall/:productName/:prepName/:spec/:manufacturerName/:id">
                             <IndexRoute component={bidListall}/>
-                        </Route>
-                        <Route path="drugContent/:sid">
-                            <IndexRoute component={drugContent}/>
                         </Route>
                         <Route path="center">
                             <IndexRoute component={Center}/>
@@ -214,8 +185,6 @@ export class Reactrouter extends Component{
                         </Route>
                         <Route path="report">
                             <IndexRoute component={report}/>
-                            <Route path="free" component={free}/>
-                            <Route path="charge" component={charge}/>
                         </Route>
                         <Route path="home">
                             <IndexRoute component={Index}/>
@@ -235,14 +204,8 @@ export class Reactrouter extends Component{
                         <Route path="subtrainPageAll/:id">
                             <IndexRoute component={SubtrainPageAll}/>
                         </Route>
-                        <Route path="pdf/:id/:title/:price" component={Pdf}></Route>
                         <Route path="pay/pdf/:id" component={Pdf}></Route>
-                        <Route path="pay/pdfs/:id" component={Pdfs}></Route>
                         <Route path="picture/:url" component={Picture}></Route>
-                        <Route path="vip">
-                            <IndexRoute component={vip}/>
-                            <Route path="protocol" component={protocol}/>
-                        </Route>
                         <Route path="pay/vip">
                             <IndexRoute component={vip}/>
                             <Route path="protocol" component={protocol}/>

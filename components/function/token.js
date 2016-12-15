@@ -6,19 +6,9 @@ import {loadWx,loadJssdk,getUserAreaInfo,insertReportShare} from './ajax';
 import {url2obj} from './common';
 import {WXKEY,HTTPURL} from '../config';
 var isLogin = false;
-export const Token = function(fn,login,store){
-    console.log(store.getState(),'111111');
+export const Token = function(fn,store){
     if(store.getState().userInfo.isLogin||url2obj().code){
-        console.log("sss");
-        //if(!store.getState().userInfo.isLogin){
-        //    //获取微信授权
-        //    loadWx({
-        //        code:url2obj().code,
-        //        callBack:(res)=>{
-        //            login(res);
-        //        }
-        //    })
-        //}
+        // 分享
         loadJssdk({
             uri:location.href,
             callBack:(res) => {
@@ -72,33 +62,65 @@ export const Token = function(fn,login,store){
                         }
                      })
                      // 分享
-                        var info = {
-                            title: '药市通-首个医药圈的信息分享平台',
-                            link: HTTPURL+"?recommender="+name,
-                            imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
-                            desc: ' 提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
-                        };
-                        wx.onMenuShareTimeline({
-                            title: info.title, // 分享标题
-                            link: info.link, // 分享链接
-                            imgUrl: info.imgUrl, // 分享图标
-                            success: function() {
+                    var info = {
+                        title: '药市通-首个医药圈的信息分享平台',
+                        link: HTTPURL+"?recommender="+name,
+                        imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
+                        desc: ' 提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
+                    };
+                    wx.onMenuShareTimeline({
+                        title: info.title, // 分享标题
+                        link: info.link, // 分享链接
+                        imgUrl: info.imgUrl, // 分享图标
+                        success: function() {
 //                                $.toast('分享成功！');
-                            }
-                        });
-                        wx.onMenuShareAppMessage({
-                            title: info.title,
-                            desc: info.desc, // 分享描述
-                            link: info.link, // 分享链接
-                            imgUrl: info.imgUrl, // 分享图标
-                            type: '', // 分享类型,music、video或link，不填默认为link
-                            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                            success: function() {
-                                // 用户确认分享后执行的回调函数
+                        }
+                    });
+                    wx.onMenuShareAppMessage({
+                        title: info.title,
+                        desc: info.desc, // 分享描述
+                        link: info.link, // 分享链接
+                        imgUrl: info.imgUrl, // 分享图标
+                        type: '', // 分享类型,music、video或link，不填默认为link
+                        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                        success: function() {
+                            // 用户确认分享后执行的回调函数
 //                                $.toast('分享成功！');
-                            }
-                        });
+                        },
+                        trigger:function(){
+                            alert('trigger');
+                        }
+                    });
                 });
+                wx.error(function(){
+                    // 分享
+                    var info = {
+                        title: '药市通-首个医药圈的信息分享平台',
+                        link: HTTPURL+"?recommender="+name,
+                        imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
+                        desc: ' 提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
+                    };
+                    wx.onMenuShareTimeline({
+                        title: info.title, // 分享标题
+                        link: info.link, // 分享链接
+                        imgUrl: info.imgUrl, // 分享图标
+                        success: function() {
+//                                $.toast('分享成功！');
+                        }
+                    });
+                    wx.onMenuShareAppMessage({
+                        title: info.title,
+                        desc: info.desc, // 分享描述
+                        link: info.link, // 分享链接
+                        imgUrl: info.imgUrl, // 分享图标
+                        type: '', // 分享类型,music、video或link，不填默认为link
+                        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                        success: function() {
+                            // 用户确认分享后执行的回调函数
+//                                $.toast('分享成功！');
+                        }
+                    });
+                })
             }
         })
     }else{
