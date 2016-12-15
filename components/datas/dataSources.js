@@ -198,7 +198,7 @@ class List extends Component{
 
                     <p>商品名: {this.props.dataSource.prodName}</p>
                     <p>剂型: {this.props.dataSource.dosName}</p>
-                    <p>规格: {this.props.dataSource.规格}</p>
+                    <p>规格: {this.props.dataSource.spec}</p>
                     <p>包装数量: {this.props.dataSource.wrapNumber}</p>
                     <p>包装材质: {this.props.dataSource.wrapMaterial}</p>
                     <p>生产企业: {this.props.dataSource.factoryName}</p>
