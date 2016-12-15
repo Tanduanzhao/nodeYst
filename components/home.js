@@ -8,6 +8,7 @@ import Loading from './common/loading';
 import ReportList from './reportList';
 import SubscribeList from './subscribePage/subscribeList';
 import {url2obj} from './function/common';
+import $ from 'jquery';
 
 var Slider = require('react-slick');
 class Home extends Component{

@@ -122,6 +122,9 @@ Token((res) => {
     ,store
 );
 export class Reactrouter extends Component{
+    componentWillMount(){
+        
+    }
     render() {
         return (
             <Provider store={store}>

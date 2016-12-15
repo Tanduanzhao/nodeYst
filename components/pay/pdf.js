@@ -100,6 +100,33 @@ export default class Pdf extends Component{
                     }
                 });
         });
+        wx.error(()=>{
+            // 分享
+            var info = {
+                title: '药市通-首个医药圈的信息分享平台',
+                link: HTTPURL,
+                imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
+                desc: '提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
+            };
+            wx.onMenuShareTimeline({
+                title: info.title, // 分享标题
+                link: info.link, // 分享链接
+                imgUrl: info.imgUrl, // 分享图标
+                success: function() {
+//                                $.toast('分享成功！');
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: info.title,
+                link: info.link, // 分享链接
+                imgUrl: info.imgUrl, // 分享图标
+                desc: info.desc, // 分享描述
+                success: function() {
+                    // 用户确认分享后执行的回调函数
+//                                $.toast('分享成功！');
+                }
+            });
+        })
     }
 
     //支付
