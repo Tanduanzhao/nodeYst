@@ -111,7 +111,7 @@ class Column extends Component{
                 </Link>
                 <Link to="/datas/dataSources">
                     <img src="/images/datas_dataSources.jpg" alt=""/>
-                    <b className="assertive">入市价源</b>
+                    <b className="assertive">入市价数据源</b>
                 </Link>
                 <Link to="/datas/policy">
                     <img src="/images/column03.jpg" alt=""/>

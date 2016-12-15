@@ -1001,6 +1001,76 @@ export const cashBox = function(args){
     })
 }
 
+//目录分组
+export const getCatalogList = function(args){
+    ajaxFn({
+        url:'business/getCatalogList',
+        data:{
+            searchName:args.searchName || null,
+            max:args.max,
+            min:args.min,
+            catalogId:args.catalogId,
+            catalogTypeId:args.catalogTypeId,
+            pageNo:args.pageNum
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//目录分组
+export const getCatalogInfo = function(args){
+    ajaxFn({
+        url:'business/getCatalogInfo',
+        data:{
+            searchName:args.searchName || null,
+            catalogId:args.catalogId,
+            tongyongmingZl:args.tongyongmingZl,
+            catalogTypeId:args.catalogTypeId,
+            pageNo:args.pageNum
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//目录类型
+export const getCatalogTypeList = function(args){
+    ajaxFn({
+        url:'business/getCatalogTypeList',
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//入市价数据源-省份
+export const getProvinceList = function(args){
+    ajaxFn({
+        url:'business/getProvinceList',
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//入市价数据源
+export const getEntryPriceSource = function(args){
+    ajaxFn({
+        url:'business/getEntryPriceSource',
+        data:{
+            searchName:args.searchName || null,
+            provinceId:args.provinceId,
+            pageNo:args.pageNum
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
 //请求支付
 export const requestUnifiedorderPayService = function(args){
     $.ajax({

@@ -168,16 +168,19 @@ h3 {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 9px 12px 12px 12px; }
+  text-align: center;
+  padding: 9px 0px 12px 0px; }
   .column a {
     -webkit-box-flex: 1;
         -ms-flex: 1;
             flex: 1;
     -webkit-flex: 1;
     float: left;
-    font-size: .55rem;
     color: #000;
+    font-size: .5rem;
     text-align: center; }
+    .column a > b {
+      font-size: .5rem; }
   .column img {
     display: block;
     width: 45px;
@@ -1357,6 +1360,16 @@ table.table-border td, table.table-border th {
     font-weight: initial; }
     .reportTitle .columnTitle span {
       margin-right: 20px; }
+
+.factoryNumber input {
+  width: 50px;
+  height: 24px;
+  padding: 0.2em 0.5em;
+  border: 1px solid #eee; }
+  .factoryNumber input.minFactoryNumber {
+    margin-right: 0.5em; }
+  .factoryNumber input.maxFactoryNumber {
+    margin-left: 0.5em; }
 
 .defmargin {
   margin: 0; }

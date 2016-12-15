@@ -8,7 +8,6 @@ import {WXKEY,HTTPURL} from '../config';
 var isLogin = false;
 export const Token = function(fn,store){
     if(store.getState().userInfo.isLogin||url2obj().code){
-        console.log(wx.onMenuShareAppMessage,'wx.onMenuShareAppMessage');
         // 分享
         loadJssdk({
             uri:location.href,
@@ -22,7 +21,6 @@ export const Token = function(fn,store){
                     jsApiList: ['getLocation', 'onMenuShareTimeline', 'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
                 });
                 wx.ready(function() {
-                    alert('ready');
                      wx.getLocation({
                         type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
                         success: function(res) {
