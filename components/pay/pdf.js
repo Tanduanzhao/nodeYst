@@ -1,11 +1,12 @@
 import React,{Component} from 'react';
-import {loadReport,keepReport,cancelKeepReport,requestUnifiedorderPayService} from './../function/ajax';
+import {connect} from 'react-redux';
+import {loadReport,keepReport,cancelKeepReport,requestUnifiedorderPayService,selectReportReplys,insertReplyReport,insertLikeReport} from './../function/ajax';
 import {HTTPURL} from './../config';
 import Loading from './../common/loading';
 import {OpenProductView,onBridgeReady} from './../function/common';
 import SideBar from './../common/sideBar';
 import CollectPrompt from './../collectPrompt';
-export default class Pdf extends Component{
+class Pdf extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -13,119 +14,63 @@ export default class Pdf extends Component{
                 content:null,
                 title:null
             },
+            pageNo: 1,
+            isLike: 0,
+            likeNum: 0,
             isLoading:true,
+            infinite: true,
+            request:true,
             reportVersion:"total",
             id:this.props.params.id,
             isKeep:false,
-            showPromptMes:false,
+            showPromptMes: false,
+            sendMessage:false,
             buyReport:false
         }
+        this._infiniteScroll = this._infiniteScroll.bind(this);
+        this._loadData = this._loadData.bind(this);
     }
+    //获取页面数据
     _loadData(){
         this.setState({
-            isLoading:true
+            request:false
         });
-        loadReport({
-            id:this.props.params.id,
+        selectReportReplys({
+            reportId:this.props.params.id,
+            pageNo:this.state.pageNo,
             callBack:(res)=>{
-                this.setState({
-                    report:res.datas,
-                    isLoading:false,
-                    reportVersion:res.datas.reportVersion,
-                    isKeep:res.datas.isKeep,
-                    buyReport:res.datas.buyReport
-                })
-                setTimeout(()=>{
-                    console.log(this.state.report.title,"ddd")
-                    wx.ready(()=> {
-                        // 分享
-                        var info = {
-                            title: this.state.report.title,
-                            link: HTTPURL+'/pdf/'+this.props.params.id+'/'+encodeURI(encodeURI(this.state.report.title))+'/'+ this.state.report.price+"?recommender="+name+"&reportId="+this.props.params.id,
-                            imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
-                            desc: '小伙伴们和我一起去逛逛医药圈的信息分享平台--药市通~'
-                        };
-                        wx.onMenuShareTimeline({
-                            title: info.title, // 分享标题
-                            link: info.link, // 分享链接
-                            imgUrl: info.imgUrl, // 分享图标
-                            success: function() {
-//                      $.toast('分享成功！');
-                            }
-                        });
-                        wx.onMenuShareAppMessage({
-                            title: info.title,
-                            link: info.link, // 分享链接
-                            imgUrl: info.imgUrl, // 分享图标
-                            desc: info.desc, // 分享描述
-                            success: function() {
-                                // 用户确认分享后执行的回调函数
-//                                $.toast('分享成功！');
-                            }
-                        });
+                if(res.state == 1){
+                    this.props.dispatch({
+                        type:'LOADPDFCONCATDATA',
+                        message:res.datas
                     });
-                });
+                    if(this.state.sendMessage){
+                        this.props.dispatch({
+                            type:'LOADPDFDATA',
+                            message:res.datas
+                        });
+                        this.refs.reportTextarea.value = null
+                    }
+                    console.log(this.props.stores.data.length);
+                    console.log(res.totalSize);
+                    if(res.totalSize <= this.props.stores.data.length){
+                        this.setState({
+                            infinite:false
+                        })
+                    }else{
+                        this.setState({
+                            pageNo:this.state.pageNo+1
+                        })
+                    }
+                    this.setState({
+                        isLoading: false,
+                        request:true,
+                        sendMessage:false
+                    });
+                }else{
+                    alert('网络故障');
+                }
             }
-        })
-    }
-    componentDidMount(){
-        this.ele = this.refs.content;
-        this._loadData();
-    }
-    componentWillUnmount(){
-        wx.ready(()=> {
-             // 分享
-                var info = {
-                    title: '药市通-首个医药圈的信息分享平台',
-                    link: HTTPURL,
-                    imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
-                    desc: '提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
-                };
-                wx.onMenuShareTimeline({
-                    title: info.title, // 分享标题
-                    link: info.link, // 分享链接
-                    imgUrl: info.imgUrl, // 分享图标
-                    success: function() {
-//                                $.toast('分享成功！');
-                    }
-                });
-                wx.onMenuShareAppMessage({
-                    title: info.title,
-                    link: info.link, // 分享链接
-                    imgUrl: info.imgUrl, // 分享图标
-                    desc: info.desc, // 分享描述
-                    success: function() {
-                        // 用户确认分享后执行的回调函数
-//                                $.toast('分享成功！');
-                    }
-                });
-        });
-        wx.error(()=>{
-            // 分享
-            var info = {
-                title: '药市通-首个医药圈的信息分享平台',
-                link: HTTPURL,
-                imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
-                desc: '提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
-            };
-            wx.onMenuShareTimeline({
-                title: info.title, // 分享标题
-                link: info.link, // 分享链接
-                imgUrl: info.imgUrl, // 分享图标
-                success: function() {
-//                                $.toast('分享成功！');
-                }
-            });
-            wx.onMenuShareAppMessage({
-                title: info.title,
-                link: info.link, // 分享链接
-                imgUrl: info.imgUrl, // 分享图标
-                desc: info.desc, // 分享描述
-                success: function() {
-                    // 用户确认分享后执行的回调函数
-//                                $.toast('分享成功！');
-                }
-            });
         })
     }
 
@@ -133,6 +78,7 @@ export default class Pdf extends Component{
     _sandboxPayService(id,self){
         requestUnifiedorderPayService({id:id,fun:()=>{this._loadData()},callBack:onBridgeReady})
     }
+
     //收藏
     keepReport(){
         clearInterval(setTimeout);
@@ -146,7 +92,7 @@ export default class Pdf extends Component{
                             showPrompt:1,
                             showPromptMes:"已收藏"
                         })
-                  setTimeout(()=>{
+                    setTimeout(()=>{
                         this.setState({
                             showPrompt:0
                         })
@@ -172,11 +118,143 @@ export default class Pdf extends Component{
             })
         }
     }
+
     //返回顶部
     scrollTop(){
         this.ele.scrollTop=0
     }
+
+    //点赞
+    likeArticle() {
+        if (this.state.isLike != 1) {
+            insertLikeReport({
+                reportId: this.props.params.id,
+                callBack: (res)=> {
+                    if (res.state == 1)
+                        this.setState({
+                            isLike: 1,
+                            likeNum: this.state.likeNum + 1
+                        })
+                }
+            })
+        }
+    }
+    //滚动加载
+    _infiniteScroll() {
+        //全部高度-滚动高度 == 屏幕高度-顶部偏移
+        if (this.ele.firstChild.clientHeight - this.ele.scrollTop <= document.body.clientHeight - this.ele.offsetTop && this.state.infinite && this.state.request) {
+            this._loadData();
+        }
+    }
+
+    //发布留言
+    _sendMessage() {
+        if (this.refs.reportTextarea.value == "") {
+            return false
+        }
+        insertReplyReport({
+            reportId: this.props.params.id,
+            replyContent: this.refs.reportTextarea.value,
+            callBack: (res)=> {
+                this.setState({
+                    pageNo: 1,
+                    sendMessage:true,
+                    infinite: true
+                });
+                setTimeout(()=> {
+                    this._loadData();
+                });
+            }
+        });
+    }
+
+    componentDidMount(){
+        this.ele = this.refs.content;
+        this.ele.addEventListener('scroll', this._infiniteScroll);
+        this.setState({
+            isLoading:true
+        });
+        loadReport({
+            id:this.props.params.id,
+            callBack:(res)=>{
+                this.setState({
+                    report:res.datas,
+                    isLoading:false,
+                    reportVersion:res.datas.reportVersion,
+                    isKeep:res.datas.isKeep,
+                    isLike: res.datas.isLike,
+                    likeNum: res.datas.likeNum,
+                    buyReport:res.datas.buyReport
+                })
+                setTimeout(()=>{
+                    wx.ready(()=> {
+                        // 分享
+                        var info = {
+                            title: this.state.report.title,
+                            link: HTTPURL+'/pay/pdf/'+this.props.params.id+'/'+encodeURI(encodeURI(this.state.report.title))+'/'+ this.state.report.price+"?recommender="+name+"&reportId="+this.props.params.id,
+                            imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
+                            desc: '小伙伴们和我一起去逛逛医药圈的信息分享平台--药市通~'
+                        };
+                        wx.onMenuShareTimeline({
+                            title: info.title, // 分享标题
+                            link: info.link, // 分享链接
+                            imgUrl: info.imgUrl, // 分享图标
+                            success: function() {
+//                      $.toast('分享成功！');
+                            }
+                        });
+                        wx.onMenuShareAppMessage({
+                            title: info.title,
+                            link: info.link, // 分享链接
+                            imgUrl: info.imgUrl, // 分享图标
+                            desc: info.desc, // 分享描述
+                            success: function() {
+                                // 用户确认分享后执行的回调函数
+//                                $.toast('分享成功！');
+                            }
+                        });
+                    });
+                });
+            }
+        });
+        this._loadData();
+    }
+
+    componentWillUnmount(){
+        wx.ready(()=> {
+            // 分享
+            var info = {
+                title: '药市通-首个医药圈的信息分享平台',
+                link: HTTPURL,
+                imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
+                desc: '提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
+            };
+            wx.onMenuShareTimeline({
+                title: info.title, // 分享标题
+                link: info.link, // 分享链接
+                imgUrl: info.imgUrl, // 分享图标
+                success: function() {
+//                                $.toast('分享成功！');
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: info.title,
+                link: info.link, // 分享链接
+                imgUrl: info.imgUrl, // 分享图标
+                desc: info.desc, // 分享描述
+                success: function() {
+                    // 用户确认分享后执行的回调函数
+//                                $.toast('分享成功！');
+                }
+            });
+        });
+        this.props.dispatch({
+            type: 'RESETSPDF'
+        });
+    }
+
     render(){
+        console.log(this.props.stores  , "pageNos");
         return(
             <div className="root">
                 {
@@ -189,14 +267,14 @@ export default class Pdf extends Component{
                     </h4>
                 </div>
                 <div  ref="content" className="scroll-content has-header report-content">
-                    <div>
+                    <div className="list">
                         <div className="reportTitle">
                             {this.state.report.title}
                             <div className="columnTitle">
                                 <span>{this.state.report.publishDate}</span>
                                 {
                                     this.state.report.reportSource?   <span>  {this.state.report.reportSource}</span>
-                                    :null
+                                        :null
                                 }
                                 {
                                     this.state.report.reportAuthor?<span> 文/{this.state.report.reportAuthor}</span>:null
@@ -204,21 +282,49 @@ export default class Pdf extends Component{
                             </div>
                         </div>
                         <div className="nestedHTML" dangerouslySetInnerHTML={{__html:this.state.report.content}}></div>
-                        <div  className={this.state.reportVersion=="brief"?"qr-code qr-code-bottom":"qr-code"}>
-                            <span  style={{fontSize:' 15px'}}>药市通</span> <br/>
-                            <span>____________________________________________</span><br/>
-                            <span style={{display:'inline-block',marginTop:'8px', marginBottom: '10px'}}>首个医药圈的信息分享平台</span>
-                            <p><img src="/images/weixi.png" alt=""/></p>
-                            （长按图片识别二维码）
+                        <div  className={this.state.reportVersion=="brief"?"foot qr-code-bottom":"foot "}>
+                            <div className="qr-code">
+                                <span  style={{fontSize:' 15px'}}>药市通</span> <br/>
+                                <span>____________________________________________</span><br/>
+                                <span style={{display:'inline-block',marginTop:'8px', marginBottom: '10px'}}>首个医药圈的信息分享平台</span>
+                                <p><img src="/images/weixi.png" alt=""/></p>
+                                （长按图片识别二维码）
+                            </div>
+                            <div className="product-details-collect">
+                                <i className="fa fa-eye"></i>{this.state.report.readNum}人查看
+                                <i onClick={this.likeArticle.bind(this)}
+                                   className={(this.state.isLike != 1) ? "fa fa-thumbs-o-up thumbs-up": "fa fa-thumbs-up thumbs-up-color thumbs-up"}></i><span
+                                onClick={this.likeArticle.bind(this)}>{this.state.likeNum}人点赞</span>
+                            </div>
+                            <div className="item list-title">
+                                <h3><i className="comment_icon"></i> 我要留言</h3>
+                            </div>
+                            <div className="comments">
+                                <textarea name="" id="" cols="30" rows="10" ref="reportTextarea"
+                                          placeholder="说点什么吧......"></textarea>
+                                <button onClick={this._sendMessage.bind(this)}>提交</button>
+                            </div>
+                            <div className="item list-title ">
+                                <h3><i></i> 用户留言</h3>
+                            </div>
+                            <ul className="list new_report">
+                                {
+                                    this.props.stores.data.map((ele)=> {
+                                        return (ele.isReplay == 1)
+                                            ? <List key={Math.random()} {...this.props} feedContent={ele.feedContent}/>
+                                            : (<List key={Math.random()}  {...this.props} feedContent={ele.feedContent} dataSources={ele}/>)
+                                    })
+                                }
+                            </ul>
                         </div>
                     </div>
                 </div>
                 {
                     this.state.buyReport=="0"&& this.state.reportVersion=="brief"
                         ?<div onClick={this._sandboxPayService.bind(this,this.props.params.id)} className="bar bar-footer bar-assertive row purchase-report ">
-                            <button className="button-clear col-50 purchase-price">¥{this.state.report.price}</button>
-                            <button className="button-clear col-50">报告购买</button>
-                        </div>
+                        <button className="button-clear col-50 purchase-price">¥{this.state.report.price}</button>
+                        <button className="button-clear col-50">报告购买</button>
+                    </div>
                         :  null
                 }
                 {
@@ -228,6 +334,39 @@ export default class Pdf extends Component{
         )
     }
 }
+
+class List extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <li className="item item-row">
+                <div className="item-left" style={{height: '2rem',width:'2rem'}}>
+                    <img src={this.props.dataSources.userHeadImageUrl} alt=""/>
+                </div>
+                <div className="item-right">
+                    <h3 className="item-nowrap title">
+                        { decodeURI(decodeURI(this.props.dataSources.userAlias))}
+                    </h3>
+                    <div className="article" style={{fontSize:".6rem"}}>
+                        {this.props.dataSources.replyContent}
+                    </div>
+                    <div className="introduce"> {this.props.dataSources.replyDate}</div>
+                </div>
+            </li>
+        )
+    }
+}
+
 Pdf.contextTypes = {
     router:React.PropTypes.object.isRequired
 }
+function select(state) {
+    return {
+        stores: state.pdf
+    }
+}
+
+export default connect(select)(Pdf);

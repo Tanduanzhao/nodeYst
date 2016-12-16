@@ -1349,9 +1349,19 @@ table{
         padding: 8px 16px;
        i{
            display: inline-block;
-           width: .8rem;
-           background: url("/images/messages.png") no-repeat center;
+           width: 1rem;
+           height: .7rem;
+           background: url("/images/report_writeComment_icon.png") no-repeat;
+           background-size: 100%;
+           vertical-align: middle;
        }
+        .comment_icon{
+            display: inline-block;
+            width: 1rem;
+            height: .7rem;
+            background: url("/images/report_comment_icon.png") no-repeat;
+            background-size: 100%;
+        }
     }
 }
 .product-details-collect{
@@ -1376,6 +1386,11 @@ table{
     .thumbs-up-color{
         color: #387ef5;
     }
+}
+.report-details{
+    padding: 10px;
+    margin: 30px 0;
+    border-bottom: 1px solid #ddd;
 }
 .comments{
     padding: 20px;

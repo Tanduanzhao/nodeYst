@@ -189,7 +189,6 @@ class subscribeContent extends Component {
     }
 
     render() {
-        console.log(this.props.subscribeContent.dataAll.videoUrl, "subscribeContent");
         let isVideo = this.props.params.id == 3 && this.props.subscribeContent.dataAll.videoUrl;
         return (
             <div className="root">
@@ -241,7 +240,7 @@ class subscribeContent extends Component {
                                 onClick={this.likeArticle.bind(this)}>{this.state.likeNum}人点赞</span>
                             </div>
                             <div className="item list-title">
-                                <h3><i></i> 我要留言</h3>
+                                <h3><i className="comment_icon"></i> 我要留言</h3>
                             </div>
                             <div className="comments">
                                 <textarea name="" id="" cols="30" rows="10" ref="subscribeTextarea"

@@ -8,33 +8,35 @@ import {onBridgeReady} from '../function/common';
 class Vip extends Component{
     constructor(props){
         super(props);
+        this._fun = this._fun.bind(this);
     }
 
     //退出会员页面
     _pushHandle(){
         this.context.router.goBack();
     }
-
+    _fun(){
+        loadWx({
+            callBack: (res)=> {
+                if (res.datas) {
+                    this.props.dispatch({
+                        type: 'LOADUSERINFO',
+                        datas: res.datas
+                    });
+                    setTimeout(()=> {
+                        this.context.router.push('/center')
+                    });
+                }
+            }
+        })
+    }
     //支付方法
     _sandboxPayService(id,self){
         if(!this.refs.checkbox.checked){
             alert("请同意服务协议")
             return false
         }
-        requestUnifiedorderPayService({
-            id:id,
-            fun: loadWx({
-                callBack:(res)=>{
-                    if (res.datas) {
-                        this.props.dispatch({
-                            type: 'LOADUSERINFO',
-                            datas: res.datas
-                        });
-                        setTimeout(()=>{this.context.router.push('/center')});
-                    }
-                }
-            }),
-            callBack:onBridgeReady})
+        requestUnifiedorderPayService({id:id, fun:()=>{this._fun()}, callBack:onBridgeReady})
 }
     render(){
         return(

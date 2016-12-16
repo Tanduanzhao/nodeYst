@@ -192,7 +192,7 @@ class Main extends Component{
                         </div>
                 }
                 {    
-                    (this.props.dataSource.datas == 'undefined' || this.props.dataSource.otherDatas.length == 0) ? null : <h2 className="item item-divider" style={{ backgroundColor:" #f5f5f5"}}>{this.props.title}相关分组</h2>
+                    (this.props.dataSource.datas == 'undefined' || this.props.dataSource.otherDatas.length == 0 || typeof this.props.dataSource.datas != 'object') ? null : <h2 className="item item-divider" style={{ backgroundColor:" #f5f5f5"}}>{this.props.title}相关分组</h2>
                 }
                 <ul className="list">
                     {

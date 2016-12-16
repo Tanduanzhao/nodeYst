@@ -32,7 +32,7 @@ export default class FilterGroups extends Component{
               <ul className="list">
                 {
                     this.props.types.map((ele)=>{
-                        return <li className="item" key={ele.catalogTypeId} style={(this.state.catalogTypeId == ele.catalogTypeId) ? styles.active : null} onClick={()=>{this._itemHandler.bind(this,ele.catalogTypeId)}>{ele.catalogType}</li>
+                        return <li className="item" key={ele.catalogTypeId} style={(this.state.catalogTypeId == ele.catalogTypeId) ? styles.active : null} onClick={this._itemHandler.bind(this,ele.catalogTypeId)}>{ele.catalogType}</li>
                     })
                 }
               </ul>

@@ -25,6 +25,7 @@ import subscribePage from './subscribePage';
 import subscribePageAll from './subscribePageAll';
 import subscribePageList from './subscribePageList';
 import subscribeContent from './subscribeContent';
+import pdf from './pdf';
 
 import groups from './groups';
 import groupsMes from './groupsMes';
@@ -35,6 +36,7 @@ const ystReducers = combineReducers({
 	index,
 	provicen,
     groups,
+    pdf,
     groupsMes,
     dataSources,
 	data,
