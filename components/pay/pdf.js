@@ -191,7 +191,7 @@ class Pdf extends Component{
                         // 分享
                         var info = {
                             title: this.state.report.title,
-                            link: HTTPURL+'/pay/pdf/'+this.props.params.id+'/'+encodeURI(encodeURI(this.state.report.title))+'/'+ this.state.report.price+"?recommender="+name+"&reportId="+this.props.params.id,
+                            link: HTTPURL+'/pay/pdf/'+this.props.params.id+"?recommender="+name+"&reportId="+this.props.params.id,
                             imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                             desc: '小伙伴们和我一起去逛逛医药圈的信息分享平台--药市通~'
                         };
