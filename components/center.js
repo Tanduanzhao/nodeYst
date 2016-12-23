@@ -19,8 +19,6 @@ class Center extends Component{
 
 class Main extends Component{
     render(){
-        console.log(this.props.userInfo.vipEndDate,'vip');
-        console.log(this.props.userInfo.vip,'vip');
         return(
             <div className="scroll-content has-footer center">
                 <div className="list">

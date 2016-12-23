@@ -133,7 +133,7 @@ class purchase extends Component {
     return (
       <div className="root">
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
-        <div  ref="content"  className="scroll-content has-header report-view">
+        <div  ref="content"  className="scroll-content has-header has-footer">
           <Main data={this.props.purchase.data} loading={this.state.loading} BuyReportList={this.state.BuyReportList}/>
         </div>
         <FooterBar {...this.props}/>

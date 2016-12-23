@@ -34,7 +34,7 @@ default class FooterBar extends Component {
 				//});
 			}
 		}, {
-			uri: 'home',
+			uri: 'market',
 			title: '行情',
 			icon: 'earth'
 		}, {
@@ -44,20 +44,22 @@ default class FooterBar extends Component {
 		}, {
 			uri: 'center',
 			title: '个人中心',
-			icon: 'happy'
+			icon: 'happy',
+			active:{
+				color:"red"
+			}
 		}];
 		return (
 			<div className="tabs tabs-icon-top">
 					{
 						menus.map((ele) => {
 							return (
-								<FooterBarIcon style={ele.uri == this.props.routes[1].path ? styles.active : null} key={ele.title}  {...ele}/>
+								<FooterBarIcon style={ele.uri == this.props.routes[1].path ? ele.icon : null} key={ele.title}  {...ele}/>
 							)
 						})
 					}
 				</div>
 		)
-
 	}
 }
 FooterBar.propTypes = {

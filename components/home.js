@@ -207,9 +207,9 @@ class Main extends Component{
 				<Column {...this.props}/>
 				<Subscribe {...this.props}/>
 				<ParseReport {...this.props}/>
-				<div className="item item-divider home-item-title">
+				<div className="item item-divider module-bar">
 					<strong>最新报告</strong>
-					<img src="/images/new_report.jpg" alt="" className="hot-title"/>
+					<img src="/images/new_report.png" alt="" className="hot-title"/>
 					<Link  to="/report" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}  onClick={this.newReportMap.bind(this)}>
 						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
@@ -219,9 +219,9 @@ class Main extends Component{
 						this.props.home.data.newReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)
 					}
 				</ul>
-				<div className="item item-divider home-item-title">
+				<div className="item item-divider module-bar">
 					<strong>热门报告</strong>
-					<img src="/images/hot_report.jpg" alt="" className="hot-title"/>
+					<img src="/images/hot_report.png" alt="" className="hot-title"/>
 					<Link to="/report" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}  onClick={this.hotReportMap.bind(this)}>
 						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
@@ -231,7 +231,7 @@ class Main extends Component{
 						this.props.home.data.hotReportMap.datas.map((ele,index)=> <ReportList dataSources={ele} key={ele.id}/>)
 					}
 				</div>
-				<div className="item item-divider home-item-title">
+				<div className="item item-divider module-bar">
 					<strong>合作公众号</strong>
 				</div>
 				<div className="partners">
@@ -287,9 +287,9 @@ class ParseReport extends Component{
 	render(){
 		return(
 			<div>
-				<div className="item item-divider home-item-title">
+				<div className="item item-divider module-bar">
 					<strong>分析报告</strong>
-					<img src="/images/free.jpg" alt="" className="hot-title"/>
+					<img src="/images/free.png" alt="" className="hot-title"/>
 					<Link  to="/report"  onClick={this.freeReport.bind(this)}  style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}>
 						<i className="icon ion-android-more-horizontal"></i>
 					</Link>
@@ -315,8 +315,9 @@ class Subscribe extends Component{
 	render(){
 		return(
 			<div>
-				<div className="item item-divider home-item-title">
+				<div className="item item-divider module-bar">
 					<strong>专栏订阅</strong>
+					<img src="/images/read.png" alt="" className="hot-title"/>
 					<Link  to="/subscribePage" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}>
 						<i className="icon ion-android-more-horizontal"></i>
 					</Link>

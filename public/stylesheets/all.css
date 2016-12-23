@@ -27,7 +27,7 @@ body {
       -ms-flex: 1;
           flex: 1;
   -webkit-flex: 1;
-  font-size: 0.8rem; }
+  font-size: 0.6rem; }
 
 .text.fzb {
   font-size: 0.8rem;
@@ -93,7 +93,8 @@ h3 {
 
 .card {
   margin-left: 0;
-  margin-right: 0; }
+  margin-right: 0;
+  box-shadow: none; }
 
 .breed .row {
   -webkit-box-align: center;
@@ -107,7 +108,8 @@ h3 {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  -webkit-flex: 1; }
+  -webkit-flex: 1;
+  font-size: 0.6rem; }
   .footer-row .col {
     padding: 0; }
 
@@ -137,7 +139,6 @@ h3 {
   padding: 0 0.1rem;
   margin-right: 0.1rem;
   margin-left: 0.1rem;
-  border: 1px solid red;
   font-weight: normal; }
 
 .list-horizontal-block:after {
@@ -219,7 +220,6 @@ h3 {
   top: 125px; }
 
 .datas .column-block {
-  margin-bottom: 52px;
   padding-top: 0;
   -webkit-box-align: start;
       -ms-flex-align: start;
@@ -333,9 +333,6 @@ h3 {
 
 .produce-header-tab button {
   text-align: center; }
-
-.report-view {
-  margin-bottom: 52px; }
 
 .report-cards {
   -ms-flex-line-pack: start;
@@ -716,20 +713,24 @@ h3 {
       background: #387ef5;
       color: #fff; }
 
-.home-item-title {
+.module-bar {
   font-size: .65rem;
   color: #0894ec;
   padding-top: 6px;
   padding-bottom: 6px;
   min-height: 30px;
-  background-color: #f8f8f8; }
-  .home-item-title strong {
+  background-color: #f8f8f8;
+  background-size: 100%; }
+  .module-bar strong {
     font-weight: 200; }
-  .home-item-title img {
+  .module-bar i {
+    color: #0894ec;
+    margin-left: 6px; }
+  .module-bar img {
     width: 11px;
     vertical-align: -2px;
     margin-left: 3px; }
-  .home-item-title .hot-title {
+  .module-bar .hot-title {
     width: 0.95rem; }
 
 .parseReport-list {
@@ -1118,7 +1119,8 @@ table.table-border td, table.table-border th {
   margin-right: 20px; }
 
 .border {
-  border-top: 1px solid #ddd; }
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd; }
 
 .center-secondary p {
   text-indent: 2em;
@@ -1385,8 +1387,113 @@ table.table-border td, table.table-border th {
   .factoryNumber input.maxFactoryNumber {
     margin-left: 0.5em; }
 
-.defmargin {
-  margin: 0; }
+.market {
+  font-size: .6rem; }
+  .market .col-flex {
+    -webkit-box-flex: 1.0478;
+        -ms-flex: 1.0478;
+            flex: 1.0478;
+    -webkit-flex: 1.0478; }
+  .market .col-flex-last {
+    -webkit-box-flex: .7;
+        -ms-flex: .7;
+            flex: .7;
+    -webkit-flex: .7; }
+  .market .col {
+    padding: 0; }
+  .market p {
+    font-size: .6rem; }
+  .market .fa-sort-desc, .market .fa-sort-up {
+    margin-left: 3px;
+    color: #ebe9ea;
+    display: none; }
+
+.market-item {
+  background-size: 100%;
+  font-size: 0.65rem; }
+
+.market-item-top {
+  color: #fff;
+  height: 1.7rem;
+  font-size: .65rem;
+  background: #fff; }
+  .market-item-top a {
+    color: #fff; }
+  .market-item-top .breed_icon {
+    background: url(/images/breed_icon.png) no-repeat;
+    background-size: 100%; }
+  .market-item-top .factory_icon {
+    background: url(/images/factory_icon.png) no-repeat;
+    background-size: 100%; }
+  .market-item-top .classify_icon {
+    background: url(/images/classify_icon.png) no-repeat;
+    background-size: 100%; }
+  .market-item-top i {
+    width: 0.975rem;
+    height: 0.975rem;
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 2px; }
+
+.blue-bg {
+  background: url(/images/market_list_blue_bg.jpg) no-repeat;
+  background-size: 100%; }
+
+.orange-bg {
+  background: url(/images/market_list_orange_bg.jpg) no-repeat;
+  background-size: 100%; }
+
+.market-item-center {
+  padding-top: 0; }
+  .market-item-center h5 {
+    font-size: .65rem;
+    margin-top: 14px; }
+  .market-item-center p {
+    font-size: .65rem; }
+
+.market-item-bottom {
+  font-size: 0.6rem;
+  color: #a1a1a1;
+  text-align: right; }
+  .market-item-bottom .eye-icon {
+    display: inline-block;
+    font-size: initial;
+    width: .775rem;
+    vertical-align: middle;
+    height: 0.475rem;
+    background: url(/images/eye-icon.png) no-repeat;
+    background-size: 100%;
+    margin-right: 4px; }
+
+.market-time-icon .buttons {
+  height: 30px; }
+
+.market-time-icon .time {
+  height: 30px;
+  background: #fff;
+  min-width: 55px;
+  min-height: 30px;
+  border: 1px solid #eee; }
+
+.market-time-icon .button {
+  min-height: 30px;
+  line-height: 30px; }
+
+.market-time-icon .button.icon:before {
+  line-height: 30px;
+  color: #387ef5; }
+
+.row .col h3 {
+  font-size: 0.75rem; }
+
+.marketSearch-item .marketSearch-item-top {
+  background: #fff; }
+  .marketSearch-item .marketSearch-item-top a {
+    color: #a1a1a1; }
+
+.marketIntro p {
+  text-indent: 2em;
+  line-height: 1.5; }
 
 .bar {
   -webkit-transition: all 1s ease;
@@ -1406,6 +1513,11 @@ table.table-border td, table.table-border th {
   width: 100%;
   height: auto;
   max-height: 200px; }
+
+.bar.item-input-inset .item-input-wrapper {
+  padding-right: 0; }
+  .bar.item-input-inset .item-input-wrapper input {
+    padding-left: 0; }
 
 .video {
   position: relative;
@@ -1741,3 +1853,52 @@ table.table-border td, table.table-border th {
 
 .qr-code-bottom {
   margin-bottom: 54px; }
+
+.christmas .has-footer {
+  bottom: 51px; }
+
+.christmas .module-bar {
+  color: #fff;
+  background: url(/images/header_bg.jpg) no-repeat;
+  background-size: 100%; }
+  .christmas .module-bar a, .christmas .module-bar i {
+    color: #fff; }
+
+.christmas .tabs {
+  color: #fff;
+  height: auto;
+  background: url(/images/christmas_tabs_bg.jpg) no-repeat; }
+  .christmas .tabs .tab-item {
+    opacity: 1; }
+  .christmas .tabs .ios-home {
+    color: #f8d662; }
+  .christmas .tabs .cube {
+    color: #62ca71; }
+  .christmas .tabs .earth {
+    color: #f85555; }
+  .christmas .tabs .erlenmeyer-flask {
+    color: #90bfff; }
+  .christmas .tabs .happy {
+    color: #c288c3; }
+  .christmas .tabs .tab-item .icon {
+    margin-top: 2px;
+    margin-bottom: 3px;
+    background-size: 100% 100%; }
+  .christmas .tabs .icon:before {
+    content: initial !important; }
+  .christmas .tabs .ion-ios-home {
+    background: url(/images/home_icon.png) no-repeat; }
+  .christmas .tabs .ion-cube {
+    background: url(/images/report_icon.png) no-repeat; }
+  .christmas .tabs .ion-earth {
+    background: url(/images/market_icon.png) no-repeat; }
+  .christmas .tabs .ion-erlenmeyer-flask {
+    background: url(/images/data_icon.png) no-repeat; }
+  .christmas .tabs .ion-happy {
+    background: url(/images/center_icon.png) no-repeat; }
+
+.defmargin {
+  margin: 0; }
+
+.def-padding {
+  padding: 0; }

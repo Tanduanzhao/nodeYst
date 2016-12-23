@@ -90,40 +90,16 @@ class Report extends Component {
   }
   componentDidMount(){
     this.ele = this.refs.content;
-//    console.dir(this.refs.headerImg);
     this.ele.addEventListener('scroll',this._infiniteScroll);
-//    console.log(this.props.report.fixedScroll);
     this._loadData();
     this._getReportType();
-    //if(this.props.report.fixedScroll!=2){
-    //  this._loadData();
-    //  this._getReportType();
-    //  this.props.dispatch({
-    //    type:'CHAGNGEFIXEDSCROLL',
-    //    fixedScroll:2
-    //  })
-    //}else{
-    //  this.setState({
-    //    loading:false
-    //  });
-    //}
   }
   componentWillUnmount(){
     this.props.dispatch({
           type: 'RESETREPORT'
         });
-    //if(this.props.report.fixedScroll != 2){
-    //  this.props.dispatch({
-    //    type: 'RESETREPORT'
-    //  });
-    //}
-    //this.props.dispatch({
-    //  type:'CHAGNGEFIXEDSCROLL',
-    //  fixedScroll:1
-    //})
   }
   _fn(args) {
-    console.log(args.reportTag,"argsssss")
     if(!args.reportTag){
       this.setState({
         reportTag:false

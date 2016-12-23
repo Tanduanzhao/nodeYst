@@ -7,6 +7,7 @@ import {getCatalogInfo,getCatalogTypeList} from '../function/ajax';
 import FilterGroupsMes from '../filterPage/filterGroupsMes';
 import {Link} from 'react-router';
 import Loading from '../common/loading';
+import More from './../common/more';
 import EmptyComponent from '../common/emptyComponent';
 class GroupsMes extends Component{
     constructor(props){
@@ -160,6 +161,7 @@ class GroupsMes extends Component{
                         (this.props.groupsMes.otherDatas.length == 0 && !this.state.isLoading && this.props.groupsMes.datas == 'undefined') ? <EmptyComponent/> : <Main title={this.props.params.searchName} dataSource={{datas:this.props.groupsMes.datas,otherDatas:this.props.groupsMes.otherDatas}}/>
                     }
                 </div>
+                <More {...this.props}/>
                 {
                     this.state.isShowFilter ? <FilterGroupsMes catalogTypeId={this.state.catalogTypeId} types={this.props.groupsMes.types} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)}/> : null
                 }

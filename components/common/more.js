@@ -69,6 +69,14 @@ export default class More extends Component {
 									<img src="/images/column13.jpg" alt=""/>
 									辅助用药
 								</Link>
+								<Link to="/datas/groups">
+									<img src="/images/datas_groups.jpg" alt=""/>
+									<b className="assertive">目录分组</b>
+								</Link>
+								<Link to="/datas/dataSources">
+									<img src="/images/datas_dataSources.jpg" alt=""/>
+									<b className="assertive">入市价数据源</b>
+								</Link>
 							</ul>
 						</div>
 					</div>

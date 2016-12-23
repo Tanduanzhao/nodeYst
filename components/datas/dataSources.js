@@ -7,6 +7,7 @@ import FilterDataSources from '../filterPage/filterDataSources';
 import {getProvinceList,getEntryPriceSource} from '../function/ajax';
 import Loading from '../common/loading';
 import EmptyComponent from '../common/emptyComponent';
+import More from './../common/more';
 class DataSources extends Component{
     constructor(props){
         super(props);
@@ -142,6 +143,7 @@ class DataSources extends Component{
                         (this.props.dataSource.datas.length == 0 && !this.state.isLoading) ? <EmptyComponent/> : <Main dataSource={this.props.dataSource.datas}/>
                     }
                 </div>
+                <More {...this.props}/>
                 {
                     this.state.isShowFilter ? <FilterDataSources provinceIds={this.state.provinceIds} provinces={this.props.dataSource.provinces} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)} /> : null
                 }

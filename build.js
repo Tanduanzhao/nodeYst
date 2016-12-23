@@ -9,13 +9,21 @@ import {Provider} from 'react-redux';
 import {store,loadWx,insertReportShare} from './components/function/ajax';
 import {url2obj} from './components/function/common';
 
-import Index from './components/index.js';
+//行情
+import Market from './components/index/test/market.js';
+import MarketAll from './components/index/test/marketAll.js';
+import MarketIntro from './components/index/test/marketIntro.js';
+import MarketSearch from './components/index/test/marketSearch.js';
+import MarketSearchDetail from './components/index/test/marketSearchDetail.js';
+
+
 import Optional from './components/index/optionalClassify.js';
 import Concept from './components/index/optionalConcept.js';
 
 import RiseClassify from './components/index/riseClassify.js';
 import RiseConcept from './components/index/riseConcept.js';
 import RiseBreed from './components/index/riseBreed.js';
+import RiseFactory from './components/index/riseFactory.js';
 
 import Datas from './components/datas.js';
 import marketPrice from './components/datas/marketPrice';
@@ -78,9 +86,9 @@ window.addEventListener("popstate",function(e){
         location.href = HTTPURL;
     }
     var str =location.href.split('/');
-    console.log(store.getState().report.fixedScroll,"fixedScroll")
-    console.log(store.getState().report.pdf,"pdff")
-    console.log(location.pathname=="/","str")
+    console.log(store.getState().report.fixedScroll,"fixedScroll");
+    console.log(store.getState().report.pdf,"pdff");
+    console.log(location.pathname=="/","str");
     if(str[str.length-1]=="report"){
         store.dispatch({
             type:'CHAGNGEFIXEDSCROLL',
@@ -103,22 +111,22 @@ function pushHistory(){
 //var store = createStore(ystReducers,applyMiddleware(thunk));
 import {Token} from './components/function/token';
 Token((res) => {
-    store.dispatch({
-        type: 'CHANGE',
-        areaName: res.datas.areaName,
-        areaId: res.datas.areaId,
-        searchAreaType: res.datas.searchAreaType
-    });
-    console.log( res.datas.provinceId);
-    store.dispatch({
-        type: 'CHANGEALLPROVINCEIDNAME',
-        provinceName: res.datas.provinceName,
-        provinceId: res.datas.provinceId
-    });
-    store.dispatch({
-        type: 'CHANGEDATA',
-        yearMonth: res.datas.yearMonth
-    });
+    //store.dispatch({
+    //    type: 'CHANGE',
+    //    areaName: res.datas.areaName,
+    //    areaId: res.datas.areaId,
+    //    searchAreaType: res.datas.searchAreaType
+    //});
+    //console.log( res.datas.provinceId);
+    //store.dispatch({
+    //    type: 'CHANGEALLPROVINCEIDNAME',
+    //    provinceName: res.datas.provinceName,
+    //    provinceId: res.datas.provinceId
+    //});
+    //store.dispatch({
+    //    type: 'CHANGEDATA',
+    //    yearMonth: res.datas.yearMonth
+    //});
 }
     ,store
 );
@@ -140,6 +148,7 @@ export class Reactrouter extends Component{
                             <Route path="classify" component={RiseClassify}/>
                             <Route path="concept" component={RiseConcept}/>
                             <Route path="breed" component={RiseBreed}/>
+                            <Route path="factory" component={RiseFactory}/>
                         </Route>
                         <Route path="datas">
                             <IndexRoute component={Datas}/>
@@ -186,8 +195,21 @@ export class Reactrouter extends Component{
                         <Route path="report">
                             <IndexRoute component={report}/>
                         </Route>
-                        <Route path="home">
-                            <IndexRoute component={Index}/>
+                        <Route path="market">
+                            <IndexRoute component={Market}/>
+                            <Route path="rise">
+                                <Route path="classify" component={RiseClassify}/>
+                                <Route path="concept" component={RiseConcept}/>
+                                <Route path="breed" component={RiseBreed}/>
+                                <Route path="factory" component={RiseFactory}/>
+                            </Route>
+                            <Route path="marketAll" component={MarketAll}/>
+                            <Route path="marketIntro/:reportUrl" component={MarketIntro}/>
+                            <Route path="marketSearch">
+                                <IndexRoute component={MarketSearch}/>
+                                <Route path="marketSearchDetail/:searchName/:id" component={MarketSearchDetail}/>
+                                <Route path="marketSearchDetail/:parentId" component={MarketSearchDetail}/>
+                            </Route>
                         </Route>
                         <Route path="subscribePage">
                             <IndexRoute component={SubscribePage}/>
@@ -217,4 +239,5 @@ export class Reactrouter extends Component{
     }
 }
 var ele = document.getElementById('app');
+ele.className="christmas";
 ReactDOM.render(<Reactrouter/>, ele, null);

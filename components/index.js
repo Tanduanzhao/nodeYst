@@ -36,7 +36,6 @@ class Index extends Component{
     }
     componentDidMount(){
         this.ele = this.refs.content;
-//        console.dir(this.refs.headerImg);
         this.ele.addEventListener('scroll',this._infiniteScroll);
         loadProvince(this.props.dispatch);
         if(this.props.initData.length!=0){

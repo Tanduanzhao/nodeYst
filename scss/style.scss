@@ -24,7 +24,7 @@ body{
 	&.zb{
         flex:1;
         -webkit-flex:1;
-		font-size: pxTorem(16);
+		font-size: pxTorem(12);
 	}
 	&.fzb{
 		font-size: pxTorem(16);
@@ -86,6 +86,7 @@ h3{
 .card{
     margin-left: 0;
     margin-right: 0;
+    box-shadow: none;
 }
 .breed{
     .row{
@@ -97,6 +98,7 @@ h3{
     padding: 0;
     flex: 1;
     -webkit-flex:1;
+    font-size: pxTorem(12);
     .col{
         padding: 0;
     }
@@ -126,7 +128,7 @@ h3{
     padding:0 pxTorem(2);
     margin-right: pxTorem(2);
     margin-left: pxTorem(2);
-    border:1px solid red;
+    //border:1px solid red;
     font-weight: normal;
 }
 .list-horizontal-block{
@@ -204,7 +206,7 @@ h3{
         top: 125px;
     }
     .column-block{
-        margin-bottom: 52px;
+        //margin-bottom: 52px;
         padding-top: 0;
         align-items: flex-start;
         -webkit-align-items: flex-start;
@@ -322,9 +324,9 @@ h3{
 .produce-header-tab button{
     text-align: center;
 }
-.report-view{
-    margin-bottom: 52px;
-}
+//.report-view{
+//    margin-bottom: 52px;
+//}
 .report-cards{
     align-content: flex-start;
     -webkit-box-align: start;
@@ -716,15 +718,20 @@ h3{
         }
     }
 }
-.home-item-title{
+.module-bar{
     font-size: .65rem;
     color: #0894ec;
     padding-top: 6px;
     padding-bottom: 6px;
     min-height: 30px;
     background-color: #f8f8f8;
+    background-size:100% ;
     strong{
         font-weight: 200;
+    }
+    i{
+        color:#0894ec;
+        margin-left: 6px;
     }
     img{
         width: 11px;
@@ -735,6 +742,7 @@ h3{
         width: 0.95rem;
     }
 }
+
 .parseReport-list{
     padding: 10px 16px;
     .parseReport-item{
@@ -1193,6 +1201,7 @@ table{
 }
 .border{
     border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 .center-secondary{
     p{
@@ -1489,8 +1498,130 @@ table{
         margin-left: 0.5em;
     }
 }
-.defmargin{
-    margin: 0;
+//行情
+.market{
+    font-size: .6rem;
+    .col-flex{
+        flex: 1.0478;
+        -webkit-flex: 1.0478;
+    }
+    .col-flex-last{
+        flex:.7;
+        -webkit-flex: .7;
+    }
+    .col{
+        padding: 0;
+    }
+    p{
+        font-size: .6rem;
+    }
+    .fa-sort-desc,.fa-sort-up{
+        margin-left: 3px;
+        color: #ebe9ea;
+        display: none;
+    }
+}
+.market-item{
+    background-size: 100%;
+    font-size: 0.65rem;
+}
+.market-item-top{
+    color: #fff;
+    height: 1.7rem;
+    font-size: .65rem;
+    background:#fff;
+    a{
+        color: #fff;
+    }
+    .breed_icon{
+        background:url(/images/breed_icon.png)  no-repeat;
+        background-size: 100%;
+    }
+    .factory_icon{
+        background:url(/images/factory_icon.png)  no-repeat;
+        background-size: 100%;
+    }
+    .classify_icon{
+        background:url(/images/classify_icon.png)  no-repeat;
+        background-size: 100%;
+    }
+    i{
+        width: pxTorem(19.5);
+        height: pxTorem(19.5);
+        display: inline-block;
+        vertical-align: bottom;
+        margin-right: 2px;
+    }
+}
+.blue-bg{
+    background: url(/images/market_list_blue_bg.jpg)  no-repeat;
+    background-size: 100%;
+}
+.orange-bg{
+    background: url(/images/market_list_orange_bg.jpg)  no-repeat;
+    background-size: 100%;
+}
+.market-item-center{
+    padding-top:0;
+    h5{
+        font-size: .65rem;
+        margin-top: 14px;
+    }
+    p{
+        font-size: .65rem;
+    }
+}
+.market-item-bottom{
+    font-size: 0.6rem;
+    color: #a1a1a1;
+    text-align: right;
+    .eye-icon{
+        display: inline-block;
+        font-size: initial;
+        width: .775rem;
+        vertical-align: middle;
+        height: 0.475rem;
+        background: url(/images/eye-icon.png)  no-repeat;
+        background-size: 100%;
+        margin-right: 4px;
+    }
+}
+.market-time-icon{
+    .buttons{
+        height: 30px;
+    }
+    .time{
+        height: 30px;
+        background: #fff;
+        min-width: 55px;
+        min-height: 30px;
+        border: 1px solid #eee
+    }
+    .button{
+        min-height: 30px;
+        line-height: 30px;
+    }
+    .button.icon:before{
+        line-height: 30px;
+        color: #387ef5;
+    }
+}
+.row .col h3{
+    font-size: pxTorem(15);
+}
+.marketSearch-item{
+    .marketSearch-item-top{
+        background: #fff;
+        a{
+            color:#a1a1a1;
+        }
+    }
+}
+.marketIntro{
+    p{
+        text-indent: 2em;
+        line-height: 1.5;
+    }
 }
 .bar{
     &.bar-opacity{
@@ -1515,6 +1646,13 @@ table{
         width: 100%;
         height: auto;
         max-height: 200px;
+    }
+}
+
+.bar.item-input-inset .item-input-wrapper{
+    padding-right: 0;
+    input{
+        padding-left: 0;
     }
 }
 
@@ -1612,7 +1750,6 @@ table{
     font-weight: normal;
     font-style: normal;
 }
-
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
@@ -1917,4 +2054,72 @@ table{
 }
 .qr-code-bottom{
     margin-bottom: 54px;
+}
+
+//圣诞
+.christmas{
+    .has-footer {
+        bottom: 51px;
+    }
+    .module-bar{
+        color: #fff;
+        background: url(/images/header_bg.jpg) no-repeat;
+        background-size: 100%;
+        a,i{
+            color: #fff;
+        }
+    }
+    .tabs{
+        color: #fff;
+        height:auto;
+        background: url(/images/christmas_tabs_bg.jpg) no-repeat;
+        .tab-item{
+            opacity: 1;
+        }
+        .ios-home{
+            color:#f8d662
+        }
+        .cube{
+            color:#62ca71
+        }
+        .earth{
+            color:#f85555
+        }
+        .erlenmeyer-flask{
+            color:#90bfff
+        }
+        .happy{
+            color:#c288c3
+        }
+         .tab-item .icon{
+             margin-top: 2px;
+             margin-bottom: 3px;
+             background-size: 100% 100%;
+        }
+       .icon:before{
+            content:initial!important;
+        }
+        .ion-ios-home{
+            background:url(/images/home_icon.png) no-repeat ;
+        }
+        .ion-cube{
+            background:url(/images/report_icon.png) no-repeat ;
+        }
+        .ion-earth{
+            background:url(/images/market_icon.png) no-repeat ;
+        }
+        .ion-erlenmeyer-flask{
+            background:url(/images/data_icon.png) no-repeat ;
+        }
+        .ion-happy{
+            background:url(/images/center_icon.png) no-repeat ;
+        }
+    }
+}
+
+.defmargin{
+    margin: 0;
+}
+.def-padding{
+    padding: 0;
 }

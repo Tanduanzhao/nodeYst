@@ -133,7 +133,7 @@ class Main extends Component{
                     }
                 </div>
                 <div className="list">
-                    <div className="item item-divider home-item-title">
+                    <div className="item item-divider module-bar">
                         <strong>
                             {
                                 this.props.params.id==3?"大汇简介":"专栏简介"
@@ -144,7 +144,7 @@ class Main extends Component{
                                 //<i className="fa fa-eye"></i>
                                 //14786人订阅
                             }
-                            <i   className={this.props.briefContent ? "ion-chevron-up": "ion-chevron-down"} style={{ color:'#0894ec',marginLeft: '6px'}} onClick={this._hiddenbriefContent.bind(this)}></i>
+                            <i   className={this.props.briefContent ? "ion-chevron-up": "ion-chevron-down"} onClick={this._hiddenbriefContent.bind(this)}></i>
                         </div>
                     </div>
                     {
@@ -152,7 +152,7 @@ class Main extends Component{
                             ? <p className="subscribeAll-body">{this.props.data.columnMainContent}</p>
                             :null
                     }
-                    <div className="item item-divider home-item-title">
+                    <div className="item item-divider module-bar">
                         <strong>
                             {
                                 this.props.params.id==3?"培训课程":"专栏栏目"

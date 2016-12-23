@@ -7,6 +7,7 @@ import {Link} from 'react-router';
 import {getCatalogList,getCatalogTypeList} from '../function/ajax';
 import FilterGroups from '../filterPage/filterGroups';
 import Loading from '../common/loading';
+import More from './../common/more';
 import EmptyComponent from '../common/emptyComponent';
 
 class Groups extends Component{
@@ -147,6 +148,7 @@ class Groups extends Component{
                         (this.props.groups.datas.length == 0 && !this.state.isLoading) ? <EmptyComponent/> : <Main dataSource={this.props.groups.datas}/>
                     }
                 </div>
+                <More {...this.props}/>
                 {
                     this.state.isShowFilter ? <FilterGroups min={this.state.min} max={this.state.max} catalogTypeId={this.state.catalogTypeId} types={this.props.groups.types} {...this.props} groups={this.state.groups} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)}/> : null
                 }

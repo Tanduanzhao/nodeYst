@@ -191,7 +191,7 @@ class Main extends Component{
                     }
                 </div>
                 <div className="list">
-                    <div className="item item-divider home-item-title">
+                    <div className="item item-divider module-bar">
                         <strong>
                             {
                                 this.props.params.id==3?"课程简介":"栏目简介"
@@ -210,7 +210,7 @@ class Main extends Component{
                             ? <p className="subscribeAll-body">{this.props.data.typeMainContent}</p>
                             :null
                     }
-                    <div className="item item-divider home-item-title">
+                    <div className="item item-divider module-bar">
                         <strong>
                             {
                                 this.props.params.id==3?"课程内容":"栏目报告"

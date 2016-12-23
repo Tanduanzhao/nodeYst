@@ -26,14 +26,23 @@ import subscribePageAll from './subscribePageAll';
 import subscribePageList from './subscribePageList';
 import subscribeContent from './subscribeContent';
 import pdf from './pdf';
+import marketProvice from './marketProvice';
 
 import groups from './groups';
 import groupsMes from './groupsMes';
 import dataSources from './dataSources';
+
+import market from './test/market';
+import marketSearch from './test/marketSearch';
+import marketSearchDetail from './test/marketSearchDetail';
 //合并仓库
 
 const ystReducers = combineReducers({
 	index,
+    market,
+    marketSearch,
+    marketSearchDetail,
+    marketProvice,
 	provicen,
     groups,
     pdf,

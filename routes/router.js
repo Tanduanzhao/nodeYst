@@ -21,6 +21,8 @@ module.exports = function(app) {
     app.get('/pdf/*',index);
     app.get('/pdf',index);
     app.get('/pdf',pdf);
+    app.get('/market',index);
+    app.get('/market/*',index);
     app.get('/pay/pdf',index);
     app.get('/pay/pdfs',index);
     app.get('/pay/pdf/*',index);

@@ -51,8 +51,6 @@ class Pdf extends Component{
                         });
                         this.refs.reportTextarea.value = null
                     }
-                    console.log(this.props.stores.data.length);
-                    console.log(res.totalSize);
                     if(res.totalSize <= this.props.stores.data.length){
                         this.setState({
                             infinite:false
