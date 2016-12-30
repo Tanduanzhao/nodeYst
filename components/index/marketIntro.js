@@ -2,10 +2,10 @@
     行情简介
 */
 import React,{Component} from 'react';
-import {loadReport} from './../../function/ajax';
+import {loadReport} from './../function/ajax';
 import {connect} from 'react-redux';
 
-import Loading from './../../common/loading';
+import Loading from './../common/loading';
 
 class MarketIntro extends Component{
     constructor(props){

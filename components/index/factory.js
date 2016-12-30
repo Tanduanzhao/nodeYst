@@ -4,9 +4,9 @@
 
 import React,{Component} from 'react';
 
-import FactorySingle from './../factorySingle.js';
-import LinkBar from './../linkBar.js';
-import EmptyComponent from '../../common/emptyComponent';
+import FactorySingle from './factorySingle.js';
+import LinkBar from './linkBar.js';
+import EmptyComponent from '../common/emptyComponent';
 export default class Factory extends Component{
 	render(){
         if(this.props.dataSources.length != 0){

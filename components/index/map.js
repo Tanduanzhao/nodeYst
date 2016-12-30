@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 
 import MapSingle from './mapSingle.js';
-import EmptyComponent from '../../common/emptyComponent'
+import EmptyComponent from '../common/emptyComponent'
 export default class Map extends Component{
 	render(){
         if(this.props.dataSources.length != 0){

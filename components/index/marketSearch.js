@@ -4,13 +4,13 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-import {loadBidListContent,getBidAreaInfo,getProjectStatus,getBusinessFirstFacProdInfo} from './../../function/ajax.js';
+import {loadBidListContent,getBidAreaInfo,getProjectStatus,getBusinessFirstFacProdInfo} from './../function/ajax.js';
 
-import Loading from './../../common/loading';
-import EmptyComponent from './../../common/emptyComponent';
-import FilterMarketProvinces from './../../filterPage/filterMarketProvinces';
+import Loading from './../common/loading';
+import EmptyComponent from './../common/emptyComponent';
+import FilterMarketProvinces from './../filterPage/filterMarketProvinces';
 //import FilterMarket from './../../filterPage/filterMarket';
-import More from './../../common/more';
+import More from './../common/more';
 class MarketSearch extends Component{
     constructor(props){
         super(props);
@@ -70,7 +70,6 @@ class MarketSearch extends Component{
 
     //搜索方法
     _searchHandle(searchKeys){
-        console.log(decodeURI(decodeURI(this.props.stores.searchName)))
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
@@ -78,9 +77,6 @@ class MarketSearch extends Component{
             this.setState({
                 isLoading:true
             });
-            //if(decodeURI(decodeURI(this.props.stores.searchName))=="支持多个条件筛选，如“头孢呋辛  深圳立健”"){
-            //    searchKeys=""
-            //}
             this.props.dispatch({
                 type:'CHANGEMARKETSEARCHSEARCHNAME',
                 searchName:searchKeys
@@ -160,22 +156,23 @@ class MarketSearch extends Component{
 
     //渲染完成后调用
     componentDidMount(){
-        //if(this.props.stores.searchName==""){
-        //    this.props.dispatch({
-        //        type:'CHANGEMARKETSEARCHSEARCHNAME',
-        //        searchName:"支持多个条件筛选，如“头孢呋辛  深圳立健”"
-        //    });
-        //}
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        this._loadData();
+        console.log(this.props.stores.data.length,"length")
+        if(this.props.stores.data.length ==0){
+            this._loadData();
+        }else{
+            this.setState({
+                isLoading:false
+            });
+        }
     }
 
     //组件移除前调用方法
     componentWillUnmount(){
-        this.props.dispatch({
-            type:'RESETMARKETSEARCH'
-        })
+        //this.props.dispatch({
+        //    type:'RESETMARKETSEARCH'
+        //})
     }
 
     render(){
@@ -207,7 +204,6 @@ class Main extends Component{
         super(props);
     }
     render(){
-        console.log(this.props.searchName=="","searchName")
         return(
             <div>
                 {
@@ -227,7 +223,7 @@ class HeaderBar extends Component{
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="searchName" type="search"  placeholder={this.props.stores.searchName}/>
+                    <input ref="searchName" type="search"  defaultValue={this.props.stores.searchName} placeholder="多个条件请用空格区分"/>
                 </label>
                 <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value)}>
                     搜索
@@ -252,20 +248,29 @@ class LinkBar extends Component{
 }
 
 class List extends Component{
+    constructor(props){
+        super(props);
+    }
+    _searchName(){
+        this.props.dispatch({
+            type:'CHANGEMARKETSEARCHDETAILSEARCHNAME',
+            searchName:this.props.searchName==""?"多个条件请用空格区分":this.props.searchName,
+        });
+    }
     render(){
         return(
             <div className="list card item-divider item-text-wrap marketSearch-item"  style={{marginTop:0}}>
                 <div  className="item marketSearch-item-top"  style={{padding: '0.325rem .4rem',fontSize: '.6rem'}}>
                     <img src="/images/bidList-icon.png"  style={{ width: '19.5px',marginRight: '3px',verticalAlign: 'bottom'}} />
                     {this.props.dataSources.provinceName} {this.props.dataSources.yearMonth}
-                    <Link  to={`/market/marketSearch/marketSearchDetail/${this.props.dataSources.areaId}`}style={{ float: 'right'}}>
+                    <Link  to={`/market/marketSearch/marketSearchDetail/${this.props.dataSources.areaId}`} onClick={this._searchName.bind(this)}  style={{ float: 'right'}}>
                         查看地市数据 >
                     </Link>
                 </div>
                 <div className="row  item" style={{ padding: '10px',fontSize: ' .6rem',color: '#0894ec',paddingLeft:'1.525rem'}}>
                     <div className="col text-left col-flex">产品</div>
                     <div className="col text-center">市场规模(万)</div>
-                    <div className="col text-center">最小使用单位销量(万)</div>
+                    <div className="col text-center">最小使用单位销量</div>
                 </div>
                 <div className="list border">
                     {

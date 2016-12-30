@@ -1,13 +1,13 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import {loadIndex,loadProvince,loadWx,loadJssdk,getMarketInfo} from './../../function/ajax.js';
-import {url2obj} from './../../function/common';
+import {loadIndex,loadProvince,loadWx,loadJssdk,getMarketInfo} from './../function/ajax.js';
+import {url2obj} from './../function/common';
 
-import Loading from './../../common/loading';
-import HeaderBar from './../../common/headerBar.js';
-import FooterBar from './../../common/footerBar.js';
-import SliderBar from './../../sliderBar.js';
-import Provicen from './../../provicen.js';
+import Loading from './../common/loading';
+import HeaderBar from './../common/headerBar.js';
+import FooterBar from './../common/footerBar.js';
+import SliderBar from './../sliderBar.js';
+import Provicen from './../provicen.js';
 
 class MarketAll extends Component{
 	constructor(props) {
@@ -33,7 +33,7 @@ class MarketAll extends Component{
                 yearMonth:2015
             });
         }
-        //loadProvince(this.props.dispatch);
+        loadProvince(this.props.dispatch);
         if(this.props.initData.length != 0){
             setTimeout(()=>{
                 loadIndex(this.props.dispatch,{
@@ -134,26 +134,29 @@ class MarketAll extends Component{
 
     _fn(arg){
         this.setState({
-            loading:true
+            loading:true,
+            isOther:""
         });
-        loadIndex(this.props.dispatch,{
-            yearMonth:this.props.yearMonth,
-            areaId:arg.areaId,
-            searchAreaType:arg.searchAreaType,
-            isOther:this.state.isOther || "",
-            callBack:(res)=>{
-                this.props.dispatch({
-                     type:'LOADDATA',
-                     data:res.datas
-                });
-                this.props.dispatch({
-                    type:'CHANGEDATA',
-                    yearMonth:res.datas.yearMonth
-                });
-                this.setState({
-                    loading:false
-                })
-            }
+        setTimeout(()=>{
+            loadIndex(this.props.dispatch,{
+                yearMonth:this.props.yearMonth,
+                areaId:arg.areaId,
+                searchAreaType:arg.searchAreaType,
+                isOther:this.state.isOther || "",
+                callBack:(res)=>{
+                    this.props.dispatch({
+                        type:'LOADDATA',
+                        data:res.datas
+                    });
+                    this.props.dispatch({
+                        type:'CHANGEDATA',
+                        yearMonth:res.datas.yearMonth
+                    });
+                    this.setState({
+                        loading:false
+                    })
+                }
+            })
         })
     }
 
@@ -176,11 +179,11 @@ class MarketAll extends Component{
 	}
 }
 
-import Map from './../tests/map.js';
-import Chart from './../../index/chart.js';
-import Classify from './../classify.js';
-import Factory from  './../tests/factory.js';
-import Breed from './../../index/breed.js';
+import Map from './map.js';
+import Chart from './chart.js';
+import Classify from './classify.js';
+import Factory from  './factory.js';
+import Breed from './breed.js';
 
 class Main extends Component{
     constructor(props){

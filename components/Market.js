@@ -2,13 +2,12 @@ import React,{Component} from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 
-import {loadProvince,getHQFirstPage,loadBidListContent,loadReportList,getFirstPageProlist} from './../../function/ajax.js';
+import {loadProvince,getHQFirstPage,loadBidListContent,loadReportList,getFirstPageProlist} from './function/ajax.js';
 
-import Loading from './../../common/loading';
-import FooterBar from './../../common/footerBar.js';
-import FilterMarketProvinces from './../../filterPage/filterMarketProvinces';
-import EmptyComponent from './../../common/emptyComponent';
-import Popup from './../../common/popup.js';
+import Loading from './common/loading';
+import FooterBar from './common/footerBar.js';
+import FilterMarketProvinces from './filterPage/filterMarketProvinces';
+import EmptyComponent from './common/emptyComponent';
 
 class Market extends Component {
     constructor(props) {
@@ -20,8 +19,7 @@ class Market extends Component {
             opacityNum: 0,
             marketItemTopBg:0,
             infinite:true,
-            showPopup:false,
-            yearMonth:this.props.stores.yearMonth,
+            yearMonth:this.props.stores.yearMonth
         };
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
@@ -75,6 +73,11 @@ class Market extends Component {
             type:'CHANGEMARKETSEARCHSEARCHNAME',
             searchName:searchKeys
         });
+        this.props.dispatch({
+            type:'LOADMARKETSEARCHDATA',
+            data:[],
+            pageNo:1
+        });
         this.context.router.push('market/marketSearch');
     }
 
@@ -87,31 +90,30 @@ class Market extends Component {
 
     //筛选方法
     _fn(args){
-        this.props.dispatch({
-            type:'LOADMARKETATA',
-            data:[],
-            pageNo:1
-        });
+        //this.props.dispatch({
+        //    type:'LOADMARKETATA',
+        //    data:[],
+        //    pageNo:1
+        //});
         this.props.dispatch({
             type:'CHANGEDATA',
             yearMonth:args.yearMonth
         });
         this.props.dispatch({
             type:'CHANGEMARKETPROVICENID',
-            areaId:args.areaId,
+            areaId:args.areaId
         });
         this.props.dispatch({
             type:'CHANGEMARKETPROVICENNAME',
-            areaName:args.areaName,
+            areaName:args.areaName
         });
         this.setState({
-            //yearMonth:args.yearMonth,
             areaId:args.areaId,
             searchAreaType:args.searchAreaType
         });
         setTimeout(()=> {
             this._toggleFilter();
-            this._loadData();
+            //this._loadData();
         });
     }
 
@@ -145,19 +147,14 @@ class Market extends Component {
             searchAreaType: 0
         });
         setTimeout(()=> {
-            this.context.router.push("/market/marketAll");
+            this.context.router.push("/marketAll");
         });
     }
     //渲染完成后调用
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        if(this.props.isVip == '0'){
-            this.setState({
-                showPopup:true
-            });
-        }
-        loadProvince(this.props.dispatch);
+        //loadProvince(this.props.dispatch);
         getFirstPageProlist(this.props.dispatch)
         this._loadData();
     }
@@ -173,9 +170,6 @@ class Market extends Component {
 		return(
             <div className="root">
                 {
-                    //this.state.showPopup ? <Popup  {...this.props}/> : null
-                }
-                {
                     this.state.isShowFilter ? <FilterMarketProvinces {...this.props}  fn={this._fn.bind(this)}  hideFilter={this._toggleFilter.bind(this)} areaId={this.props.areaId} areaName={this.props.areaName} dataSources={this.props.marketProvice}/> :null
                 }
                 <HeaderBar {...this.props} opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} searchHandle={this._searchHandle}  showFilter={this._toggleFilter.bind(this)} />
@@ -187,7 +181,7 @@ class Market extends Component {
                         {
                             (this.props.stores.data.length == 0 && !this.state.isLoading)
                                 ? <EmptyComponent/>
-                                :   <Main ref="main" {...this.props}  marketAll={this.marketAll.bind(this)}  dataSource={this.props.stores.data} />
+                                :  <Main ref="main" {...this.props}  marketAll={this.marketAll.bind(this)}  dataSource={this.props.stores.data} />
                         }
                     </div>
                 </div>
@@ -244,7 +238,7 @@ class List extends Component{
     render(){
         return(
             <li className="item def-padding market-item item-text-wrap">
-                <div  className={(this.props.marketItemTopBg%2)==0?"item item-divider market-item-top orange-bg":"item item-divider market-item-top blue-bg"} style={{background:'url'}}>
+                <div  className={(this.props.marketItemTopBg%2)==0?"item item-divider market-item-top orange-bg":"item item-divider market-item-top blue-bg"} style={{background:'url',border: 0}}>
                     {this.props.dataSource.title}
                     <Link onClick={()=>{this.props.marketAll(this.props.dataSource.reportUrl)}} style={{ float: 'right',fontSize: '.65rem'}}>
                         查看市场 >

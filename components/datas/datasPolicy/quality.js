@@ -49,7 +49,7 @@ class Quality extends Component{
 
         loadQualityAll({
             searchName:this.props.quality.searchName,
-            gradeId:this.props.quality.gradeId,
+            //gradeId:this.props.quality.gradeId || "",
             qualityLevelTypeId:JSON.stringify(this.props.quality.qualityLevelTypeIds),
             pageNo:this.props.quality.pageNo,
             callBack:(res)=>{
@@ -133,7 +133,6 @@ class Quality extends Component{
     }
     //搜索点击查询对应数据
     _searchDatas(key){
-        console.log(key);
         if(this.props.isVip == '0'){
            this.context.router.push('/pay/vip');
             return false;
@@ -162,16 +161,12 @@ class Quality extends Component{
                     <div className="list">
                         {
                             this.props.quality.datas.length == 0 ? <EmptyComponent/> : <div className="card" style={{marginTop:0}}>
-                                <div className="item item-divider item-text-wrap">
-                                    <i className="fa fa-tag
-            "></i> 来源：{this.props.quality.datas[0].grade}（{this.props.quality.datas[0].publishDate}）
-                                </div>
                                 <ul className="list">
                                     {
-                                        this.props.quality.datas[0].lists.map((ele)=>{
+                                        this.props.quality.datas.map((ele)=>{
                                             var trandName = (()=>{
                                                 var string = "";
-                                                if( ele.trandName !="无"|| ele.trandName==null || ele.trandName==undefined){
+                                                if( ele.trandName !="无"|| ele.trandName==null || ele.trandName==undefined || typeof  ele.trandName !== 'undefined' ){
                                                     string += "（";
                                                     string +=ele.trandName;
                                                     string += " ）";
@@ -181,21 +176,46 @@ class Quality extends Component{
                                                 return string;
                                             })();
                                             return(
-                                                <li className="item" key={Math.random(1)}>
-                                                    <h2>{ele.productName}
-                                                        {trandName}
-                                                    </h2>
-                                                    <p>剂型/规格：{ele.prepName} / {ele.spec}</p>
-                                                    <p>生产企业：{ele.manufacturerName}</p>
-                                                    <p>
-                                                        {
-                                                            ele.qualityLevelTypes.map((ele)=>{
-                                                                return(
-                                                                    <span className="tag" key={Math.random(1)}>{ele}</span>
-                                                                )
-                                                            })
-                                                        }
-                                                    </p>
+                                                <li className="item def-padding" key={Math.random(1)} style={{borderBottom:"4px solid #ddd"}}>
+                                                    <div className="item item-text-wrap" >
+                                                        <h2>{ele.productName}
+                                                            {
+                                                                (ele.trandName == '无' || typeof ele.trandName === 'undefined') ? null : ('('+ele.trandName+')')
+                                                            }
+                                                        </h2>
+                                                        <p>剂型/规格：{ele.prepName} / {ele.spec}</p>
+                                                        <p>生产企业：{ele.manufacturerName}</p>
+                                                    </div>
+                                                    <table className="table-border" width="100%">
+                                                        <tbody>
+                                                            {
+                                                                ele.grades.map((ele)=>{
+                                                                    return(
+                                                                        <tr  key={Math.random(0)}>
+                                                                            <td>
+                                                                                {
+                                                                                    ele.qualityLevelTypeNames.map((ele)=>{
+                                                                                        return(
+                                                                                            <div key={Math.random(1)} style={{marginBottom: '5px'}}>
+                                                                                                <span className="tag">{ele}</span>
+                                                                                            </div>
+                                                                                        )
+                                                                                    })
+                                                                                }
+                                                                            </td>
+                                                                            <td className="item-text-wrap">
+                                                                                <p>
+                                                                                    来源：{ele.grade}
+                                                                                    （{ele.publishDate}）
+                                                                                </p>
+                                                                            </td>
+                                                                        </tr>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </tbody>
+                                                    </table>
+
                                                 </li>
                                             )
                                         })

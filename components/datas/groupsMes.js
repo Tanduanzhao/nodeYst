@@ -165,7 +165,6 @@ class GroupsMes extends Component{
                 {
                     this.state.isShowFilter ? <FilterGroupsMes catalogTypeId={this.state.catalogTypeId} types={this.props.groupsMes.types} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)}/> : null
                 }
-                
             </div>
         )
     }
@@ -173,7 +172,6 @@ class GroupsMes extends Component{
 class Main extends Component{
     constructor(props){
         super(props);
-        
     }
     render(){
         console.log(this.props.dataSource.datas);
@@ -190,7 +188,6 @@ class Main extends Component{
                                     })
                                 }
                             </div>
-                            
                         </div>
                 }
                 {    
@@ -209,8 +206,6 @@ class Main extends Component{
                                     }
                                 </div>
                             )
-                            
-                           
                         })
                     }
                 </ul>

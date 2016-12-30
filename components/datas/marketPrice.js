@@ -19,63 +19,16 @@ class MarketPrice extends Component{
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
-    _loadData(){
-        this.setState({
-            loading:true
-        });
-        this.setState({
-            request:false
-        });
-        loadBidList({
-            searchName:this.props.marketPrice.searchName,
-            pageNo:this.props.marketPrice.pageNo,
-            callBack:(res)=>{
-                if(this._calledComponentWillUnmount) return false;
-                this.setState({
-                    loading:false
-                });
-                if (res){
-                    this.props.dispatch({
-                        type:'LOADMARKETTDATA',
-                        data:this.props.marketPrice.data.concat(res.datas),
-                        pageNo:this.props.marketPrice.pageNo+1
-                    });
-                }
-                this.setState({
-                    request:true
-                });
-            }
-        });
-    }
+
+    //滚动加载
     _infiniteScroll(){
-        //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        console.log(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop)
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && ! this.props.marketPrice.infinite  && this.state.request){
+      if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && ! this.props.stores.infinite  && this.state.request){
             this._loadData();
         }
     }
-    componentDidMount(){
-        this.ele = this.refs.content;
-        this.ele.addEventListener('scroll',this._infiniteScroll);
-        //if(this.props.marketPrice.data.length == 0){
-        //    this._loadData();
-        //}
-        this._loadData();
-    }
-    componentWillUnmount(){
-        //this.setState({
-        //    loading:false
-        //})
-        this.props.dispatch({
-            type:'LOADMARKETTDATA',
-            data:[],
-            pageNo:1
-        });
-        this.props.dispatch({
-            type:'RESETMARKETPRICE'
-        });
-    }
-    _searchHandle(){
+
+    //搜索方法
+    _searchHandle(searchKeys){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
@@ -84,13 +37,69 @@ class MarketPrice extends Component{
                 loading:true
             })
             this.props.dispatch({
+                type:'CHANGEDRUGSEARCHNAME',
+                searchName:searchKeys
+            })
+            this.props.dispatch({
                 type:'LOADMARKETTDATA',
                 data:[],
                 pageNo:1
             });
-            setTimeout(()=> this._loadData(),100);
+            setTimeout(()=> this._loadData());
         }
     }
+
+    //加载页面数据
+    _loadData(){
+        this.setState({
+            loading:true
+        });
+        this.setState({
+            request:false
+        });
+        loadBidList({
+            searchName:encodeURI(encodeURI(this.props.stores.searchName)),
+            pageNo:this.props.stores.pageNo,
+            callBack:(res)=>{
+                if(this._calledComponentWillUnmount) return false;
+                this.setState({
+                    loading:false
+                });
+                if (res){
+                    this.props.dispatch({
+                        type:'LOADMARKETTDATA',
+                        data:this.props.stores.data.concat(res.datas),
+                        pageNo:this.props.stores.pageNo+1
+                    });
+                }
+                this.setState({
+                    request:true
+                });
+            }
+        });
+    }
+
+    //渲染完成后调用
+    componentDidMount(){
+        this.ele = this.refs.content;
+        this.ele.addEventListener('scroll',this._infiniteScroll);
+        if(this.props.stores.data.length == 0){
+            this._loadData();
+        }
+    }
+
+    //组件移除前调用方法
+    componentWillUnmount(){
+        //this.props.dispatch({
+        //    type:'LOADMARKETTDATA',
+        //    data:[],
+        //    pageNo:1
+        //});
+        //this.props.dispatch({
+        //    type:'RESETMARKETPRICE'
+        //});
+    }
+
     render(){
         return(
             <div className="root">
@@ -99,7 +108,7 @@ class MarketPrice extends Component{
                     this.state.loading?<Loading/>: null
                 }
                 <div ref="content" className="scroll-content has-header">
-                    <Main {...this.props} data={this.props.marketPrice.data} loading={this.state.loading}/>
+                    <Main {...this.props} data={this.props.stores.data} loading={this.state.loading}/>
                 </div>
                 <More {...this.props}/>
             </div>
@@ -189,15 +198,9 @@ class List extends Component{
 
 class HeaderBar extends Component{
     _changeHandle(){
-        console.log(this.props.marketPrice.searchName);
         this.props.dispatch({
-            type:'CHANGEDRUGSEARCHNAME',
-            searchName:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
-        })
-    }
-    componentUnmount(){
-        this.props.dispatch({
-            type:'CLEADRUGSEARCHNAME'
+            type:'CHANGEBIDLISTTITLEORREPORTKEY',
+            searchName:this.refs.searchName.value
         })
     }
     render(){
@@ -205,9 +208,9 @@ class HeaderBar extends Component{
             <div className="bar bar-header bar-positive item-input-inset">
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
+                    <input ref="searchName" type="search" defaultValue={this.props.stores.searchName} placeholder="请输入搜索关键词"/>
                 </label>
-                <button className="button button-clear" onClick={this.props.searchHandle}>
+                <button className="button button-clear" onClick={()=>{this.props.searchHandle(this.refs.searchName.value)}}>
                     搜索
                 </button>
             </div>
@@ -242,7 +245,7 @@ class MarketList extends Component{
 function select(state){
     return{
         uri:state.router.uri,
-        marketPrice:state.marketPrice,
+        stores:state.marketPrice,
         isVip:state.userInfo.isVip
     }
 }

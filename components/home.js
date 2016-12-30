@@ -264,7 +264,7 @@ class Column extends Component{
 				</Link>
 				<Link to="/datas/marketPrice">
 					<img src="/images/column07.jpg" alt="" className="price-icon"/>
-					入市价
+					全国限价
 				</Link>
 				<Link to="/datas/bidList">
 					<img src="/images/column02.jpg" alt=""/>

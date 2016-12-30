@@ -234,7 +234,7 @@ class Main extends Component{
             if(this.props.data.length != 0){
                 return(
                     <div  className="list card item-text-wrap" style={{ margin: '0',wordBreak: 'break-all'}}>
-                        <div className="row item" style={{ padding: '10px',fontSize: ' .6rem',color: '#0894ec'}}>
+                        <div className="row item" style={{ padding: '16px 10px',fontSize: ' .6rem',color: '#0894ec'}}>
                             <div className="col">通用名</div>
                             <div className="col text-center"  onClick={()=>{this.props.sort(0,"sales")}}>市场规模(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 0) ? styles.active : null}></i></div>
                             <div className="col text-center"  onClick={()=>{this.props.sort(1,"changeCost")}}>增长额(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 1) ? styles.active : null}></i></div>
@@ -274,7 +274,7 @@ class List extends Component{
             return string;
         })();
         return(
-        <Link to={`/market/MarketSearch/marketSearchDetail/${this.props.dataSources.genericName}/${this.props.dataSources.id}`} className="row item" style={{ padding: '10px',fontSize: '.6rem'}}>
+        <Link to={`/market/MarketSearch/marketSearchDetail/${this.props.dataSources.genericName}/${this.props.dataSources.id}`} className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
             <div className="col" style={{fontSize: '.6rem'}}>
                 <span className="tag" style={{background: '#16b028'}}> {this.props.dataSources.icoType}</span>
                 {this.props.dataSources.genericName}

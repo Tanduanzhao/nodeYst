@@ -132,9 +132,16 @@ class purchase extends Component {
   render() {
     return (
       <div className="root">
+        {
+          this.state.loading ? <Loading/> : null
+        }
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header has-footer">
-          <Main data={this.props.purchase.data} loading={this.state.loading} BuyReportList={this.state.BuyReportList}/>
+          {
+            (this.props.purchase.data.length == 0 && !this.state.loading)
+                ? <EmptyComponent/>
+                : <Main data={this.props.purchase.data} loading={this.state.loading} BuyReportList={this.state.BuyReportList}/>
+          }
         </div>
         <FooterBar {...this.props}/>
         {
@@ -185,22 +192,14 @@ class Main extends Component{
   constructor(props){
     super(props);
   }
-  render(){
-    if(this.props.loading) {
-      return <Loading/>
-    }else{
-      if(this.props.data.length != 0){
-        return(
-            <ul className="list new_report">
-              {
-                this.props.data.map((ele,index)=> <ReportList BuyReportList={this.props.BuyReportList} dataSources={ele} key={ele.id}/>)
-              }
-            </ul>
-        )
-      }else{
-        return <EmptyComponent/>
-      }
-    }
+  render() {
+    return (
+        <ul className="list new_report">
+          {
+            this.props.data.map((ele, index)=> <ReportList BuyReportList={this.props.BuyReportList} dataSources={ele} key={ele.id}/>)
+          }
+        </ul>
+    )
   }
 }
 class List extends Component{

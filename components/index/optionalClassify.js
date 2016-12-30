@@ -228,7 +228,7 @@ class HeaderBar extends Component{
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="searchName"  type="search"  placeholder="多个条件请用空格区分"/>
+                    <input ref="searchName"  type="search" placeholder={this.props.params.searchName}/>
                 </label>
                 <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value)}>
                     搜索
@@ -244,7 +244,7 @@ class Main extends Component{
     render(){
         return(
             <div className="list card item-text-wrap" style={{ margin: '0',wordBreak: 'break-all'}}>
-                <div className="row item"  style={{ padding: '10px',fontSize: ' .6rem',color: '#0894ec'}}>
+                <div className="row item"  style={{ padding: '16px 10px',fontSize: ' .6rem',color: '#0894ec'}}>
                     <div className="col">通用名</div>
                     <div className="col text-center" onClick={()=>{this.props.sort(0,"sales")}}>市场规模(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 0) ? styles.active : null}></i></div>
                     <div className="col text-center"onClick={()=>{this.props.sort(1,"changeCost")}}>增长额(万) <i className={this.props.sord=="desc"?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 1) ? styles.active : null}></i> </div>
@@ -281,7 +281,7 @@ class List extends Component{
             return string;
         })();
         return(
-            <Link to={`/market/marketSearch/marketSearchDetail/${encodeURIComponent(encodeURIComponent(this.props.dataSources.genericName))}/${this.props.dataSources.breedId}`}  className="row item" style={{ padding: '10px',fontSize: '.6rem'}}>
+            <Link to={`/market/marketSearch/marketSearchDetail/${encodeURIComponent(encodeURIComponent(this.props.dataSources.genericName))}/${this.props.dataSources.breedId}`}  className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
                 <div className="col"  style={{fontSize: '.6rem'}}>
                     <span className="tag" style={{background: '#fea512'}}>{this.props.dataSources.icoType}</span>
                     {this.props.dataSources.genericName}

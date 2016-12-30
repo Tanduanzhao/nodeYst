@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
+import $ from 'jquery';
 import {loadReport,keepReport,cancelKeepReport,requestUnifiedorderPayService,selectReportReplys,insertReplyReport,insertLikeReport} from './../function/ajax';
 import {HTTPURL} from './../config';
 import Loading from './../common/loading';
@@ -31,6 +32,7 @@ class Pdf extends Component{
         this._loadData = this._loadData.bind(this);
     }
     //获取页面数据
+
     _loadData(){
         this.setState({
             request:false
@@ -65,12 +67,28 @@ class Pdf extends Component{
                         request:true,
                         sendMessage:false
                     });
+
                 }else{
                     alert('网络故障');
                 }
             }
         })
     }
+
+    //componentDidUpdate(){
+    //    let images = document.querySelectorAll('.nestedHTML img');
+    //    if(images.length == 0){
+    //        return false;
+    //    }
+    //
+    //    //console.log();
+    //    //$(".nestedHTML a").lightbox();
+    //    $('.nestedHTML img').each((index,ele)=>{
+    //        $(ele).replaceWith('<a href="'+ele.src+'" data-lightbox="image-1">'+ele.outerHTML+'</a>');
+    //    })
+    //
+    //    //console.log(document.querySelectorAll('.nestedHTML img'),'i mages');
+    //}
 
     //支付
     _sandboxPayService(id,self){
@@ -167,6 +185,9 @@ class Pdf extends Component{
     }
 
     componentDidMount(){
+        //this.html=document.getElementsByTagName('html')[0]
+        //this.head= this.html.getElementsByTagName('head')[0]
+        //this.head.getElementsByTagName('meta')[0].setAttribute('content', 'width=device-width,initial-scale=1, user-scalable=yes, minimal-ui');
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll', this._infiniteScroll);
         this.setState({
@@ -219,6 +240,7 @@ class Pdf extends Component{
     }
 
     componentWillUnmount(){
+        //this.head.getElementsByTagName('meta')[0].setAttribute('content', 'width=device-width,initial-scale=1,minimum-scale=1, maximum-scale=1,user-scalable=no');
         wx.ready(()=> {
             // 分享
             var info = {
@@ -252,7 +274,6 @@ class Pdf extends Component{
     }
 
     render(){
-        console.log(this.props.stores  , "pageNos");
         return(
             <div className="root">
                 {

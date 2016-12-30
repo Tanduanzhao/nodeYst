@@ -25,12 +25,13 @@ class RiseClassify extends Component{
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _increaseHandle(){
+        if(this.props.yearMonth==2015){return false}
 		this.props.dispatch((dispatch)=>{
             this._reSet();
             dispatch({
                 type:'INCREASE'
             });
-            this._loadData();
+            setTimeout(()=> this._loadData());
         })
 	}
 	_decreaseHandle(){
@@ -39,7 +40,7 @@ class RiseClassify extends Component{
             dispatch({
                 type:'DECREASE'
             });
-            this._loadData();
+            setTimeout(()=> this._loadData());
         })
 	}
     _reSet(){
@@ -150,7 +151,7 @@ class RiseClassify extends Component{
     render(){
         return(
             <div className="root">
-                <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>s
+                <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
                 <div ref="content" className="scroll-content  has-header market">
                     <Main data={this.state.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
                 </div>
@@ -174,7 +175,7 @@ class Main extends Component{
             if(this.props.data.length != 0){
                 return(
                 <div className="list card item-text-wrap" style={{ margin: '0',wordBreak: 'break-all'}}>
-                    <div className="row item" style={{ padding: '10px',fontSize: ' .6rem',color: '#0894ec'}}>
+                    <div className="row item" style={{ padding: '16px 10px',fontSize: ' .6rem',color: '#0894ec'}}>
                         <div className="col">一级分类</div>
                         <div className="col text-center" onClick={()=>{this.props.sort(0,"sales")}}>市场规模(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 0) ? styles.active : null}></i></div>
                         <div className="col text-center" onClick={()=>{this.props.sort(1,"changeCost")}}>增长额(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 1) ? styles.active : null}></i></div>
@@ -198,7 +199,7 @@ class List extends Component{
     render(){
         var string = null;
         var change = (()=>{
-            if (this.props.dataSources.change == "" ) {
+            if (this.props.dataSources.change == "" || typeof this.props.dataSources.change == 'undefined') {
                 string=""
             }else if (this.props.dataSources.change >= 0 ) {
                 string= <div className="col   col-flex-last text-center assertive">{this.props.dataSources.change}%</div>
@@ -216,7 +217,7 @@ class List extends Component{
             return string;
         })();
         return(
-            <Link to={`/optional/classify/${this.props.dataSources.salesId}`} className="row item" style={{ padding: '10px',fontSize: '.6rem'}}>
+            <Link to={`/optional/classify/${this.props.dataSources.salesId}/${this.props.dataSources.salesName}`} className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
                 <div className="col" style={{fontSize: '.6rem'}}>
                     <span className="tag" style={{background: '#fea512'}}>{this.props.dataSources.icoType}</span>
                     {this.props.dataSources.salesName}

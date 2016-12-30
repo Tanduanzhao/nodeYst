@@ -19,7 +19,7 @@ var defaultMarketPrice={
   searchAreaType:defaultProvicen.searchAreaType,
   yearMonth:defaultData.yearMonth,
   hospitalLevel:null,
-  searchName:null,
+  searchName:"",
   pageNo:1,
   data:[],
   infinite:false

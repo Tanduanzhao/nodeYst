@@ -4,11 +4,11 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-import {getBusinessFactoryProdInfo,getBidAreaInfo,getProjectStatus} from './../../function/ajax.js';
+import {getBusinessFactoryProdInfo,getBidAreaInfo,getProjectStatus} from './../function/ajax.js';
 
-import Loading from './../../common/loading';
-import EmptyComponent from './../../common/emptyComponent';
-import FilterMarket from './../../filterPage/filterMarket';
+import Loading from './../common/loading';
+import EmptyComponent from './../common/emptyComponent';
+import FilterMarket from './../filterPage/filterMarket';
 
 class MarketSearchDetail extends Component{
     constructor(props){
@@ -20,7 +20,7 @@ class MarketSearchDetail extends Component{
             sord:"desc",
             sordActive:0,
             sidx:"sales",
-            searchName:'',
+            searchName:this.props.stores.searchName || '',
             isCity:null,
             searchAreaType:""
         };
@@ -37,8 +37,8 @@ class MarketSearchDetail extends Component{
             breedId:this.props.params.id,
             pageNo:this.props.stores.pageNo,
             searchAreaType:this.state.searchAreaType,
-            parentId:this.props.params.parentId,
-            searchName:encodeURI(encodeURI(this.state.searchName)) || "",
+            parentId:this.props.params.parentId || '',
+            searchName:this.state.searchName=="多个条件请用空格区分"?"":(encodeURI(encodeURI(this.state.searchName)) || ""),
             //sord:this.state.sord,
             //sidx:this.state.sidx,
             isCity:this.state.isCity,
@@ -164,35 +164,28 @@ class MarketSearchDetail extends Component{
 
     //渲染完成后调用
     componentDidMount(){
-        console.log(this.props.params.parentId);
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        if(typeof this.props.params.searchName== 'undefined' ){
-            this.setState({
-                searchName:""
-            });
-        }else{
-            this.setState({
-                searchName:decodeURIComponent(decodeURIComponent(this.props.params.searchName))
-            });
+        if(!this.props.params.parentId){
+            if(typeof this.props.params.searchName != 'undefined' ){
+                this.setState({
+                    searchName:decodeURIComponent(decodeURIComponent(this.props.params.searchName))
+                });
+            }
         }
         if(typeof this.props.params.parentId != 'undefined' ){
             this.setState({
                 searchAreaType:"0",
-                isCity:"1",
+                isCity:"1"
             });
             this.props.dispatch({
                 type:'CHANGEIdAREAAREAID',
-                areaId:"",
+                areaId:""
             });
         }
         this.setState({
-            isLoading:true,
+            isLoading:true
         });
-        //this.props.dispatch({
-        //    type:'CHANGEMARKETSEARCHDETAILSEARCHNAME',
-        //    searchName:decodeURIComponent(decodeURIComponent(this.props.params.searchName))
-        //})
         setTimeout(()=>{
             this._loadData();
         });
@@ -206,6 +199,7 @@ class MarketSearchDetail extends Component{
     }
 
     render(){
+        console.log(this.state.searchName,"searchName")
         return (
             <div className="root" style={{"overflow":"auto"}}>
                 <HeaderBar {...this.props} searchName={this.state.searchName} searchHandle={this._searchHandle.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
@@ -236,7 +230,7 @@ class Main extends Component{
                 <div className="row  item" style={{ padding: '10px',fontSize: ' .6rem',color: '#0894ec'}}>
                     <div className="col text-left">产品</div>
                     <div className="col text-center" >市场规模(万)</div>
-                    <div className="col-40 text-center">最小使用单位销量（万）</div>
+                    <div className="col-40 text-center">最小使用单位销量</div>
                 </div>
                 {
                     (typeof this.props.data == 'undefined' || this.props.data.length == 0) ? null : this.props.data.map((ele, index)=> <List dataSources={ele} key={Math.random()}/>)
@@ -273,7 +267,7 @@ class List extends Component{
                     <p>{this.props.dataSources.dosSname}</p>
                     <p> {this.props.dataSources.spec}
                         {
-                            this.props.dataSources.specAttr ?  <span> {this.props.dataSources.specAttr}</span> : null
+                            (this.props.dataSources.specAttr == "无" || typeof this.props.dataSources.specAttr == 'undefined' || this.props.dataSources.specAttr =="")?  null : <span> {this.props.dataSources.specAttr}</span>
                         }
                     </p>
                     <p>{this.props.dataSources.factoryAbbrCl}</p>

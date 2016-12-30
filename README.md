@@ -46,7 +46,7 @@
                 |- headerBar.js             头部工具栏图标
                 |- help.js                  帮助中心
                 |- home.js                  首页模块
-                |- index.js                 行情模块
+                |- Market.js                 行情模块
                 |- insurance.js             医保
                 |- loading.js               加载界面
                 |- lowPrice.js              低价药

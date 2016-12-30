@@ -9,6 +9,7 @@ module.exports = function(app) {
     });
     app.get('/rise/*',index);
     app.get('/optional',index);
+    app.get('/optional/*',index);
     app.get('/report',index);
     app.get('/report/*',index);
 	app.get('/center', index);
@@ -37,6 +38,7 @@ module.exports = function(app) {
     app.get('/subscribePage/*',index);
     app.get('/subscribePageAll',index);
     app.get('/subscribePageAll/*',index);
+    app.get('/subscribePageList/*',index);
     app.get('/subscribeContent',index);
     app.get('/subscribeContent/*',index);
     app.post('/getToken',getToken);

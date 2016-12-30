@@ -125,11 +125,13 @@ h3{
     color: #fff;
     vertical-align: 10%;
     border-radius:0.15rem;
+    //padding:0 pxTorem(2);
     padding:0 pxTorem(2);
     margin-right: pxTorem(2);
     margin-left: pxTorem(2);
     //border:1px solid red;
     font-weight: normal;
+    //margin-bottom: 5px;
 }
 .list-horizontal-block{
     &:after{
@@ -972,7 +974,7 @@ h3{
     border-radius: 50%;
     background: #387ef5;
     display: block;
-    z-index: 9;
+    z-index: 999;
     text-align: center;
     font-size: .6rem;
     color: #fff;
@@ -1296,7 +1298,7 @@ table{
 }
 .title_button{
     float: left;
-    margin-top: 6px;
+    //margin-top: 6px;
 }
 .subscribeAll{
     .img-title{
@@ -1645,6 +1647,7 @@ table{
         display: block;
         width: 100%;
         height: auto;
+        //min-height: 44px;
         max-height: 200px;
     }
 }
@@ -2073,6 +2076,7 @@ table{
         color: #fff;
         height:auto;
         background: url(/images/christmas_tabs_bg.jpg) no-repeat;
+        background-size: 100% 100%;
         .tab-item{
             opacity: 1;
         }

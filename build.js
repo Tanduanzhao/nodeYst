@@ -10,18 +10,15 @@ import {store,loadWx,insertReportShare} from './components/function/ajax';
 import {url2obj} from './components/function/common';
 
 //行情
-import Market from './components/index/test/market.js';
-import MarketAll from './components/index/test/marketAll.js';
-import MarketIntro from './components/index/test/marketIntro.js';
-import MarketSearch from './components/index/test/marketSearch.js';
-import MarketSearchDetail from './components/index/test/marketSearchDetail.js';
-
+import Market from './components/Market.js';
+import MarketAll from './components/index/marketAll.js';
+import MarketIntro from './components/index/marketIntro.js';
+import MarketSearch from './components/index/marketSearch.js';
+import MarketSearchDetail from './components/index/marketSearchDetail.js';
 
 import Optional from './components/index/optionalClassify.js';
-import Concept from './components/index/optionalConcept.js';
 
 import RiseClassify from './components/index/riseClassify.js';
-import RiseConcept from './components/index/riseConcept.js';
 import RiseBreed from './components/index/riseBreed.js';
 import RiseFactory from './components/index/riseFactory.js';
 
@@ -77,7 +74,7 @@ if(url2obj().recommender){
     })
 }
 window.onload =function(){
-    if(url2obj().recommender!=""){
+    if(url2obj().recommender!="" && (typeof url2obj().recommender!= 'undefined') ){
         pushHistory();
     }
 };
@@ -141,12 +138,10 @@ export class Reactrouter extends Component{
                     <Route>
                         <Route path='/' component={Home}/>
                         <Route path='optional'>
-                            <Route path='classify/:sid' component={Optional}/>
-                            <Route path='concept/:cid' component={Concept}/>
+                            <Route path='classify/:sid/:searchName' component={Optional}/>
                         </Route>
                         <Route path="rise">
                             <Route path="classify" component={RiseClassify}/>
-                            <Route path="concept" component={RiseConcept}/>
                             <Route path="breed" component={RiseBreed}/>
                             <Route path="factory" component={RiseFactory}/>
                         </Route>
@@ -199,17 +194,18 @@ export class Reactrouter extends Component{
                             <IndexRoute component={Market}/>
                             <Route path="rise">
                                 <Route path="classify" component={RiseClassify}/>
-                                <Route path="concept" component={RiseConcept}/>
                                 <Route path="breed" component={RiseBreed}/>
                                 <Route path="factory" component={RiseFactory}/>
                             </Route>
-                            <Route path="marketAll" component={MarketAll}/>
                             <Route path="marketIntro/:reportUrl" component={MarketIntro}/>
                             <Route path="marketSearch">
                                 <IndexRoute component={MarketSearch}/>
                                 <Route path="marketSearchDetail/:searchName/:id" component={MarketSearchDetail}/>
                                 <Route path="marketSearchDetail/:parentId" component={MarketSearchDetail}/>
                             </Route>
+                        </Route>
+                        <Route path="marketAll">
+                            <IndexRoute component={MarketAll}/>
                         </Route>
                         <Route path="subscribePage">
                             <IndexRoute component={SubscribePage}/>
@@ -239,5 +235,5 @@ export class Reactrouter extends Component{
     }
 }
 var ele = document.getElementById('app');
-ele.className="christmas";
+//ele.className="christmas";
 ReactDOM.render(<Reactrouter/>, ele, null);

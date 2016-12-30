@@ -96,8 +96,8 @@ class Report extends Component {
   }
   componentWillUnmount(){
     this.props.dispatch({
-          type: 'RESETREPORT'
-        });
+      type: 'RESETREPORT'
+    });
   }
   _fn(args) {
     if(!args.reportTag){
@@ -234,6 +234,9 @@ function select(state){
     report:state.report,
     searchAreaType:state.provicen.searchAreaType
   }
+}
+Report.contextTypes = {
+  router:React.PropTypes.object.isRequired
 }
 Report.contextTypes = {
   router:React.PropTypes.object.isRequired

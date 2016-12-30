@@ -45,7 +45,6 @@ class BidListAll extends Component{
                     type:'requestssall'
                 });
                 if (res){
-                    console.log(res.datas);
                     this.props.dispatch({
                         type:'LOADBIFLISTCONTENTDATAALL',
                         data:this.props.bidList.data.concat(res.datas.items),
@@ -126,7 +125,6 @@ class BidListAll extends Component{
         }
     }
     componentDidMount(){
-        console.log("componentDidMountprovinceId")
         //this.props.dispatch({
         //    type:'RESETBIDLISTAREAId',
         //    areaId:this.props.bidList.provinceId
@@ -189,9 +187,11 @@ class BidListAll extends Component{
                 }
                 <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)} _showProvicenHandle={this._showProvicenHandle.bind(this)}/>
                 <div ref="content" className="scroll-content has-header marketall">
-                    <Main {...this.props} data={this.props.bidList.data} loading={this.state.loading}/>
-                    <More {...this.props}/>
+                    {
+                        (this.props.bidList.data.length == 0 && !this.state.loading) ? <EmptyComponent/> : <Main {...this.props} data={this.props.bidList.data} loading={this.state.loading}/>
+                    }
                 </div>
+                <More {...this.props}/>
                 {
                     this.props.bidList.isShowFilter&&!this.state.loading? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
                 }
@@ -204,7 +204,6 @@ class Main extends Component{
         super(props);
     }
     render(){
-        console.log(this.props.data);
         var specAttrName = (()=>{
             if(this.props.bidList.specAttrName != ""&& this.props.bidList.specAttrName != null&&this.props.bidList.specAttrName != undefined ){
                 var children="";
@@ -216,59 +215,49 @@ class Main extends Component{
             }
             return children;
         })();
-        var bidList = 0;
-        if(this.props.data.length != 0){
-            return(
-                <div>
-                    <div className="market-list card defmargin">
-                        <div className="list-left">
-                            <p>剂型：{decodeURI(decodeURI(this.props.params.prepName))}</p>
-                            <p>规格：{decodeURI(decodeURI(this.props.params.spec))}{specAttrName}</p>
-                            <p>生产企业：{decodeURI(decodeURI(this.props.params.manufacturerName))}</p>
-                        </div>
-                        <Link  to={`/datas/bidList/${this.props.params.productName}/${this.props.params.prepName}/${this.props.params.spec}/${this.props.params.manufacturerName}`} className="list-right btn" > 查看原始数据</Link>
-                        <div className="row market-price">
-                            中标省份数：{this.props.bidList.areas}
-                        </div>
+        return(
+            <div>
+                <div className="market-list card defmargin">
+                    <div className="list-left">
+                        <p>剂型：{decodeURI(decodeURI(this.props.params.prepName))}</p>
+                        <p>规格：{decodeURI(decodeURI(this.props.params.spec))}{specAttrName}</p>
+                        <p>生产企业：{decodeURI(decodeURI(this.props.params.manufacturerName))}</p>
                     </div>
-                    <h3 className="item item-divider bidall">
-                        <div className="row">
-                            <div className="col-40">省份</div>
-                            <div className="col-60">最小制剂中标价（公布时间）</div>
-                        </div>
-                    </h3>
-                    <ul className="list">
-                    {
-                        this.props.data.map((ele,index)=> <List dataSources={ele} key={`bidList_${bidList++}+${ele.id}`}/>)
-                    }
-                    </ul>
+                    <Link  to={`/datas/bidList/${this.props.params.productName}/${this.props.params.prepName}/${this.props.params.spec}/${this.props.params.manufacturerName}`} className="list-right btn" > 查看原始数据</Link>
+                    <div className="row market-price">
+                        中标省份数：{this.props.bidList.areas}
+                    </div>
                 </div>
-            )
-        }else{
-            return <EmptyComponent/>
-        }
+                <h3 className="item item-divider bidall">
+                    <div className="row">
+                        <div className="col-40">省份</div>
+                        <div className="col-60">最小制剂中标价（公布时间）</div>
+                    </div>
+                </h3>
+                <ul className="list">
+                    {
+                        this.props.data.map((ele,index)=> <List key={Math.random()} dataSources={ele}/>)
+                    }
+                </ul>
+            </div>
+        )
     }
 }
 class HeaderBar extends Component{
-    _changeHandle(){
-        this.props.dispatch({
-            type:'CHANGEBIDLISTTITLEORREPORTKEY',
-            searchName:encodeURI(encodeURI(this.refs.bidListSearchName.value))
-        })
-    }
     render(){
         return(
             <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons"  onClick={this.props._showProvicenHandle} style={{ fontSize: '.75rem',zIndex:'99999'}}>
-                    {
-                        //<button className="button" onClick={this.props._showProvicenHandle}>
-                        //    <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
-                        //</button>
-                    }
-                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-                    <span  style={{margin:' 0 5px'}}>筛选</span>
+                <div className="title">
+                    <div className="buttons title_button"  onClick={this.props._showProvicenHandle} style={{ fontSize: '.75rem',zIndex:'99999'}}>
+                        <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem',verticalAlign: 'text-top'}} />
+                        <span  style={{margin:' 0 5px'}}>筛选</span>
+                    </div>
+                    <span> {decodeURI(decodeURI(this.props.params.productName))}</span>
+                    <div className="buttons title_button" style={{ float:'right',fontSize: '.75rem',zIndex:'99999',visibility:'hidden'}}>
+                        <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem',verticalAlign: 'text-top'}} />
+                        <span  style={{margin:' 0 5px'}}>筛选</span>
+                    </div>
                 </div>
-                <div className="title"> {decodeURI(decodeURI(this.props.params.productName))}</div>
             </div>
         )
     }

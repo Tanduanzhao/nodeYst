@@ -32,9 +32,9 @@ import groups from './groups';
 import groupsMes from './groupsMes';
 import dataSources from './dataSources';
 
-import market from './test/market';
-import marketSearch from './test/marketSearch';
-import marketSearchDetail from './test/marketSearchDetail';
+import market from './market';
+import marketSearch from './marketSearch';
+import marketSearchDetail from './MarketSearchDetail';
 //合并仓库
 
 const ystReducers = combineReducers({
