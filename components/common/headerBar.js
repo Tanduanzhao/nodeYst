@@ -17,7 +17,7 @@ default class HeaderBar extends Component {
 	}
 	render() {
 		return (
-			<div className={`bar bar-header bar-positive ${this.props.isOpacity ? 'bar-opacity' : null}`} style={{backgroundColor:`rgba(56,126,245,${typeof this.props.opacityNum !== 'undefined' ? this.props.opacityNum : 1})`}} ref="headerBar">
+			<div className={`bar bar-header bar-positive ${this.props.isOpacity ? 'bar-opacity' : ''}`} style={{backgroundColor:`rgba(56,126,245,${typeof this.props.opacityNum !== 'undefined' ? this.props.opacityNum : 1})`}} ref="headerBar">
                 <div className="buttons">
                     <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-map-marker"></i><span style={{paddingLeft:'5px'}}>{this.props.areaName}</span></button>
                 </div>

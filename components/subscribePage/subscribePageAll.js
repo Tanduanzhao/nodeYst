@@ -34,7 +34,6 @@ class SubscribePageAll extends Component {
             pageNo:this.props.subscribePageAll.pageNo,
             titleOrReportKey:this.props.subscribePageAll.titleOrReportKey,
             callBack:(res)=>{
-                console.log(res.datas)
                 this.props.dispatch({
                     type:'LOADSUBSCRIBEPAGEALLDATA',
                     data:res.datas,
@@ -115,11 +114,10 @@ class Main extends Component{
   }
     _hiddenbriefContent(){
         this.props.briefContent
-            ?   this.props.dispatch({type: 'UNSHOWBRIEFCONTENT'})
+            ? this.props.dispatch({type: 'UNSHOWBRIEFCONTENT'})
             : this.props.dispatch({type: 'SHOWBRIEFCONTENT'})
     }
   render(){
-      console.log( this.props.briefContent," this.props.subscribePageAll.briefContent")
       if(this.props.loading) {
       return <Loading/>
     }else{
@@ -128,12 +126,11 @@ class Main extends Component{
                 <div className="img-title">
                     <img className="title" src={this.props.data.columnInstroImg} alt=""/>
                     {
-                        this.props.params.id==3?null
-                            : <div className="bar-title">{this.props.data.title}</div>
+                        this.props.params.id == 2?<div className="bar-title">{this.props.data.title}</div> : null
                     }
                 </div>
                 <div className="list">
-                    <div className="item item-divider home-item-title">
+                    <div className="item item-divider module-bar">
                         <strong>
                             {
                                 this.props.params.id==3?"大汇简介":"专栏简介"
@@ -144,7 +141,7 @@ class Main extends Component{
                                 //<i className="fa fa-eye"></i>
                                 //14786人订阅
                             }
-                            <i   className={this.props.briefContent ? "ion-chevron-up": "ion-chevron-down"} style={{ color:'#0894ec',marginLeft: '6px'}} onClick={this._hiddenbriefContent.bind(this)}></i>
+                            <i   className={this.props.briefContent ? "ion-chevron-up": "ion-chevron-down"} onClick={this._hiddenbriefContent.bind(this)}></i>
                         </div>
                     </div>
                     {
@@ -152,7 +149,31 @@ class Main extends Component{
                             ? <p className="subscribeAll-body">{this.props.data.columnMainContent}</p>
                             :null
                     }
-                    <div className="item item-divider home-item-title">
+                    <div className="item item-divider module-bar">
+                        <strong>
+                            近期文章
+                        </strong>
+                    </div>
+                    <ul className="list new_report">
+                        {
+                            this.props.data.latestReportsLists.map((ele,index)=>
+                                <div key={ele.id+Math.random()}>
+                                    <Link to={`/subscribeContent/${this.props.params.id}/${ele.id}/${ele.reportTypeId}`} className="item">
+                                        <div className="item-left">
+                                            <img src={ele.mainImg} alt=""/>
+                                        </div>
+                                        <div className="item-right">
+                                            <h3 className="item-nowrap">{ele.reportTypeId} <span>|</span> {ele.title}</h3>
+                                            <div className="item-right-footer">
+                                                <span style={{textAlign:"left"}}><i className="fa fa-eye"></i>{ele.readNum}人查看</span>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                            )
+                        }
+                    </ul>
+                    <div className="item item-divider module-bar">
                         <strong>
                             {
                                 this.props.params.id==3?"培训课程":"专栏栏目"

@@ -197,7 +197,7 @@ class Collect extends Component {
     return (
       <div className="root">
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
-        <div  ref="content"  className="scroll-content has-header report-view">
+        <div  ref="content"  className="scroll-content has-header has-footer">
           <Main {...this.props} sandboxPayService={this._sandboxPayService.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
         </div>
         <FooterBar {...this.props}/>

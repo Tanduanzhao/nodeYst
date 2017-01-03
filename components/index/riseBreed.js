@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import HeaderBar from './../common/headerBar.js';
-import Provicen from './../provicen.js';
+//import HeaderBar from './../common/headerBar.js';
+//import Provicen from './../provicen.js';
+import FilterMarket from './../filterPage/filterMarket';
 import {loadListBreedProduct} from './../function/ajax.js';
 
 import Loading from './../common/loading';
@@ -15,7 +16,12 @@ class RiseBreed extends Component{
             data:[],
             pageNo:1,
             infinite:false,
-            loading:true
+            loading:true,
+            searchName:"",
+            sord:"desc",
+            sordActive:0,
+            sidx:"sales",
+            isShowFilter:false
         };
         this._reSet = this._reSet.bind(this);
         this._loadData = this._loadData.bind(this);
@@ -45,7 +51,41 @@ class RiseBreed extends Component{
             data:[]
         })
     }
+    //排序
+    sort(sordActive,sidx){
+        if(this.state.sord=="desc"){
+            this.setState({
+                sord:"asc"
+            });
+        }else{
+            this.setState({
+                sord:"desc"
+            });
+        }
+        this.setState({
+            loading:true,
+            data:[],
+            pageNo:1,
+            sordActive:sordActive,
+            sidx:sidx
+        });
+        setTimeout(()=> this._loadData());
+    }
+
     _fn(args){
+        this._reSet()
+        this.props.dispatch({
+            type:'CHANGEDATA',
+            yearMonth:args.yearMonth
+        });
+        this.props.dispatch({
+            type:'CHANGE',
+            areaId:args.areaId,
+            areaName:args.areaName,
+            searchAreaType:args.searchAreaType,
+        });
+        setTimeout(()=> {
+            this._toggleFilter();
         this.props.dispatch((dispatch,getState)=>{
             loadListBreedProduct(dispatch,{
                 yearMonth:getState().data.yearMonth,
@@ -53,8 +93,12 @@ class RiseBreed extends Component{
                 salesId:this.props.params.sid,
                 searchAreaType:args.searchAreaType,
                 pageNo:this.state.pageNo,
+                sord:this.state.sord,
+                sidx:this.state.sidx,
+                searchName:encodeURI(encodeURI(this.state.searchName)),
                 callBack:(res)=>{
                     this.setState({
+                        pageNo:this.state.pageNo+1,
                         data:res.datas,
                         infinite:false
                     })
@@ -67,6 +111,7 @@ class RiseBreed extends Component{
                 }
             });
         })
+        });
     }
     _loadData(){
         this.props.dispatch((dispatch,getState)=>{
@@ -76,8 +121,12 @@ class RiseBreed extends Component{
                 salesId:this.props.params.sid,
                 searchAreaType:getState().provicen.searchAreaType,
                 pageNo:this.state.pageNo,
+                sord:this.state.sord,
+                sidx:this.state.sidx,
+                searchName:encodeURI(encodeURI(this.state.searchName)),
                 callBack:(res)=>{
                     this.setState({
+                        pageNo:this.state.pageNo+1,
                         data:this.state.data.concat(res.datas),
                         infinite:false
                     })
@@ -97,6 +146,36 @@ class RiseBreed extends Component{
             this._loadData();
         }
     }
+
+    //筛选方法
+    _showProvicenHandle(){
+        this.props.dispatch({
+            type:'SHOW'
+        });
+    }
+
+    //搜索方法
+    _searchHandle(searchKeys){
+        if(this.props.isVip == '0'){
+            this.context.router.push('/pay/vip');
+            return false;
+        }else{
+            this.setState({
+                loading:true,
+                data:[],
+                pageNo:1,
+                searchName:searchKeys
+            });
+            setTimeout(()=> this._loadData());
+        }
+    }
+
+    //显示/取消筛选方法
+    _toggleFilter(){
+        this.setState({
+            isShowFilter:!this.state.isShowFilter
+        })
+    }
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
@@ -112,13 +191,33 @@ class RiseBreed extends Component{
     render(){
         return(
             <div className="root">
-                <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
-                <div ref="content" className="scroll-content has-header">
-                    <Main data={this.state.data} loading={this.state.loading}/>
+                <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}  showFilter={this._toggleFilter.bind(this)}/>
+                <div ref="content" className="scroll-content has-header market">
+                    <Main data={this.state.data}  sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive}  loading={this.state.loading}/>
                 </div>
                 {
-					this.props.showProvicen ? <Provicen fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
-				}
+                    this.state.isShowFilter ? <FilterMarket {...this.props}  fn={this._fn.bind(this)}  hideFilter={this._toggleFilter.bind(this)} dataSources={this.props.provicenData}/> :null
+                }
+            </div>
+        )
+    }
+}
+
+class HeaderBar extends Component{
+    render(){
+        return(
+            <div className="bar bar-header bar-positive item-input-inset">
+                <div className="buttons" onClick={this.props.showFilter} style={{ fontSize: '.75rem'}}>
+                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
+                    <span  style={{margin:' 0 5px'}}>筛选</span>
+                </div>
+                <label className="item-input-wrapper">
+                    <i className="icon ion-ios-search placeholder-icon"></i>
+                    <input ref="searchName"  type="search"  placeholder="多个条件请用空格区分"/>
+                </label>
+                <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value)}>
+                    搜索
+                </button>
             </div>
         )
     }
@@ -134,7 +233,13 @@ class Main extends Component{
         }else{
             if(this.props.data.length != 0){
                 return(
-                    <div className="list">
+                    <div  className="list card item-text-wrap" style={{ margin: '0',wordBreak: 'break-all'}}>
+                        <div className="row item" style={{ padding: '16px 10px',fontSize: ' .6rem',color: '#0894ec'}}>
+                            <div className="col">通用名</div>
+                            <div className="col text-center"  onClick={()=>{this.props.sort(0,"sales")}}>市场规模(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 0) ? styles.active : null}></i></div>
+                            <div className="col text-center"  onClick={()=>{this.props.sort(1,"changeCost")}}>增长额(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 1) ? styles.active : null}></i></div>
+                            <div className="col col-flex-last text-center"  onClick={()=>{this.props.sort(2,"change")}}>增长率<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 2) ? styles.active : null}></i></div>
+                        </div>
                         {
                             this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id+Math.random(1)}/>)
                         }
@@ -154,24 +259,30 @@ class List extends Component{
             if (this.props.dataSources.change == "" ) {
                 string=""
             } else if (this.props.dataSources.change >= 0 ) {
-                string=<span className="item-note assertive">{this.props.dataSources.change}%</span>
+                string=<div className="col  col-flex-last text-center assertive">{this.props.dataSources.change}%</div>
             } else {
-                string=<span className="item-note balanced  ">{this.props.dataSources.change}%</span>
+                string=<div className="col  col-flex-last text-center balanced  ">{this.props.dataSources.change}%</div>
+            }
+            return string;
+        })();
+        var changeCost = (()=>{
+            if (this.props.dataSources.changeCost >= 0 ) {
+                string=  <div className="col  text-center assertive">{this.props.dataSources.changeCost}</div>
+            } else {
+                string=  <div className="col  text-center balanced">{this.props.dataSources.changeCost}</div>
             }
             return string;
         })();
         return(
-            <li className="item">
-                <div>
-                    {this.props.dataSources.genericName}
-                    <span className="tag">{this.props.dataSources.icoType}</span>
-                    {change}
-                </div>
-                <p>
-                    <span>市场规模：{this.props.dataSources.sales}万</span>
-                    <span style={{marginLeft:'1rem'}}>市场份额： {this.props.dataSources.marketMth}%</span>
-                </p>
-            </li>
+        <Link to={`/market/MarketSearch/marketSearchDetail/${this.props.dataSources.genericName}/${this.props.dataSources.id}`} className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
+            <div className="col" style={{fontSize: '.6rem'}}>
+                <span className="tag" style={{background: '#16b028'}}> {this.props.dataSources.icoType}</span>
+                {this.props.dataSources.genericName}
+            </div>
+            <div className="col  text-center">{this.props.dataSources.sales}</div>
+            {changeCost}
+            {change}
+        </Link>
         )
     }
 }
@@ -188,3 +299,9 @@ function select(state){
 	}
 }
 export default connect(select)(RiseBreed);
+
+const styles = {
+    active:{
+        display:'inline-block'
+    }
+}

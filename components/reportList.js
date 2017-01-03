@@ -25,8 +25,14 @@ export default class ReportList extends Component {
 			},1000);
 		}
 	}
+	touchMove(){
+		clearTimeout(this.sss);
+	}
+	touchEnd(){
+		clearTimeout(this.sss);
+	}
 	componentWillUnmount(){
-		clearInterval(this.sss);
+		clearTimeout(this.sss);
 	}
 	render(){
 		var string = null;
@@ -78,7 +84,7 @@ export default class ReportList extends Component {
 			<div>
 				{
 					this.props.collect&&this.props.dataSources.columnId!="1"
-						?<Link onTouchStart={this.touchStart.bind(this)} to={`/subscribeContent/${this.props.dataSources.columnId}/${this.props.dataSources.id}/${this.props.dataSources.typeName}`}  className="item">
+						?<Link onTouchStart={this.touchStart.bind(this)}  onTouchEnd={this.touchEnd.bind(this)}   onTouchMove={this.touchMove.bind(this)} to={`/subscribeContent/${this.props.dataSources.columnId}/${this.props.dataSources.id}/${this.props.dataSources.typeName}`}  className="item">
 						<div className="item-left">
 							<img src={this.props.dataSources.mainImg} alt=""/>
 						</div>
@@ -101,30 +107,29 @@ export default class ReportList extends Component {
 							</div>
 						}
 					</Link>
-					:<Link onTouchStart={this.touchStart.bind(this)}  to={`/pay/pdf/${this.props.dataSources.id}`}  className="item">
-					<div className="item-left">
-					<img src={this.props.dataSources.mainImg} alt=""/>
-					</div>
-					{
-						this.props.collect
-							?<div className="item-right">
-							<h2> {this.props.dataSources.columnName}</h2>
-							<p className="item-nowrap dark">{iconTag} {this.props.dataSources.title}</p>
-							<div className="item-right-footer">
-								{this.props.dataSources.publishDate}
-							</div>
+					:<Link to={`/pay/pdf/${this.props.dataSources.id}`}  className="item">
+						<div className="item-left">
+							<img src={this.props.dataSources.mainImg} alt=""/>
 						</div>
-							:<div className="item-right">
-							<h3 className="item-nowrap">{iconTag} {this.props.dataSources.title}</h3>
-							<p>¥{this.state.price}</p>
-							<div className="item-right-footer">
-								{number}
-								{tag}
+						{
+							this.props.collect
+								?<div className="item-right">
+								<h2> {this.props.dataSources.columnName}</h2>
+								<p className="item-nowrap dark">{iconTag} {this.props.dataSources.title}</p>
+								<div className="item-right-footer">
+									{this.props.dataSources.publishDate}
+								</div>
 							</div>
-						</div>
-					}
+								:<div className="item-right">
+								<h3 className="item-nowrap">{iconTag} {this.props.dataSources.title}</h3>
+								<p>¥{this.state.price}</p>
+								<div className="item-right-footer">
+									{number}
+									{tag}
+								</div>
+							</div>
+						}
 					</Link>
-
 					}
 			</div>
 		)

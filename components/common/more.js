@@ -31,7 +31,7 @@ export default class More extends Component {
 								</Link>
 								<Link to="/datas/marketPrice">
 									<img src="/images/column07.jpg" alt="" className="price-icon"/>
-									入市价
+									全国限价
 								</Link>
 								<Link to="/datas/bidList">
 									<img src="/images/column02.jpg" alt=""/>
@@ -68,6 +68,14 @@ export default class More extends Component {
 								<Link to="/datas/policy/assist">
 									<img src="/images/column13.jpg" alt=""/>
 									辅助用药
+								</Link>
+								<Link to="/datas/groups">
+									<img src="/images/datas_groups.jpg" alt=""/>
+									<b className="assertive">目录分组</b>
+								</Link>
+								<Link to="/datas/dataSources">
+									<img src="/images/datas_dataSources.jpg" alt=""/>
+									<b className="assertive">入市价数据源</b>
 								</Link>
 							</ul>
 						</div>

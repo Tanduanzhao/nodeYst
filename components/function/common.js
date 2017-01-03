@@ -49,7 +49,6 @@ export function OpenProductView(id,cb){
 }
 
 export function onBridgeReady(data,cb){
-    console.log(cb);
     var appId = data.appId;
     var timeStamp = data.timeStamp;
     var nonceStr = data.nonceStr;

@@ -9,6 +9,7 @@ module.exports = function(app) {
     });
     app.get('/rise/*',index);
     app.get('/optional',index);
+    app.get('/optional/*',index);
     app.get('/report',index);
     app.get('/report/*',index);
 	app.get('/center', index);
@@ -21,6 +22,8 @@ module.exports = function(app) {
     app.get('/pdf/*',index);
     app.get('/pdf',index);
     app.get('/pdf',pdf);
+    app.get('/market',index);
+    app.get('/market/*',index);
     app.get('/pay/pdf',index);
     app.get('/pay/pdfs',index);
     app.get('/pay/pdf/*',index);
@@ -35,6 +38,7 @@ module.exports = function(app) {
     app.get('/subscribePage/*',index);
     app.get('/subscribePageAll',index);
     app.get('/subscribePageAll/*',index);
+    app.get('/subscribePageList/*',index);
     app.get('/subscribeContent',index);
     app.get('/subscribeContent/*',index);
     app.post('/getToken',getToken);

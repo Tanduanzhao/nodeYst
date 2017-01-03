@@ -183,34 +183,42 @@ class Main extends Component{
                 <div className="img-title">
                     <img className="title" src={this.props.data.columnInstroImg} alt=""/>
                     {
-                        this.props.params.id==3?null
-                            : <div className="bar-title">
+                        this.props.params.id==2
+                            ? <div className="bar-title">
                                 {this.props.data.title}
                                 <div className="bar-typeName">{this.props.data.typeName}</div>
-                            </div>
+                             </div>
+                            : null
                     }
                 </div>
                 <div className="list">
-                    <div className="item item-divider home-item-title">
-                        <strong>
-                            {
-                                this.props.params.id==3?"课程简介":"栏目简介"
-                            }
-                        </strong>
-                        <div className="list-title-right">
-                            {
-                                //<i className="fa fa-eye"></i>
-                                //14786人订阅
-                            }
-                            <i   className={this.props.briefContentList ? "ion-chevron-up": "ion-chevron-down"} style={{ color:'#0894ec',marginLeft: '6px'}} onClick={this._hiddenbriefContent.bind(this)}></i>
-                        </div>
-                    </div>
                     {
-                        this.props.briefContentList
-                            ? <p className="subscribeAll-body">{this.props.data.typeMainContent}</p>
-                            :null
+                        this.props.data.typeMainContent
+                            ?
+                            <div>
+                                <div className="item item-divider module-bar">
+                                    <strong>
+                                        {
+                                            this.props.params.id==3?"课程简介":"栏目简介"
+                                        }
+                                    </strong>
+                                    <div className="list-title-right">
+                                        {
+                                            //<i className="fa fa-eye"></i>
+                                            //14786人订阅
+                                        }
+                                        <i   className={this.props.briefContentList ? "ion-chevron-up": "ion-chevron-down"} style={{ color:'#0894ec',marginLeft: '6px'}} onClick={this._hiddenbriefContent.bind(this)}></i>
+                                    </div>
+                                </div>
+                                {
+                                    this.props.briefContentList
+                                    ? <p className="subscribeAll-body">{this.props.data.typeMainContent}</p>
+                                    :null
+                                 }
+                            </div>
+                        : null
                     }
-                    <div className="item item-divider home-item-title">
+                    <div className="item item-divider module-bar">
                         <strong>
                             {
                                 this.props.params.id==3?"课程内容":"栏目报告"

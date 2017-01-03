@@ -35,7 +35,6 @@ class Datas extends Component{
         });
     }
     componentWillMount(){
-        console.log(this.props.userInfo.isVip);
         if(!this.props.userInfo.isVip){
             this.props.dispatch({
                 type:'OPENVIP'
@@ -47,7 +46,7 @@ class Datas extends Component{
         return(
             <div className="root datas" style={{"overflow":"auto"}}>
                 {this.props.datas.img.length == 0? <Slidedefault {...this.props}/> : <Slide {...this.props}/>}
-               <div  className="scroll-content has-header bgcf">
+               <div  className="scroll-content has-header has-footer bgcf">
                    <Column {...this.props}/>
                </div>
                 <FooterBar {...this.props}/>
@@ -123,7 +122,7 @@ class Column extends Component{
                 </Link>
                 <Link to="/datas/marketPrice">
                     <img src="/images/column07.jpg" alt="" className="price-icon"/>
-                    入市价
+                    全国限价
                 </Link>
                 <Link to="/datas/product">
                     <img src="/images/column05.jpg" alt=""/>

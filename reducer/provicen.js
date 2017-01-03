@@ -11,7 +11,9 @@ var defaultProvicen = {
 export default function provicen(state=defaultProvicen,action){
 	switch(action.type){
 		case CHANGE : return ObjectAssign({},state,{areaName:action.areaName,areaId:action.areaId,searchAreaType:action.searchAreaType});
-        case LOADPROVICEN : return ObjectAssign({},state,{data:action.data});
+		case 'CHANGEIdAREAID' : return ObjectAssign({},state,{areaName:action.areaName});
+		case 'CHANGEIdAREAAREAID' : return ObjectAssign({},state,{areaId:action.areaId});
+		case LOADPROVICEN : return ObjectAssign({},state,{data:action.data});
 		default : return state;
 	}
 }

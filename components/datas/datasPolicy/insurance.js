@@ -159,34 +159,51 @@ class Insurance extends Component{
                                     return(
                                         <div key={Math.random(2)}>
                                             <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",g:ele.catalogEditionName,p:ele.areaName}}/>
-                                            <div className="item" style={{boxSizing:'content-box'}}>
                                                 {
-                                                    ele.lists.length == 0 ? <EmptyComponent/> : <table className="table-border" width="100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>药品名称</th>
-                                                                <th>剂型</th>
-                                                                <th>医保类别</th>
-                                                                <th>医保编号</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
+                                                    ele.lists.length == 0 ? <EmptyComponent/>
+                                                        :<div className="item def-padding" style={{boxSizing:'content-box'}}>
                                                             {
                                                                 ele.lists.map((v)=>{
                                                                     return(
-                                                                        <tr key={Math.random(1)}>
-                                                                            <td className="item-text-wrap">{v.productName || null}</td>
-                                                                            <td className="item-text-wrap">{v.prepName || null}</td>
-                                                                            <td className="item-text-wrap">{v.pqriType || null}</td>
-                                                                            <td className="item-text-wrap">{v.pqriCode || null}</td>
-                                                                        </tr>
+                                                                        <div  className="item item-text-wrap" key={Math.random(1)}>
+                                                                           <p>药品名称：{v.productName || null}</p>
+                                                                            <p>剂型：{v.prepName || null} </p>
+                                                                            <p>医保类别：{v.pqriType || null}</p>
+                                                                            <p>医保编号：{v.pqriCode || null}</p>
+                                                                            <p>备注：{v.pqriRemark || null}</p>
+                                                                        </div>
                                                                     )
                                                                 })
                                                             }
-                                                        </tbody>
-                                                    </table>
+                                                        </div>
+
                                                 }
-                                            </div>
+                                                {
+                                                    //<table className="table-border" width="100%">
+                                                    //    <thead>
+                                                    //    <tr>
+                                                    //        <th>药品名称</th>
+                                                    //        <th>剂型</th>
+                                                    //        <th>医保类别</th>
+                                                    //        <th>医保编号</th>
+                                                    //    </tr>
+                                                    //    </thead>
+                                                    //    <tbody>
+                                                    //    {
+                                                    //        ele.lists.map((v)=>{
+                                                    //            return(
+                                                    //                <tr key={Math.random(1)}>
+                                                    //                    <td className="item-text-wrap">{v.productName || null}</td>
+                                                    //                    <td className="item-text-wrap">{v.prepName || null}</td>
+                                                    //                    <td className="item-text-wrap">{v.pqriType || null}</td>
+                                                    //                    <td className="item-text-wrap">{v.pqriCode || null}</td>
+                                                    //                </tr>
+                                                    //            )
+                                                    //        })
+                                                    //    }
+                                                    //    </tbody>
+                                                    //</table>
+                                                }
                                         </div>
                                     )
                                 })

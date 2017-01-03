@@ -6,7 +6,7 @@ export default class Chart extends Component{
 	render(){
         if(this.props.dataSources.length != 0){
             return(
-                <div className="row">
+                <div className="row item" style={{padding:'9px'}}>
                     {
                         this.props.dataSources.map((ele) => {
                             return (

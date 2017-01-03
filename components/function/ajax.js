@@ -79,6 +79,7 @@ export const loadIndex = function(dispatch,args){
         yearMonth:args.yearMonth,
         areaId:args.areaId,
         searchAreaType:args.searchAreaType,
+        isOther:args.isOther,
         callBack:args.callBack || function(){}
     }
     ajaxFn({
@@ -86,6 +87,7 @@ export const loadIndex = function(dispatch,args){
         data:{
             yearMonth:params.yearMonth,
             areaId:params.areaId,
+            isOther:params.isOther,
             searchAreaType:params.searchAreaType
         },
         callBack:(res)=>{
@@ -110,6 +112,19 @@ export const loadProvince = function(dispatch){
     })
 }
 
+//行情首页省份列表省份加载
+export const getFirstPageProlist = function(dispatch){
+    ajaxFn({
+        url:'business/getFirstPageProlist',
+        callBack:(res)=>{
+            dispatch({
+                type:'CHANGEMARKETPROVICEN',
+                data:res.datas
+            });
+        }
+    })
+}
+
 //分类涨幅榜品种详情
 export const loadSingleClassifyProduct = function(dispatch,args){
     ajaxFn({
@@ -118,7 +133,11 @@ export const loadSingleClassifyProduct = function(dispatch,args){
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
             salesId:args.salesId || null,
-            searchAreaType:args.searchAreaType || null
+            pageNo:args.pageNo || 1,
+            searchAreaType:args.searchAreaType || null,
+            searchName:args.searchName || '',
+            sord:args.sord || null,
+            sidx:args.sidx || null
         },
         callBack:(res)=>{
             args.callBack(res)
@@ -134,7 +153,9 @@ export const loadListClassifyProduct = function(dispatch,args){
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
             searchAreaType:args.searchAreaType || null,
-            pageNo:args.pageNo || 1
+            pageNo:args.pageNo || 1,
+            sord:args.sord || null,
+            sidx:args.sidx || null
         },
         callBack:(res)=>{
             args.callBack(res)
@@ -179,64 +200,10 @@ export const loadListBreedProduct = function(dispatch,args){
             yearMonth:args.yearMonth || null,
             areaId:args.areaId || null,
             searchAreaType:args.searchAreaType || null,
-            pageNo:args.pageNo || 1
-        },
-        callBack:(res)=>{
-            args.callBack(res)
-        }
-    })
-}
-
-//医院列表
-export const loadListHospital = function(dispatch,args){
-    ajaxFn({
-        url:'business/getBusinessHospitalInfo',
-        data:{
-            searchName:args.searchName || null,
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            pageNo:args.pageNo || null,
-            hosLevel:args.hospitalLevel || null
-        },
-        callBack:(res)=>{
-            args.callBack(res);
-        }
-    })
-}
-//发送反馈信息
-export const sendFeedBackMessage = function(dispatch,args){
-    ajaxFn({
-        url:'business/insertBusinessFeedBackInfo',
-        data:{
-            feedContent:args.feedContent
-        },
-        callBack:(res)=>{
-            args.callBack(res);
-        }
-    })
-}
-//药品列表
-export const loadListDrug = function(dispatch,args){
-    ajaxFn({
-        url:'business/getProductAreaSimpleInfo',
-        data:{
-            searchName:args.searchName || null,
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            pageNo:args.pageNo || null,
-            hosLevel:args.hospitalLevel || null
-        },
-        callBack:(res)=>{
-            args.callBack(res);
-        }
-    })
-}
-//药品内容
-export const loadDrugContent = function(dispatch,args){
-    ajaxFn({
-        url:'business/getProductAreaDetailInfo',
-        data:{
-            id:args.salesId || null,
+            pageNo:args.pageNo || 1,
+            sord:args.sord || null,
+            sidx:args.sidx || null,
+            searchName:args.searchName || "",
         },
         callBack:(res)=>{
             args.callBack(res)
@@ -417,12 +384,14 @@ export const loadReportList = function(args){
         data:{
             reportType:args.reportType || null,
             pageNo:args.pageNo || null,
-            searchType:args.searchType,
+            searchType:args.searchType || null,
             titleOrReportKey:args.titleOrReportKey,
             sidx:args.sidx ,
             sord:args.sord ,
+            areaId:args.areaId || null,
             costStatus:args.costStatus,
-            pageSize:args.pageSize || null
+            pageSize:args.pageSize || null,
+            columnId:args.columnId || null
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -444,6 +413,7 @@ export const selectReportReplys = function(args){
         }
     })
 }
+
 export const selectReportDetail = function(args){
     ajaxFn({
         url:'business/selectReportDetail',
@@ -1064,6 +1034,136 @@ export const getEntryPriceSource = function(args){
             searchName:args.searchName || null,
             provinceId:args.provinceId,
             pageNo:args.pageNum
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//首页数据加载
+export const getHQFirstPage = function(args){
+    ajaxFn({
+        url:'business/getHQFirstPage',
+        data:{
+            pageNo:args.pageNo || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//医院市场介绍全文
+export const getHosInfoDetail = function(args){
+    ajaxFn({
+        url:'business/getHosInfoDetail',
+        data:{
+            id:args.id || null,
+            pageNo:args.pageNo || null,
+            pageSize:args.pageSize || null,
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+
+//市场行情数据加载
+export const getMarketInfo = function(dispatch,args){
+
+    var params ={
+        yearMonth:args.yearMonth,
+        areaId:args.areaId,
+        searchAreaType:args.searchAreaType,
+        callBack:args.callBack || function(){}
+    }
+    ajaxFn({
+        url:'business/getMarketInfo',
+        data:{
+            yearMonth:params.yearMonth,
+            areaId:params.areaId,
+            searchAreaType:params.searchAreaType
+        },
+        callBack:(res)=>{
+            if(res.state == 1){
+                params.callBack(res);
+            }else{
+                alert(res.message);
+            }
+        }
+    })
+}
+
+
+//厂家影响力信息数据加载
+export const getBusinessFactoryInfo = function(dispatch,args){
+    var params ={
+        yearMonth:args.yearMonth,
+        areaId:args.areaId,
+        searchAreaType:args.searchAreaType,
+        breedId:args.breedId,
+        pageNo:args.pageNo,
+        sord:args.sord,
+        sidx:args.sidx,
+        searchName:args.searchName,
+        callBack:args.callBack || function(){}
+    }
+    ajaxFn({
+        url:'business/getBusinessFactoryInfo',
+        data:{
+            yearMonth:params.yearMonth,
+            areaId:params.areaId,
+            searchAreaType:params.searchAreaType,
+            breedId:params.breedId || null,
+            pageNo:params.pageNo || null,
+            sord:params.sord || null,
+            sidx:params.sidx || null,
+            searchName:params.searchName || "",
+        },
+        callBack:(res)=>{
+            if(res.state == 1){
+                params.callBack(res);
+            }else{
+                alert(res.message);
+            }
+        }
+    })
+}
+
+//产品信息数据加载
+export const getBusinessFactoryProdInfo = function(args){
+    ajaxFn({
+        url:'business/getBusinessFactoryProdInfo',
+        data:{
+            parentId:args.parentId || "",
+            isCity:args.isCity || "",
+            areaId:args.areaId || null,
+            yearMonth:args.yearMonth || null,
+            breedId:args.breedId || null,
+            pageNo:args.pageNo || null,
+            sord:args.sord || null,
+            sidx:args.sidx || null,
+            searchName:args.searchName || "",
+            searchAreaType:args.searchAreaType || null
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//首页搜索产品信息接口
+export const getBusinessFirstFacProdInfo = function(args){
+    ajaxFn({
+        url:'business/getBusinessFirstFacProdInfo',
+        data:{
+            areaId:args.areaId || null,
+            yearMonth:args.yearMonth || null,
+            pageNo:args.pageNo || null,
+            sord:args.sord || null,
+            sidx:args.sidx || null,
+            searchName:args.searchName || "",
         },
         callBack:(res)=>{
             args.callBack(res);

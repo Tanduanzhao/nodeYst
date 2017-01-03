@@ -130,7 +130,7 @@ class Main extends Component{
                     <div className="bar-title">{this.props.data.title}</div>
                 </div>
                 <div className="list">
-                    <div className="item item-divider home-item-title">
+                    <div className="item item-divider module-bar">
                         <strong>大汇简介</strong>
                         <div className="list-title-right">
                             {
@@ -145,7 +145,7 @@ class Main extends Component{
                             ? <p className="subscribeAll-body">{this.props.data.columnMainContent}</p>
                             :null
                     }
-                    <div className="item item-divider home-item-title">
+                    <div className="item item-divider module-bar">
                         <strong>培训课程</strong>
                     </div>
                     <ul className="list new_report">

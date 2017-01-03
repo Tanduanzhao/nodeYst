@@ -7,6 +7,7 @@ import {getCatalogInfo,getCatalogTypeList} from '../function/ajax';
 import FilterGroupsMes from '../filterPage/filterGroupsMes';
 import {Link} from 'react-router';
 import Loading from '../common/loading';
+import More from './../common/more';
 import EmptyComponent from '../common/emptyComponent';
 class GroupsMes extends Component{
     constructor(props){
@@ -160,10 +161,10 @@ class GroupsMes extends Component{
                         (this.props.groupsMes.otherDatas.length == 0 && !this.state.isLoading && this.props.groupsMes.datas == 'undefined') ? <EmptyComponent/> : <Main title={this.props.params.searchName} dataSource={{datas:this.props.groupsMes.datas,otherDatas:this.props.groupsMes.otherDatas}}/>
                     }
                 </div>
+                <More {...this.props}/>
                 {
                     this.state.isShowFilter ? <FilterGroupsMes catalogTypeId={this.state.catalogTypeId} types={this.props.groupsMes.types} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)}/> : null
                 }
-                
             </div>
         )
     }
@@ -171,7 +172,6 @@ class GroupsMes extends Component{
 class Main extends Component{
     constructor(props){
         super(props);
-        
     }
     render(){
         console.log(this.props.dataSource.datas);
@@ -188,11 +188,10 @@ class Main extends Component{
                                     })
                                 }
                             </div>
-                            
                         </div>
                 }
                 {    
-                    (this.props.dataSource.datas == 'undefined' || this.props.dataSource.otherDatas.length == 0) ? null : <h2 className="item item-divider" style={{ backgroundColor:" #f5f5f5"}}>{this.props.title}相关分组</h2>
+                    (this.props.dataSource.datas == 'undefined' || this.props.dataSource.otherDatas.length == 0 || typeof this.props.dataSource.datas != 'object') ? null : <h2 className="item item-divider" style={{ backgroundColor:" #f5f5f5"}}>{this.props.title}相关分组</h2>
                 }
                 <ul className="list">
                     {
@@ -207,8 +206,6 @@ class Main extends Component{
                                     }
                                 </div>
                             )
-                            
-                           
                         })
                     }
                 </ul>
