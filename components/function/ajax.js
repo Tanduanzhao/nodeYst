@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {httpAddress} from '../config.js';
+import {httpAddress,WXKEY} from '../config.js';
 import {encode} from './common';
 import {createStore,applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
@@ -9,69 +9,7 @@ import {Token} from './token';
 import {url2obj} from './common';
 //请求队列
 var ajaxQueues = [],isGetUsering = false;
-function ajaxFn(params){
-    var params = {
-            url:params.url || null,
-            method:params.method || 'POST',
-            data:params.data || {},
-            callBack:params.callBack || function(){}
-        };
-    //每次请求把请求加入队列
-    ajaxQueues.push(params);
-    
-    //异步请求主体
-    function bodyAjax(params){
-        $.ajax({
-            url:httpAddress +params.url,
-            method:params.method,
-            data:params.data
-        }).then((res)=>{
-            params.callBack(res);
-        })
-    }
-    
-    function beginAjax(){
-        ajaxQueues.forEach((e)=>{
-            bodyAjax({
-                url:e.url,
-                method:e.method,
-                data:e.data,
-                callBack:function(res){
-                    e.callBack(res);
-                }
-            })
-        });
-        //清空循环队列
-        ajaxQueues = [];
-    }
-    
-    if(!store.getState().userInfo.isLogin && !isGetUsering){
-        
-        isGetUsering = true;
-        bodyAjax({
-            url:'business/getInitWxUser',
-            data:{
-                code: url2obj().code
-            },
-            callBack:function(res){
-                isGetUsering = false;
-                if (res.datas) {
-                    store.dispatch({
-                        type: 'LOADUSERINFO',
-                        datas: res.datas
-                    });
-                    name = res.datas.id;
-                    setTimeout(()=>{
-                        beginAjax();
-                    })
-                }
-            }
-        });
-    }else{
-        //循环请求队列
-        beginAjax();
-    }
-}
+
 //首页数据加载
 export const loadIndex = function(dispatch,args){
 
@@ -94,7 +32,7 @@ export const loadIndex = function(dispatch,args){
             if(res.state == 1){
                 params.callBack(res);
             }else{
-                alert(res.message);
+                alert(res.message)
             }
         }
     })
@@ -242,13 +180,26 @@ export const loadWx = function(args){
 export const loadUserInfo = function(args){
     ajaxFn({
         url:'business/getWxUserInfo',
+        data:{
+            userId:args.userId
+        },
         callBack:(res) =>{
             args.callBack(res);
         }
     })
 }
-
-
+//获取用户信息
+export const getInitWxUser = function(args){
+    ajaxFn({
+        url:'business/getInitWxUser',
+        data:{
+            userId:args.userId
+        },
+        callBack:(res) =>{
+            args.callBack(res);
+        }
+    })
+}
 //获取用户反馈列表
 export const getBusinessFeedBackInfo = function(args){
     ajaxFn({
@@ -455,7 +406,7 @@ export const loadBidList = function(args){
     })
 }
 
-//中标数据
+//产品接口(产品数据)
 export const loadProd = function(args){
     ajaxFn({
         url:'business/getTradeProductList',
@@ -472,6 +423,7 @@ export const loadProd = function(args){
         }
     })
 }
+
 //中标详情页数据加载
 export const loadBidListContent = function(args){
     ajaxFn({
@@ -1171,6 +1123,146 @@ export const getBusinessFirstFacProdInfo = function(args){
     })
 }
 
+//签到
+export const getSign = function(args){
+    ajaxFn({
+        url:'business/getSign',
+        data:{
+            userId:args.userId
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//客户经理搜索列表
+export const getAccountManagerlist = function(args){
+    ajaxFn({
+        url:'business/getAccountManagerlist',
+        data:{
+            userId:args.userId,
+            searchName:args.searchName,
+            pageNo:args.pageNo
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//绑定客户经理
+export const checkedAccountManager = function(args){
+    ajaxFn({
+        url:'business/switchAccountManager',
+        data:{
+            userId:args.userId,
+            accountManagerId:args.accountManagerId
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//客户经理协议内容
+export const getAccountManagerAgreement = function(args){
+    ajaxFn({
+        url:'business/getAccountManagerAgreement',
+        data:{
+            userId:args.userId,
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//成为客户经理
+export const addAccountManager = function(args){
+    ajaxFn({
+        url:'business/addAccountManager',
+        data:{
+            userId:args.userId,
+            name:args.name,
+            birth:args.birth,
+            location:args.location,
+            phoneNumber:args.phoneNumber,
+            organization:args.organization,
+            specially:args.specially
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//客户经理业务专长
+export const getAccountManagerSpecialty = function(args){
+    ajaxFn({
+        url:'business/getAccountManagerSpecialty',
+        data:{
+            userId:args.userId
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//邀请客户
+export const invitationCustomer = function(args){
+    ajaxFn({
+        url:'business/invitationCustomer',
+        data:{
+            userId:args.userId
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//保存客户
+export let saveCustomer = function(args){
+    ajaxFn({
+        url:'business/saveCustomer',
+        data:{
+            userId:args.userId,
+            managerId:args.managerId
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//请求腾讯地图服务地址
+export const getTencentMap = function(args){
+    ajaxFn({
+        url:'business/getNearbyInfo',
+        data:{
+            place:args.place,
+            lat:args.lat,
+            long:args.long,
+            around:args.around,
+        },
+        callBack:(res)=>{
+            res.datas = JSON.parse(res.datas);
+            args.callBack(res);
+        }
+    })
+}
+//export const getTencentMap = function(los,around,place,callBack){
+//    $.ajax({
+//        url:'http://apis.map.qq.com/ws/place/v1/search?keyword='+encodeURI(place)+'&boundary=nearby('+los.lat+','+los.long+','+around+')&key=3P3BZ-ZO333-QVE3J-YNVJ3-GZ4E6-XQFVR&output=jsonp&callback=posFn',
+//        method:'GET'
+//    }).then((res)=>{
+//       callBack(res);
+//    })
+//}
+
+
 //请求支付
 export const requestUnifiedorderPayService = function(args){
     $.ajax({
@@ -1207,4 +1299,79 @@ export const requestUnifiedorderPayService = function(args){
             }
         }
     });
+}
+
+
+function ajaxFn(params){
+    var params = {
+        url:params.url || null,
+        method:params.method || 'POST',
+        data:params.data || {},
+        callBack:params.callBack || function(){}
+    };
+    //每次请求把请求加入队列
+    ajaxQueues.push(params);
+    //异步请求主体
+    function bodyAjax(params){
+        $.ajax({
+            url:httpAddress +params.url,
+            method:params.method,
+            data:params.data
+        }).then((res)=>{
+            params.callBack(res);
+        })
+    }
+
+    function beginAjax(){
+        ajaxQueues.forEach((e)=>{
+            bodyAjax({
+                url:e.url,
+                method:e.method,
+                data:e.data,
+                callBack:function(res){
+                    e.callBack(res);
+                }
+            })
+        });
+        //清空循环队列
+        ajaxQueues = [];
+    }
+
+    if(!store.getState().userInfo.isLogin && !isGetUsering){
+
+        isGetUsering = true;
+        bodyAjax({
+            url:'business/getInitWxUser',
+            data:{
+                code: url2obj().code
+            },
+            callBack:(res)=>{
+                //if(res.state == 0){
+                //location.href = httpAddress;
+                //}else{
+                isGetUsering = false;
+                if (res.datas) {
+                    if(typeof url2obj().managerId != 'undefined'){
+                        saveCustomer({
+                            userId:res.datas.id,
+                            managerId:url2obj().managerId,
+                            callBack:(res)=>{}
+                        })
+                    }
+                    store.dispatch({
+                        type: 'LOADUSERINFO',
+                        datas: res.datas
+                    });
+                    name = res.datas.id;
+                    setTimeout(()=>{
+                        beginAjax();
+                    })
+                    //}
+                }
+            }
+        });
+    }else{
+        //循环请求队列
+        beginAjax();
+    }
 }

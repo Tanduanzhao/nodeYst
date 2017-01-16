@@ -1,10 +1,10 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import $ from 'jquery';
-import {loadReport,keepReport,cancelKeepReport,requestUnifiedorderPayService,selectReportReplys,insertReplyReport,insertLikeReport} from './../function/ajax';
-import {HTTPURL} from './../config';
+import {loadReport,loadJssdk,keepReport,cancelKeepReport,requestUnifiedorderPayService,selectReportReplys,insertReplyReport,insertLikeReport} from './../function/ajax';
+import {HTTPURL,WXKEY} from './../config';
 import Loading from './../common/loading';
-import {OpenProductView,onBridgeReady} from './../function/common';
+import {OpenProductView,onBridgeReady,authWxcode} from './../function/common';
 import SideBar from './../common/sideBar';
 import CollectPrompt from './../collectPrompt';
 class Pdf extends Component{
@@ -193,6 +193,7 @@ class Pdf extends Component{
         this.setState({
             isLoading:true
         });
+
         loadReport({
             id:this.props.params.id,
             callBack:(res)=>{
@@ -204,51 +205,80 @@ class Pdf extends Component{
                     isLike: res.datas.isLike,
                     likeNum: res.datas.likeNum,
                     buyReport:res.datas.buyReport
-                })
-                setTimeout(()=>{
-                    wx.ready(()=> {
-                        // 分享
-                        var info = {
-                            title: this.state.report.title,
-                            link: HTTPURL+'/pay/pdf/'+this.props.params.id+"?recommender="+name+"&reportId="+this.props.params.id,
-                            imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
-                            desc: '小伙伴们和我一起去逛逛医药圈的信息分享平台--药市通~'
-                        };
-                        wx.onMenuShareTimeline({
-                            title: info.title, // 分享标题
-                            link: info.link, // 分享链接
-                            imgUrl: info.imgUrl, // 分享图标
-                            success: function() {
-//                      $.toast('分享成功！');
-                            }
-                        });
-                        wx.onMenuShareAppMessage({
-                            title: info.title,
-                            link: info.link, // 分享链接
-                            imgUrl: info.imgUrl, // 分享图标
-                            desc: info.desc, // 分享描述
-                            success: function() {
-                                // 用户确认分享后执行的回调函数
+                });
+                let URL = HTTPURL+'/pay/pdf/'+this.props.params.id+"?recommender="+name+"&reportId="+this.props.params.id;
+                var info = {
+                    title:res.datas.title,
+                    link: URL,
+                    //link:'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+WXKEY+'&redirect_uri='+encodeURIComponent(URL)+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect',
+                    imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
+                    desc: '小伙伴们和我一起去逛逛医药圈的信息分享平台--药市通~'
+                };
+                wx.ready(()=>{
+                    wx.onMenuShareTimeline({
+                        title: info.title, // 分享标题
+                        link: info.link, // 分享链接
+                        imgUrl: info.imgUrl, // 分享图标
+                        success: function() {
 //                                $.toast('分享成功！');
-                            }
-                        });
+                        }
+                    });
+                    wx.onMenuShareAppMessage({
+                        title: info.title,
+                        desc: info.desc, // 分享描述
+                        link: info.link, // 分享链接
+                        imgUrl: info.imgUrl, // 分享图标
+                        type: '', // 分享类型,music、video或link，不填默认为link
+                        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                        success: function() {
+                            // 用户确认分享后执行的回调函数
+//                                $.toast('分享成功！');
+                        },
+                        trigger:function(){
+                            //alert('trigge');
+                        }
+                    });
+                    wx.error(()=> {
+                        //authWxcode(info);
                     });
                 });
             }
         });
+
         this._loadData();
     }
 
     componentWillUnmount(){
-        //this.head.getElementsByTagName('meta')[0].setAttribute('content', 'width=device-width,initial-scale=1,minimum-scale=1, maximum-scale=1,user-scalable=no');
+        //this.head.getElementsByTagName('meta')[0].setAttribute('content', 'width='+window.screen.width+',initial-scale=1,minimum-scale=1, maximum-scale=1,user-scalable=no');
+        var info = {
+            title: '药市通-首个医药圈的信息分享平台',
+            link: HTTPURL,
+            imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
+            desc: '提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
+        };
         wx.ready(()=> {
             // 分享
-            var info = {
-                title: '药市通-首个医药圈的信息分享平台',
-                link: HTTPURL,
-                imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
-                desc: '提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
-            };
+            wx.onMenuShareTimeline({
+                title: info.title, // 分享标题
+                link: info.link, // 分享链接
+                imgUrl: info.imgUrl, // 分享图标
+                success: function() {
+//                                $.toast('分享成功！');
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: info.title,
+                link: info.link, // 分享链接
+                imgUrl: info.imgUrl, // 分享图标
+                desc: info.desc, // 分享描述
+                success: function() {
+                    // 用户确认分享后执行的回调函数
+//                                $.toast('分享成功！');
+                }
+            });
+        });
+        wx.error(()=> {
+            // 分享
             wx.onMenuShareTimeline({
                 title: info.title, // 分享标题
                 link: info.link, // 分享链接

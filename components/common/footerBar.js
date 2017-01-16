@@ -54,7 +54,8 @@ default class FooterBar extends Component {
 					{
 						menus.map((ele) => {
 							return (
-								<FooterBarIcon style={ele.uri == this.props.routes[1].path ? ele.icon : null} key={ele.title}  {...ele}/>
+								//style={ele.uri == this.props.routes[1].path ? ele.icon : null}
+							<FooterBarIcon style={ele.uri == this.props.routes[1].path ? styles.active : null} key={ele.title}  {...ele}/>
 							)
 						})
 					}

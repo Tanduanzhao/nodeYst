@@ -16,7 +16,6 @@ export default class FilterGroups extends Component{
   }
   _spanhandleClick(id,name){
       if(id == '0'){
-          
           this.setState({
             provinceIds:['0']
           });

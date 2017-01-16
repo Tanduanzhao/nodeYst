@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 
 import ReactDOM from 'react/lib/ReactDOM';
-
-import {Router,Route,Link,browserHistory,IndexRoute} from 'react-router';
+//import {createHashHistory}  from 'history';
+import {Router,Route,Link,browserHistory,hashHistory,IndexRoute,useRouterHistory} from 'react-router';
 
 import {Provider} from 'react-redux';
 
@@ -28,9 +28,15 @@ import bidList from './components/datas/bidList';
 import bidListall from './components/datas/bidListall';
 import product from './components/datas/product';
 
+//个人中心
 import Center from './components/center';
+import ManagerList from './components/center/ManagerList';
+import ManagerProtocol from './components/center/ManagerProtocol';
+import ManagerForm from './components/center/managerForm';
+import BecomeManager from './components/center/becomeManager';
 import FeedBack from './components/center/feedBack';
 import purchase from './components/center/purchase';
+import nearHospital from './components/center/nearHospital';
 import Collect from './components/collect';
 import help from './components/center/help';
 import User from './components/center/user';
@@ -66,6 +72,9 @@ import DataSources from './components/datas/dataSources';
 
 import {WXKEY,HTTPURL} from './components/config';
 
+
+console.log(store.getState().userInfo.id,"store");
+
 if(url2obj().recommender){
     insertReportShare({
         shareUserId:sessionStorage.getItem("recommender"),
@@ -100,39 +109,39 @@ window.addEventListener("popstate",function(e){
     }
 });
 
-//在history加链接?
+//在history加链接
 function pushHistory(){
     window.history.pushState("title","title",HTTPURL);
 }
 
 //var store = createStore(ystReducers,applyMiddleware(thunk));
 import {Token} from './components/function/token';
+
 Token((res) => {
-    //store.dispatch({
-    //    type: 'CHANGE',
-    //    areaName: res.datas.areaName,
-    //    areaId: res.datas.areaId,
-    //    searchAreaType: res.datas.searchAreaType
-    //});
-    //console.log( res.datas.provinceId);
-    //store.dispatch({
-    //    type: 'CHANGEALLPROVINCEIDNAME',
-    //    provinceName: res.datas.provinceName,
-    //    provinceId: res.datas.provinceId
-    //});
-    //store.dispatch({
-    //    type: 'CHANGEDATA',
-    //    yearMonth: res.datas.yearMonth
-    //});
-}
+        //store.dispatch({
+        //    type: 'CHANGE',
+        //    areaName: res.datas.areaName,
+        //    areaId: res.datas.areaId,
+        //    searchAreaType: res.datas.searchAreaType
+        //});
+        //console.log( res.datas.provinceId);
+        //store.dispatch({
+        //    type: 'CHANGEALLPROVINCEIDNAME',
+        //    provinceName: res.datas.provinceName,
+        //    provinceId: res.datas.provinceId
+        //});
+        //store.dispatch({
+        //    type: 'CHANGEDATA',
+        //    yearMonth: res.datas.yearMonth
+        //});
+    }
     ,store
 );
+//let appHistory = useRouterHistory(createHashHistory)({ queryKey: true });
 export class Reactrouter extends Component{
-    componentWillMount(){
-        
-    }
+
     render() {
-        return (
+        return(
             <Provider store={store}>
                 <Router history={browserHistory}>
                     <Route>
@@ -176,10 +185,15 @@ export class Reactrouter extends Component{
                         <Route path="center">
                             <IndexRoute component={Center}/>
                             <Route path="feedback" component={FeedBack}/>
+                            <Route path="managerList" component={ManagerList}/>
+                            <Route path="managerProtocol" component={ManagerProtocol}/>
+                            <Route path="managerForm" component={ManagerForm}/>
+                            <Route path="becomeManager" component={BecomeManager}/>
                             <Route path="help" component={help}/>
                             <Route path="user" component={User}/>
                             <Route path="contribute" component={contribute}/>
                             <Route path="dataIntro" component={dataIntro}/>
+                            <Route path="nearHospital/:place" component={nearHospital}/>
                         </Route>
                         <Route path="purchase">
                             <IndexRoute component={purchase}/>

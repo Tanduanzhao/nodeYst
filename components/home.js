@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
-import {loadWx,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent,loadReportList,getCiReportColumnList} from './function/ajax';
+import {loadWx,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent,loadReportList,getCiReportColumnList,saveCustomer} from './function/ajax';
 import Box from './common/box';
 import Loading from './common/loading';
 import ReportList from './reportList';
@@ -127,6 +127,16 @@ class Home extends Component{
 		})
 	}
 	componentDidMount(){
+		//alert(url2obj().managerId)
+		//if(typeof url2obj().managerId != 'undefined'){
+		//	saveCustomer({
+		//		userId:res.datas.id,
+		//		accountManagerId:url2obj().managerId,
+		//		callBack:(res)=>{
+		//			alert(JSON.stringify(res))
+		//		}
+		//	})
+		//}
 		this._loadData();
 	}
 	render(){

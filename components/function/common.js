@@ -1,3 +1,6 @@
+import {loadJssdk} from './ajax';
+import {WXKEY} from '../config';
+
 export function encode(str) {
     return encodeURI(encodeURI(str));
 }
@@ -72,4 +75,54 @@ export function onBridgeReady(data,cb){
     } catch (e) {
         alert(e);
     }
+}
+
+
+//公共获取微信验证
+
+export function authWxcode(infoo,callBack){
+    callBack = callBack || function(){};
+    let info=infoo;
+    loadJssdk({
+        uri: location.href,
+        callBack: (res) => {
+            wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: WXKEY, // 必填，公众号的唯一标识
+                timestamp: res.datas.timestamp, // 必填，生成签名的时间戳
+                nonceStr: res.datas.nonceStr, // 必填，生成签名的随机串
+                signature: res.datas.signature, // 必填，签名，见附录1
+                jsApiList: ['getLocation', 'onMenuShareTimeline', 'onMenuShareAppMessage','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            });
+            wx.ready(()=>{
+                wx.onMenuShareTimeline({
+                    title: info.title, // 分享标题
+                    link: info.link, // 分享链接
+                    imgUrl: info.imgUrl, // 分享图标
+                    success: function() {
+//                                $.toast('分享成功！');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: info.title,
+                    desc: info.desc, // 分享描述
+                    link: info.link, // 分享链接
+                    imgUrl: info.imgUrl, // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function() {
+                        // 用户确认分享后执行的回调函数
+//                                $.toast('分享成功！');
+                    },
+                    trigger:function(){
+                        //alert('trigge');
+                    }
+                });
+                callBack()
+            });
+            wx.error(()=> {
+                authWxcode(info,callBack)
+            });
+        }
+    });
 }

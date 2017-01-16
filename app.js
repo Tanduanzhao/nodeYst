@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 require('node-jsx').install();
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var compression = require('compression')
+var compression = require('compression');
 
 var app = express();
 app.listen(3001);

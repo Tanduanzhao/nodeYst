@@ -85,8 +85,6 @@ class product extends Component{
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        console.dir(this.props.product.infinite);
-        console.log(this.ele.firstChild.clientHeight-this.ele.scrollTop , document.body.clientHeight-this.ele.offsetTop)
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.product.infinite  && this.state.request){
             this._loadData();
         }
@@ -132,7 +130,9 @@ class product extends Component{
             <div className="root">
                 <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}  showProvicenHandle={this._showProvicenHandle.bind(this)} loading={this.state.loading}/>
                 <div ref="content" className="scroll-content has-header">
-                        <Main {...this.props} data={this.props.product.data} loading={this.state.loading}/>
+                    {
+                        (this.props.product.data.length == 0 && !this.state.loading) ? <EmptyComponent/> : <Main {...this.props} data={this.props.product.data} loading={this.state.loading}/>
+                    }
                 </div>
                 <More {...this.props}/>
                 {
@@ -151,17 +151,13 @@ class Main extends Component{
         console.log( this.props.data.length,"length")
     }
     render(){
-        if (this.props.data.length != 0) {
-            return (
-                <ul className="list product-view">
-                    {
-                        this.props.data.map((ele, index)=> <List dataSources={ele} key={index}/>)
-                    }
-                </ul>
-            )
-        } else {
-            return <EmptyComponent/>
-        }
+        return (
+            <ul className="list product-view">
+                {
+                    this.props.data.map((ele, index)=> <List dataSources={ele} key={index}/>)
+                }
+            </ul>
+        )
     }
 }
 
@@ -198,10 +194,10 @@ class List extends Component{
                     <li>批准文号/注册证号：{this.props.dataSources.pzwh}</li>
                     <li>生产企业：{this.props.dataSources.manufacturerName}</li>
                 </ul>
-                {
-                    this.props.dataSources.catalogId?<TradeBreedId  {...this.props} catalog={this.props.dataSources}/>:null
-                }
             </li>
+                {
+                    typeof this.props.dataSources.newCatalog == 'undefined' && typeof this.props.dataSources.oldCatalog == 'undefined' ? null:<TradeBreedId  {...this.props} dataSources={this.props.dataSources}/>
+                }
             </div>
         )
     }
@@ -211,11 +207,48 @@ class TradeBreedId extends Component{
     render(){
         return(
             <div>
-                <span className="btn"  >广东省交易品种</span>
+                <span className="btn">广东省交易品种</span>
                 <ul className="list">
-                    <li>目录ID：{this.props.catalog.catalogId}</li>
-                    <li>目录名称：{this.props.catalog.catalogName}</li>
-                    <li>目录类型：{this.props.catalog.catalogType}</li>
+                    <li style={{borderBottom:"4px solid #ddd"}}>
+                        <table className="table-border" width="100%">
+                            <tbody>
+                            {
+                                (typeof this.props.dataSources.newCatalog == 'undefined')?null
+                                    :
+                                        <tr  key={Math.random()}>
+                                            <td style={{fontSize: '14px',verticalAlign: 'middle',textAlign: 'center'}}>
+                                                新目录分组
+                                            </td>
+                                            <td className="item-text-wrap">
+                                                {
+                                                    //typeof  this.props.dataSources.oldCatalog.catalogId== 'undefined' || typeof  this.props.dataSources.oldCatalog.catalogName== 'undefined' || typeof  this.props.dataSources.oldCatalog.catalogType== 'undefined'
+                                                }
+                                                <p>
+                                                    <span className={this.props.dataSources.newCatalog.isCatalogIdNew == 1? "assertive" : null}>目录ID：{this.props.dataSources.newCatalog.catalogIdNew}</span> <br/>
+                                                    <span className={this.props.dataSources.newCatalog.isCatalogNameNew == 1? "assertive" : null}> 目录名称：{this.props.dataSources.newCatalog.catalogNameNew}</span> <br/>
+                                                    <span className={this.props.dataSources.newCatalog.isCatalogTypeNew == 1? "assertive" : null}> 目录类型：{this.props.dataSources.newCatalog.catalogTypeNew}</span>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                 }
+                            {
+                                (typeof this.props.dataSources.oldCatalog == 'undefined')?null
+                                    : <tr  key={Math.random(0)}>
+                                            <td style={{fontSize: '14px',verticalAlign: 'middle',textAlign: 'center'}}>
+                                                旧目录分组
+                                            </td>
+                                            <td className="item-text-wrap">
+                                                <p>
+                                                    目录ID：{this.props.dataSources.oldCatalog.catalogId} <br/>
+                                                    目录名称：{this.props.dataSources.oldCatalog.catalogName} <br/>
+                                                    目录类型：{this.props.dataSources.oldCatalog.catalogType}
+                                                </p>
+                                            </td>
+                                        </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </li>
                 </ul>
             </div>
         )

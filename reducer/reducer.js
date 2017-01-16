@@ -35,6 +35,8 @@ import dataSources from './dataSources';
 import market from './market';
 import marketSearch from './marketSearch';
 import marketSearchDetail from './MarketSearchDetail';
+
+import managerList from './managerList';
 //合并仓库
 
 const ystReducers = combineReducers({
@@ -68,6 +70,7 @@ const ystReducers = combineReducers({
     anti,
     collect,
     bidListall,
+    managerList,
     subscribePage,
     subscribePageAll,
     subscribePageList,

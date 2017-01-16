@@ -149,7 +149,7 @@ class Report extends Component {
     return (
       <div className="root">
         <HeaderBar {...this.props} opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} searchHandle={this._searchHandle.bind(this)}/>
-        <div ref="content"  className="scroll-content scroll-report report-view">
+        <div ref="content"  className="scroll-content has-footer scroll-report report-view">
           <div>
             {
               (this.state.loading) ? <Loading/> : null

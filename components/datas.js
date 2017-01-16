@@ -35,12 +35,12 @@ class Datas extends Component{
         });
     }
     componentWillMount(){
-        if(!this.props.userInfo.isVip){
-            this.props.dispatch({
-                type:'OPENVIP'
-            });
-            this.context.router.push('/pay/vip');
-        }
+        //if(!this.props.userInfo.isVip){
+        //    this.props.dispatch({
+        //        type:'OPENVIP'
+        //    });
+        //    this.context.router.push('/pay/vip');
+        //}
     }
     render(){
         return(
