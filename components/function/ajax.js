@@ -1223,6 +1223,20 @@ export const invitationCustomer = function(args){
     })
 }
 
+//订阅专栏
+export let subscribeColumn = function(args){
+    ajaxFn({
+        url:'business/subscribeColumn',
+        data:{
+            columnId:args.columnId,
+            userPhone:args.userPhone
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
 //保存客户
 export let saveCustomer = function(args){
     ajaxFn({
@@ -1236,6 +1250,7 @@ export let saveCustomer = function(args){
         }
     })
 }
+
 
 //请求腾讯地图服务地址
 export const getTencentMap = function(args){
@@ -1253,6 +1268,70 @@ export const getTencentMap = function(args){
         }
     })
 }
+
+//问卷调查
+export const saveInvestigation = function(args){
+    ajaxFn({
+        url:'business/saveInvestigation',
+        data:{
+            data:args.datas
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+{
+    //"zhaoshang":args.zhaoshang,
+    //"linchuang":args.linchuang,
+    //"zhaobiao": args.zhaobiao,
+    //"otherWork":args.otherWork,
+    //"geshengzhongbiaoshuju": args.geshengzhongbiaoshuju,
+    //"yiyuanxiaoshoushuju": args.yiyuanxiaoshoushuju,
+    //"shengchanqiyezhaoshanrenyuandianhua": args.shengchanqiyezhaoshanrenyuandianhua,
+    //"zhengceheshichangfenxi":args.zhengceheshichangfenxi,
+    //"otherTypeData":args.otherTypeData,
+    //"daxingyiyaohuiyi": args.daxingyiyaohuiyi,
+    //"yaoquanpengyoutuijian": args.yaoquanpengyoutuijian,
+    //"kehujinglijieshao": args.kehujinglijieshao,
+    //"weixinpengyouquan": args.weixinpengyouquan,
+    //"otherCanal": args.otherCanal,
+    //"chenggonganli": args.chenggonganli,
+    //"zhaoshangpinzhongxinxi": args.zhaoshangpinzhongxinxi,
+    //"yaopinzhishiku": args.yaopinzhishiku,
+    //"shiyonggongju": args.shiyonggongju,
+    //"otherService": args.otherService,
+    //remark: args.remark,
+}
+
+
+//是否已开通7天会员接口
+export const isGetSevenDaysVIP = function(args) {
+    ajaxFn({
+        url: 'business/isGetSevenDaysVIP',
+        callBack: (res)=> {
+            args.callBack(res);
+        }
+    })
+}
+
+//7天会员接口
+export const openSevenDaysVIP = function(args){
+    ajaxFn({
+        url:'business/openSevenDaysVIP',
+        data:{
+            place:args.place,
+            lat:args.lat,
+            long:args.long,
+            around:args.around,
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
 //export const getTencentMap = function(los,around,place,callBack){
 //    $.ajax({
 //        url:'http://apis.map.qq.com/ws/place/v1/search?keyword='+encodeURI(place)+'&boundary=nearby('+los.lat+','+los.long+','+around+')&key=3P3BZ-ZO333-QVE3J-YNVJ3-GZ4E6-XQFVR&output=jsonp&callback=posFn',
@@ -1338,7 +1417,6 @@ function ajaxFn(params){
     }
 
     if(!store.getState().userInfo.isLogin && !isGetUsering){
-
         isGetUsering = true;
         bodyAjax({
             url:'business/getInitWxUser',
@@ -1362,12 +1440,15 @@ function ajaxFn(params){
                         type: 'LOADUSERINFO',
                         datas: res.datas
                     });
+                    store.dispatch({
+                        type: 'LOGIN',
+                    });
                     name = res.datas.id;
                     setTimeout(()=>{
                         beginAjax();
                     })
-                    //}
-                }
+                    }
+                //}
             }
         });
     }else{

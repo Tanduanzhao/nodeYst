@@ -218,7 +218,9 @@ class List extends Component{
         return(
             <li className="item item-text-wrap">
                 <p>药交产品ID：{this.props.dataSource.yjProdId}</p>
-                <p className="item-text-wrap">物价产品ID：{this.props.dataSource.wjProdId}</p>
+                {
+                    //<p className="item-text-wrap">物价产品ID：{this.props.dataSource.wjProdId}</p>
+                }
                 <p>产品名称：{this.props.dataSource.prodName} <span className="btn" style={{padding:"2px 3px"}}>{this.props.dataSource.iconGeneric}</span></p>
                 <p>剂型：{this.props.dataSource.dosName}</p>
                 <p>规格：{this.props.dataSource.spec}</p>

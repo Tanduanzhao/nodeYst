@@ -163,8 +163,14 @@ class Main extends Component{
                                             <img src={ele.mainImg} alt=""/>
                                         </div>
                                         <div className="item-right">
-                                            <h3 className="item-nowrap">{ele.reportTypeId} <span>|</span> {ele.title}</h3>
+                                            <h3 className="item-nowrap">
+                                                {ele.reportTypeId}
+                                                {
+                                                    ele.reportTypeId == "" || (typeof ele.reportTypeId == 'undefined' )?null: <span>|</span>
+                                                }
+                                                {ele.title}</h3>
                                             <div className="item-right-footer">
+                                                <span>{ele.publishDate}</span>
                                                 <span style={{textAlign:"left"}}><i className="fa fa-eye"></i>{ele.readNum}人查看</span>
                                             </div>
                                         </div>
@@ -173,18 +179,20 @@ class Main extends Component{
                             )
                         }
                     </ul>
-                    <div className="item item-divider module-bar">
-                        <strong>
-                            {
-                                this.props.params.id==3?"培训课程":"专栏栏目"
-                            }
-                        </strong>
-                    </div>
-                    <ul className="list new_report">
-                        {
-                            this.props.data.lists.map((ele,index)=> <SubscribeAllList dataSources={ele} id={this.props.params.id} key={ele.id+Math.random()}/>)
+                    {
+                        //<div className="item item-divider module-bar">
+                        //    <strong>
+                        //        {
+                        //            this.props.params.id==3?"培训课程":"专栏栏目"
+                        //        }
+                        //    </strong>
+                        //</div>
+                        //<ul className="list new_report">
+                        //    {
+                        //        this.props.data.lists.map((ele,index)=> <SubscribeAllList dataSources={ele} id={this.props.params.id} key={ele.id+Math.random()}/>)
+                        //    }
+                        //</ul>
                         }
-                    </ul>
                 </div>
             </div>
         )

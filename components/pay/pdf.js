@@ -206,7 +206,8 @@ class Pdf extends Component{
                     likeNum: res.datas.likeNum,
                     buyReport:res.datas.buyReport
                 });
-                let URL = HTTPURL+'/pay/pdf/'+this.props.params.id+"?recommender="+name+"&reportId="+this.props.params.id;
+                //let URL = HTTPURL+'/pay/pdf/'+this.props.params.id+"?recommender="+name+"&reportId="+this.props.params.id;
+                let URL = HTTPURL+'/pay/pdf/'+this.props.params.id+"?recommender="+name;
                 var info = {
                     title:res.datas.title,
                     link: URL,

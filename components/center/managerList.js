@@ -68,6 +68,15 @@ class ManagerList extends Component{
                     loading:false
                 });
                 if (res){
+                    if(res.pageNo >= res.totalPage){
+                        this.props.dispatch({
+                            type:'UNINFINITEDRUG'
+                        });
+                    }else{
+                        this.props.dispatch({
+                            type:'INFINITEDRUG'
+                        });
+                    }
                     this.props.dispatch({
                         type:'LOADMANAGERLISTDATA',
                         data:this.props.stores.data.concat(res.datas),
@@ -134,7 +143,7 @@ class ManagerList extends Component{
                 {
                     this.state.loading?<Loading/>: null
                 }
-                <div ref="content" className="scroll-content has-header">
+                <div ref="content" className="scroll-content has-header has-footer">
                     {
                         (this.props.stores.data.length == 0 && !this.state.loading) ? <EmptyComponent/> :  <Main {...this.props} data={this.props.stores.data}  id={this.state.id} index={this.state.index} checkbox={this._checkbox} checked={this.state.checked} loading={this.state.loading}/>
                     }

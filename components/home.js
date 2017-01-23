@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
-import {loadWx,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent,loadReportList,getCiReportColumnList,saveCustomer} from './function/ajax';
+import {loadWx,isGetSevenDaysVIP,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent,loadReportList,getCiReportColumnList,saveCustomer,subscribeColumn} from './function/ajax';
 import Box from './common/box';
 import Loading from './common/loading';
 import ReportList from './reportList';
@@ -15,14 +15,16 @@ class Home extends Component{
 	constructor(props) {
 		super(props);
 		this.state ={
+			showPopup:false,
 			loading:true,
-			reCordNum:0
+			reCordNum:0,
+			isSubscribe:"",
+			phonePrompt:0,
+			popupTitle:"",
+			showPopupVIP:0
 		};
 		this._loadData = this._loadData.bind(this);
 		this._loadRecordContent = this._loadRecordContent.bind(this);
-	}
-	componentWillMount(){
-		if(this.props.home.hasRecord) this._loadRecordContent();
 	}
 	_loadData(){
 		//读取首页热门和最新报告
@@ -83,6 +85,7 @@ class Home extends Component{
 				});
 			}
 		});
+
 		//获取金银活动箱子状态
 		loadJoinActivity({
 			callBack:(res)=>{
@@ -126,22 +129,76 @@ class Home extends Component{
 			}
 		})
 	}
+
+	//切换弹出框
+	_togglePopup(){
+		this.setState({
+			showPopup:!this.state.showPopup
+		})
+	}
+	_popupSure(userPhone){
+		if(userPhone == ""){
+			setTimeout(()=>{
+				subscribeColumn({
+					columnId:this.state.columnId,
+					userPhone:userPhone|| "",
+					phonePrompt:0,
+					callBack:()=>{
+						this.setState({
+							isSubscribe:this.state.columnId
+						})
+						this._togglePopup();
+					}
+				})
+			})
+		}else {
+			if(!(/^1\d{10}$/.test(userPhone))){
+				this.setState({
+					phonePrompt:1
+				})
+				return false
+			}else{
+				setTimeout(()=>{
+					subscribeColumn({
+						columnId:this.state.columnId,
+						userPhone:userPhone|| "",
+						phonePrompt:0,
+						callBack:()=>{
+							this.setState({
+								isSubscribe:this.state.columnId
+							})
+							this._togglePopup();
+						}
+					})
+				})
+			}
+		}
+	}
+
+	//显示弹出框
+	_showPopup(id,title){
+		this.setState({
+			columnId:id,
+			popupTitle:title
+		})
+		setTimeout(()=>{
+			this._togglePopup();
+		})
+	}
+
 	componentDidMount(){
-		//alert(url2obj().managerId)
-		//if(typeof url2obj().managerId != 'undefined'){
-		//	saveCustomer({
-		//		userId:res.datas.id,
-		//		accountManagerId:url2obj().managerId,
-		//		callBack:(res)=>{
-		//			alert(JSON.stringify(res))
-		//		}
-		//	})
-		//}
 		this._loadData();
 	}
+	componentWillMount(){
+		if(this.props.home.hasRecord) this._loadRecordContent();
+	}
+
 	render(){
 		return(
 			<div className="root home">
+				{
+					this.state.showPopup ?<Popup  {...this.props}  popupTitle={this.state.popupTitle} phonePrompt={this.state.phonePrompt} popupSure={this._popupSure.bind(this)} close={this._togglePopup.bind(this)}/>:null
+				}
 				{
 					this.props.home.isShowRecord ? <Record dataSources={this.state.reCordNum}/> : false
 				}
@@ -149,7 +206,7 @@ class Home extends Component{
 					this.state.loading? <Loading/> : null
 				}
 				{
-					 <Main {...this.props}/>
+					 <Main {...this.props} showPopup={this._showPopup.bind(this)} isSubscribe={this.state.isSubscribe}/>
 				}
 				<FooterBar {...this.props}/>
 
@@ -196,18 +253,20 @@ class Main extends Component{
 		};
 		var string = null;
 		var slide = (()=>{
-			if(this.props.home.img.length != 0){
-				string = <Slider {...settings} {...this.props}>{this.props.home.img.map((ele,index)=> {
-					switch(ele.resourceType){
-						case "EXTERNAL": let url = '/picture/'+encodeURIComponent(ele.imgSource);return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
-						case "INTERNAL":return <div  key={ele.id+Math.random()}><Link to={ele.imgSource}><img src={ele.imgUrl}  alt=""/></Link></div>;
-						case "ORDER_REPORT":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
-						case "NO":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
-						default : return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
-					}
-				})}</Slider>;
-			}else{
-				string = <Slider {...settings} {...this.props}><div><img src="/images/home.jpg" alt=""/></div></Slider>;
+			{
+				if(this.props.home.img.length != 0){
+					string = <Slider {...settings} {...this.props}>{this.props.home.img.map((ele,index)=> {
+						switch(ele.resourceType){
+							case "EXTERNAL": let url = '/picture/'+encodeURIComponent(ele.imgSource);return <div  key={ele.id+Math.random()}><Link to={url}><img src={ele.imgUrl}  alt=""/></Link></div>;
+							case "INTERNAL":return <div  key={ele.id+Math.random()}><Link to={ele.imgSource}><img src={ele.imgUrl}  alt=""/></Link></div>;
+							case "ORDER_REPORT":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
+							case "NO":return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
+							default : return <div key={ele.id+Math.random()}><img src={ele.imgUrl}  alt=""/></div>;
+						}
+					})}</Slider>;
+				}else{
+					string = <Slider {...settings} {...this.props}><div><img src="/images/home.jpg" alt=""/></div></Slider>;
+				}
 			}
 			return string;
 		})();
@@ -216,7 +275,7 @@ class Main extends Component{
 				{slide}
 				<Column {...this.props}/>
 				<Subscribe {...this.props}/>
-				<ParseReport {...this.props}/>
+				<ParseReport {...this.props} />
 				<div className="item item-divider module-bar">
 					<strong>最新报告</strong>
 					<img src="/images/new_report.png" alt="" className="hot-title"/>
@@ -285,6 +344,45 @@ class Column extends Component{
 	}
 }
 
+class Subscribe extends Component{
+	free(nub){
+		this.props.dispatch({
+			type:'GOREPORTTYPE',
+			data:[],
+			reportType: nub,
+			pageNo:1
+		});
+	}
+	render(){
+		return(
+			<div>
+				<div className="item item-divider module-bar">
+					<strong>专栏订阅</strong>
+					<img src="/images/read.png" alt="" className="hot-title"/>
+					<Link  to="/subscribePage" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}>
+						<i className="icon ion-android-more-horizontal"></i>
+					</Link>
+				</div>
+				<ul className="list new_report">
+					{
+						this.props.home.ColumnList.map((ele,index)=> <SubscribeList {...this.props}  dataSources={ele} key={ele.id+Math.random()}/>)
+					}
+				</ul>
+				<div  className="report_classify">
+					<div className="row">
+						<Link to="/report"  onClick={this.free.bind(this,467095547)} className="col col-50"><img src="/images/report_classify01.jpg" alt=""/></Link>
+						<Link to="/report"  onClick={this.free.bind(this,467095549)} className="col col-50"><img src="/images/report_classify02.jpg" alt=""/></Link>
+					</div>
+					<div className="row">
+						<Link to="/report"  onClick={this.free.bind(this,467095546)} className="col col-50"><img src="/images/report_classify03.jpg" alt=""/></Link>
+						<Link to="/report"  onClick={this.free.bind(this,467095548)} className="col col-50"><img src="/images/report_classify04.jpg" alt=""/></Link>
+					</div>
+				</div>
+			</div>
+		)
+	}
+}
+
 class ParseReport extends Component{
 	freeReport(nub) {
 		this.props.dispatch({
@@ -313,38 +411,36 @@ class ParseReport extends Component{
 		)
 	}
 }
-class Subscribe extends Component{
-	free(nub){
-		this.props.dispatch({
-			type:'GOREPORTTYPE',
-			data:[],
-			reportType: nub,
-			pageNo:1
-		});
-	}
+
+class Popup extends Component{
 	render(){
 		return(
-			<div>
-				<div className="item item-divider module-bar">
-					<strong>专栏订阅</strong>
-					<img src="/images/read.png" alt="" className="hot-title"/>
-					<Link  to="/subscribePage" style={{position: "absolute",right:"1rem",fontSize:"1.2rem"}}>
-						<i className="icon ion-android-more-horizontal"></i>
-					</Link>
-				</div>
-				<ul className="list new_report">
-					{
-						this.props.home.ColumnList.map((ele,index)=> <SubscribeList {...this.props} dataSources={ele} key={ele.id+Math.random()}/>)
-					}
-				</ul>
-				<div  className="report_classify">
-					<div className="row">
-						<Link to="/report"  onClick={this.free.bind(this,467095547)} className="col col-50"><img src="/images/report_classify01.jpg" alt=""/></Link>
-						<Link to="/report"  onClick={this.free.bind(this,467095549)} className="col col-50"><img src="/images/report_classify02.jpg" alt=""/></Link>
-					</div>
-					<div className="row">
-						<Link to="/report"  onClick={this.free.bind(this,467095546)} className="col col-50"><img src="/images/report_classify03.jpg" alt=""/></Link>
-						<Link to="/report"  onClick={this.free.bind(this,467095548)} className="col col-50"><img src="/images/report_classify04.jpg" alt=""/></Link>
+			<div style={{width:'100%',height:'100%'}}>
+				<div className="backdrop visible active"></div>
+				<div className="popup-container popup-showing active">
+					<div className="popup popup-invitation">
+						<img  className="popup_close" src="/images/home_close.png" onClick={this.props.close} alt=""/>
+						<img style={{width:'100%'}} src="/images/subscribe_popup.png" alt=""/>
+						<div className="popup-center">
+							<div className="popup-center-text">
+								尊敬的用户： <br/>
+								<p> 您已成功订阅药市通《{this.props.popupTitle}》，留下联系方式可接收订阅专栏的更新信息，欢迎留下您的足迹。</p>
+							</div>
+							<form className="popup-center-form">
+								<div className="list">
+									<label className=" item-input">
+										<span>手机号码</span>
+										<input ref="phone" placeholder="非必填" type="text"/>
+									</label>
+									{
+										this.props.phonePrompt==1?<span className="phonePrompt">请输入正确的手机号码</span>:null
+									}
+								</div>
+								<div className="popup-footer">
+									<span className="popup-btn" onClick={()=>{this.props.popupSure(this.refs.phone.value)}}>确定</span>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>

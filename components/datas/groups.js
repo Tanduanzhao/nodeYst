@@ -207,7 +207,9 @@ class List extends Component{
                 <div className="item item-icon-right item-text-wrap">
                     <p>目录名称: {this.props.dataSource.catalogName}</p>
                     <p>目录类型: {this.props.dataSource.catalogType}</p>
-                    <p>分组依据: {this.props.dataSource.groupReason}</p>
+                    {
+                        //<p>分组依据: {this.props.dataSource.groupReason}</p>
+                    }
                     <i className="icon item-note stable ion-ios-arrow-right"></i>
                 </div>
             </Link>

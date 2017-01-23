@@ -46,6 +46,7 @@ import dataIntro from './components/datas/dataIntro';
 import report from './components/report';
 
 import Home from './components/home';
+import Survey from './components/survey';
 
 import vip from './components/pay/vip';
 import protocol from './components/center/protocol';
@@ -69,6 +70,9 @@ import SubtrainPageAll from './components/subscribePage/subtrainPageAll';
 import Groups from './components/datas/groups';
 import GroupsMes from './components/datas/groupsMes';
 import DataSources from './components/datas/dataSources';
+
+
+import RouterPath from './components/routerPath';
 
 import {WXKEY,HTTPURL} from './components/config';
 
@@ -139,13 +143,14 @@ Token((res) => {
 );
 //let appHistory = useRouterHistory(createHashHistory)({ queryKey: true });
 export class Reactrouter extends Component{
-
+//<Route path="/routerPath/:path" component={RouterPath}/>
     render() {
         return(
             <Provider store={store}>
                 <Router history={browserHistory}>
                     <Route>
                         <Route path='/' component={Home}/>
+                        <Route path="survey" component={Survey}/>
                         <Route path='optional'>
                             <Route path='classify/:sid/:searchName' component={Optional}/>
                         </Route>

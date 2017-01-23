@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    一、您在公司从事以下哪方面工作？（支持多选）
+    <label><input type="radio" name="a" defaultChecked="checked" onChange={this.handleWork.bind(this)} value={this.state.work}/>A. 招商</label>
+    <label><input type="radio" checked="checked" onChange={this.handleWork.bind(this)} value='linchuang'/>B. 临床</label>
+    <label><input type="radio" checked={this.state.work} onChange={this.handleWork.bind(this)} value='zhaobiao'/>C. 招标</label>
+    <label><input type="radio" checked={this.state.work} onChange={this.handleWork.bind(this)} value='shangwu'/>D. 商务</label>
+    <label>E. 其他<input type="text" onChange={this.handleWork.bind(this)}/></label>
+    <div>
+        二、您平时工作需要用到什么类型的数据？（支持多选）
+        <input type="radio" defaultChecked />A. 各省中标数据
+        <input type="radio" />B. 医院销售数据
+        <input type="radio"/>C. 生产企业招商人员电话
+        <input type="radio"/>D. 政策和市场分析报告
+        <input type="radio"/>E. 其他___________
+    </div>
+    <div>
+        三、您希望药市通提供什么样的服务？（支持多选）
+        <input type="radio"/>A. 大型医药会议
+        <input type="radio"/>B. 药圈朋友圈推荐
+        <input type="radio"/>C. 客户经理介绍
+        <input type="radio"/>D. 微信朋友圈
+        <input type="radio"/>E. 其他___________
+    </div>
+    <div>
+        四、您希望药市通提供什么样的服务？（支持多选）
+        <input type="radio"/>A. 品种销售的成功案例
+        <input type="radio"/>B. 更多招商品种信息
+        <input type="radio"/>C. 药品相关的知识库（临床指南、学术报告）
+        <input type="radio"/>D. 更多实用工具（附近医院、附近药店）
+        <input type="radio"/>E. 其他___________
+    </div>
+    <div className="comments">
+                                <textarea name="" id="" cols="30" rows="10" ref="reportTextarea"
+                                          placeholder="说点什么吧......"></textarea>
+        <button>提交</button>
+    </div>
+</div>
+</body>
+</html>

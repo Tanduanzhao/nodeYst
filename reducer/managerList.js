@@ -22,6 +22,8 @@ export default function managerList(state=defaultManagerList,action){
     case  'LOADMANAGERLISTDATA': return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
     case 'CHANGEMANAGERLISTSEARCHNAME' : return ObjectAssign({},state,{searchName:action.searchName});
     case CLEADRUGSEARCHNAME : return ObjectAssign({},state,{searchName:null});
+    case INFINITEDRUG : return ObjectAssign({},state,{infinite:false});
+    case UNINFINITEDRUG : return ObjectAssign({},state,{infinite:true});
     case "RESEMANAGERLIST" : return defaultManagerList;
     default : return state;
   }

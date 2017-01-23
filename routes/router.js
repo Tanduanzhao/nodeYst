@@ -10,6 +10,8 @@ module.exports = function(app) {
     app.get('/rise/*',index);
     app.get('/optional',index);
     app.get('/optional/*',index);
+    app.get('/survey',index);
+    app.get('/survey/*',index);
     app.get('/report',index);
     app.get('/report/*',index);
 	app.get('/center', index);

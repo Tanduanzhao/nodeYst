@@ -46,7 +46,7 @@ class ManagerProtocol extends Component{
     }
     render(){
         return(
-            <div className="root">
+            <div className="root managerProtocol">
                 {
                     this.state.showPopup ? <Popup  {...this.props} content='请同意服务协议' popupSure={this._popupSure.bind(this)}/> : null
                 }
