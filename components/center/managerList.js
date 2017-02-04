@@ -156,7 +156,7 @@ class ManagerList extends Component{
 class Main extends Component{
     render(){
         return(
-            <div className="list new_report">
+            <div className="list new_report item-text-wrap">
                 {
                     this.props.data.map((ele,i)=> <List  key={Math.random()} {...this.props} dataSources={ele}/>)
                 }
@@ -182,11 +182,7 @@ class List extends Component{
                         {
                             this.props.dataSources.speciallyList.map((ele,index)=>{
                                 return (
-                                    <div key={Math.random()}>
-                                        {
-                                            ele==''? null : <span  className="tag" style={{background:'#ffc900'}}>{ele}</span>
-                                        }
-                                    </div>
+                                    ele==''? null : <span   key={Math.random()} className="tag" style={{background:'#ffc900'}}>{ele}</span>
                                 )
                             })
                         }

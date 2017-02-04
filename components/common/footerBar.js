@@ -55,7 +55,7 @@ default class FooterBar extends Component {
 						menus.map((ele) => {
 							return (
 								//style={ele.uri == this.props.routes[1].path ? ele.icon : null}
-							<FooterBarIcon style={ele.uri == this.props.routes[1].path ? styles.active : null} key={ele.title}  {...ele}/>
+							<FooterBarIcon style={ele.uri == this.props.routes[1].path || (this.props.active == ele.uri ) ? styles.active : null} key={ele.title}  {...ele}/>
 							)
 						})
 					}
@@ -68,6 +68,7 @@ FooterBar.propTypes = {
 }
 const styles = {
 	active:{
-		color:'#0284D0'
+		color:'#fff'
+		//color:'#0284D0'
 	}
 }

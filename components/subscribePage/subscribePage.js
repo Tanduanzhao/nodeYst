@@ -98,7 +98,7 @@ class SubscribePage extends Component {
         {
          //   <HeaderBar {...this.props} opacityNum={this.state.opacityNum} isOpacity={this.state.isOpacity} searchHandle={this._searchHandle.bind(this)}/>
         }
-        <div  ref="content"  className="scroll-content scroll-report has-footer">
+        <div  ref="content"  className="scroll-content scroll-report">
           <div>
               <div className="header-img" ref="headerImg">
                   <img width="100%" src="../images/sub_scribe_page_bg.jpg"/>

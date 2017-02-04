@@ -121,13 +121,12 @@ class Main extends Component{
     }
     render(){
         return(
-            this.props.data.length == 0 ? <EmptyComponent/> : <ul className="list bid-list">
-                <ul className="list bid-list">
+            this.props.data.length == 0 ? <EmptyComponent/>
+                : <ul className="list bid-list">
                     {
                         this.props.data.map((ele)=> <List dataSources={ele} key={ele.id+Math.random()}/>)
                     }
-                </ul>
-            </ul>
+                    </ul>
         )
     }
 }

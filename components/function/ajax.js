@@ -446,8 +446,8 @@ export const getBidAreaInfo = function(args){
     ajaxFn({
         url:'business/getBidAreaInfo',
         data:{
-            searchName:args.searchName || null,
-            pageNo:args.pageNo || null,
+            searchName:args.searchName || '',
+            pageNo:args.pageNo || '',
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -871,13 +871,13 @@ export const getAllBidList = function(args){
     ajaxFn({
         url:'business/getAllBidList',
         data:{
-            codeProId:args.codeProId || null,
-            areaId:args.areaId || null,
-            sord:args.sord || null,
-            sidx:args.sidx || null,
-            pageNo:args.pageNo || null,
-            searchName:args.searchName || null,
-            searchProductStatus:args.searchProductStatus || null,
+            codeProId:args.codeProId || '',
+            areaId:args.areaId || '',
+            sord:args.sord || '',
+            sidx:args.sidx || '',
+            pageNo:args.pageNo || '',
+            searchName:args.searchName || '',
+            searchProductStatus:args.searchProductStatus || '',
         },
         callBack:(res)=>{
             args.callBack(res);

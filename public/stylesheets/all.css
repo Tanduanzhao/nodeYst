@@ -846,9 +846,10 @@ h3 {
     padding: 0.1rem 0.1rem; } }
 
 .bid-list .card {
-  margin-top: 0px;
+  margin-top: 0;
   margin-bottom: 10px;
-  padding: 0 12px; }
+  padding: 0 12px;
+  border-bottom: 4px solid #eee; }
   .bid-list .card h2 {
     padding: 7px 0;
     font-size: .8rem;
@@ -990,9 +991,9 @@ h3 {
 
 .bidList-view .item {
   border-top: 1px solid #eee;
-  margin-top: 0;
-  margin-bottom: 10px;
-  padding: 16px; }
+  padding: 16px;
+  margin: 0;
+  border: 0; }
   .bidList-view .item p {
     white-space: normal; }
 
@@ -1773,6 +1774,7 @@ table.table-border td, table.table-border th {
   width: 100%;
   text-align: center; }
   .managerProtocol table td {
+    padding: 5px 0;
     border: 1px solid #ddd; }
 
 .video {
@@ -2153,6 +2155,45 @@ table.table-border td, table.table-border th {
     background: url(/images/data_icon.png) no-repeat; }
   .christmas .tabs .ion-happy {
     background: url(/images/center_icon.png) no-repeat; }
+
+.NewYear .has-footer {
+  bottom: 51px; }
+
+.NewYear .module-bar {
+  color: #50281c;
+  background: url(/images/NewYear_header_bg.jpg) no-repeat;
+  background-size: 100%; }
+  .NewYear .module-bar strong, .NewYear .module-bar a, .NewYear .module-bar i {
+    color: #50281c; }
+
+.NewYear .tabs {
+  color: #fff;
+  height: auto;
+  background: url(/images/NewYear_tabs_bg.jpg) no-repeat;
+  background-size: 100% 100%; }
+  .NewYear .tabs .tab-item {
+    opacity: 1;
+    color: #f8b62b; }
+  .NewYear .tabs .tab-item .icon {
+    margin-top: 1px;
+    margin-bottom: 1px;
+    height: 1.675rem;
+    background-size: 100%; }
+  @media screen and (max-width: 322px) {
+    .NewYear .tabs .tab-item .icon {
+      height: 1.5rem; } }
+  .NewYear .tabs .icon:before {
+    content: initial !important; }
+  .NewYear .tabs .ion-ios-home {
+    background: url(/images/NewYear_home_icon.png) no-repeat; }
+  .NewYear .tabs .ion-cube {
+    background: url(/images/NewYear_report_icon.png) no-repeat; }
+  .NewYear .tabs .ion-earth {
+    background: url(/images/NewYear_market_icon.png) no-repeat; }
+  .NewYear .tabs .ion-erlenmeyer-flask {
+    background: url(/images/NewYear_data_icon.png) no-repeat; }
+  .NewYear .tabs .ion-happy {
+    background: url(/images/NewYear_center_icon.png) no-repeat; }
 
 .defmargin {
   margin: 0; }

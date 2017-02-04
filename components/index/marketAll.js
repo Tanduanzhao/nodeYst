@@ -15,6 +15,7 @@ class MarketAll extends Component{
       this.state ={
           loading:true,
           isOther:"",
+          active:'market'
       }
 	}
     componentDidMount(){
@@ -170,7 +171,7 @@ class MarketAll extends Component{
                     }
                     <Main loading={this.state.loading} {...this.props} data={this.props.initData}/>
                 </div>
-                <FooterBar {...this.props}/>
+                <FooterBar {...this.props} active={this.state.active} />
 				{
 					this.props.showProvicen ? <Provicen fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
 				}

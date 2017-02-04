@@ -255,4 +255,5 @@ export class Reactrouter extends Component{
 }
 var ele = document.getElementById('app');
 //ele.className="christmas";
+ele.className="NewYear ";
 ReactDOM.render(<Reactrouter/>, ele, null);

@@ -184,7 +184,7 @@ class HeaderBar extends Component{
   }
   render(){
     return(
-      <div className={`bar bar-header bar-positive item-input-inset ${this.props.isOpacity ? 'bar-opacity' : null}`} style={{backgroundColor:`rgba(56,126,245,${this.props.opacityNum})`}}>
+      <div className={`bar bar-header bar-positive item-input-inset ${this.props.isOpacity ? 'bar-opacity' : null}`} style={{zIndex:3,backgroundColor:`rgba(56,126,245,${this.props.opacityNum})`}}>
         <div className="buttons"  onClick={this._showProvicenHandle.bind(this)} style={{ fontSize: '.75rem'}}>
           <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
           <span  style={{margin:' 0 5px'}}>筛选</span>

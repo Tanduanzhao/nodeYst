@@ -885,9 +885,10 @@ h3{
 }
 .bid-list{
     .card{
-        margin-top: 0px;
+        margin-top: 0;
         margin-bottom: 10px;
         padding: 0 12px;
+        border-bottom: 4px solid #eee;
         h2{
             padding: 7px 0;
             font-size: .8rem;
@@ -1046,9 +1047,11 @@ h3{
 .bidList-view{
     .item{
         border-top: 1px solid #eee;
-        margin-top: 0;
-        margin-bottom: 10px;
+        //margin-top: 0;
+        //margin-bottom: 10px;
         padding: 16px;
+        margin: 0;
+        border: 0;
         p{
             white-space: normal;
         }
@@ -1967,6 +1970,7 @@ table{
         width: 100%;
         text-align: center;
         td{
+            padding: 5px 0;
             border: 1px solid #ddd;
         }
     }
@@ -2429,6 +2433,60 @@ table{
         }
         .ion-happy{
             background:url(/images/center_icon.png) no-repeat ;
+        }
+    }
+}
+
+//新年
+.NewYear{
+    .has-footer {
+         bottom: 51px;
+     }
+    .module-bar{
+        color: #50281c;
+        background: url(/images/NewYear_header_bg.jpg) no-repeat;
+        background-size: 100%;
+        strong,a,i{
+            color: #50281c;
+        }
+    }
+    .tabs{
+        color: #fff;
+        height:auto;
+        background: url(/images/NewYear_tabs_bg.jpg) no-repeat;
+        background-size: 100% 100%;
+        .tab-item{
+            opacity: 1;
+            color: #f8b62b;
+        }
+        .tab-item .icon{
+            margin-top: 1px;
+            margin-bottom: 1px;
+            height: pxTorem(33.5);
+            background-size: 100% ;
+        }
+        @media screen and (max-width:322px){
+            .tab-item .icon{
+                height: pxTorem(30);
+            }
+        }
+        .icon:before{
+            content:initial!important;
+        }
+        .ion-ios-home{
+            background:url(/images/NewYear_home_icon.png) no-repeat ;
+        }
+        .ion-cube{
+            background:url(/images/NewYear_report_icon.png) no-repeat ;
+        }
+        .ion-earth{
+            background:url(/images/NewYear_market_icon.png) no-repeat ;
+        }
+        .ion-erlenmeyer-flask{
+            background:url(/images/NewYear_data_icon.png) no-repeat ;
+        }
+        .ion-happy{
+            background:url(/images/NewYear_center_icon.png) no-repeat ;
         }
     }
 }
