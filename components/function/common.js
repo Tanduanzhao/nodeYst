@@ -77,12 +77,12 @@ export function onBridgeReady(data,cb){
     }
 }
 
-
 //公共获取微信验证
-
-export function authWxcode(infoo,callBack){
-    callBack = callBack || function(){};
-    let info=infoo;
+let locationHref = location.href;
+export function authWxcode(_href,infoo,callBack){
+    let href=locationHref;
+    let info=infoo || '';
+    let _callBack = callBack || function(){};
     loadJssdk({
         uri: location.href,
         callBack: (res) => {
@@ -92,7 +92,8 @@ export function authWxcode(infoo,callBack){
                 timestamp: res.datas.timestamp, // 必填，生成签名的时间戳
                 nonceStr: res.datas.nonceStr, // 必填，生成签名的随机串
                 signature: res.datas.signature, // 必填，签名，见附录1
-                jsApiList: ['getLocation', 'onMenuShareTimeline', 'onMenuShareAppMessage','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                //jsApiList: ['getLocation', 'onMenuShareTimeline', 'onMenuShareAppMessage','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage','getLocation','openLocation','previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
             });
             wx.ready(()=>{
                 wx.onMenuShareTimeline({
@@ -100,7 +101,7 @@ export function authWxcode(infoo,callBack){
                     link: info.link, // 分享链接
                     imgUrl: info.imgUrl, // 分享图标
                     success: function() {
-//                                $.toast('分享成功！');
+                        //                                $.toast('分享成功！');
                     }
                 });
                 wx.onMenuShareAppMessage({
@@ -112,16 +113,15 @@ export function authWxcode(infoo,callBack){
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                     success: function() {
                         // 用户确认分享后执行的回调函数
-//                                $.toast('分享成功！');
+                        //                                $.toast('分享成功！');
                     },
                     trigger:function(){
                         //alert('trigge');
                     }
                 });
-                callBack()
             });
             wx.error(()=> {
-                authWxcode(info,callBack)
+                authWxcode(href,info)
             });
         }
     });

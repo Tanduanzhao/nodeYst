@@ -15,49 +15,50 @@ export const Token = function(fn,store){
             imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
             desc: ' 提供历年中标数据、广东省入市价、政策准入、质量层次等数据查询 ，提供行业分析报告，共享分成。'
         };
-        let callBack = function(){
-            wx.getLocation({
-                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                success: function(res) {
-                    //获取地理位置信息接口
-                    getUserAreaInfo({
-                        latitude:res.latitude,
-                        longitude: res.longitude,
-                        callBack:(res)=>{
-                            fn(res);
-                        }
-                    })
-                },
-                cancel:function(res){
-                    getUserAreaInfo({
-                        latitude:'23.129387',
-                        longitude: '113.31559',
-                        callBack:(res)=>{
-                            fn(res);
-                        }
-                    })
-                },
-                error:function(res){
-                    getUserAreaInfo({
-                        latitude:'23.129387',
-                        longitude: '113.31559',
-                        callBack:(res)=>{
-                            fn(res);
-                        }
-                    })
-                },
-                fail:function(res){
-                    getUserAreaInfo({
-                        latitude:'23.129387',
-                        longitude: '113.31559',
-                        callBack:(res)=>{
-                            fn(res);
-                        }
-                    })
-                }
-            })
-        }
-        authWxcode(info,callBack);
+        authWxcode(location.href,info);
+        //let callBack = function(){
+        //    wx.getLocation({
+        //        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+        //        success: function(res) {
+        //            //获取地理位置信息接口
+        //            getUserAreaInfo({
+        //                latitude:res.latitude,
+        //                longitude: res.longitude,
+        //                callBack:(res)=>{
+        //                    fn(res);
+        //                }
+        //            })
+        //        },
+        //        cancel:function(res){
+        //            getUserAreaInfo({
+        //                latitude:'23.129387',
+        //                longitude: '113.31559',
+        //                callBack:(res)=>{
+        //                    fn(res);
+        //                }
+        //            })
+        //        },
+        //        error:function(res){
+        //            getUserAreaInfo({
+        //                latitude:'23.129387',
+        //                longitude: '113.31559',
+        //                callBack:(res)=>{
+        //                    fn(res);
+        //                }
+        //            })
+        //        },
+        //        fail:function(res){
+        //            getUserAreaInfo({
+        //                latitude:'23.129387',
+        //                longitude: '113.31559',
+        //                callBack:(res)=>{
+        //                    fn(res);
+        //                }
+        //            })
+        //        }
+        //    })
+        //}
+        //authWxcode(info,callBack);
     }else{
         //alert(url2obj().managerId)
         var _recommender = url2obj().recommender;

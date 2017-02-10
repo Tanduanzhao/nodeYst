@@ -35,8 +35,12 @@ import dataSources from './dataSources';
 import market from './market';
 import marketSearch from './marketSearch';
 import marketSearchDetail from './MarketSearchDetail';
+import optionalClassify from './optionalClassify';
+import riseBrees from './riseBrees';
+import riseFactory from './riseFactory';
 
 import managerList from './managerList';
+import clientList from './clientList';
 //合并仓库
 
 const ystReducers = combineReducers({
@@ -45,6 +49,9 @@ const ystReducers = combineReducers({
     marketSearch,
     marketSearchDetail,
     marketProvice,
+    optionalClassify,
+    riseBrees,
+    riseFactory,
 	provicen,
     groups,
     pdf,
@@ -71,6 +78,7 @@ const ystReducers = combineReducers({
     collect,
     bidListall,
     managerList,
+    clientList,
     subscribePage,
     subscribePageAll,
     subscribePageList,

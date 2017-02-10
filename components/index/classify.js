@@ -18,7 +18,7 @@ export default class Classify extends Component{
                     <div className="border horizontal list">
                         {
                             this.props.dataSources.map((ele)=>{
-                                return <ClassifySingle data={ele} key={ele.salesName}/>
+                                return <ClassifySingle {...this.props}data={ele} key={ele.salesName}/>
                             })
                         }
                     </div>

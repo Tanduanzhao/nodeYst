@@ -192,11 +192,11 @@ class Main extends Component{
     }
 	render(){
         var module = this.props.loading ? <loading/>
-                : [<Map key="map"  areaName={this.props.data.areaName} dataSources={this.props.data.businessCwmMarket}/>,
-                <Chart key="chart" dataSources={this.props.data.businessCwm}/>,
-                <Classify key="classify" dataSources={this.props.data.businessSales}/>,
-                <Breed key="breed" dataSources={this.props.data.businessBreedUp}/>,
-                <Factory key="factory" dataSources={this.props.data.businessFactory}/>];
+                : [<Map key="map"  {...this.props} areaName={this.props.data.areaName} dataSources={this.props.data.businessCwmMarket}/>,
+                <Chart key="chart" {...this.props} dataSources={this.props.data.businessCwm}/>,
+                <Classify key="classify" {...this.props} dataSources={this.props.data.businessSales}/>,
+                <Breed key="breed" {...this.props} dataSources={this.props.data.businessBreedUp}/>,
+                <Factory key="factory" {...this.props} dataSources={this.props.data.businessFactory}/>];
 		return(
 			<div>
 			    {module}

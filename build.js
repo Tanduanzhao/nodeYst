@@ -31,6 +31,7 @@ import product from './components/datas/product';
 //个人中心
 import Center from './components/center';
 import ManagerList from './components/center/ManagerList';
+import ClientList from './components/center/clientList';
 import ManagerProtocol from './components/center/ManagerProtocol';
 import ManagerForm from './components/center/managerForm';
 import BecomeManager from './components/center/becomeManager';
@@ -75,9 +76,6 @@ import DataSources from './components/datas/dataSources';
 import RouterPath from './components/routerPath';
 
 import {WXKEY,HTTPURL} from './components/config';
-
-
-console.log(store.getState().userInfo.id,"store");
 
 if(url2obj().recommender){
     insertReportShare({
@@ -191,6 +189,7 @@ export class Reactrouter extends Component{
                             <IndexRoute component={Center}/>
                             <Route path="feedback" component={FeedBack}/>
                             <Route path="managerList" component={ManagerList}/>
+                            <Route path="clientList" component={ClientList}/>
                             <Route path="managerProtocol" component={ManagerProtocol}/>
                             <Route path="managerForm" component={ManagerForm}/>
                             <Route path="becomeManager" component={BecomeManager}/>
@@ -219,6 +218,7 @@ export class Reactrouter extends Component{
                             <Route path="marketIntro/:reportUrl" component={MarketIntro}/>
                             <Route path="marketSearch">
                                 <IndexRoute component={MarketSearch}/>
+                                <Route path="marketSearchDetail/:searchName/:id/:icoType" component={MarketSearchDetail}/>
                                 <Route path="marketSearchDetail/:searchName/:id" component={MarketSearchDetail}/>
                                 <Route path="marketSearchDetail/:parentId" component={MarketSearchDetail}/>
                             </Route>
@@ -255,5 +255,5 @@ export class Reactrouter extends Component{
 }
 var ele = document.getElementById('app');
 //ele.className="christmas";
-ele.className="NewYear ";
+//ele.className="NewYear ";
 ReactDOM.render(<Reactrouter/>, ele, null);

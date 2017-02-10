@@ -19,7 +19,7 @@ class OptionalClassify extends Component{
     constructor(props){
         super(props);
         this.state={
-            data:[],
+            //data:[],
             pageNo:1,
             infinite:false,
             loading:true,
@@ -27,7 +27,7 @@ class OptionalClassify extends Component{
             sord:"desc",
             sidx:"sales",
             sordActive:0,
-            isShowFilter:false,
+            isShowFilter:false
         };
         this._reSet = this._reSet.bind(this);
         this._loadData = this._loadData.bind(this);
@@ -54,11 +54,15 @@ class OptionalClassify extends Component{
 
     _reSet(){
         this.setState({
-            pageNo:1,
-            data:[]
+            pageNo:1
+            //data:[]
         })
+        this.props.dispatch({
+            type:'LOADOPTIONALCLASSIFYDATA',
+            data:[]
+        });
     }
-    //筛选方法
+    //是否筛选方法
     _showProvicenHandle(){
         this.props.dispatch({
             type:'SHOW'
@@ -66,17 +70,24 @@ class OptionalClassify extends Component{
     }
 
     //搜索方法
-    _searchHandle(searchKeys){
+    _searchHandle(searchKeys,storesSearchName,storesData){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
         }else{
+            this._reSet();
             this.setState({
                 loading:true,
-                data:[],
-                pageNo:1,
-                searchName:searchKeys
+                //data:[],
+                //pageNo:1,
+                searchName:searchKeys == '' && storesData.length !=0  ?storesSearchName:searchKeys
             });
+            if(searchKeys != ''|| storesData.length ==0){
+                this.props.dispatch({
+                    type:'SAVESEARCHNAME',
+                    searchName:searchKeys
+                });
+            }
             setTimeout(()=> this._loadData());
         }
     }
@@ -92,17 +103,20 @@ class OptionalClassify extends Component{
                 sord:"desc"
             });
         }
+        this._reSet();
         this.setState({
             loading:true,
-            data:[],
-            pageNo:1,
+            //data:[],
+            //pageNo:1,
             sordActive:sordActive,
             sidx:sidx
         });
         setTimeout(()=> this._loadData());
     }
+
+    //筛选
     _fn(args){
-        this._reSet()
+        this._reSet();
         this.props.dispatch({
             type:'CHANGEDATA',
             yearMonth:args.yearMonth
@@ -128,10 +142,14 @@ class OptionalClassify extends Component{
                     callBack:(res)=>{
                         this.setState({
                             pageNo:this.state.pageNo+1,
-                            data:res.datas,
+                            //data:res.datas,
                             infinite:false
                         })
-                        if(res.totalSize <= this.state.data.length){
+                        this.props.dispatch({
+                            type:'LOADOPTIONALCLASSIFYDATA',
+                            data:res.datas,
+                        });
+                        if(res.totalSize <= this.props.stores.data.length){
                             this.ele.removeEventListener('scroll',this._infiniteScroll);
                         }
                         this.setState({
@@ -142,6 +160,7 @@ class OptionalClassify extends Component{
             })
         });
     }
+
     //加载数据
     _loadData(){
         this.props.dispatch((dispatch,getState)=>{
@@ -157,10 +176,14 @@ class OptionalClassify extends Component{
                 callBack:(res)=>{
                     this.setState({
                         pageNo:this.state.pageNo+1,
-                        data:this.state.data.concat(res.datas),
+                        //data:this.state.data.concat(res.datas),
                         infinite:false
                     })
-                    if(res.totalSize <= this.state.data.length){
+                    this.props.dispatch({
+                        type:'LOADOPTIONALCLASSIFYDATA',
+                        data: this.props.stores.data.concat(res.datas)
+                    });
+                    if(res.totalSize <= this.props.stores.data.length){
                         this.ele.removeEventListener('scroll',this._infiniteScroll);
                     }
                     this.setState({
@@ -188,8 +211,13 @@ class OptionalClassify extends Component{
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        this._loadData();
-       
+        if(this.props.stores.data.length == 0){
+            this._loadData();
+            return false
+        }
+        this.setState({
+            loading:false
+        });
     }
     componentWillUnmount(){
         this.props.dispatch({
@@ -203,9 +231,9 @@ class OptionalClassify extends Component{
                 <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
                 <div ref="content" className="scroll-content has-header market">
                     {
-                        (this.state.data.length == 0 && !this.state.loading)
+                        (this.props.stores.data.length == 0 && !this.state.loading)
                             ? <EmptyComponent/>
-                            : <Main data={this.state.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
+                            : <Main data={this.props.stores.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
                     }
                 </div>
                 {
@@ -228,9 +256,9 @@ class HeaderBar extends Component{
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="searchName"  type="search" placeholder={this.props.params.searchName}/>
+                    <input ref="searchName"  type="search" placeholder={this.props.stores.searchName == ''?this.props.params.searchName:this.props.stores.searchName}/>
                 </label>
-                <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value)}>
+                <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value,this.props.stores.searchName,this.props.stores.data)}>
                     搜索
                 </button>
             </div>
@@ -281,7 +309,7 @@ class List extends Component{
             return string;
         })();
         return(
-            <Link to={`/market/marketSearch/marketSearchDetail/${encodeURIComponent(encodeURIComponent(this.props.dataSources.genericName))}/${this.props.dataSources.breedId}`}  className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
+            <Link to={`/market/marketSearch/marketSearchDetail/${encodeURIComponent(encodeURIComponent(this.props.dataSources.genericName))}/${this.props.dataSources.breedId}/${this.props.dataSources.icoType}`}  className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
                 <div className="col"  style={{fontSize: '.6rem'}}>
                     <span className="tag" style={{background: '#fea512'}}>{this.props.dataSources.icoType}</span>
                     {this.props.dataSources.genericName}
@@ -296,15 +324,15 @@ class List extends Component{
 
 function select(state){
 	return{
-		showProvicen:state.index.showProvicen,
+        stores:state.optionalClassify,
 		areaId:state.provicen.areaId,
 		areaName:state.provicen.areaName,
         provicenData:state.provicen.data,
 		yearMonth:state.data.yearMonth,
-		uri:state.router.uri,
         isVip:state.userInfo.isVip,
         searchAreaType:state.provicen.searchAreaType
-
+        //showProvicen:state.index.showProvicen,
+        //uri:state.router.uri,
 	}
 }
 OptionalClassify.contextTypes = {

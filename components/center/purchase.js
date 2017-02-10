@@ -56,17 +56,13 @@ class purchase extends Component {
   }
   _infiniteScroll(){
     //全部高度-滚动高度 == 屏幕高度-顶部偏移
-    console.log("sssss",this.props.purchase.infinite)
     if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.purchase.infinite){
-      console.log("sdddd",this.props.purchase.infinite)
       this._loadData();
     }
   }
   componentDidMount(){
     this.ele = this.refs.content;
-    console.log(this.refs.content);
     this.ele.addEventListener('scroll',this._infiniteScroll);
-    console.log(this.state.searchType);
     //var interval=setInterval(()=>{
     //    if(this.state.userInfo){this._loadData(); clearInterval(interval);}
     //},1000)
@@ -138,7 +134,7 @@ class purchase extends Component {
         <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header has-footer">
           {
-            (this.props.purchase.data.length == 0 && !this.state.loading)
+            (this.props.purchase.data.length == 0 && !this.props.userInfo.isLogin)
                 ? <EmptyComponent/>
                 : <Main data={this.props.purchase.data} loading={this.state.loading} BuyReportList={this.state.BuyReportList}/>
           }
@@ -159,7 +155,6 @@ class HeaderBar extends Component{
     });
   }
   _changeHandle(){
-    console.log(this.refs.hospitalSearchName.value)
     this.props.dispatch({
       type:'CHANGETITLEORREPORTKEY',
       titleOrReportKey:encodeURI(encodeURI(this.refs.hospitalSearchName.value))

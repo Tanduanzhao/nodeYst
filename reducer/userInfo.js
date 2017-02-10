@@ -22,5 +22,4 @@ export default function userInfo(state = defaultUserInfo,action){
         case 'ISSIGN' : return ObjectAssign({},state,{isSign:action.isSign,score:action.score});
         default : return state;
     }
-    
 }

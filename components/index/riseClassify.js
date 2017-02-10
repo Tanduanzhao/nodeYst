@@ -153,7 +153,7 @@ class RiseClassify extends Component{
             <div className="root">
                 <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
                 <div ref="content" className="scroll-content  has-header market">
-                    <Main data={this.state.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
+                    <Main {...this.props} data={this.state.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
                 </div>
                 {
 					this.props.showProvicen ? <Provicen fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
@@ -166,7 +166,6 @@ class RiseClassify extends Component{
 class Main extends Component{
     constructor(props){
         super(props);
-        console.log(this.props.data,"data")
     }
     render(){
         if(this.props.loading) {
@@ -183,7 +182,7 @@ class Main extends Component{
                     </div>
                     <div className="border horizontal list">
                         {
-                            this.props.data.map((ele,index)=> <List dataSources={ele} key={Math.random()}/>)
+                            this.props.data.map((ele,index)=> <List {...this.props} dataSources={ele} key={Math.random()}/>)
                         }
                     </div>
                 </div>
@@ -196,6 +195,11 @@ class Main extends Component{
 }
 
 class List extends Component{
+    resetnextdata(){
+        this.props.dispatch({
+            type:'RESETOPTIONALCLASSIFY'
+        })
+    }
     render(){
         var string = null;
         var change = (()=>{
@@ -217,7 +221,7 @@ class List extends Component{
             return string;
         })();
         return(
-            <Link to={`/optional/classify/${this.props.dataSources.salesId}/${this.props.dataSources.salesName}`} className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
+            <Link to={`/optional/classify/${this.props.dataSources.salesId}/${this.props.dataSources.salesName}`} onClick={this.resetnextdata.bind(this)} className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
                 <div className="col" style={{fontSize: '.6rem'}}>
                     <span className="tag" style={{background: '#fea512'}}>{this.props.dataSources.icoType}</span>
                     {this.props.dataSources.salesName}

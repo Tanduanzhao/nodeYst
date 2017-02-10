@@ -18,7 +18,7 @@ export default class Breed extends Component{
         if(this.props.dataSources.length != 0){
             return(
                 <div className="list card item-divider item-text-wrap"  style={{marginTop: 0,wordBreak: 'break-all'}}>
-                    <LinkBar link="/rise/breed" title="品种影响力排行榜" icon="breed"/>
+                    <LinkBar {...this.props} link="/rise/breed" title="品种影响力排行榜" icon="breed"/>
                     <div className="row item" style={{ padding: '10px',color: '#0894ec',fontSize: '.6rem'}}>
                         <div className="col text-left">通用名</div>
                         <div className="col text-center">市场规模(万)</div>
@@ -37,7 +37,7 @@ export default class Breed extends Component{
         }else{
             return(
                 <div className="list card">
-                    <LinkBar link="/rise/breed" title="品种影响力排行榜"/>
+                    <LinkBar {...this.props} link="/rise/breed" title="品种影响力排行榜"/>
                     <EmptyComponent/>
                 </div>
             )

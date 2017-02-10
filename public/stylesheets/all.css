@@ -586,6 +586,16 @@ h3 {
           justify-content: space-between;
   -webkit-justify-content: space-between; }
 
+.new_report .item-right .user-level {
+  width: 53px;
+  margin-left: 5px; }
+
+.new_report .item-right .vip-time {
+  color: #a1a1a1;
+  font-size: .6rem;
+  line-height: 2.5;
+  letter-spacing: 1px; }
+
 .home .new_report a:last-child {
   border-bottom: 0; }
 
@@ -1140,7 +1150,7 @@ table.table-border td, table.table-border th {
         .center-top .center-top-user .user .user-text .time {
           color: #fff;
           font-size: 11px;
-          letter-spacing: 2px; }
+          letter-spacing: 1px; }
     .center-top .center-top-user .sign-in {
       position: absolute;
       right: 18px;
@@ -1348,6 +1358,8 @@ table.table-border td, table.table-border th {
     text-indent: 2em;
     line-height: 1.3rem;
     font-size: .7rem; }
+  .nestedHTML em {
+    font-style: italic; }
 
 .scroll-iframe {
   -webkit-overflow-scrolling: touch;

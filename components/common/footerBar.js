@@ -68,7 +68,7 @@ FooterBar.propTypes = {
 }
 const styles = {
 	active:{
-		color:'#fff'
-		//color:'#0284D0'
+		//color:'#fff'
+		color:'#0284D0'
 	}
 }

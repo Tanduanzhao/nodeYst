@@ -1,15 +1,15 @@
 @function pxTorem($px,$base:20){
-	@return ($px / $base ) * 1rem;
+    @return ($px / $base ) * 1rem;
 }
 body{
-	color:#666;
-	border-radius:3px;
-	display:flex;
+    color:#666;
+    border-radius:3px;
+    display:flex;
     font-size: pxTorem(14);
-    
-	.name{
-		color:'red';
-	}
+
+    .name{
+        color:'red';
+    }
 }
 .row.horizontal > .text-center{
     display:flex;
@@ -18,21 +18,21 @@ body{
     -webkit-flex-direction: column;
 }
 .text{
-	&.red{
-		color:red;
-	}
-	&.zb{
+    &.red{
+        color:red;
+    }
+    &.zb{
         flex:1;
         -webkit-flex:1;
-		font-size: pxTorem(12);
-	}
-	&.fzb{
-		font-size: pxTorem(16);
-		margin:0 pxTorem(10);
-	}
-	&.green{
-		color:green;
-	}
+        font-size: pxTorem(12);
+    }
+    &.fzb{
+        font-size: pxTorem(16);
+        margin:0 pxTorem(10);
+    }
+    &.green{
+        color:green;
+    }
 }
 .scroll-content{
     overflow-y: auto;
@@ -200,7 +200,7 @@ h3{
 .row .bg-fff{
     background: #fff;
 }
- .bgcf{
+.bgcf{
     background: #fff;
 }
 .datas{
@@ -264,7 +264,7 @@ h3{
         width: 40px;
         border-radius: 50%;
         float: left;
-        
+
     }
     &.left{
         img{
@@ -285,7 +285,7 @@ h3{
         img{
             float: left;
             margin-right: 10px;
-        margin-left: 15px;
+            margin-left: 15px;
         }
         span{
             &:before{
@@ -313,13 +313,13 @@ h3{
                 border-style: solid;
                 top: 50%;
                 margin-top: -4px;
-                
+
             }
         }
     }
 }
 .marginTop{
-   padding-left: 0;
+    padding-left: 0;
     padding-right: 0;
     margin-top: 193px;
 }
@@ -527,15 +527,15 @@ h3{
     padding: 20px 16px;
 }
 .noDataTip{
-  text-align: center;
-  line-height: 2;
-  font-size: .7rem;
-  padding-top:.5rem;
-  color: lighten(#000,65%);
-  >i{
-    display: block;
-    color: lighten(#000,75%);
-  }
+    text-align: center;
+    line-height: 2;
+    font-size: .7rem;
+    padding-top:.5rem;
+    color: lighten(#000,65%);
+    >i{
+        display: block;
+        color: lighten(#000,75%);
+    }
 }
 //home
 .home{
@@ -579,6 +579,18 @@ h3{
         padding: .6rem;
         justify-content: space-between;
         -webkit-justify-content: space-between;
+    }
+    .item-right{
+        .user-level{
+            width: 53px;
+            margin-left: 5px;
+        }
+        .vip-time{
+            color: #a1a1a1;
+            font-size: .6rem;
+            line-height: 2.5;
+            letter-spacing: 1px;
+        }
     }
 }
 .home .new_report{
@@ -782,10 +794,10 @@ h3{
 .vip{
     overflow: auto;
     color: #fff;
-   img{
-       width: 100%;
-       display: block;
-   }
+    img{
+        width: 100%;
+        display: block;
+    }
     .popup-body{
         color: black;
     }
@@ -953,7 +965,7 @@ h3{
         padding: 8px 14px;
     }
     .btn{
-       margin-right: 10px;
+        margin-right: 10px;
     }
 }
 .bidall{
@@ -1227,7 +1239,7 @@ table{
                 .time{
                     color: #fff;
                     font-size: 11px;
-                    letter-spacing: 2px;
+                    letter-spacing: 1px;
                 }
             }
         }
@@ -1276,7 +1288,7 @@ table{
 
 //个人中心-内容
 .center-viwe {
-   background: #e4e4e4;
+    background: #e4e4e4;
     padding-top: 15px;
     .center-viwe-card{
         padding-bottom: 15px;
@@ -1299,7 +1311,7 @@ table{
             padding: 10px;
             .icon{
                 margin-right: 4px;
-             }
+            }
         }
         .table-border{
             background: #fff;
@@ -1477,6 +1489,17 @@ table{
         line-height: 1.3rem;
         font-size: .7rem;
     }
+    em{
+        font-style:italic;
+    }
+    //table {
+    //    width: 100%;
+    //    text-align: center;
+    //    td {
+    //        padding: 5px 0;
+    //        border: 1px solid #ddd;
+    //    }
+    //}
 }
 .scroll-iframe{
     -webkit-overflow-scrolling: touch;
@@ -1542,7 +1565,7 @@ table{
         //    font-weight: bold;
         //    margin: 0;
         //}
-       }
+    }
     .list-title-right{
         float: right;
         color: #c9c9c9;
@@ -1564,14 +1587,14 @@ table{
 .foot{
     .list-title{
         padding: 8px 16px;
-       i{
-           display: inline-block;
-           width: 1rem;
-           height: .7rem;
-           background: url("/images/report_writeComment_icon.png") no-repeat;
-           background-size: 100%;
-           vertical-align: middle;
-       }
+        i{
+            display: inline-block;
+            width: 1rem;
+            height: .7rem;
+            background: url("/images/report_writeComment_icon.png") no-repeat;
+            background-size: 100%;
+            vertical-align: middle;
+        }
         .comment_icon{
             display: inline-block;
             width: 1rem;
@@ -1834,28 +1857,28 @@ table{
 
 // 问卷调查
 .survey{
-     .row{
+    .row{
         flex-wrap: wrap;
         -webkit-flex-wrap: wrap;
-         padding: 5px 0 0 25px;
-         line-height: 30px;
-         .col{
-             padding: 0;
-         }
-         input[type="checkbox"]{
-             margin-right: 5px;
-             vertical-align: middle;
-         }
-         input[type="text"]{
-             margin-left: 5px;
-             width: 80px;
-             height: 20px;
-             display: inline-block;
-             border-bottom: 1px solid #111;
-         }
-         span{
-             vertical-align: middle;
-         }
+        padding: 5px 0 0 25px;
+        line-height: 30px;
+        .col{
+            padding: 0;
+        }
+        input[type="checkbox"]{
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        input[type="text"]{
+            margin-left: 5px;
+            width: 80px;
+            height: 20px;
+            display: inline-block;
+            border-bottom: 1px solid #111;
+        }
+        span{
+            vertical-align: middle;
+        }
     }
     .scroll-content-content{
         h3{
@@ -1885,7 +1908,7 @@ table{
         p{
             text-indent: 1.2rem;
             margin: 0;
-         }
+        }
     }
     .popup-center-form{
         .item-input{
@@ -2411,12 +2434,12 @@ table{
         .happy{
             color:#c288c3
         }
-         .tab-item .icon{
-             margin-top: 2px;
-             margin-bottom: 3px;
-             background-size: 100% 100%;
+        .tab-item .icon{
+            margin-top: 2px;
+            margin-bottom: 3px;
+            background-size: 100% 100%;
         }
-       .icon:before{
+        .icon:before{
             content:initial!important;
         }
         .ion-ios-home{
@@ -2440,8 +2463,8 @@ table{
 //新年
 .NewYear{
     .has-footer {
-         bottom: 51px;
-     }
+        bottom: 51px;
+    }
     .module-bar{
         color: #50281c;
         background: url(/images/NewYear_header_bg.jpg) no-repeat;

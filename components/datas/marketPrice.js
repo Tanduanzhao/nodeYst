@@ -49,6 +49,16 @@ class MarketPrice extends Component{
         }
     }
 
+    //查看各省中标价方法
+    tobidList(productName,prepName,spec,manufacturerName,id){
+        if(this.props.isVip == '0'){
+            this.context.router.push('/pay/vip');
+            return false;
+        }else{
+            this.context.router.push(`/bidListall/${encodeURI(encodeURI(productName))}/${encodeURI(encodeURI(prepName))}/${encodeURI(encodeURI(spec))}/${encodeURI(encodeURI(manufacturerName))}/${encodeURI(encodeURI(id))}`);
+        }
+    }
+
     //加载页面数据
     _loadData(){
         this.setState({
@@ -108,7 +118,7 @@ class MarketPrice extends Component{
                     this.state.loading?<Loading/>: null
                 }
                 <div ref="content" className="scroll-content has-header">
-                    <Main {...this.props} data={this.props.stores.data} loading={this.state.loading}/>
+                    <Main {...this.props} tobidList={this.tobidList.bind(this)} data={this.props.stores.data} loading={this.state.loading}/>
                 </div>
                 <More {...this.props}/>
             </div>
@@ -124,9 +134,9 @@ class Main extends Component{
             this.props.data.length == 0 ? <EmptyComponent/>
                 : <ul className="list bid-list">
                     {
-                        this.props.data.map((ele)=> <List dataSources={ele} key={ele.id+Math.random()}/>)
+                        this.props.data.map((ele)=> <List {...this.props} dataSources={ele} key={ele.id+Math.random()}/>)
                     }
-                    </ul>
+                </ul>
         )
     }
 }
@@ -174,7 +184,7 @@ class List extends Component{
                             </div>:null
                         }
                     </div>
-                    <Link to={`/bidListall/${encodeURI(encodeURI(this.props.dataSources.productName))}/${encodeURI(encodeURI(this.props.dataSources.prepName))}/${encodeURI(encodeURI(this.props.dataSources.spec))}/${encodeURI(encodeURI(this.props.dataSources.manufacturerName))}/${encodeURI(encodeURI(this.props.dataSources.id))}`}  className="list-right btn"> 查看各省中标价</Link>
+                    <div onClick={()=> this.props.tobidList(this.props.dataSources.productName,this.props.dataSources.prepName,this.props.dataSources.spec,this.props.dataSources.manufacturerName,this.props.dataSources.id)}  className="list-right btn"> 查看各省中标价</div>
                 </div>
                 <div className="row market-price">
                     <div className="col-50"> 广东省最小制剂入市价</div>

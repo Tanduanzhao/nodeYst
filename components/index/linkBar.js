@@ -1,6 +1,12 @@
 import React,{Component} from 'react';
 import {Link} from 'react-router';
 export default class LinkBar extends Component{
+    resetnextdata(){
+        switch(this.props.icon){
+            case "breed": this.props.dispatch({type:'RESETRISEBREES'});
+            case "factory":this.props.dispatch({type:'RESETFACTORY'});
+        }
+    }
 	render(){
         var icon = (()=>{
             switch(this.props.icon){
@@ -13,7 +19,7 @@ export default class LinkBar extends Component{
                 <div className="item item-divider market-item-top" style={{color:'#444'}}>
                     {icon}
                     {this.props.title}
-                    <Link style={styles.more} to={this.props.link}>查看更多 ></Link>
+                    <Link style={styles.more} to={this.props.link}  onClick={this.resetnextdata.bind(this)}>查看更多 ></Link>
                 </div>
         )
 	}

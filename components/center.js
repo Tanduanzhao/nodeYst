@@ -142,27 +142,27 @@ class Center extends Component{
                 }
             });
         });
-        wx.error(()=> {
-            // 分享
-            wx.onMenuShareTimeline({
-                title: info.title, // 分享标题
-                link: info.link, // 分享链接
-                imgUrl: info.imgUrl, // 分享图标
-                success: function() {
-//                                $.toast('分享成功！');
-                }
-            });
-            wx.onMenuShareAppMessage({
-                title: info.title,
-                link: info.link, // 分享链接
-                imgUrl: info.imgUrl, // 分享图标
-                desc: info.desc, // 分享描述
-                success: function() {
-                    // 用户确认分享后执行的回调函数
-//                                $.toast('分享成功！');
-                }
-            });
-        });
+//        wx.error(()=> {
+//            // 分享
+//            wx.onMenuShareTimeline({
+//                title: info.title, // 分享标题
+//                link: info.link, // 分享链接
+//                imgUrl: info.imgUrl, // 分享图标
+//                success: function() {
+////                                $.toast('分享成功！');
+//                }
+//            });
+//            wx.onMenuShareAppMessage({
+//                title: info.title,
+//                link: info.link, // 分享链接
+//                imgUrl: info.imgUrl, // 分享图标
+//                desc: info.desc, // 分享描述
+//                success: function() {
+//                    // 用户确认分享后执行的回调函数
+////                                $.toast('分享成功！');
+//                }
+//            });
+//        });
     }
 
     render(){
@@ -241,36 +241,74 @@ class Center extends Component{
                         {
                             (()=>{
                                 if( this.props.userInfo.datas.isAccountManager == 1){
-                                    return <div className="center-viwe-card">
-                                                <div className="item item-icon-left">
-                                                    <img src="/images/icon_customer.jpg" alt=""/>
-                                                    我的客户（{this.props.userInfo.datas.customerNum}）
-                                                    <span className="item-note"> 等级{this.props.userInfo.datas.level}</span>
+                                    if(this.props.userInfo.datas.isChecked ==1){
+                                        return <div className="center-viwe-card">
+                                                    <div className="item item-icon-left">
+                                                        <img src="/images/icon_manager.jpg" alt=""/>
+                                                        客户经理
+                                                        <span className="item-note">ID:{this.props.userInfo.datas.accountManagerId}</span>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <table className="table-border" width="100%">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>  <a  href={`tel:${this.props.userInfo.datas.phone}`} style={{ display: 'block'}} > <i className="icon ion-ios-telephone"></i> 联系客户经理</a></td>
+                                                                <td>  <Link to="center/managerList" style={{ display: 'block'}}><i className="icon ion-edit"></i> 更换客户经理</Link></td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <Link  to="center/clientList" className="item item-icon-left">
+                                                        <img src="/images/icon_customer.jpg" alt=""/>
+                                                        我的客户（{this.props.userInfo.datas.customerNum}）
+                                                        <span className="item-note"> 等级{this.props.userInfo.datas.level}</span>
+                                                    </Link>
+                                                    <div className="item text-center become-manager" onClick={this._showPopup.bind(this)}>
+                                                        <i className="icon ion-plus"></i>
+                                                        邀请客户
+                                                    </div>
                                                 </div>
-                                                <div className="item text-center become-manager" onClick={this._showPopup.bind(this)}>
-                                                    <i className="icon ion-plus"></i>
-                                                    邀请客户
+                                    }else{
+                                        return <div className="center-viwe-card">
+                                                    <Link to="center/managerList" className="item item-icon-left">
+                                                        <img src="/images/icon_manager.jpg" alt=""/>
+                                                        客户经理
+                                                        <span className="item-note">未绑定</span>
+                                                    </Link>
+                                                    <Link  to="center/clientList"  className="item item-icon-left">
+                                                        <img src="/images/icon_customer.jpg" alt=""/>
+                                                        我的客户（{this.props.userInfo.datas.customerNum}）
+                                                        <span className="item-note"> 等级{this.props.userInfo.datas.level}</span>
+                                                    </Link>
+                                                    <div className="item text-center become-manager" onClick={this._showPopup.bind(this)}>
+                                                        <i className="icon ion-plus"></i>
+                                                        邀请客户
+                                                    </div>
                                                 </div>
-                                            </div>
+                                    }
                                 }else{
                                     if(this.props.userInfo.datas.isChecked ==1){
                                         return <div className="center-viwe-card">
-                                            <div className="item item-icon-left">
-                                                <img src="/images/icon_manager.jpg" alt=""/>
-                                                客户经理
-                                                <span className="item-note">ID:{this.props.userInfo.datas.accountManagerId}</span>
-                                            </div>
-                                            <div className="text-center">
-                                                <table className="table-border" width="100%">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>  <a  href={`tel:${this.props.userInfo.datas.phone}`} style={{ display: 'block'}} > <i className="icon ion-ios-telephone"></i> 联系客户经理</a></td>
-                                                            <td>  <Link to="center/managerList" style={{ display: 'block'}}><i className="icon ion-edit"></i> 更换客户经理</Link></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                                    <div className="item item-icon-left">
+                                                        <img src="/images/icon_manager.jpg" alt=""/>
+                                                        客户经理
+                                                        <span className="item-note">ID:{this.props.userInfo.datas.accountManagerId}</span>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <table className="table-border" width="100%">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>  <a  href={`tel:${this.props.userInfo.datas.phone}`} style={{ display: 'block'}} > <i className="icon ion-ios-telephone"></i> 联系客户经理</a></td>
+                                                                    <td>  <Link to="center/managerList" style={{ display: 'block'}}><i className="icon ion-edit"></i> 更换客户经理</Link></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <Link to="center/managerProtocol" className="item text-center become-manager">
+                                                        <i className="icon ion-plus"></i>
+                                                        我要当客户经理
+                                                    </Link>
+                                                </div>
 
                                     }else{
                                         return <div className="center-viwe-card">

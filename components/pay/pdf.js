@@ -89,6 +89,42 @@ class Pdf extends Component{
     //
     //    //console.log(document.querySelectorAll('.nestedHTML img'),'i mages');
     //}
+    componentDidUpdate(){
+        let images = document.querySelectorAll('.nestedHTML img');
+        if(images.length == 0){
+            return false;
+        }
+        let imgArr = [];
+        let imgShowArr = [];
+        let index = 0;
+        //$('.nestedHTML img').each((_index,ele)=>{
+        //    imgArr.push(ele.src);
+        //}).on('click',(e)=>{
+        //    index = imgArr.indexOf(e.target.src);
+        //    imgShowArr.push(imgArr[index]);
+        //    imgShowArr = imgShowArr.concat(imgArr.slice(0,index));
+        //    imgShowArr = imgShowArr.concat(imgArr.slice(index+1));
+        //    wx.previewImage({
+        //        current: imgShowArr[0],
+        //        urls: imgShowArr
+        //    });
+        //})
+        $('.nestedHTML').on('click','img',function(event){
+            var imgArray = [];
+            var curImageSrc = $(this).attr('src');
+            var oParent = $(this).parent();
+            if (curImageSrc && !oParent.attr('href')) {
+                $('.nestedHTML img').each(function(index, el) {
+                    var itemSrc = $(this).attr('src');
+                    imgArray.push(itemSrc);
+                });
+                wx.previewImage({
+                    current: curImageSrc,
+                    urls: imgArray
+                });
+            }
+        })
+    }
 
     //支付
     _sandboxPayService(id,self){
@@ -190,6 +226,7 @@ class Pdf extends Component{
         //this.head.getElementsByTagName('meta')[0].setAttribute('content', 'width=device-width,initial-scale=1, user-scalable=yes, minimal-ui');
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll', this._infiniteScroll);
+        //authWxcode(location.href);
         this.setState({
             isLoading:true
         });

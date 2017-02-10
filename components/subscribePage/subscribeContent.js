@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
+import $ from 'jquery';
 import { default as Video, Controls, Play, Mute, Seek, Fullscreen, Time, Overlay } from 'react-html5video';
 import {insertLikeReport,selectReportReplys,insertReplyReport,keepReport,cancelKeepReport,selectReportDetail} from './../function/ajax';
 import Loading from './../common/loading';
@@ -28,6 +29,43 @@ class subscribeContent extends Component {
         }
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
+    }
+
+    componentDidUpdate(){
+        let images = document.querySelectorAll('.nestedHTML img');
+        if(images.length == 0){
+            return false;
+        }
+        let imgArr = [];
+        let imgShowArr = [];
+        let index = 0;
+        //$('.nestedHTML img').each((_index,ele)=>{
+        //    imgArr.push(ele.src);
+        //}).on('click',(e)=>{
+        //    index = imgArr.indexOf(e.target.src);
+        //    imgShowArr.push(imgArr[index]);
+        //    imgShowArr = imgShowArr.concat(imgArr.slice(0,index));
+        //    imgShowArr = imgShowArr.concat(imgArr.slice(index+1));
+        //    wx.previewImage({
+        //        current: imgShowArr[0],
+        //        urls: imgShowArr
+        //    });
+        //})
+        $('.nestedHTML').on('click','img',function(event){
+            var imgArray = [];
+            var curImageSrc = $(this).attr('src');
+            var oParent = $(this).parent();
+            if (curImageSrc && !oParent.attr('href')) {
+                $('.nestedHTML img').each(function(index, el) {
+                    var itemSrc = $(this).attr('src');
+                    imgArray.push(itemSrc);
+                });
+                wx.previewImage({
+                    current: curImageSrc,
+                    urls: imgArray
+                });
+            }
+        })
     }
     _loadData(){
         this.setState({
@@ -220,9 +258,11 @@ class subscribeContent extends Component {
                             <div className="columnTitle">
                                 <span>{this.props.subscribeContent.dataAll.publishDate}</span>
                                 {
-                                    this.props.subscribeContent.dataAll.columnName?
+                                    this.props.subscribeContent.dataAll.columnName && this.props.params.id != 6?
                                         <span>{this.props.subscribeContent.dataAll.columnName}</span>:null
                                 }
+                                {this.props.params.id == 6 ?
+                                    <span>{this.props.subscribeContent.dataAll.reportSource}</span> : null}
                                 {this.props.params.id == 2 ?
                                     <span>{this.props.subscribeContent.dataAll.columnTitle}</span> : null}
                                 {this.props.params.id == 3 ?

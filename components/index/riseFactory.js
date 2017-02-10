@@ -14,7 +14,7 @@ class RiseFactory extends Component{
     constructor(props){
         super(props);
         this.state={
-            data:[],
+            //data:[],
             pageNo:1,
             infinite:false,
             loading:true,
@@ -48,9 +48,13 @@ class RiseFactory extends Component{
 	}
     _reSet(){
         this.setState({
-            pageNo:1,
-            data:[]
+            pageNo:1
+            //data:[]
         })
+        this.props.dispatch({
+            type:'LOADFACTORYDATA',
+            data:[]
+        });
     }
     //排序
     sort(sordActive,sidx){
@@ -63,10 +67,11 @@ class RiseFactory extends Component{
                 sord:"desc"
             });
         }
+        this._reSet();
         this.setState({
             loading:true,
-            data:[],
-            pageNo:1,
+            //data:[],
+            //pageNo:1,
             sordActive:sordActive,
             sidx:sidx
         });
@@ -99,10 +104,14 @@ class RiseFactory extends Component{
                 callBack:(res)=>{
                     this.setState({
                         pageNo:this.state.pageNo+1,
-                        data:res.datas,
+                        //data:res.datas,
                         infinite:false
                     })
-                    if(res.totalSize <= this.state.data.length){
+                    this.props.dispatch({
+                        type:'LOADFACTORYDATA',
+                        data:res.datas,
+                    });
+                    if(res.totalSize <= this.props.stores.data.length){
                         this.ele.removeEventListener('scroll',this._infiniteScroll);
                     }
                     this.setState({
@@ -127,10 +136,14 @@ class RiseFactory extends Component{
                 callBack:(res)=>{
                     this.setState({
                         pageNo:this.state.pageNo+1,
-                        data:this.state.data.concat(res.datas),
+                        //data:this.state.data.concat(res.datas),
                         infinite:false
                     })
-                    if(res.totalSize <= this.state.data.length){
+                    this.props.dispatch({
+                        type:'LOADFACTORYDATA',
+                        data:this.props.stores.data.concat(res.datas),
+                    });
+                    if(res.totalSize <= this.props.stores.data.length){
                         this.ele.removeEventListener('scroll',this._infiniteScroll);
                     }
                     this.setState({
@@ -162,17 +175,24 @@ class RiseFactory extends Component{
     }
 
     //搜索方法
-    _searchHandle(searchKeys){
+    _searchHandle(searchKeys,storesSearchName,storesData){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
         }else{
+            this._reSet();
             this.setState({
                 loading:true,
-                data:[],
-                pageNo:1,
-                searchName:searchKeys
+                //data:[],
+                //pageNo:1,
+                searchName:searchKeys == '' && storesData.length !=0  ?storesSearchName:searchKeys
             });
+            if(searchKeys != '' || storesData.length ==0) {
+                this.props.dispatch({
+                    type: 'FACTORYSEARCHNAME',
+                    searchName: searchKeys
+                });
+            }
             setTimeout(()=> this._loadData());
         }
     }
@@ -195,9 +215,9 @@ class RiseFactory extends Component{
                 <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
                 <div ref="content" className="scroll-content has-header market">
                     {
-                        (this.state.data == 0 && !this.state.loading)
+                        (this.props.stores.data.length == 0 && !this.state.loading)
                             ? <EmptyComponent/>
-                            :  <Main data={this.state.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
+                            :  <Main data={this.props.stores.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
                     }
                 </div>
                 {
@@ -221,9 +241,9 @@ class HeaderBar extends Component{
                 </div>
                 <label className="item-input-wrapper">
                     <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="searchName"  type="search"  placeholder="多个条件请用空格区分"/>
+                    <input ref="searchName"  type="search"  placeholder={this.props.stores.searchName == ''?"多个条件请用空格区分":this.props.stores.searchName}/>
                 </label>
-                <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value)}>
+                <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value,this.props.stores.searchName,this.props.stores.data)}>
                     搜索
                 </button>
             </div>
@@ -286,13 +306,14 @@ class List extends Component{
 
 function select(state){
 	return{
-		showProvicen:state.index.showProvicen,
+        stores:state.riseFactory,
 		areaId:state.provicen.areaId,
 		areaName:state.provicen.areaName,
         provicenData:state.provicen.data,
 		yearMonth:state.data.yearMonth,
-		uri:state.router.uri,
         searchAreaType:state.provicen.searchAreaType
+        //uri:state.router.uri,
+        //showProvicen:state.index.showProvicen,
 	}
 }
 export default connect(select)(RiseFactory);

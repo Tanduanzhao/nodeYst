@@ -1094,6 +1094,7 @@ export const getBusinessFactoryProdInfo = function(args){
             yearMonth:args.yearMonth || null,
             breedId:args.breedId || null,
             pageNo:args.pageNo || null,
+            yytj:args.yytj || "",
             sord:args.sord || null,
             sidx:args.sidx || null,
             searchName:args.searchName || "",
@@ -1143,6 +1144,21 @@ export const getAccountManagerlist = function(args){
         data:{
             userId:args.userId,
             searchName:args.searchName,
+            pageNo:args.pageNo
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//我的客户列表
+export const myCustomerList = function(args){
+    ajaxFn({
+        url:'business/myCustomerList',
+        data:{
+            //userId:args.userId,
+            //searchName:args.searchName,
             pageNo:args.pageNo
         },
         callBack:(res)=>{

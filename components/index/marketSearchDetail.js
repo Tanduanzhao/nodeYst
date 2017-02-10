@@ -24,17 +24,16 @@ class MarketSearchDetail extends Component{
             isCity:null,
             searchAreaType:""
         };
-
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
-
     //加载页面数据
     _loadData(){
         getBusinessFactoryProdInfo({
             areaId:this.props.areaId,
             yearMonth:this.props.yearMonth,
             breedId:this.props.params.id,
+            yytj:typeof this.props.params.icoType == undefined ?'':this.props.params.icoType,
             pageNo:this.props.stores.pageNo,
             searchAreaType:this.state.searchAreaType,
             parentId:this.props.params.parentId || '',
@@ -199,7 +198,6 @@ class MarketSearchDetail extends Component{
     }
 
     render(){
-        console.log(this.state.searchName,"searchName")
         return (
             <div className="root" style={{"overflow":"auto"}}>
                 <HeaderBar {...this.props} searchName={this.state.searchName} searchHandle={this._searchHandle.bind(this)} showFilter={this._toggleFilter.bind(this)}/>

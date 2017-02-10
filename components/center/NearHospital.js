@@ -6,42 +6,39 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import {getTencentMap,getUserAreaInfo} from '../function/ajax';
 import Popup from '../popup';
+import {authWxcode,authWx} from '../function/common';
 class NearHospital extends Component{
     constructor(props){
         super(props);
         this.state={
             list:[]
-        }
+        };
+        //authWxcode(location.href,null);
+        //authWxcode(location.href,null);
     }
     //渲染完成后调用
     componentDidMount(){
         this._loadData();
     }
     _loadData(){
-        wx.getLocation({
-            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-            success: (res)=> {
-                getTencentMap({
-                    place:encodeURI(encodeURI(this.props.params.place)),
-                    lat:res.latitude,
-                    long:res.longitude,
-                    around:1000,
-                    callBack:(res)=> {
-                        console.log(res);
-                        this.setState({
-                            list:res.datas
-                        })
-                    }
-                })
-                //getTencentMap({
-                //    lat:res.latitude,
-                //    long:res.longitude
-                //},1000,"医院",(res)=>{
-                //    this.setState({
-                //        list:res.data
-                //    })
-                //})
-            }
+        wx.ready(()=>{
+            wx.getLocation({
+                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                success: (res)=> {
+                    getTencentMap({
+                        place:encodeURI(encodeURI(this.props.params.place)),
+                        lat:res.latitude,
+                        long:res.longitude,
+                        around:1000,
+                        callBack:(res)=> {
+                            console.log(res);
+                            this.setState({
+                                list:res.datas
+                            })
+                        }
+                    })
+                }
+            })
         })
     }
 

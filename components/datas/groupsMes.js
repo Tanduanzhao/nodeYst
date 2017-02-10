@@ -149,7 +149,6 @@ class GroupsMes extends Component{
         });
     }
     render(){
-        console.log(this.props.groupsMes,'p');
         return(
             <div className="root">
                 <Header searchName={this.props.groupsMes.searchName} searchHandle={this._searchHandle} showFilter={this._toggleFilter.bind(this)} {...this.props}/>
@@ -174,7 +173,6 @@ class Main extends Component{
         super(props);
     }
     render(){
-        console.log(this.props.dataSource.datas);
         return (
             <div className="product-view">
                 {
@@ -221,7 +219,7 @@ class List extends Component{
                 {
                     //<p className="item-text-wrap">物价产品ID：{this.props.dataSource.wjProdId}</p>
                 }
-                <p>产品名称：{this.props.dataSource.prodName} <span className="btn" style={{padding:"2px 3px"}}>{this.props.dataSource.iconGeneric}</span></p>
+                <p>产品名称：{this.props.dataSource.prodName} <span className="btn" style={{margin:'0 5px',padding:"2px 3px"}}>{this.props.dataSource.iconGeneric}</span></p>
                 <p>剂型：{this.props.dataSource.dosName}</p>
                 <p>规格：{this.props.dataSource.spec}</p>
                 <p>包装规格：{this.props.dataSource.baozhuangSpec}</p>
@@ -230,8 +228,11 @@ class List extends Component{
                 <p>生产企业：{this.props.dataSource.factoryName}</p>
                 <p>报名企业：{this.props.dataSource.baomingFac}</p>
                 {
-                    (this.props.dataSource.remark != '') ? <p>备注：{this.props.dataSource.remark}</p> : null
+                    (typeof this.props.dataSource.remark == 'undefined') ? null:<p>备注：{this.props.dataSource.remark}</p>
                 }
+                <p>入市价：{this.props.dataSource.entryPrice}（{this.props.dataSource.publishDate}）</p>
+                <p>广东现行采购价：{this.props.dataSource.gdPurchase}</p>
+                <p>最低五省价格：{this.props.dataSource.miniFive}</p>
             </li>
         )
     }
