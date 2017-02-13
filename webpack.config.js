@@ -12,13 +12,16 @@ module.exports = {
 	module: {
 		loaders: [{
 			test: /\.js?$/,
-			loaders: ['jsx', 'babel?presets[]=react,presets[]=es2015'],
+			loaders: ['jsx', 'babel?presets[]=react,presets[]=es2015','eslint'],
 			exclude: /node_modules/
 		},
 		{
 			test:/\.scss$/,
 			loader:ExtractTextPlugin.extract('style','css!postcss!sass')
 		}]
+	},
+	eslint:{
+		configFile:'./.eslintrc.json'
 	},
 	postcss:function(){
 		return [require('autoprefixer'),require('precss')];
