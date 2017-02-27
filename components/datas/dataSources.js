@@ -8,6 +8,7 @@ import {getProvinceList,getEntryPriceSource} from '../function/ajax';
 import Loading from '../common/loading';
 import EmptyComponent from '../common/emptyComponent';
 import More from './../common/more';
+import HeaderBar from './../common/headerbar.js';
 class DataSources extends Component{
     constructor(props){
         super(props);
@@ -20,7 +21,7 @@ class DataSources extends Component{
             isLoading:true,
             infinite:true,
             pageNum:1,
-            provinceIds:['0'],
+            provinceIds:['0']
         }
     }
     _toggleFilter(){
@@ -32,7 +33,7 @@ class DataSources extends Component{
             isShowFilter:!this.state.isShowFilter
         })
     }
-    
+
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
@@ -43,7 +44,6 @@ class DataSources extends Component{
             this._loadData();
         }
     }
-
     _searchHandle(searchKeys){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
@@ -77,7 +77,7 @@ class DataSources extends Component{
             this._loadData();
         });
     }
-    
+
     _loadProvince(){
         getProvinceList({
             callBack:(res)=>{
@@ -107,7 +107,7 @@ class DataSources extends Component{
                 setTimeout(()=>{
                     if(res.totalSize <= this.props.dataSource.datas.length){
                         this.setState({
-                            infinite:false,
+                            infinite:false
                         });
                     }else{
                         this.setState({
@@ -119,23 +119,48 @@ class DataSources extends Component{
             }
         })
     }
-    
+    //显示简介
+    showIntro(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:32});
+        setTimeout(()=>{this.context.router.push("/market/marketIntro/"+ this.props.search.smallType)})
+    }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:32});
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        })
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
+    }
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
         this._loadProvince();
+        if(this.props.search.clickSearch){
+            this._searchHandle(this.props.search.searchName);
+            return false
+        }
         this._loadData();
     }
     componentWillUnmount(){
         this.props.dispatch({
             type:'RESETDATASOURCE'
         })
+        if(!this.props.search.searchLinkType){
+            this.props.dispatch({
+                type:"RESETSEARCH"
+            });
+        }
     }
     render(){
         return(
             <div className="root">
-                <Header searchHandle={this._searchHandle} showFilter={this._toggleFilter.bind(this)} {...this.props}/>
-                {
+                <HeaderBar {...this.props} titleName="入市价数据源" showSearch={this.showSearch.bind(this)} showFilter={this._toggleFilter.bind(this)}
+                                           showIntro={this.showIntro.bind(this)}/>
+                 {
                     this.state.isLoading ? <Loading/> : null
                 }
                 <div ref="content" className="scroll-content has-header">
@@ -147,29 +172,6 @@ class DataSources extends Component{
                 {
                     this.state.isShowFilter ? <FilterDataSources provinceIds={this.state.provinceIds} provinces={this.props.dataSource.provinces} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)} /> : null
                 }
-            </div>
-        )
-    }
-}
-
-class Header extends Component{
-    _showFilterHandle(){
-        this.props.showFilter()
-    }
-    render(){
-        return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons"  onClick={this._showFilterHandle.bind(this)} style={{ fontSize: '.75rem'}}>
-                  <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-                  <span  style={{margin:' 0 5px'}}>筛选</span>
-                </div>
-                <label className="item-input-wrapper">
-                  <i className="icon ion-ios-search placeholder-icon"></i>
-                  <input ref="groupsSearchName" type="search" placeholder="多个条件请用空格区分"/>
-                </label>
-                <button className="button button-clear" onClick={()=>{this.props.searchHandle(this.refs.groupsSearchName.value)}}>
-                   搜索
-                </button>
             </div>
         )
     }
@@ -215,6 +217,7 @@ class List extends Component{
 }
 function select(state){
     return {
+        search:state.search,
         dataSource:state.dataSources,
         isVip:state.userInfo.isVip
     }

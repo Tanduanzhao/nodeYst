@@ -166,27 +166,27 @@ export default class PolicySonFilter extends Component {
             //匹配目录
             for(let i=0;i<this.props.dataSources.length;i++){
                 if(this.props.dataSources[i].areaId == this.props.areaId[0]){
-                    console.log(this.props.dataSources[i].areaId,"dataSources");
-                    console.log(this.props.areaId[0],"areaId");
                     this.setState({
                         keys:this.state.keys.concat([i])
                     });
-                    if(this.props.dataSources[i].catalogEditions.length != 0){
-                        this.setState({
-                            cList:this.props.dataSources[i].catalogEditions
-                        });
-                        for(let n=0;n<this.props.dataSources[i].catalogEditions.length;n++){
-                            if(this.props.dataSources[i].catalogEditions[n].grades.length != 0){
-                                this.setState({
-                                    gList:this.props.dataSources[i].catalogEditions[n].grades
-                                });
-                                break;
+                    if(typeof this.props.dataSources[i].catalogEditions != "undefined"){
+                        if(this.props.dataSources[i].catalogEditions.length != 0){
+                            this.setState({
+                                cList:this.props.dataSources[i].catalogEditions
+                            });
+                            for(let n=0;n<this.props.dataSources[i].catalogEditions.length;n++){
+                                if(this.props.dataSources[i].catalogEditions[n].grades.length != 0){
+                                    this.setState({
+                                        gList:this.props.dataSources[i].catalogEditions[n].grades
+                                    });
+                                    break;
+                                }
                             }
                         }
                     }
                     break;
                 }
-            };
+            }
         }
     }
     render(){

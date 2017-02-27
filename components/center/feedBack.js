@@ -42,7 +42,7 @@ class FeedBack extends Component{
     render(){
         return(
             <div className="root">
-                <div className="scroll-content padding">
+                <div className="scroll-content has-footer padding">
                     {
                         this.props.feedBack.data.map((ele)=>{
                           return (ele.isReplay == 1) ? (<Dialog key={Math.random(1)} feedContent = {ele.feedContent}/>) : (<Dialog key={Math.random(1)} feedContent ={ele.feedContent} dir="right" imgUrl={ele.headImageUrl}/>)
@@ -74,13 +74,13 @@ class Dialog extends Component{
                 return(
                     <div className="dialog-feedBack left">
                         <img src="/images/logo.jpg"/>
-                        <div className="dialog-content"><span>{this.props.feedContent}</span></div>
+                        <div className="dialog-content" style={{wordBreak: 'break-all'}}><span>{this.props.feedContent}</span></div>
                     </div>
                 )
             }else{
                 return(
                     <div className="dialog-feedBack right">
-                        <div className="dialog-content"><span>{this.props.feedContent}</span></div>
+                        <div className="dialog-content" style={{wordBreak: 'break-all'}}><span>{this.props.feedContent}</span></div>
                         <img src={this.props.imgUrl}/>
                     </div>
                 )

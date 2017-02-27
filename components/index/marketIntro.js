@@ -2,7 +2,7 @@
     行情简介
 */
 import React,{Component} from 'react';
-import {loadReport} from './../function/ajax';
+import {getSynopsis} from './../function/ajax';
 import {connect} from 'react-redux';
 
 import Loading from './../common/loading';
@@ -13,18 +13,24 @@ class MarketIntro extends Component{
         this.state = {
             data:null,
             title:null,
-            isLoading:true,
+            reportName:null,
+            isLoading:true
         }
     }
+    goBack(){
+        setTimeout(()=> this.context.router.goBack());
+    }
+
     componentDidMount(){
         this.setState({
             isLoading:true
         });
-        loadReport({
-            id:this.props.params.reportUrl,
+        getSynopsis({
+            reportId:this.props.params.reportUrl,
             callBack:(res)=>{
                 this.setState({
-                    data:res.datas.content,
+                    data:res.datas.reportMainContent,
+                    reportName:res.datas.reportName.split("栏目")[0],
                     title:res.datas.title,
                     isLoading:false
                 })
@@ -37,7 +43,9 @@ class MarketIntro extends Component{
             <div className="root">
                 <HeaderBar {...this.props} title={this.state.title}/>
                 <div className="scroll-content has-header padding bg-fff marketIntro">
-                    <p className="nestedHTML" dangerouslySetInnerHTML={{__html:this.state.data}}></p>
+                    <div className="nestedHTML" dangerouslySetInnerHTML={{__html:this.state.data}}></div>
+                    <div className="positive" onClick={this.goBack.bind(this)}>
+                        <i className="fa fa-angle-double-right" style={{marginRight:'5px'}}></i>进入{this.state.reportName}</div>
                 </div>
                 {
                     this.state.isLoading ? <Loading /> : null
@@ -60,5 +68,8 @@ function select(state){
     return{
 
     }
+}
+MarketIntro.contextTypes = {
+    router:React.PropTypes.object.isRequired
 }
 export default connect(select)(MarketIntro);

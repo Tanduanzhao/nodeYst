@@ -24,7 +24,7 @@ var defaultPurchase={
   pageNo:1,
   data:[],
   infinite:false,
-  titleOrReportKey:null,
+  titleOrReportKey:"",
   ReportType:[],
   reportType:0,
   ReportTypeDate:[]

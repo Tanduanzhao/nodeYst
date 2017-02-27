@@ -22,25 +22,14 @@ export default class FilterProduce extends Component{
     });
   }
   componentWillUnmount(){
-    //console.log(this.props.bidList.provinceId,"provinceId");
-    //console.log(this.state.areaId,"areaId")
-    //console.log(this.props.sss,"ssss");
-    //this.setState({
-    //  areaId: this.props.sss
-    //});
-    //console.log(this.state.areaId,"areaId");
   }
   _cancel(){
-    //console.log(this.props.bidList.provinceId,"sss")
-    //this.setState({
-    //  areaId: this.props.bidList.provinceId
-    //});
     this.props.dispatch({
       type:'UNSHOWFILTERPBIDLIST'
     })
   }
   _sureButton(){
-    console.log(this.state.active)
+    console.log(this.state.active);
     this.props.fn(this.state);
   }
   areaIdArr(arr,val){
@@ -52,21 +41,14 @@ export default class FilterProduce extends Component{
     return narr;
   }
   _ahandleClick(id,index) {
-    //console.log(id,"id")
-    //console.log(index=="0"&&this.state.areaId.indexOf("0")==-1,"dd")
-    //console.log(this.state.areaId.indexOf("0"),"length")
     if (index == "0") {
       if (this.state.areaId.indexOf("0") == -1) {
        //let areaId = [];
         for (var i = 0; i < this.props.bidList.getBidAreaInfo.length; i++) {
-          //areaId.push(this.props.bidList.getBidAreaInfo[i].id);
           this.setState({
             keys: this.areaIdArr(this.state.keys,this.props.bidList.getBidAreaInfo[i].id)
           });
         }
-        //this.setState({
-        //  areaId: areaId
-        //});
       } else {
         this.setState({
           keys: []
@@ -74,7 +56,6 @@ export default class FilterProduce extends Component{
       }
     }else {
       if(this.state.keys.indexOf("0") != -1){
-        console.log(this.state.keys,"dddd")
         this.setState({
           keys:[]
         });
@@ -84,7 +65,6 @@ export default class FilterProduce extends Component{
           });
         })
       }else{
-        console.log(this.state.keys,"ttttttt")
         this.setState({
           keys:valINarr(this.state.keys, id)
         });
@@ -112,9 +92,6 @@ export default class FilterProduce extends Component{
                       <li key={index} style={(this.state.searchProductStatus == ele.statusNum) ? styles.active : null} onClick={()=>{this.setState({searchProductStatus:ele.statusNum })}}>{ele.statusName}</li>
                       )
                   })
-                }
-                {
-                  //<li key={index} style={(this.state.searchProductStatus.indexOf(ele.statusNum) != "-1") ? styles.active : null} onClick={this._ahandleClick.bind(this,ele.statusNum,index)}>{ele.statusName}</li>
                 }
               </ul>
             </div>

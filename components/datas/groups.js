@@ -8,12 +8,12 @@ import {getCatalogList,getCatalogTypeList} from '../function/ajax';
 import FilterGroups from '../filterPage/filterGroups';
 import Loading from '../common/loading';
 import More from './../common/more';
+import HeaderBar from './../common/headerbar.js';
 import EmptyComponent from '../common/emptyComponent';
 
 class Groups extends Component{
     constructor(props){
         super(props);
-        this._searchHandle = this._searchHandle.bind(this);
         this.state={
             isShowFilter:false,
             isLoading:true,
@@ -27,7 +27,6 @@ class Groups extends Component{
         this._loadTypes = this._loadTypes.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
-    
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
@@ -49,7 +48,7 @@ class Groups extends Component{
         })
     }
 
-    _searchHandle(searchKeys){
+    _searchDatas(searchKeys){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
@@ -70,7 +69,7 @@ class Groups extends Component{
     _fn(args){
         this.props.dispatch({
             type:'RESETDATAGROUPS'
-        })
+        });
         this.setState({
             min:args.min,
             max:args.max,
@@ -84,7 +83,6 @@ class Groups extends Component{
             this._loadData();
         });
     }
-    
     _loadTypes(){
         getCatalogTypeList({
             callBack:(res)=>{
@@ -113,7 +111,7 @@ class Groups extends Component{
                 setTimeout(()=>{
                     if(res.totalSize <= this.props.groups.datas.length){
                         this.setState({
-                            infinite:false,
+                            infinite:false
                         });
                     }else{
                         this.setState({
@@ -125,21 +123,47 @@ class Groups extends Component{
             }
         })
     }
+    //显示简介
+    showIntro(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:31});
+        setTimeout(()=>{this.context.router.push("/market/marketIntro/"+ this.props.search.smallType)});
+    }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:31});
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        });
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
+    }
+
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        this._loadData();
         this._loadTypes();
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
+        }
+        this._loadData();
     }
     componentWillUnmount(){
         this.props.dispatch({
             type:'RESETGTOUPS'
         })
+        if(!this.props.search.searchLinkType){
+            this.props.dispatch({
+                type:"RESETSEARCH"
+            });
+        }
     }
     render(){
         return(
             <div className="root">
-                <Header searchHandle={this._searchHandle} showFilter={this._toggleFilter.bind(this)} {...this.props}/>
+                <HeaderBar {...this.props} titleName="目录分组"  showSearch={this.showSearch.bind(this)} showFilter={this._toggleFilter.bind(this)} showIntro={this.showIntro.bind(this)} />
                 {
                     this.state.isLoading ? <Loading/> : null
                 }
@@ -152,29 +176,6 @@ class Groups extends Component{
                 {
                     this.state.isShowFilter ? <FilterGroups min={this.state.min} max={this.state.max} catalogTypeId={this.state.catalogTypeId} types={this.props.groups.types} {...this.props} groups={this.state.groups} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)}/> : null
                 }
-            </div>
-        )
-    }
-}
-
-class Header extends Component{
-    _showFilterHandle(){
-        this.props.showFilter()
-    }
-    render(){
-        return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons"  onClick={this._showFilterHandle.bind(this)} style={{ fontSize: '.75rem'}}>
-                  <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-                  <span  style={{margin:' 0 5px'}}>筛选</span>
-                </div>
-                <label className="item-input-wrapper">
-                  <i className="icon ion-ios-search placeholder-icon"></i>
-                  <input ref="searchName" type="search" placeholder="请输入目录ID或目录名称"/>
-                </label>
-                <button className="button button-clear" onClick={()=> this.props.searchHandle(this.refs.searchName.value)}>
-                   搜索
-                </button>
             </div>
         )
     }
@@ -194,6 +195,7 @@ class Main extends Component{
         )
     }
 }
+
 class List extends Component{
     render(){
         return(
@@ -207,9 +209,6 @@ class List extends Component{
                 <div className="item item-icon-right item-text-wrap">
                     <p>目录名称: {this.props.dataSource.catalogName}</p>
                     <p>目录类型: {this.props.dataSource.catalogType}</p>
-                    {
-                        //<p>分组依据: {this.props.dataSource.groupReason}</p>
-                    }
                     <i className="icon item-note stable ion-ios-arrow-right"></i>
                 </div>
             </Link>
@@ -218,6 +217,7 @@ class List extends Component{
 }
 function select(state){
     return{
+        search:state.search,
         groups:state.groups,
         isVip:state.userInfo.isVip
     }

@@ -8,6 +8,7 @@ import PolicySonFilter from './../../filterPage/policySonFilter.js';
 import EmptyComponent from './../../common/emptyComponent';
 import Loading from './../../common/loading';
 import More from './../../common/more';
+import HeaderBar from './../../common/headerbar.js';
 class Base extends Component{
     constructor(props){
         super(props);
@@ -111,6 +112,10 @@ class Base extends Component{
         this.ele.addEventListener("scroll",(e)=>{
             this._isNeedLoadData();
         });
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
+        }
         setTimeout(()=>{
             this._isNeedLoadData();
         });
@@ -121,6 +126,22 @@ class Base extends Component{
             this._loadData();
         }
     }
+    //显示简介
+    showIntro(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:37});
+        setTimeout(()=>{this.context.router.push("/market/marketIntro/"+ this.props.search.smallType)});
+    }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:37});
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        })
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
+    }
     //搜索点击查询对应数据
     _searchDatas(key){
         if(this.props.isVip == '0'){
@@ -130,7 +151,10 @@ class Base extends Component{
         this.props.dispatch({
             type:'REASETBASE'
         });
-        console.log(key);
+        this.props.dispatch({
+            type:'CHANGEBASE',
+            areaId:['0']
+        });
         this.props.dispatch({
             type:'CHANGEBASESEARCHNAME',
             searchName:key
@@ -150,12 +174,13 @@ class Base extends Component{
     render(){
         return(
             <div className="root">
-                <HeaderBar showFilter={this._showFilter.bind(this)} searchAction = {this._searchDatas.bind(this)} {...this.props}/>
+                <HeaderBar {...this.props} titleName="基药" showSearch={this.showSearch.bind(this)} showFilter={this._showFilter.bind(this)}
+                                           showIntro={this.showIntro.bind(this)} />
                 <div ref="main" className="scroll-content has-header">
                     <div className="list">
                         <div className="card" style={{marginTop:0}}>
                             {
-                                this.props.base.datas.length==0 ? <EmptyComponent/> :this.props.base.datas.map((ele)=>{
+                                this.props.base.datas.length == 0 ? <EmptyComponent/> :this.props.base.datas.map((ele)=>{
                                     return(
                                         <div key={Math.random(2)}>
                                             <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",g:ele.catalogEditionName,p:ele.areaName}}/>
@@ -191,7 +216,7 @@ class Base extends Component{
                             }
                         </div>
                     </div>
-                    <More/>
+                    <More {...this.props}/>
                 </div>
                 {
                     !this.state.isShowFilter ? null : <PolicySonFilter dataSources={this.props.base.filters} areaId={this.props.base.areaId} areaName={this.props.base.areaName} fn={this._fn.bind(this)} cancelButton={this._hideFilter}/>
@@ -204,30 +229,6 @@ class Base extends Component{
     }
 }
 
-class HeaderBar extends Component{
-  _showProvicenHandle(){
-    this.props.showFilter();
-  }
-  _changeHandle(){
-      this.props.searchAction(this.refs.searchName.value);
-  }
-  render(){
-    return(
-      <div className="bar bar-header bar-positive item-input-inset">
-        <div className="buttons">
-            <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i></button>
-        </div>
-        <label className="item-input-wrapper">
-          <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="searchName" type="search" placeholder={this.props.base.searchName}/>
-        </label>
-        <button className="button button-clear" onClick={this._changeHandle.bind(this)}>
-           搜索
-        </button>
-      </div>
-    )
-  }
-}
 class LinkBar extends Component{
 	render(){
 		return(
@@ -241,6 +242,7 @@ class LinkBar extends Component{
 }
 function select(state){
     return{
+        search:state.search,
         policy:state.policy,
         base:state.base,
         isVip:state.userInfo.isVip

@@ -1,7 +1,7 @@
 var ObjectAssign = require('object-assign');
 import { LOADPRODUCTDATA,CHANGETRADETYPE,SHOWFILTERPRODUCT,UNSHOWFILTERPRODUCT,CHANGEDRUGSEARCHNAME,CLEADRUGSEARCHNAME,INFINITEDRUG,UNINFINITEDRUG,LOADDRUGDATA} from '../components/config/variable';
 var defaultGroups={
-    searchName:null,
+    searchName:"",
     pageNo:1,
     datas:[],
     infinite:false,

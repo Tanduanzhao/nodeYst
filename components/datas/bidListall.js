@@ -31,7 +31,7 @@ class BidListAll extends Component{
         });
         getAllBidList({
             codeProId:this.props.params.id,
-            //areaId:JSON.stringify(this.props.bidList.areaId),
+            areaId:JSON.stringify(this.props.bidList.areaId),
             sidx:this.props.bidList.sidx,
             sord:this.props.bidList.sord,
             pageNo:this.props.bidList.pageNo,

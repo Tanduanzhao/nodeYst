@@ -9,6 +9,7 @@ import More from './../common/more';
 import FilterPolicy from './../filterPage/filterPolicy';
 import Loading from './../common/loading';
 import EmptyComponent from './../common/emptyComponent';
+import HeaderBar from './../common/headerbar.js';
 import {loadPolicyModules,loadQualitySimple,loadBaseSimple,loadInsuranceSimple,loadAssistSimple,loadLowPriceSimple,loadAntiSimple,loadPolicyProvince,loadPolicySearch} from './../function/ajax';
 class Policy extends Component{
     constructor(props){
@@ -29,12 +30,18 @@ class Policy extends Component{
     componentDidMount(){
         this.ele = this.refs.main;
         this.ele.addEventListener("scroll",this._isNeedLoadData);
+        if(this.props.policy.searchName == ""){
+            this.props.dispatch({type: 'POLICYSEARCHCHANGE',searchName:"头孢呋辛"});
+        }
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
+        }
         //第一屏需要执行两个方法  1、加载模块标签；2、加载第一模块数据
         if(this.props.policy.modules.length ==0){
             this._loadData();
         }
 
-//        this._isNeedLoadData();
         if(this.props.policy.provinces == 0){
             this._loadProvince();
         }
@@ -69,7 +76,7 @@ class Policy extends Component{
                     this.setState({
                         isShowSlider:true
                     })
-                };
+                }
             }
         })
     }
@@ -100,7 +107,7 @@ class Policy extends Component{
         })
     }
     _loadData(callBack){
-        var callBack = callBack || this._loadQuality.bind(this)
+        var callBack = callBack || this._loadQuality.bind(this);
         this.setState({
             isLoading:true
         });
@@ -362,12 +369,16 @@ class Policy extends Component{
             this.context.router.push('/pay/vip');
             return false;
         }
-//        console.dir(this.refs.header.ref.policySearchName);
-        this.refs.header.refs.policySearchName.value=key;
+        //console.dir(key);
+        //this.refs.header.refs.policySearchName.value=key;
         this.props.dispatch({
             type:'POLICYRESET',
             areaId:this.props.policy.areaId,
             areaName:this.props.policy.areaName
+        });
+        this.props.dispatch({
+            type:'POLICYRESET',
+            areaId:['0']
         });
         this.props.dispatch({
             type:'POLICYSEARCHCHANGE',
@@ -385,14 +396,36 @@ class Policy extends Component{
             this._isNeedLoadData();
         },10);
     }
-
+    //显示简介
+    showIntro(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:33});
+        setTimeout(()=>{this.context.router.push("/market/marketIntro/"+ this.props.search.smallType)});
+    }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:33});
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        })
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
+    }
     _showProvicenHandle(){
         this._showFilter();
+    }
+    componentWillUnmount(){
+        if(!this.props.search.searchLinkType){
+            this.props.dispatch({
+                type:"RESETSEARCH"
+            });
+        }
     }
     render(){
           return(
             <div className="root">
-                <HeaderBar ref="header" hideAction={this._hideSlider.bind(this)} searchAction = {this._loadSearch.bind(this)} {...this.props} showFilter={this._showProvicenHandle.bind(this)}/>
+                <HeaderBar  ref="header" {...this.props} titleName="政策准入"  showSearch={this.showSearch.bind(this)} showFilter={this._showProvicenHandle.bind(this)} showIntro={this.showIntro.bind(this)} />
                 {
                     this.state.isShowSlider ? <Slider itemHandle={this._searchDatas.bind(this)} dataSources={this.state.searchDatas}/> : null
                 }
@@ -402,38 +435,13 @@ class Policy extends Component{
                     <div ref="main" className="scroll-content has-subheader">
                         <Main {...this.props}/>
                     </div>
-                    <More/>
+                    <More {...this.props}/>
                 {
                     !this.state.isShowFilter ? null : <FilterPolicy dataSources={this.props.policy.provinces} areaId={this.props.policy.areaId} areaName={this.props.policy.areaName} fn={this._fn.bind(this)} cancelButton={this._cancelButton}/>
                 }
                 {
                     !this.state.isLoading ? null : <Loading/>
                 }
-            </div>
-        )
-    }
-}
-
-class HeaderBar extends Component{
-    _hideSlider(){
-        this.props.hideAction();
-        this.refs.policySearchName.value = this.props.policy.searchName;
-    }
-    _changeHandle(){
-        setTimeout(()=>{
-            this.props.searchAction(this.refs.policySearchName.value);
-        },1000);
-    }
-    render(){
-        return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons">
-                    <button className="button" onClick={this.props.showFilter}><i className="fa fa-map-marker"></i><span style={{paddingLeft:'5px'}}>{this.props.policy.areaName}</span></button>
-                </div>
-                <label className="item-input-wrapper">
-                    <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="policySearchName" onChange={this._changeHandle.bind(this)} type="search" value={this.props.defaultValue} placeholder={this.props.policy.searchName}/>
-                </label>
             </div>
         )
     }
@@ -755,6 +763,7 @@ const styles ={
 
 function select(state){
     return {
+        search:state.search,
         policy:state.policy,
         isVip:state.userInfo.isVip
     }

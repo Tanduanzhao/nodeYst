@@ -3,281 +3,300 @@
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
+import {onBridgeReady} from './function/common';
+import {getReportKeepList,getReportType,cancelKeepReport,requestUnifiedorderPayService} from './function/ajax';
+import FooterBar from './common/footerBar';
 import FilterCollect from './filterPage/filterCollect';
 import Loading from './common/loading';
 import EmptyComponent from './common/emptyComponent';
-import {getReportKeepList,insertUserAction,getReportType,cancelKeepReport,requestUnifiedorderPayService} from './function/ajax';
 import Collectpopup from './collectpopup';
 import ReportList from './reportList';
-import {onBridgeReady} from './function/common';
 import CollectPrompt from './collectPrompt';
+import HeaderBar from './common/headerbar.js';
 
 class Collect extends Component {
-  constructor(props){
-    super(props);
-    this.state={
-      searchType:this.props.report.searchType,
-      loading:true,
-      request:true,
-      reportTag:this.props.report.reportTag,
-      showPromptMes:false,
-      showPrompt:false
-    };
-    this._loadData = this._loadData.bind(this);
-    this._infiniteScroll = this._infiniteScroll.bind(this);
-  }
-  componentDidMount(){
-    this.ele = this.refs.content;
-    this.ele.addEventListener('scroll',this._infiniteScroll);
-    this._loadData();
-    this._getReportType();
-  }
-  _loadData(){
-    this.setState({
-      loading:true
-    });
-    this.setState({
-      request:false
-    });
-    getReportKeepList({
-      sidx:this.props.report.sidx,
-      sord:this.props.report.sord,
-      pageNo:this.props.report.pageNo,
-      searchType:this.props.report.searchType,
-      reportType:this.props.report.reportType,
-      costStatus:this.props.report.costStatus,
-      columnBigType:this.props.report.columnBigType,
-      titleOrReportKey:this.props.report.titleOrReportKey,
-      callBack:(res)=>{
-        console.log(res);
-        if(this.state.showPrompt){
-          setTimeout(()=>{
-            this.setState({
-              showPrompt:0
-            })
-          },1000)
-        }
-        this.props.dispatch({
-          type:'LOADCOLLECT',
-          data:this.props.report.data.concat(res.datas),
-          pageNo:this.props.report.pageNo+1
-        });
-        if(res.totalSize <= this.props.report.data.length){
-          this.props.dispatch({
-            type:'UNINFINITE'
-          });
-        }else{
-          this.props.dispatch({
-            type:'INFINITE'
-          });
-        }
-        this.setState({
-          loading:false
-        });
-        this.setState({
-          request:true
-        });
-      }
-    });
-  }
-  _infiniteScroll(){
-    //全部高度-滚动高度 == 屏幕高度-顶部偏移
-    if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.report.infinite && this.state.request){
-      this._loadData();
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchType: this.props.report.searchType,
+            loading: true,
+            request: true,
+            reportTag: this.props.report.reportTag,
+            showPromptMes: false,
+            showPrompt: false
+        };
+        this._loadData = this._loadData.bind(this);
+        this._infiniteScroll = this._infiniteScroll.bind(this);
     }
-  }
-  //支付
-  _sandboxPayService(id,self){
-    requestUnifiedorderPayService({id:id,fun:()=>{this._loadData()},callBack:onBridgeReady})
-  }
-  _getReportType(){
-    getReportType({
-      callBack:(res)=>{
-        this.props.dispatch({
-          type:'CHANGECOLLECTREPORTTYPEDATE',
-          ReportTypeDate:res.datas,
-        });
-      }
-    });
-  }
-  _fn(args) {
-    console.log(args.reportTag,"args")
-    if(!args.reportTag){
-      this.setState({
-        reportTag:false
-      });
-    }else{
-      this.setState({
-        reportTag:true
-      });
-    }
-    this.setState({
-      loading:true
-    });
-    this.props.dispatch({
-      type:'LOADCOLLECT',
-      data:[],
-      pageNo:1
-    });
-    this.props.dispatch({
-      type:'UNSHOWFILTERPRODUCE'
-    })
-    this.props.dispatch({
-      type:'SELECTCHANGERCOLLECT',
-      searchType:args.searchType,
-      reportType:encodeURI(encodeURI(args.reportType)),
-      active:args.active,
-      sord:args.sord,
-      sidx:args.sidx,
-      costStatus:args.costStatus,
-      reportTag:args.reportTag,
-      columnBigType:args.columnBigType
-    });
-    setTimeout(()=>{
-      this._loadData();
-    },100);
-  }
-  _searchHandle(){
-    this.setState({
-      loading:true
-    });
-    this.props.dispatch({
-      type:'LOADCOLLECT',
-      data:[],
-      pageNo:1
-    });
-    setTimeout(()=> this._loadData(),100);
-  }
-    _collectPopupCancel(){
-      this.setState({
-        showPrompt:1,
-        showPromptMes:"取消收藏"
-      })
-      cancelKeepReport({
-        reportId:this.props.report.showCollectPopupID,
-        callBack:(res)=>{
-          if(res.state==1)
-            this.setState({
-              isKeep:0
-            })
+
+    componentDidMount() {
+        this.ele = this.refs.content;
+        this.ele.addEventListener('scroll', this._infiniteScroll);
+        this._getReportType();
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
         }
-      })
-      this.props.dispatch({
-        type:'LOADCOLLECT',
-        data:[],
-        pageNo:1
-      });
-      setTimeout(()=>{
         this._loadData();
-      });
-      this.props.dispatch({
-        type:'SHOWCOLLECTPOPUP',
-        showCollectPopup:false,
-        showCollectPopupID:null
-      })
-  }
-  _collectPopupCancelall(){
-    this.props.dispatch({
-      type:'SHOWCOLLECTPOPUP',
-      showCollectPopup:false,
-      showCollectPopupID:null
-    })
-  }
-  componentWillUnmount(){
-    this.props.dispatch({
-      type:'RESETREPORTCOLLECT'
-    });
-    this.props.dispatch({
-      type:'UNSHOWFILTERPRODUCE'
-    });
-  }
-  render() {
-    return (
-      <div className="root">
-        <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
-        <div  ref="content"  className="scroll-content has-header has-footer">
-          <Main {...this.props} sandboxPayService={this._sandboxPayService.bind(this)} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
-        </div>
-        <FooterBar {...this.props}/>
-        {
-          this.props.report.isShowFilter ?
-            <FilterCollect fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.report}/> : null
-        }
-        {
-          this.state.loading ? <Loading/> : null
-        }
-        {
-          this.props.report.showCollectPopup ? <Collectpopup collectPopupCancel={this._collectPopupCancel.bind(this)}  collectPopupCancelall={this._collectPopupCancelall.bind(this)}/> : null
-        }
-        {
-          this.state.showPrompt ? <CollectPrompt {...this.props} showPromptMes={this.state.showPromptMes}/> : null
-        }
-      </div>
-    )
-  }
-}
-class HeaderBar extends Component{
-  _showProvicenHandle(){
-    this.props.dispatch({
-      type:'SHOWFILTERPRODUCE'
-    });
-  }
-  _changeHandle(){
-    this.props.dispatch({
-      type:'CHANGECOLLECTTITLEORREPORTKEY',
-      titleOrReportKey:encodeURI(encodeURI(this.refs.collectSearchName.value))
-    })
-  }
-  render(){
-    return(
-      <div className="bar bar-header bar-positive item-input-inset">
-        <div className="buttons" onClick={this._showProvicenHandle.bind(this)} style={{ fontSize: '.75rem'}}>
-          <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-          <span  style={{margin:' 0 5px'}}>筛选</span>
-        </div>
-        <label className="item-input-wrapper">
-          <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="collectSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
-        </label>
-        <button className="button button-clear" onClick={this.props.searchHandle}>
-           搜索
-        </button>
-      </div>
-    )
-  }
-}
+    }
 
-class Main extends Component{
-  constructor(props){
-    super(props);
-    this.state={
-      collect:true
-    };
+    _loadData() {
+        this.setState({
+            loading: true
+        });
+        this.setState({
+            request: false
+        });
+        getReportKeepList({
+            sidx: this.props.report.sidx,
+            sord: this.props.report.sord,
+            pageNo: this.props.report.pageNo,
+            searchType: this.props.report.searchType,
+            reportType: this.props.report.reportType,
+            costStatus: this.props.report.costStatus,
+            columnBigType: this.props.report.columnBigType,
+            titleOrReportKey: this.props.report.titleOrReportKey,
+            callBack: (res)=> {
+                console.log(res);
+                if (this.state.showPrompt) {
+                    setTimeout(()=> {
+                        this.setState({
+                            showPrompt: 0
+                        })
+                    }, 1000)
+                }
+                this.props.dispatch({
+                    type: 'LOADCOLLECT',
+                    data: this.props.report.data.concat(res.datas),
+                    pageNo: this.props.report.pageNo + 1
+                });
+                if (res.totalSize <= this.props.report.data.length) {
+                    this.props.dispatch({
+                        type: 'UNINFINITE'
+                    });
+                } else {
+                    this.props.dispatch({
+                        type: 'INFINITE'
+                    });
+                }
+                this.setState({
+                    loading: false
+                });
+                this.setState({
+                    request: true
+                });
+            }
+        });
+    }
 
-  }
-  render(){
+    _infiniteScroll() {
+        //全部高度-滚动高度 == 屏幕高度-顶部偏移
+        if (this.ele.firstChild.clientHeight - this.ele.scrollTop <= document.body.clientHeight - this.ele.offsetTop && !this.props.report.infinite && this.state.request) {
+            this._loadData();
+        }
+    }
 
-      if(this.props.data.length != 0){
-        return(
-            <ul className="list new_report">
-              {
-                this.props.data.map((ele,index)=> <ReportList  {...this.props} sandboxPayService = {this.props.sandboxPayService} reportTag={this.props.reportTag} collect={this.state.collect} dataSources={ele} key={ele.id+Math.random()}/>)
-              }
-            </ul>
+    //支付
+    _sandboxPayService(id, self) {
+        requestUnifiedorderPayService({
+            id: id, fun: ()=> {
+                this._loadData()
+            }, callBack: onBridgeReady
+        })
+    }
+
+    _getReportType() {
+        getReportType({
+            callBack: (res)=> {
+                this.props.dispatch({
+                    type: 'CHANGECOLLECTREPORTTYPEDATE',
+                    ReportTypeDate: res.datas
+                });
+            }
+        });
+    }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:11});
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        })
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
+    }
+    _fn(args) {
+        if (!args.reportTag) {
+            this.setState({
+                reportTag: false
+            });
+        } else {
+            this.setState({
+                reportTag: true
+            });
+        }
+        this.setState({
+            loading: true
+        });
+        this.props.dispatch({
+            type: 'LOADCOLLECT',
+            data: [],
+            pageNo: 1
+        });
+        this.props.dispatch({
+            type: 'UNSHOWFILTERPRODUCE'
+        })
+        this.props.dispatch({
+            type: 'SELECTCHANGERCOLLECT',
+            searchType: args.searchType,
+            reportType: encodeURI(encodeURI(args.reportType)),
+            active: args.active,
+            sord: args.sord,
+            sidx: args.sidx,
+            costStatus: args.costStatus,
+            reportTag: args.reportTag,
+            columnBigType: args.columnBigType
+        });
+        setTimeout(()=> {
+            this._loadData();
+        }, 100);
+    }
+
+    _searchDatas(key) {
+        this.setState({
+            loading: true
+        });
+        this.props.dispatch({
+            type: 'CHANGECOLLECTTITLEORREPORTKEY',
+            titleOrReportKey: key
+        });
+        this.props.dispatch({
+            type: 'LOADCOLLECT',
+            data: [],
+            pageNo: 1
+        });
+        setTimeout(()=> this._loadData(), 100);
+    }
+
+    _collectPopupCancel() {
+        this.setState({
+            showPrompt: 1,
+            showPromptMes: "取消收藏"
+        });
+        cancelKeepReport({
+            reportId: this.props.report.showCollectPopupID,
+            callBack: (res)=> {
+                if (res.state == 1)
+                    this.setState({
+                        isKeep: 0
+                    })
+            }
+        });
+        this.props.dispatch({
+            type: 'LOADCOLLECT',
+            data: [],
+            pageNo: 1
+        });
+        setTimeout(()=> {
+            this._loadData();
+        });
+        this.props.dispatch({
+            type: 'SHOWCOLLECTPOPUP',
+            showCollectPopup: false,
+            showCollectPopupID: null
+        })
+    }
+
+    _collectPopupCancelall() {
+        this.props.dispatch({
+            type: 'SHOWCOLLECTPOPUP',
+            showCollectPopup: false,
+            showCollectPopupID: null
+        })
+    }
+
+    _showFilter() {
+        this.props.dispatch({
+            type: 'SHOWFILTERPRODUCE'
+        });
+    }
+
+    componentWillUnmount() {
+        this.props.dispatch({
+            type: 'RESETREPORTCOLLECT'
+        });
+        this.props.dispatch({
+            type: 'UNSHOWFILTERPRODUCE'
+        });
+    }
+
+    render() {
+        return (
+            <div className="root">
+                <HeaderBar {...this.props} titleName="我的收藏" showSearch={this.showSearch.bind(this)} showFilter={this._showFilter.bind(this)}/>
+                <div ref="content" className="scroll-content has-header has-footer">
+                    <Main {...this.props} sandboxPayService={this._sandboxPayService.bind(this)}
+                                          reportTag={this.state.reportTag} data={this.props.report.data}
+                                          loading={this.state.loading}/>
+                </div>
+                <FooterBar {...this.props}/>
+                {
+                    this.props.report.isShowFilter ?
+                        <FilterCollect {...this.props} fn={this._fn.bind(this)}
+                                                       dataSources={this.props.report}/> : null
+                }
+                {
+                    this.state.loading ? <Loading/> : null
+                }
+                {
+                    this.props.report.showCollectPopup ?
+                        <Collectpopup collectPopupCancel={this._collectPopupCancel.bind(this)}
+                                      collectPopupCancelall={this._collectPopupCancelall.bind(this)}/> : null
+                }
+                {
+                    this.state.showPrompt ?
+                        <CollectPrompt {...this.props} showPromptMes={this.state.showPromptMes}/> : null
+                }
+            </div>
         )
-      }else{
-        return <EmptyComponent/>
-      }
     }
 }
-function select(state){
-  return{
-    report:state.collect
-  }
+
+class Main extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            collect: true
+        };
+
+    }
+
+    render() {
+
+        if (this.props.data.length != 0) {
+            return (
+                <ul className="list new_report">
+                    {
+                        this.props.data.map((ele, index)=> <ReportList  {...this.props}
+                            sandboxPayService={this.props.sandboxPayService} reportTag={this.props.reportTag}
+                            collect={this.state.collect} dataSources={ele} key={ele.id+Math.random()}/>)
+                    }
+                </ul>
+            )
+        } else {
+            return <EmptyComponent/>
+        }
+    }
+}
+function select(state) {
+    return {
+        report: state.collect,
+        search:state.search
+    }
 }
 Collect.contextTypes = {
-  router:React.PropTypes.object.isRequired
-}
+    router: React.PropTypes.object.isRequired
+};
 export default connect(select)(Collect);

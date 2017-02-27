@@ -28,7 +28,7 @@ export default class BreedSingle extends Component{
         if(this.props.data){
             const sid = this.props.data.salesId || this.props.data.conceptId;
             return(
-                <Link to={`/market/marketSearch/marketSearchDetail/${encodeURIComponent(encodeURIComponent(this.props.data.genericName))}/${this.props.data.id}/${this.props.data.icoType}`} className="row item" style={{ padding: '10px',fontSize: '.6rem'}}>
+                <Link to={`/market/marketSearch/marketSearchDetail/${encodeURIComponent(this.props.data.genericName)}/${this.props.data.id}/${this.props.data.icoType}`} className="row item" style={{ padding: '10px',fontSize: '.6rem'}}>
                     <h3 className="col" style={{fontSize: '.6rem'}}><span className="tag" style={{background: '#16b028'}}>{this.props.data.icoType}</span>{this.props.data.genericName}</h3>
                     <div className="col  text-center">{this.props.data.sales}</div>
                     {changeCost}

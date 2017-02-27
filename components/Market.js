@@ -27,7 +27,7 @@ class Market extends Component {
     }
 
     //加载页面数据
-    _loadData(){
+    getPubReportHtml(){
         this.setState({
             isLoading:true
         });
@@ -47,10 +47,6 @@ class Market extends Component {
                         data:this.props.stores.data.concat(res.datas),
                         pageNo:this.props.stores.pageNo+1
                     });
-                    //this.props.dispatch({
-                    //    type:'CHANGEDATA',
-                    //    yearMonth:res.datas.yearMonth || 2015
-                    //});
                     setTimeout(()=>{
                         if(res.totalSize <= this.props.stores.data.length){
                             this.setState({
@@ -90,11 +86,6 @@ class Market extends Component {
 
     //筛选方法
     _fn(args){
-        //this.props.dispatch({
-        //    type:'LOADMARKETATA',
-        //    data:[],
-        //    pageNo:1
-        //});
         this.props.dispatch({
             type:'CHANGEDATA',
             yearMonth:args.yearMonth
@@ -113,7 +104,6 @@ class Market extends Component {
         });
         setTimeout(()=> {
             this._toggleFilter();
-            //this._loadData();
         });
     }
 
@@ -154,8 +144,7 @@ class Market extends Component {
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        //loadProvince(this.props.dispatch);
-        getFirstPageProlist(this.props.dispatch)
+        getFirstPageProlist(this.props.dispatch);
         this._loadData();
     }
 

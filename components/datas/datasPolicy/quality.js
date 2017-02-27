@@ -8,6 +8,7 @@ import PolicySonFilter from './../../filterPage/policySonFilter.js';
 import EmptyComponent from './../../common/emptyComponent';
 import Loading from './../../common/loading';
 import More from './../../common/more';
+import HeaderBar from './../../common/headerbar.js';
 
 class Quality extends Component{
     constructor(props){
@@ -49,8 +50,7 @@ class Quality extends Component{
 
         loadQualityAll({
             searchName:this.props.quality.searchName,
-            //gradeId:this.props.quality.gradeId || "",
-            qualityLevelTypeId:JSON.stringify(this.props.quality.qualityLevelTypeIds),
+            qualityLevelTypeId:this.props.quality.qualityLevelTypeIds.length == 0 ? "" : JSON.stringify(this.props.quality.qualityLevelTypeIds),
             pageNo:this.props.quality.pageNo,
             callBack:(res)=>{
                 this.props.dispatch({
@@ -106,7 +106,6 @@ class Quality extends Component{
     }
     
     componentDidMount(){
-        
         //传入默认数据到仓库
         this.props.dispatch({
             type:'DEFAULTQUALITY',
@@ -121,9 +120,29 @@ class Quality extends Component{
         this.setState({
             isInfinite:false
         });
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
+        }
         setTimeout(()=>{
             this._isNeedLoadData();
         });
+    }
+    //显示简介
+    showIntro(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:42});
+        setTimeout(()=>{this.context.router.push("/market/marketIntro/"+ this.props.search.smallType)})
+    }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:42});
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        })
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
     }
      //判断屏幕是否加载满
     _isNeedLoadData(){
@@ -156,7 +175,8 @@ class Quality extends Component{
     render(){
         return(
             <div className="root">
-                <HeaderBar showFilter={this._showFilter.bind(this)} searchAction = {this._searchDatas.bind(this)} {...this.props}/>
+                <HeaderBar {...this.props} titleName="质量层次" showSearch={this.showSearch.bind(this)} showFilter={this._showFilter.bind(this)}
+                                           showIntro={this.showIntro.bind(this)} />
                 <div ref="main" className="scroll-content has-header">
                     <div className="list">
                         {
@@ -224,7 +244,7 @@ class Quality extends Component{
                             </div>
                         }
                     </div>
-                    <More/>
+                    <More {...this.props}/>
                 </div>
                 {
                     !this.state.isShowFilter ? null : <PolicySonFilter origins={this.props.quality.origins} levels={this.props.quality.levels} qualityLevelTypeIds={this.props.quality.qualityLevelTypeIds} fn={this._fn.bind(this)} cancelButton={this._hideFilter}/>
@@ -237,33 +257,9 @@ class Quality extends Component{
     }
 }
 
-class HeaderBar extends Component{
-  _showProvicenHandle(){
-    this.props.showFilter();
-  }
-  _changeHandle(){
-      this.props.searchAction(this.refs.searchName.value);
-  }
-  render(){
-    return(
-      <div className="bar bar-header bar-positive item-input-inset">
-        <div className="buttons">
-            <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i></button>
-        </div>
-        <label className="item-input-wrapper">
-          <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="searchName" type="search" placeholder={this.props.quality.searchName}/>
-        </label>
-        <button className="button button-clear" onClick={this._changeHandle.bind(this)}>
-           搜索
-        </button>
-      </div>
-    )
-  }
-}
-
 function select(state){
     return{
+        search:state.search,
         policy:state.policy,
         quality:state.quality,
         isVip:state.userInfo.isVip

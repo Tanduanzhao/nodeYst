@@ -6,6 +6,8 @@ var defaultData = {
 	yearMonth:2015,
     isVip:false,
 	img:[],
+	pageNo:1,
+	marketdata:[],
 	loading:true
 };
 export default function data(state = defaultData,action){
@@ -17,6 +19,7 @@ export default function data(state = defaultData,action){
 		case CHANGEDATA : return ObjectAssign({},state,{yearMonth:action.yearMonth});
         case CHANGEVIP : return ObjectAssign({},state,{isVip:true});
 		case "LOADDATAIMG" : return ObjectAssign({},state,{img:action.img});
+		case  "LOADMARKETATA" : return ObjectAssign({},state,{marketdata:action.marketdata});
 		default : return state;
 	}
 }

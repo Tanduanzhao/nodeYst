@@ -271,6 +271,15 @@ h3 {
               flex: 1;
       font-size: 60px; }
 
+.flex-center {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 13px; }
+
 .dialog-feedBack {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1345,6 +1354,9 @@ table.table-border td, table.table-border th {
     height: auto;
     max-width: 100%;
     margin: 0 auto; }
+  .nestedHTML h3 {
+    line-height: 1.3rem;
+    font-size: .75rem; }
   .nestedHTML h4 {
     line-height: 1.3rem;
     font-size: .7rem; }
@@ -1360,6 +1372,12 @@ table.table-border td, table.table-border th {
     font-size: .7rem; }
   .nestedHTML em {
     font-style: italic; }
+  .nestedHTML table {
+    width: 100%;
+    text-align: center; }
+    .nestedHTML table td {
+      padding: 5px 0;
+      border: 1px solid #ddd; }
 
 .scroll-iframe {
   -webkit-overflow-scrolling: touch;
@@ -1755,6 +1773,11 @@ table.table-border td, table.table-border th {
 .bar {
   -webkit-transition: all 1s ease;
   transition: all 1s ease; }
+  .bar.flex-jc-space {
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-justify-content: space-between; }
   .bar.bar-opacity {
     background-color: rgba(255, 255, 255, 0);
     background-image: none; }
@@ -1788,6 +1811,41 @@ table.table-border td, table.table-border th {
   .managerProtocol table td {
     padding: 5px 0;
     border: 1px solid #ddd; }
+
+.search {
+  background: #e4e4e4; }
+  .search .list-card {
+    margin-bottom: 5px;
+    background-color: #fff; }
+    .search .list-card .list-horizontal-block .item-block {
+      border: 1px solid #c5ebf4;
+      background: #e3f4f8; }
+  .search .list-padding .item {
+    padding: 10px 16px; }
+  .search .list-padding .icon {
+    font-size: 20px;
+    color: #ddd; }
+  .search .list-padding .list-title-icon {
+    color: #387ef5;
+    font-size: 25px;
+    vertical-align: sub;
+    margin-right: 5px; }
+
+.popup-foot {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  display: -webkit-flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-justify-content: space-around; }
+  .popup-foot button {
+    width: 40%;
+    border-radius: 5px;
+    background: #d1d1d1;
+    padding: 5px 10px;
+    border: none;
+    color: #fff; }
 
 .video {
   position: relative;

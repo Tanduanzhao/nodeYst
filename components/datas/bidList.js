@@ -3,14 +3,16 @@
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import $ from 'jquery';
 import {Link} from 'react-router';
+import $ from 'jquery';
 import {loadBidListContent,getBidAreaInfo,getProjectStatus} from '../function/ajax.js';
-import Loading from '../common/loading';
-import EmptyComponent from '../common/emptyComponent';
-import FilterBidList from '../filterPage/filterBidList';
 
+import EmptyComponent from '../common/emptyComponent';
+import HeaderBar from './../common/headerbar.js';
+import Loading from '../common/loading';
+import FilterBidList from '../filterPage/filterBidList';
 import More from './../common/more';
+
 class BidList extends Component{
     constructor(props){
         super(props);
@@ -21,6 +23,13 @@ class BidList extends Component{
 
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
+    }
+    _reSet(){
+        this.props.dispatch({
+            type:'LOADBIFLISTCONTENTDATA',
+            data:[],
+            pageNo:1
+        });
     }
     _loadData(){
         this.setState({
@@ -82,14 +91,14 @@ class BidList extends Component{
                 areaId:args.areaId,
                 searchAreaType:args.searchType,
                 active:args.active,
-                searchProductStatus:args.searchProductStatus,
+                searchProductStatus:args.searchProductStatus
             });
             setTimeout(()=>{
                 this._loadData();
             },100);
         })
     }
-    _searchHandle(){
+    _searchDatas(key){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
@@ -98,9 +107,17 @@ class BidList extends Component{
                 loading:true
             });
             this.props.dispatch({
+                type:'RESETBIDLISTAREAId',
+                areaId:["0"]
+            });
+            this.props.dispatch({
+            type:'CHANGEBIDLISTTITLEORREPORTKEY',
+            searchName:encodeURI(encodeURI(key))
+        })
+            this.props.dispatch({
                 type:'LOADBIFLISTCONTENTDATA',
                 data:[],
-                pageNo:1,
+                pageNo:1
             });
             setTimeout(()=> this._loadData(),100);
         }
@@ -115,6 +132,22 @@ class BidList extends Component{
             });
         }
     }
+    //显示简介
+    showIntro(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:34});
+        setTimeout(()=>{this.context.router.push("/market/marketIntro/"+ this.props.search.smallType)})
+    }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:34});
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        });
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
+    }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite && this.props.bidList.request){
@@ -122,23 +155,16 @@ class BidList extends Component{
         }
     }
     componentDidMount(){
-        this.props.dispatch({
-            type:'RESETBIDLISTAREAId',
-            areaId:this.props.bidList.provinceId
-        });
         if(this.props.params.productName){
             this.props.dispatch({
                 type:'LOADBIFLISTCONTENTDATA',
                 data:[],
-                pageNo:1,
+                pageNo:1
             });
             this.props.dispatch({
                 type:'RESETBIDLISTAREAId',
-                areaId:["0"]
+                areaId:['0']
             });
-            //this.props.dispatch({
-            //    type:'areaIdall'
-            //});
             this.props.dispatch({
                 type:'mpAreaID'
             });
@@ -149,38 +175,33 @@ class BidList extends Component{
         });
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        if(this.props.params.productName || this.props.bidList.data.length == 0) {
-            //setTimeout(()=> {
-            //    this._loadData();
-            //}, 10);
-            this._loadData();
-            getBidAreaInfo({
-                pageNo: this.props.bidList.pageNo,
-                searchName: this.props.bidList.searchName,
-                callBack: (res)=> {
-                    this.props.dispatch({
-                        type: 'getBidAreaInfo',
-                        getBidAreaInfo: res.datas,
-                    });
-                }
-            });
-            getProjectStatus({
-                callBack: (res)=> {
-                    this.props.dispatch({
-                        type: 'getProjectStatus',
-                        getProjectStatus: res.datas,
-                    });
-                }
-            });
+        getBidAreaInfo({
+            pageNo: this.props.bidList.pageNo,
+            searchName: this.props.bidList.searchName,
+            callBack: (res)=> {
+                this.props.dispatch({
+                    type: 'getBidAreaInfo',
+                    getBidAreaInfo: res.datas
+                });
+            }
+        });
+        getProjectStatus({
+            callBack: (res)=> {
+                this.props.dispatch({
+                    type: 'getProjectStatus',
+                    getProjectStatus: res.datas
+                });
+            }
+        });
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
         }
-
+        setTimeout((res)=>{
+            this._loadData();
+        });
     }
     componentWillUnmount(){
-        //this.props.dispatch({
-        //    type:'LOADBIFLISTCONTENTDATA',
-        //    data:[],
-        //    pageNo:1,
-        //});
         this.props.dispatch({
             type:'UNSHOWFILTERPBIDLIST'
         })
@@ -194,18 +215,23 @@ class BidList extends Component{
         this.props.dispatch({
             type:'RESETBIDLIST'
         })
+        if(!this.props.search.searchLinkType){
+            this.props.dispatch({
+                type:"RESETSEARCH"
+            });
+        }
     }
 
     render(){
         return (
             <div className="root" style={{"overflow":"auto"}}>
-                <HeaderBar {...this.props}  loading={this.state.loading} _searchHandle={this._searchHandle.bind(this)} _showProvicenHandle={this._showProvicenHandle.bind(this)}/>
+                <HeaderBar {...this.props} titleName="中标数据"  showSearch={this.showSearch.bind(this)} showFilter={this._showProvicenHandle.bind(this)} showIntro={this.showIntro.bind(this)} />
                 <div ref="content" className="scroll-content has-header">
                     <Main data={this.props.bidList.data} loading={this.state.loading}/>
                     <More {...this.props}/>
                 </div>
                 {
-                    this.props.bidList.isShowFilter&&!this.state.loading? <FilterBidList fn={this._fn.bind(this)}  dataSources={this.props.provicenData} {...this.props}/> : null
+                    this.props.bidList.isShowFilter && !this.state.loading? <FilterBidList fn={this._fn.bind(this)} {...this.props}/> : null
                 }
                 {
                     this.state.loading ? <Loading/> : null
@@ -220,63 +246,23 @@ class Main extends Component{
     }
     render(){
         var bidList = 0;
-        if(this.props.data.length != 0){
-            return(
-                <ul className="bidList-view">
-                    {
-                        this.props.data.map((ele,index)=> <List dataSources={ele} key={`bidList_${bidList++}+${ele.id}`}/>)
-                    }
-                </ul>
-            )
-        }else{
-            return <EmptyComponent/>
-        }
-    }
-}
-class HeaderBar extends Component{
-    _changeHandle(){
-        this.props.dispatch({
-            type:'CHANGEBIDLISTTITLEORREPORTKEY',
-            searchName:encodeURI(encodeURI(this.refs.bidListSearchName.value))
-        })
-    }
-    render(){
-        var placeholder=(()=>{
-            var children="";
-            var str=this.props.bidList.searchName+"";
-            var arr=str.split(" ");
-            if(this.props.bidList.searchName){
-                children=decodeURI(decodeURI(arr[0]))
-
-            }else{
-                children="请输入搜索关键词"
-            }
-            return children;
-        })();
         return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons" onClick={this.props._showProvicenHandle} style={{ fontSize: '.75rem'}}>
-                    {
-                        //<button className="button" onClick={this.props._showProvicenHandle}>
-                        //    <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
-                        //</button>
-                    }
-                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-                    <span  style={{margin:' 0 5px'}}>筛选</span>
-                </div>
-                <label className="item-input-wrapper">
-                    <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="bidListSearchName" onChange={this._changeHandle.bind(this)} type="search"  placeholder={placeholder}/>
-                </label>
-                <button className="button button-clear" onClick={this.props._searchHandle.bind(this)}>
-                    搜索
-                </button>
-            </div>
+        this.props.data.length == 0 ? <EmptyComponent/>
+            : <ul className="bidList-view">
+                {
+                    this.props.data.map((ele,index)=> <List dataSources={ele} key={`bidList_${bidList++}+${ele.id}`}/>)
+                }
+            </ul>
         )
     }
 }
+
 class List extends Component{
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.value !== nextProps.value;
+    }
     render(){
+        console.log("a");
         return(
             <div>
                 <h2 className="title">产品名称：{this.props.dataSources.productName}</h2>
@@ -300,10 +286,9 @@ class List extends Component{
 
 function select(state){
     return{
-        provicenData:state.provicen.data,
         bidList:state.bidList,
-        isVip:state.userInfo.isVip,
-        provicenId:state.bidList.provinceId
+        search:state.search,
+        isVip:state.userInfo.isVip
     }
 }
 BidList.contextTypes = {

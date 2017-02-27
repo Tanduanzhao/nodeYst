@@ -4,22 +4,19 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-
-//import HeaderBar from './../common/headerBar.js';
-//import Provicen from './../provicen.js';
-import FilterMarket from './../filterPage/filterMarket';
-
 import {loadSingleClassifyProduct} from './../function/ajax.js';
 
-import Loading from './../common/loading';
 import EmptyComponent from './../common/emptyComponent';
+import FilterMarket from './../filterPage/filterMarket';
+import HeaderBar from '../common/headerbar.js';
+import Loading from './../common/loading';
 
 
 class OptionalClassify extends Component{
     constructor(props){
         super(props);
         this.state={
-            //data:[],
+            smallType:false,
             pageNo:1,
             infinite:false,
             loading:true,
@@ -55,7 +52,6 @@ class OptionalClassify extends Component{
     _reSet(){
         this.setState({
             pageNo:1
-            //data:[]
         })
         this.props.dispatch({
             type:'LOADOPTIONALCLASSIFYDATA',
@@ -70,24 +66,19 @@ class OptionalClassify extends Component{
     }
 
     //搜索方法
-    _searchHandle(searchKeys,storesSearchName,storesData){
+    _searchDatas(searchKeys,storesSearchName,storesData){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
         }else{
             this._reSet();
             this.setState({
-                loading:true,
-                //data:[],
-                //pageNo:1,
-                searchName:searchKeys == '' && storesData.length !=0  ?storesSearchName:searchKeys
+                loading:true
             });
-            if(searchKeys != ''|| storesData.length ==0){
-                this.props.dispatch({
-                    type:'SAVESEARCHNAME',
-                    searchName:searchKeys
-                });
-            }
+            this.props.dispatch({
+                type:'SAVESEARCHNAME',
+                searchName:searchKeys
+            });
             setTimeout(()=> this._loadData());
         }
     }
@@ -106,14 +97,21 @@ class OptionalClassify extends Component{
         this._reSet();
         this.setState({
             loading:true,
-            //data:[],
-            //pageNo:1,
             sordActive:sordActive,
             sidx:sidx
         });
         setTimeout(()=> this._loadData());
     }
-
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        })
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
+    }
     //筛选
     _fn(args){
         this._reSet();
@@ -138,7 +136,7 @@ class OptionalClassify extends Component{
                     pageNo:this.state.pageNo,
                     sord:this.state.sord,
                     sidx:this.state.sidx,
-                    searchName:encodeURI(encodeURI(this.state.searchName)),
+                    searchName:encodeURI(encodeURI(this.props.stores.searchName)),
                     callBack:(res)=>{
                         this.setState({
                             pageNo:this.state.pageNo+1,
@@ -163,7 +161,7 @@ class OptionalClassify extends Component{
 
     //加载数据
     _loadData(){
-        this.props.dispatch((dispatch,getState)=>{
+          this.props.dispatch((dispatch,getState)=>{
             loadSingleClassifyProduct(dispatch,{
                 yearMonth:getState().data.yearMonth,
                 areaId:getState().provicen.areaId,
@@ -172,11 +170,10 @@ class OptionalClassify extends Component{
                 pageNo:this.state.pageNo,
                 sord:this.state.sord,
                 sidx:this.state.sidx,
-                searchName:encodeURI(encodeURI(this.state.searchName)),
+                searchName:encodeURI(encodeURI(this.props.stores.searchName)),
                 callBack:(res)=>{
                     this.setState({
                         pageNo:this.state.pageNo+1,
-                        //data:this.state.data.concat(res.datas),
                         infinite:false
                     })
                     this.props.dispatch({
@@ -193,6 +190,7 @@ class OptionalClassify extends Component{
             });
         })
     }
+
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop){
@@ -211,6 +209,10 @@ class OptionalClassify extends Component{
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
+        }
         if(this.props.stores.data.length == 0){
             this._loadData();
             return false
@@ -223,12 +225,17 @@ class OptionalClassify extends Component{
         this.props.dispatch({
             type:'UNSHOW'
         })
+        if(!this.props.search.searchLinkType){
+            this.props.dispatch({
+                type:"RESETSEARCH"
+            });
+        }
         this.ele.removeEventListener('scroll',this._infiniteScroll);
     }
     render(){
         return(
             <div className="root">
-                <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
+                <HeaderBar {...this.props} titleName={this.props.params.searchName} showSearch={this.showSearch.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
                 <div ref="content" className="scroll-content has-header market">
                     {
                         (this.props.stores.data.length == 0 && !this.state.loading)
@@ -246,24 +253,27 @@ class OptionalClassify extends Component{
         )
     }
 }
-class HeaderBar extends Component{
-    render(){
-        return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons" onClick={this.props.showFilter} style={{ fontSize: '.75rem'}}>
-                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-                    <span  style={{margin:' 0 5px'}}>筛选</span>
-                </div>
-                <label className="item-input-wrapper">
-                    <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="searchName"  type="search" placeholder={this.props.stores.searchName == ''?this.props.params.searchName:this.props.stores.searchName}/>
-                </label>
-                <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value,this.props.stores.searchName,this.props.stores.data)}>
-                    搜索
-                </button>
-            </div>
-        )
-    }
+
+{
+    //class HeaderBar extends Component{
+    //    render(){
+    //        return(
+    //            <div className="bar bar-header bar-positive">
+    //                <div className="buttons" onClick={this.props.showFilter} style={{ fontSize: '.75rem'}}>
+    //                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
+    //                    <span  style={{margin:' 0 5px'}}>筛选</span>
+    //                </div>
+    //                <label className="item-input-wrapper">
+    //                    <i className="icon ion-ios-search placeholder-icon"></i>
+    //                    <input ref="searchName"  type="search" placeholder={this.props.stores.searchName == ''?this.props.params.searchName:this.props.stores.searchName}/>
+    //                </label>
+    //                <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value,this.props.stores.searchName,this.props.stores.data)}>
+    //                    搜索
+    //                </button>
+    //            </div>
+    //        )
+    //    }
+    //}
 }
 class Main extends Component{
     constructor(props){
@@ -309,7 +319,7 @@ class List extends Component{
             return string;
         })();
         return(
-            <Link to={`/market/marketSearch/marketSearchDetail/${encodeURIComponent(encodeURIComponent(this.props.dataSources.genericName))}/${this.props.dataSources.breedId}/${this.props.dataSources.icoType}`}  className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
+            <Link to={`/market/marketSearch/marketSearchDetail/${encodeURIComponent(this.props.dataSources.genericName)}/${this.props.dataSources.breedId}/${this.props.dataSources.icoType}`}  className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
                 <div className="col"  style={{fontSize: '.6rem'}}>
                     <span className="tag" style={{background: '#fea512'}}>{this.props.dataSources.icoType}</span>
                     {this.props.dataSources.genericName}
@@ -325,6 +335,8 @@ class List extends Component{
 function select(state){
 	return{
         stores:state.optionalClassify,
+        search:state.search,
+        searchName:state.search.searchName,
 		areaId:state.provicen.areaId,
 		areaName:state.provicen.areaName,
         provicenData:state.provicen.data,

@@ -17,7 +17,7 @@ var defaultBidListall={
   request:true,
   active:0,
   areaName:null,
-  areaId:null,
+  areaId:['0'],
   provinceId:["ZZOQD0000000000000000000000020"],
   provinceName:null,
   mpAreaID:null,
@@ -33,15 +33,12 @@ export default function bidListall(state=defaultBidListall,action){
     case "requestall": return ObjectAssign({},state,{request:false});
     case "requestssall": return ObjectAssign({},state,{request:true});
     case "mpAreaID": return ObjectAssign({},state,{mpAreaID:true});
-    //case "CHANGEALLPROVINCE": return ObjectAssign({},state,{areaName:action.provinceName,areaId:[action.provinceId]});
     case "CHANGEALLPROVINCEIDNAME": return ObjectAssign({},state,{provinceName:action.provinceName,provinceId:[action.provinceId]});
     case UNINFINITE : return ObjectAssign({},state,{infinite:true});
     case SHOWFILTERBIDLIST : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPBIDLIST : return ObjectAssign({},state,{isShowFilter:false});
     case CHANGEBIDLISTTITLEORREPORTKEY : return ObjectAssign({},state,{searchName:action.searchName});
     case "CHANGEBIDLISTFILTERALL" : return ObjectAssign({},state,{areaId:action.areaId,searchAreaType:action.searchAreaType,searchProductStatus:action.searchProductStatus,sord:action.sord,sidx:action.sidx,active:action.active});
-    //case "UNCHANGEBIDLISTTITLEORREPORTKEY" : return ObjectAssign({},state,{searchName:defaultBidList.searchName});
-    //case "RESETBIDLIST" : return  ObjectAssign({},defaultBidList,{areaName:state.areaName,areaId:state.areaId});
     case "RESETBIDLISTAREAId" : return  ObjectAssign({},defaultBidListall,{areaId:action.areaId});
     case "RESETBIDLISTALL" : return  ObjectAssign({},defaultBidListall,{provinceName:state.provinceName,provinceId:state.provinceId})
     default : return state;

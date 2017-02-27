@@ -2,13 +2,12 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
-import {loadWx,isGetSevenDaysVIP,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent,loadReportList,getCiReportColumnList,saveCustomer,subscribeColumn} from './function/ajax';
+import {loadWx,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent,loadReportList,getCiReportColumnList,subscribeColumn} from './function/ajax';
 import Box from './common/box';
 import Loading from './common/loading';
 import ReportList from './reportList';
 import SubscribeList from './subscribePage/subscribeList';
 import {url2obj} from './function/common';
-import $ from 'jquery';
 
 var Slider = require('react-slick');
 class Home extends Component{
@@ -186,13 +185,18 @@ class Home extends Component{
 		})
 	}
 
+	resetShearch(){
+		this.props.dispatch({
+			type:'RESETSEARCH'
+		})
+	}
+
 	componentDidMount(){
 		this._loadData();
 	}
 	componentWillMount(){
 		if(this.props.home.hasRecord) this._loadRecordContent();
 	}
-
 	render(){
 		return(
 			<div className="root home">
@@ -206,7 +210,7 @@ class Home extends Component{
 					this.state.loading? <Loading/> : null
 				}
 				{
-					 <Main {...this.props} showPopup={this._showPopup.bind(this)} isSubscribe={this.state.isSubscribe}/>
+					 <Main {...this.props} resetShearch={this.resetShearch.bind(this)} showPopup={this._showPopup.bind(this)} isSubscribe={this.state.isSubscribe}/>
 				}
 				<FooterBar {...this.props}/>
 
@@ -319,23 +323,23 @@ class Column extends Component{
 	render(){
 		return(
 			<ul className="column">
-				<Link to="/report">
+				<Link to="/report"  onClick={this.props.resetShearch}>
 					<img src="/images/column01.jpg" alt=""/>
 					分析报告
 				</Link>
-				<Link to="/datas/groups">
+				<Link to="/datas/groups"  onClick={this.props.resetShearch}>
 					<img src="/images/datas_groups.jpg" alt=""/>
 					<b className="assertive">目录分组</b>
 				</Link>
-                <Link to="/datas/dataSources">
+                <Link to="/datas/dataSources"  onClick={this.props.resetShearch}>
 					<img src="/images/datas_dataSources.jpg" alt=""/>
 					<b className="assertive">入市价数据源</b>
 				</Link>
-				<Link to="/datas/marketPrice">
+				<Link to="/datas/marketPrice"  onClick={this.props.resetShearch}>
 					<img src="/images/column07.jpg" alt="" className="price-icon"/>
 					全国限价
 				</Link>
-				<Link to="/datas/bidList">
+				<Link to="/datas/bidList"  onClick={this.props.resetShearch}>
 					<img src="/images/column02.jpg" alt=""/>
 					中标数据
 				</Link>

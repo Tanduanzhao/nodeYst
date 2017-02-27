@@ -251,6 +251,13 @@ h3{
         }
     }
 }
+.flex-center{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    font-size: 13px;
+}
 .dialog-feedBack{
     display: flex;
     margin-top: 10px;
@@ -1469,6 +1476,11 @@ table{
         max-width: 100%;
         margin: 0 auto;
     }
+    h3{
+        //margin-top: 2rem;
+        line-height: 1.3rem;
+        font-size: .75rem;
+    }
     h4{
         //margin-top: 2rem;
         line-height: 1.3rem;
@@ -1492,14 +1504,14 @@ table{
     em{
         font-style:italic;
     }
-    //table {
-    //    width: 100%;
-    //    text-align: center;
-    //    td {
-    //        padding: 5px 0;
-    //        border: 1px solid #ddd;
-    //    }
-    //}
+    table {
+        width: 100%;
+        text-align: center;
+        td {
+            padding: 5px 0;
+            border: 1px solid #ddd;
+        }
+    }
 }
 .scroll-iframe{
     -webkit-overflow-scrolling: touch;
@@ -1949,6 +1961,10 @@ table{
     margin-left: 25%;
 }
 .bar{
+    &.flex-jc-space{
+        justify-content: space-between;
+        -webkit-justify-content: space-between;
+    }
     &.bar-opacity{
         background-color: rgba(255,255,255,0);
         background-image: none;
@@ -1997,6 +2013,50 @@ table{
             border: 1px solid #ddd;
         }
     }
+}
+//搜索
+.search{
+    background: #e4e4e4;
+    .list-card{
+        margin-bottom: 5px;
+        background-color: #fff;
+        .list-horizontal-block{
+            .item-block{
+                border: 1px solid #c5ebf4;
+                background: #e3f4f8;
+            }
+        }
+    }
+    .list-padding{
+        .item{
+            padding:10px 16px;
+        }
+        .icon{
+            font-size: 20px;
+            color: #ddd;
+        }
+        .list-title-icon{
+            color: #387ef5;
+            font-size: 25px;
+            vertical-align: sub;
+            margin-right: 5px;
+        }
+    }
+}
+.popup-foot{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-around;
+    -webkit-justify-content: space-around;
+    button{
+        width: 40%;
+        border-radius: 5px;
+        background: #d1d1d1;
+        padding: 5px 10px;
+        border: none;
+        color: #fff;
+    }
+
 }
 .video {
     position: relative;

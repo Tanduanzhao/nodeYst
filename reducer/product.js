@@ -4,7 +4,7 @@ import { LOADPRODUCTDATA,CHANGETRADETYPE,SHOWFILTERPRODUCT,UNSHOWFILTERPRODUCT,C
 var defaultProduct={
   isShowFilter:false,
   municipality:1,
-  searchName:null,
+  searchName:"",
   produceType:null,
   pageNo:1,
   tradeType:3,
@@ -17,8 +17,8 @@ export default function product(state=defaultProduct,action){
     case CHANGETRADETYPE : return ObjectAssign({},state,{tradeType:action.tradeType});
     case SHOWFILTERPRODUCT : return ObjectAssign({},state,{isShowFilter:true});
     case UNSHOWFILTERPRODUCT : return ObjectAssign({},state,{isShowFilter:false});
-    case CHANGEDRUGSEARCHNAME : return ObjectAssign({},state,{searchName:action.searchName});
-    case CLEADRUGSEARCHNAME : return ObjectAssign({},state,{searchName:null});
+    case 'CHANGEPRODUCTSEARCHNAME' : return ObjectAssign({},state,{searchName:action.searchName});
+    //case CLEADRUGSEARCHNAME : return ObjectAssign({},state,{searchName:null});
     case INFINITEDRUG : return ObjectAssign({},state,{infinite:false});
     case UNINFINITEDRUG : return ObjectAssign({},state,{infinite:true});
     case "RESETPRODUCT" : return defaultProduct;

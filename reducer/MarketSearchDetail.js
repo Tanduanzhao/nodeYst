@@ -4,7 +4,7 @@ import { LOADPRODUCTDATA,CHANGETRADETYPE,SHOWFILTERPRODUCT,UNSHOWFILTERPRODUCT,C
 var defaultMarketSearchDetail={
   data:[],
   pageNo:1,
-  searchName:null
+  searchName:""
 }
 export default function marketSearchDetail(state=defaultMarketSearchDetail,action){
   switch(action.type){

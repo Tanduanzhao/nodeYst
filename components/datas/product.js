@@ -10,6 +10,7 @@ import {Link} from 'react-router';
 import Loading from '../common/loading';
 import EmptyComponent from '../common/emptyComponent';
 import More from './../common/more';
+import HeaderBar from './../common/headerbar.js';
 class product extends Component{
     constructor(props){
         super(props);
@@ -47,17 +48,16 @@ class product extends Component{
         this.setState({
             request:false
         });
+        console.log(this.props.stores.searchName,"ddd");
         loadProd({
-            tradeType:this.props.product.tradeType,
+            tradeType:this.props.stores.tradeType,
             yearMonth:this.props.yearMonth,
             areaId:this.props.areaId,
             searchAreaType:this.props.searchAreaType,
-            pageNo:this.props.product.pageNo,
-            searchName:this.props.product.searchName,
+            pageNo:this.props.stores.pageNo,
+            searchName:this.props.stores.searchName,
             callBack:(res)=>{
                 if(this._calledComponentWillUnmount) return false;
-                console.log(res,"dd")
-                //console.log(res.totalPage,"sss")
                 this.setState({
                     loading:false
                 });
@@ -73,8 +73,8 @@ class product extends Component{
                     }
                     this.props.dispatch({
                         type:'LOADPRODUCTDATA',
-                        data:this.props.product.data.concat(res.datas),
-                        pageNo:this.props.product.pageNo+1
+                        data:this.props.stores.data.concat(res.datas),
+                        pageNo:this.props.stores.pageNo+1
                     });
                     this.setState({
                         request:true
@@ -85,28 +85,57 @@ class product extends Component{
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.product.infinite  && this.state.request){
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.stores.infinite  && this.state.request){
             this._loadData();
         }
+    }
+    //显示简介
+    showIntro(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:36});
+        setTimeout(()=>{this.context.router.push("/market/marketIntro/"+ this.props.search.smallType)});
+    }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:36});
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        })
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
     }
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
+        }
         this._loadData();
     }
     componentWillUnmount(){
         this.props.dispatch({
-            type:'RESETPRODUCT',
+            type:'RESETPRODUCT'
         });
+        if(!this.props.search.searchLinkType){
+            this.props.dispatch({
+                type:"RESETSEARCH"
+            });
+        }
     }
 
-    _searchHandle(){
+    _searchDatas(key){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
         }
         this.setState({
             loading:true
+        })
+        this.props.dispatch({
+            type:'CHANGEPRODUCTSEARCHNAME',
+            searchName:encodeURI(encodeURI(key))
         })
         this.props.dispatch({
             type:'LOADPRODUCTDATA',
@@ -128,15 +157,16 @@ class product extends Component{
     render(){
         return(
             <div className="root">
-                <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}  showProvicenHandle={this._showProvicenHandle.bind(this)} loading={this.state.loading}/>
+                <HeaderBar {...this.props} titleName="产品数据"  showSearch={this.showSearch.bind(this)} showFilter={this._showProvicenHandle.bind(this)}
+                                           showIntro={this.showIntro.bind(this)} />
                 <div ref="content" className="scroll-content has-header">
                     {
-                        (this.props.product.data.length == 0 && !this.state.loading) ? <EmptyComponent/> : <Main {...this.props} data={this.props.product.data} loading={this.state.loading}/>
+                        (this.props.stores.data.length == 0 && !this.state.loading) ? <EmptyComponent/> : <Main {...this.props} data={this.props.stores.data} loading={this.state.loading}/>
                     }
                 </div>
                 <More {...this.props}/>
                 {
-                    this.props.product.isShowFilter ? <FilterProduct fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.provicenData}/> : null
+                    this.props.stores.isShowFilter ? <FilterProduct fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.provicenData}/> : null
                 }
                 {
                     this.state.loading ? <Loading/> : null
@@ -148,7 +178,6 @@ class product extends Component{
 class Main extends Component{
     constructor(props){
         super(props);
-        console.log( this.props.data.length,"length")
     }
     render(){
         return (
@@ -255,41 +284,10 @@ class TradeBreedId extends Component{
     }
 }
 
-class HeaderBar extends Component{
-    _changeHandle(){
-        console.log(this.refs.hospitalSearchName.value)
-        this.props.dispatch({
-            type:'CHANGEDRUGSEARCHNAME',
-            searchName:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
-        })
-    }
-    render(){
-        return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons"  onClick={this.props.showProvicenHandle} style={{ fontSize: '.75rem'}}>
-                    {
-                        //<button className="button" onClick={this.props.showProvicenHandle}>
-                        //    <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
-                        //</button>
-                    }
-                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-                    <span  style={{margin:' 0 5px'}}>筛选</span>
-                </div>
-                <label className="item-input-wrapper">
-                    <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
-                </label>
-                <button className="button button-clear" onClick={this.props.searchHandle}>
-                    搜索
-                </button>
-            </div>
-        )
-    }
-}
-
 function select(state){
     return{
-        product:state.product,
+        search:state.search,
+        stores:state.product,
         isVip:state.userInfo.isVip
     }
 }

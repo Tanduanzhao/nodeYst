@@ -7,7 +7,8 @@ export default class Provicen extends Component{
 	  this.state = {
 	  	areaId:this.props.areaId,
 	  	areaName:this.props.areaName,
-        searchAreaType:this.props.searchAreaType
+        searchAreaType:this.props.searchAreaType,
+		  parentName:this.props.areaName,
 	  };
 	}
 	_sureButton(){
@@ -27,11 +28,23 @@ export default class Provicen extends Component{
 			type:'UNSHOW'
 		})
 	}
-	_spanhandleClick(id,e,t){
+	_spanhandleClick(id,e,t,parent){
+		switch(parent){
+			case "广东省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:50}); break;
+			case "江苏省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:51}); break;
+			case "北京市" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:52}); break;
+			case "山东省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:53}); break;
+			case "山西省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:54}); break;
+			case "安徽省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:55}); break;
+			case "江西省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:56}); break;
+			case "河南省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:57}); break;
+			case "湖北省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:58}); break;
+		}
 		this.setState({
 			areaId :id,
 			areaName: e,
-            searchAreaType:t
+            searchAreaType:t,
+			parentName:parent,
 		})
 	}
 	render(){
@@ -49,7 +62,7 @@ export default class Provicen extends Component{
                                             <ul className="list-horizontal-block">
                                             {
                                                 ele.children.map((v)=>{
-                                                    return	<li style={(v.id == this.state.areaId) ? styles.active : null} onClick={this._spanhandleClick.bind(this,v.id,v.showAreaName,v.searchAreaType)} key={v.id}>{v.areaName}</li> 
+                                                    return	<li style={(v.id == this.state.areaId) ? styles.active : null} onClick={this._spanhandleClick.bind(this,v.id,v.showAreaName,v.searchAreaType,ele.showAreaName)} key={v.id}>{v.areaName}</li>
                                                 })
                                             }
                                             </ul>

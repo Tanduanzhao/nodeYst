@@ -8,6 +8,7 @@ import PolicySonFilter from './../../filterPage/policySonFilter.js';
 import EmptyComponent from './../../common/emptyComponent';
 import Loading from './../../common/loading';
 import More from './../../common/more';
+import HeaderBar from './../../common/headerbar.js';
 class LowPrice extends Component{
     constructor(props){
         super(props);
@@ -113,9 +114,29 @@ class LowPrice extends Component{
         this.ele.addEventListener("scroll",(e)=>{
             this._isNeedLoadData();
         });
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
+        }
         setTimeout((res)=>{
             this._isNeedLoadData();
         },10);
+    }
+    //显示简介
+    showIntro(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:40});
+        setTimeout(()=>{this.context.router.push("/market/marketIntro/"+ this.props.search.smallType)});
+    }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:40});
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        })
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
     }
      //判断屏幕是否加载满
     _isNeedLoadData(){
@@ -129,6 +150,10 @@ class LowPrice extends Component{
            this.context.router.push('/pay/vip');
             return false;
         }
+        this.props.dispatch({
+            type:'CHANGELOWPRICE',
+            areaId:["0"],
+        });
         this.props.dispatch({
             type:'CHANGELOWPRICESEARCHNAME',
             searchName:key
@@ -148,7 +173,8 @@ class LowPrice extends Component{
     render(){
         return(
             <div className="root">
-                <HeaderBar showFilter={this._showFilter.bind(this)} searchAction = {this._searchDatas.bind(this)} {...this.props}/>
+                <HeaderBar {...this.props} titleName="低价药" showSearch={this.showSearch.bind(this)} showFilter={this._showFilter.bind(this)}
+                                           showIntro={this.showIntro.bind(this)} />
                 <div ref="main" className="scroll-content has-header">
                     <div className="list">
                         <div className="card" style={{marginTop:0}}>
@@ -187,7 +213,7 @@ class LowPrice extends Component{
                             }
                         </div>
                     </div>
-                    <More/>
+                    <More {...this.props}/>
                 </div>
                 {
                     !this.state.isShowFilter ? null : <PolicySonFilter dataSources={this.props.lowPrice.filters} areaId={this.props.lowPrice.areaId} areaName={this.props.lowPrice.areaName} fn={this._fn.bind(this)} cancelButton={this._hideFilter}/>
@@ -200,30 +226,30 @@ class LowPrice extends Component{
     }
 }
 
-class HeaderBar extends Component{
-  _showProvicenHandle(){
-    this.props.showFilter();
-  }
-  _changeHandle(){
-      this.props.searchAction(this.refs.searchName.value);
-  }
-  render(){
-    return(
-      <div className="bar bar-header bar-positive item-input-inset">
-        <div className="buttons">
-            <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i></button>
-        </div>
-        <label className="item-input-wrapper">
-          <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="searchName" type="search" placeholder={this.props.lowPrice.searchName}/>
-        </label>
-        <button className="button button-clear" onClick={this._changeHandle.bind(this)}>
-           搜索
-        </button>
-      </div>
-    )
-  }
-}
+//class HeaderBar extends Component{
+//  _showProvicenHandle(){
+//    this.props.showFilter();
+//  }
+//  _changeHandle(){
+//      this.props.searchAction(this.refs.searchName.value);
+//  }
+//  render(){
+//    return(
+//      <div className="bar bar-header bar-positive item-input-inset">
+//        <div className="buttons">
+//            <button className="button" onClick={this._showProvicenHandle.bind(this)}><i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i></button>
+//        </div>
+//        <label className="item-input-wrapper">
+//          <i className="icon ion-ios-search placeholder-icon"></i>
+//          <input ref="searchName" type="search" placeholder={this.props.lowPrice.searchName}/>
+//        </label>
+//        <button className="button button-clear" onClick={this._changeHandle.bind(this)}>
+//           搜索
+//        </button>
+//      </div>
+//    )
+//  }
+//}
 class LinkBar extends Component{
 	render(){
 		return(
@@ -236,6 +262,7 @@ class LinkBar extends Component{
 }
 function select(state){
     return{
+        search:state.search,
         policy:state.policy,
         lowPrice:state.lowPrice,
         isVip:state.userInfo.isVip

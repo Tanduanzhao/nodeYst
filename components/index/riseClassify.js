@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import HeaderBar from './../common/headerBar.js';
+import HeaderBar from './../common/headerbar.js';
 import Provicen from './../provicen.js';
 import {loadListClassifyProduct} from './../function/ajax.js';
 
@@ -51,6 +51,7 @@ class RiseClassify extends Component{
     }
     //排序
     sort(sordActive,sidx){
+        this.ele.addEventListener('scroll', this._infiniteScroll);
         if(this.state.sord=="desc"){
             this.setState({
                 sord:"asc"
@@ -71,7 +72,7 @@ class RiseClassify extends Component{
     }
 
     _fn(args){
-        this._reSet()
+        this._reSet();
         setTimeout(()=> {
         this.props.dispatch((dispatch, getState)=> {
             loadListClassifyProduct(dispatch, {
@@ -129,10 +130,10 @@ class RiseClassify extends Component{
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop){
-            if(this.state.loading) return false;
-            this.setState({
-                loading:true
-            });
+            //if(this.state.loading) return false;
+            //this.setState({
+            //    loading:true
+            //});
             this._loadData();
         }
     }
@@ -151,7 +152,7 @@ class RiseClassify extends Component{
     render(){
         return(
             <div className="root">
-                <HeaderBar decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} {...this.props}/>
+                <HeaderBar {...this.props} decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} titleName="分类排行榜"/>
                 <div ref="content" className="scroll-content  has-header market">
                     <Main {...this.props} data={this.state.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
                 </div>

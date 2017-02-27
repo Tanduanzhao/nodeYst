@@ -9,10 +9,8 @@ import FilterPurchase from './../filterPage/filterPurchase';
 import Loading from './../common/loading';
 import EmptyComponent from './../common/emptyComponent';
 import ReportList from './../reportList';
-
-//import {url2obj} from './function/common';
-
 import {loadProduct,getReportType,loadWx} from './../function/ajax';
+import HeaderBar from './../common/headerbar.js';
 
 class purchase extends Component {
   constructor(props){
@@ -60,13 +58,20 @@ class purchase extends Component {
       this._loadData();
     }
   }
+  //显示搜索
+  showSearch(){
+    this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:11});
+    this.props.dispatch({
+      type:'CLICKKSEARCH',
+      clickSearch:false
+    })
+    setTimeout(()=>{
+      this.context.router.push('/search');
+    })
+  }
   componentDidMount(){
     this.ele = this.refs.content;
     this.ele.addEventListener('scroll',this._infiniteScroll);
-    //var interval=setInterval(()=>{
-    //    if(this.state.userInfo){this._loadData(); clearInterval(interval);}
-    //},1000)
-    this._loadData();
     getReportType({
       callBack:(res)=>{
         this.props.dispatch({
@@ -75,6 +80,11 @@ class purchase extends Component {
         });
       }
     });
+    if(this.props.search.clickSearch){
+      this._searchDatas(this.props.search.searchName);
+      return false
+    }
+    this._loadData();
   }
   componentWillUnmount(){
     this.props.dispatch({
@@ -114,16 +124,25 @@ class purchase extends Component {
       this._loadData();
     },100);
   }
-  _searchHandle(){
+  _searchDatas(key){
     this.setState({
       loading:true
     });
     this.props.dispatch({
+      type:'CHANGETITLEORREPORTKEY',
+      titleOrReportKey:key
+    })
+    this.props.dispatch({
       type:'LOADPURCHASEDATA',
       data:[],
-      pageNo:1,
+      pageNo:1
     });
     setTimeout(()=> this._loadData(),100);
+  }
+  _showFilter(){
+    this.props.dispatch({
+      type:'SHOWFILTERPRODUCE'
+    });
   }
   render() {
     return (
@@ -131,7 +150,7 @@ class purchase extends Component {
         {
           this.state.loading ? <Loading/> : null
         }
-        <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
+        <HeaderBar {...this.props} titleName="已购报告" showSearch={this.showSearch.bind(this)} showFilter={this._showFilter.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header has-footer">
           {
             (this.props.purchase.data.length == 0 && !this.props.userInfo.isLogin)
@@ -148,41 +167,7 @@ class purchase extends Component {
     )
   }
 }
-class HeaderBar extends Component{
-  _showProvicenHandle(){
-    this.props.dispatch({
-      type:'SHOWFILTERPRODUCE'
-    });
-  }
-  _changeHandle(){
-    this.props.dispatch({
-      type:'CHANGETITLEORREPORTKEY',
-      titleOrReportKey:encodeURI(encodeURI(this.refs.hospitalSearchName.value))
-    })
-  }
-  render(){
-    return(
-      <div className="bar bar-header bar-positive item-input-inset">
-        <div className="buttons" onClick={this._showProvicenHandle.bind(this)} style={{ fontSize: '.75rem'}}>
-          {
-            //<button className="button" onClick={this._showProvicenHandle.bind(this)}>
-            //  <i className="fa fa-th-large  fa-2x" aria-hidden="true" style={{display:"block"}}></i>
-            //</button>
-          }
-          <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-          <span  style={{margin:' 0 5px'}}>筛选</span>
-        </div>
-        <label className="item-input-wrapper">
-          <i className="icon ion-ios-search placeholder-icon"></i>
-          <input ref="hospitalSearchName" onChange={this._changeHandle.bind(this)} type="search" placeholder="请输入搜索关键词"/>
-        </label>
-        <button className="button button-clear" onClick={this.props.searchHandle}>
-           搜索
-        </button>
-      </div>
-    )
-  }
-}
+
 class Main extends Component{
   constructor(props){
     super(props);
@@ -247,18 +232,14 @@ class List extends Component{
 }
 function select(state){
   return{
-    subscribe:state.purchase.subscribe,
-    subscribeTwo:state.purchase.subscribeTwo,
-    showProvicen:state.index.showProvicen,
-    areaId:state.provicen.areaId,
-    areaName:state.provicen.areaName,
+    search:state.search,
     provicenData:state.provicen.data,
-    yearMonth:state.data.yearMonth,
-    uri:state.router.uri,
     purchase:state.purchase,
-    searchAreaType:state.provicen.searchAreaType,
     userInfo:state.userInfo
   }
+}
+purchase.contextTypes = {
+  router:React.PropTypes.object.isRequired
 }
 
 export default connect(select)(purchase);

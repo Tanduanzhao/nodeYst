@@ -62,7 +62,6 @@ class Survey extends Component{
 		let value = ele.value;
 		let asksArr = this.state.asksGroup;
 
-		//asksArr[index][position] = (e.target.checked ? 1 : 0);
 		if(ele.checked){
 			console.log('选中',typeof(ele.value));
 			if(ele.value == '0'){
@@ -85,7 +84,7 @@ class Survey extends Component{
 		let index = ele.getAttribute('data-index');
 		let position = ele.getAttribute('data-position');
 		let otherArr = this.state.asksGroup;
-		otherArr[index][position] = ele.value
+		otherArr[index][position] = ele.value;
 		this.setState({
 			asksGroup:otherArr
 		});
@@ -119,7 +118,6 @@ class Survey extends Component{
 				datas:this._mapValue(),
 				callBack: (res)=>{
 					this.showPopupVIP();
-					//this.context.router.push('/');
 				}
 			});
 			console.log(this._mapValue());
@@ -158,50 +156,6 @@ class Survey extends Component{
 		})
 	}
 
-	//_sendMessage(){
-	//	let surveyArr=this.state.surveyArr;
-	//	console.log(surveyArr);
-	//	console.log(this.state.kindArr);
-	//	let messageArr=[];
-	//	for(let i=0;i<this.state.kindArr.length;i++){
-	//		let kind=this.state.kindArr[i].split(0);
-	//		if((kind[0]=="work" && kind[1]=="5")){
-	//			this.refs.otherWork.value !=""?surveyArr['otherWork']=this.refs.otherWork.value:surveyArr['otherWork']=1;
-	//		}
-	//		if(kind[0]=="serve" && kind[1]=="5"){
-	//			this.refs.otherService.value !="" ?surveyArr['otherService']=this.refs.otherService.value:surveyArr['otherService']=1;
-	//		}
-	//		if(kind[0]=="focus" && kind[1]=="5"){
-	//			this.refs.otherCanal.value !="" ?surveyArr['otherCanal']=this.refs.otherCanal.value:surveyArr['otherCanal']=1;
-	//		}
-	//		if(kind[0]=="data" && kind[1]=="5"){
-	//			this.refs.otherTypeData.value !="" ?surveyArr['otherTypeData']=this.refs.otherTypeData.value:surveyArr['otherTypeData']=1;
-	//		}
-	//		if(messageArr.indexOf(kind[0]) == -1){
-	//			messageArr.push(kind[0])
-	//		}
-	//	}
-	//	console.log(messageArr.length,"ffffffffffffffffff");
-	//	if(messageArr.length < 4){
-	//		this.setState({
-	//			showPopup:true,
-	//			content:"客官，请留步！完整填写问卷才有7天药市通超级VIP会员的免费体验，您有遗漏的题目未填写哦~"
-	//		})
-	//		return false
-	//	}
-	//	this.refs.Textarea.value !=""?surveyArr['remark']=this.refs.Textarea.value:surveyArr['remark']=1;
-	//	let datas=[surveyArr]
-	//	console.log(datas,"ffffffffffffffffff");
-	//	console.log(datas);
-	//	//saveInvestigation({
-	//	//	datas:datas,
-	//	//	callBack: (res)=> {
-	//	//		this.showPopupVIP();
-	//	//		//this.context.router.push('/');
-	//	//	}
-	//	//});
-	//}
-
 	//显示弹出框
 	_showPopup(e){
 		e.preventDefault();
@@ -232,91 +186,11 @@ class Survey extends Component{
 			})
 		}
 	}
-	onchange(e){
-		//if(e.target.className == 'otherService'){
-		//	let  valueArr=this.refs.otherServiceCheckbox.value.split("_");
-		//	this.refs.otherServiceCheckbox.checked = "checked"
-		//	this.setState({
-		//		surveyArr :this._obj(this.state.obj,valueArr[1],true),
-		//		kindArr:valINarr(this.state.kindArr,this.refs.otherServiceCheckbox.value)
-		//	})
-		//}
-		//if(e.target.className == 'otherWork'){
-		//	let  valueArr=this.refs.otherWorkCheckbox.value.split("_");
-		//	this.refs.otherWorkCheckbox.checked = "checked"
-		//	this.setState({
-		//		surveyArr :this._obj(this.state.obj,valueArr[1],true),
-		//		kindArr:valINarr(this.state.kindArr,this.refs.otherWorkCheckbox.value)
-		//	})
-		//}
-		//if(e.target.className == 'otherTypeData'){
-		//	let  valueArr=this.refs.otherTypeDataCheckbox.value.split("_");
-		//	this.refs.otherTypeDataCheckbox.checked = "checked"
-		//	this.setState({
-		//		surveyArr :this._obj(this.state.obj,valueArr[1],true),
-		//		kindArr:valINarr(this.state.kindArr,this.refs.otherTypeDataCheckbox.value)
-		//	})
-		//}
-		//if(e.target.className == 'otherCanal'){
-		//	let  valueArr=this.refs.otherCanalCheckbox.value.split("_");
-		//	this.refs.otherCanalCheckbox.checked = "checked"
-		//	this.setState({
-		//		surveyArr :this._obj(this.state.obj,valueArr[1],true),
-		//		kindArr:valINarr(this.state.kindArr,this.refs.otherCanalCheckbox.value)
-		//	})
-		//}
-	}
-	toFocus(e){
-		//if(e.target.className == 'otherService'){
-		//	console.log(this.refs.otherServiceCheckbox.checked)
-		//	if(!this.refs.otherServiceCheckbox.checked){
-		//		let  valueArr=this.refs.otherServiceCheckbox.value.split("_");
-		//		this.refs.otherServiceCheckbox.checked = "checked"
-		//		this.setState({
-		//			surveyArr :this._obj(this.state.obj,valueArr[1],true),
-		//			kindArr:valINarr(this.state.kindArr,valueArr[1].value)
-		//		})
-		//	}
-		//}
-		//if(e.target.className == 'otherWork'){
-		//	if(!this.refs.otherWorkCheckbox.checked){
-		//		let  valueArr=this.refs.otherWorkCheckbox.value.split("_");
-		//		this.refs.otherWorkCheckbox.checked = "checked"
-		//		console.log(this.refs.otherWorkCheckbox.value)
-		//		this.setState({
-		//			surveyArr :this._obj(this.state.obj,valueArr[1],true),
-		//			kindArr:valINarr(this.state.kindArr,valueArr[1].value)
-		//		})
-		//	}
-		//}
-		//if(e.target.className == 'otherTypeData'){
-		//	if(!this.refs.otherTypeDataCheckbox.checked){
-		//		let  valueArr=this.refs.otherTypeDataCheckbox.value.split("_");
-		//		this.refs.otherTypeDataCheckbox.checked = "checked"
-		//		console.log(this.refs.otherTypeDataCheckbox.value)
-		//		this.setState({
-		//			surveyArr :this._obj(this.state.obj,valueArr[1],true),
-		//			kindArr:valINarr(this.state.kindArr,valueArr[1].value)
-		//		})
-		//	}
-		//}
-		//if(e.target.className == 'otherCanal'){
-		//	if(!this.refs.otherCanalCheckbox.checked){
-		//		let  valueArr=this.refs.otherCanalCheckbox.value.split("_");
-		//		this.refs.otherCanalCheckbox.checked = "checked"
-		//		this.setState({
-		//			surveyArr :this._obj(this.state.obj,valueArr[1],true),
-		//			kindArr:valINarr(this.state.kindArr,valueArr[1].value)
-		//		})
-		//	}
-		//}
-	}
+	toFocus(e){}
+
 	componentDidMount(){
 		this._loadData();
 	}
-	componentWillMount(){
-	}
-
 	render(){
 		return(
 			<div className="root survey">

@@ -1,12 +1,11 @@
 import $ from 'jquery';
 import {httpAddress,WXKEY} from '../config.js';
-import {encode} from './common';
+import {encode,url2obj} from './common';
 import {createStore,applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import ystReducers from '../../reducer/reducer.js';
 export var store = createStore(ystReducers,applyMiddleware(thunk));
-import {Token} from './token';
-import {url2obj} from './common';
+
 //请求队列
 var ajaxQueues = [],isGetUsering = false;
 
@@ -68,14 +67,15 @@ export const loadSingleClassifyProduct = function(dispatch,args){
     ajaxFn({
         url:'business/getSalesBreedInfo',
         data:{
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            salesId:args.salesId || null,
+            yearMonth:args.yearMonth || "",
+            areaId:args.areaId || "",
+            salesId:args.salesId || "",
             pageNo:args.pageNo || 1,
-            searchAreaType:args.searchAreaType || null,
-            searchName:args.searchName || '',
-            sord:args.sord || null,
-            sidx:args.sidx || null
+            searchAreaType:args.searchAreaType || "",
+            searchName:args.searchName || "",
+            sord:args.sord || "",
+            sidx:args.sidx || "",
+            pageSize:15,
         },
         callBack:(res)=>{
             args.callBack(res)
@@ -88,12 +88,13 @@ export const loadListClassifyProduct = function(dispatch,args){
     ajaxFn({
         url:'business/getBusinessSalesInfo',
         data:{
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            searchAreaType:args.searchAreaType || null,
+            yearMonth:args.yearMonth || "",
+            areaId:args.areaId || "",
+            searchAreaType:args.searchAreaType || "",
             pageNo:args.pageNo || 1,
-            sord:args.sord || null,
-            sidx:args.sidx || null
+            sord:args.sord || "",
+            sidx:args.sidx || "",
+            pageSize:15,
         },
         callBack:(res)=>{
             args.callBack(res)
@@ -105,10 +106,10 @@ export const loadSingleConceptProduct = function(dispatch,args){
     ajaxFn({
         url:'business/getConceptBreedInfo',
         data:{
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            conceptId:args.conceptId || null,
-            searchAreaType:args.searchAreaType || null
+            yearMonth:args.yearMonth || "",
+            areaId:args.areaId || "",
+            conceptId:args.conceptId || "",
+            searchAreaType:args.searchAreaType || ""
         },
         callBack:(res)=>{
             args.callBack(res)
@@ -120,9 +121,9 @@ export const loadListConceptProduct = function(dispatch,args){
     ajaxFn({
         url:'business/getBusinessConceptInfo',
         data:{
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            searchAreaType:args.searchAreaType || null,
+            yearMonth:args.yearMonth || "",
+            areaId:args.areaId || "",
+            searchAreaType:args.searchAreaType || "",
             pageNo:args.pageNo || 1
         },
         callBack:(res)=>{
@@ -135,13 +136,14 @@ export const loadListBreedProduct = function(dispatch,args){
     ajaxFn({
         url:'business/getBusinessBreedByUpInfo',
         data:{
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            searchAreaType:args.searchAreaType || null,
+            yearMonth:args.yearMonth || "",
+            areaId:args.areaId || "",
+            searchAreaType:args.searchAreaType || "",
             pageNo:args.pageNo || 1,
-            sord:args.sord || null,
-            sidx:args.sidx || null,
+            sord:args.sord || "",
+            sidx:args.sidx || "",
             searchName:args.searchName || "",
+            pageSize:15,
         },
         callBack:(res)=>{
             args.callBack(res)
@@ -241,11 +243,11 @@ export const loadNewrepor = function(args){
     ajaxFn({
         url:'business/firstPage',
         data:{
-            searchName:args.searchName || null,
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            pageNo:args.pageNo || null,
-            hosLevel:args.hospitalLevel || null
+            searchName:args.searchName || "",
+            yearMonth:args.yearMonth || "",
+            areaId:args.areaId || "",
+            pageNo:args.pageNo || "",
+            hosLevel:args.hospitalLevel || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -257,10 +259,10 @@ export const loadPicture = function(args){
     ajaxFn({
         url:'advertisement/getPicture',
         data:{
-            searchName:args.searchName || null,
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            imgType:args.imgType || null
+            searchName:args.searchName || "",
+            yearMonth:args.yearMonth || "",
+            areaId:args.areaId || "",
+            imgType:args.imgType || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -273,9 +275,9 @@ export const getCiReportColumnList = function(args){
     ajaxFn({
         url:'business/getCiReportColumnList',
         data:{
-            titleOrReportKey:args.titleOrReportKey|| null,
-            pageNo:args.pageNo || null,
-            pageSize:args.pageSize || null
+            titleOrReportKey:args.titleOrReportKey|| "",
+            pageNo:args.pageNo || "",
+            pageSize:args.pageSize || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -287,10 +289,10 @@ export const getReportColumnTypeList = function(args){
     ajaxFn({
         url:'business/getReportColumnTypeList',
         data:{
-            columnId:args.columnId|| null,
-            titleOrReportKey:args.titleOrReportKey|| null,
-            pageNo:args.pageNo || null,
-            pageSize:args.pageSize || null
+            columnId:args.columnId|| "",
+            titleOrReportKey:args.titleOrReportKey|| "",
+            pageNo:args.pageNo || "",
+            pageSize:args.pageSize || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -302,12 +304,12 @@ export const getColumnReportList = function(args){
     ajaxFn({
         url:'business/getColumnReportList',
         data:{
-            columnId:args.columnId|| null,
-            pageNo:args.pageNo || null,
-            reportType:args.reportType || null,
-            pageSize:args.pageSize || null,
-            costStatus:args.costStatus || null,
-            titleOrReportKey:args.titleOrReportKey|| null
+            columnId:args.columnId|| "",
+            pageNo:args.pageNo || "",
+            reportType:args.reportType || "",
+            pageSize:args.pageSize || "",
+            costStatus:args.costStatus || "",
+            titleOrReportKey:args.titleOrReportKey|| ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -320,7 +322,7 @@ export const insertLikeReport = function(args){
     ajaxFn({
         url:'business/insertLikeReport',
         data:{
-            reportId:args.reportId|| null
+            reportId:args.reportId|| ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -333,16 +335,16 @@ export const loadReportList = function(args){
     ajaxFn({
         url:'business/getLastHotReport',
         data:{
-            reportType:args.reportType || null,
-            pageNo:args.pageNo || null,
-            searchType:args.searchType || null,
+            reportType:args.reportType || "",
+            pageNo:args.pageNo || "",
+            searchType:args.searchType || "",
             titleOrReportKey:args.titleOrReportKey,
             sidx:args.sidx ,
             sord:args.sord ,
-            areaId:args.areaId || null,
+            areaId:args.areaId || "",
             costStatus:args.costStatus,
-            pageSize:args.pageSize || null,
-            columnId:args.columnId || null
+            pageSize:args.pageSize || "",
+            columnId:args.columnId || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -355,9 +357,9 @@ export const selectReportReplys = function(args){
     ajaxFn({
         url:'business/selectReportReplys',
         data:{
-            pageNo:args.pageNo||null,
-            reportId:args.reportId||null,
-            columnId:args.columnId||null
+            pageNo:args.pageNo||"",
+            reportId:args.reportId||"",
+            columnId:args.columnId||""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -369,8 +371,8 @@ export const selectReportDetail = function(args){
     ajaxFn({
         url:'business/selectReportDetail',
         data:{
-            reportId:args.reportId||null,
-            columnId:args.columnId||null
+            reportId:args.reportId||"",
+            columnId:args.columnId||""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -383,8 +385,8 @@ export const insertReplyReport = function(args){
     ajaxFn({
         url:'business/insertReplyReport',
         data:{
-            reportId:args.reportId||null,
-            replyContent:args.replyContent||null,
+            reportId:args.reportId||"",
+            replyContent:args.replyContent||"",
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -397,8 +399,8 @@ export const loadBidList = function(args){
     ajaxFn({
         url:'business/getBidList',
         data:{
-            searchName:args.searchName || null,
-            pageNo:args.pageNo || null
+            searchName:args.searchName || "",
+            pageNo:args.pageNo || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -411,11 +413,11 @@ export const loadProd = function(args){
     ajaxFn({
         url:'business/getTradeProductList',
         data:{
-            searchName:args.searchName || null,
-            yearMonth:args.yearMonth || null,
-            areaId:args.areaId || null,
-            pageNo:args.pageNo || null,
-            hosLevel:args.hospitalLevel || null,
+            searchName:args.searchName || "",
+            yearMonth:args.yearMonth || "",
+            areaId:args.areaId || "",
+            pageNo:args.pageNo || "",
+            hosLevel:args.hospitalLevel || "",
             tradeType:args.tradeType,
         },
         callBack:(res)=>{
@@ -429,12 +431,12 @@ export const loadBidListContent = function(args){
     ajaxFn({
         url:'business/getBidDetail',
         data:{
-            areaId:args.areaId || null,
-            sord:args.sord || null,
-            sidx:args.sidx || null,
-            pageNo:args.pageNo || null,
-            searchName:args.searchName || null,
-            searchProductStatus:args.searchProductStatus || null,
+            areaId:args.areaId || "",
+            sord:args.sord || "",
+            sidx:args.sidx || "",
+            pageNo:args.pageNo || "",
+            searchName:args.searchName || "",
+            searchProductStatus:args.searchProductStatus || "",
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -460,7 +462,7 @@ export const getProjectStatus = function(args){
     ajaxFn({
         url:'business/getProjectStatus',
         data:{
-            statusType:"REPROT_TYPE",
+            statusType:"REPROT_TYPE"
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -473,10 +475,10 @@ export const loadProduct = function(args){
     ajaxFn({
         url:'business/getUserBuyReportList',
         data:{
-            reportType:args.reportType || null,
-            pageNo:args.pageNo || null,
+            reportType:args.reportType || "",
+            pageNo:args.pageNo || "",
             searchType:args.searchType,
-            titleOrReportKey:args.titleOrReportKey,
+            titleOrReportKey:encodeURI(encodeURI(args.titleOrReportKey))
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -502,7 +504,7 @@ export const getReportType = function(args){
     ajaxFn({
         url:'business/getReportType',
         data:{
-            columnId:args.columnId || null
+            columnId:args.columnId || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -515,7 +517,7 @@ export const loadPolicyModules = function(args){
         url:'business/getPolicyAccessList',
         data:{
             areaId:args.areaId,
-            searchName:encode(args.searchName) || null
+            searchName:encode(args.searchName) || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -825,10 +827,10 @@ export const getReportKeepList = function(args){
     ajaxFn({
         url:'business/getReportKeepList',
         data:{
-            reportType:args.reportType || null,
-            pageNo:args.pageNo || null,
+            reportType:args.reportType || "",
+            pageNo:args.pageNo || "",
             searchType:args.searchType,
-            titleOrReportKey:args.titleOrReportKey,
+            titleOrReportKey:encodeURI(encodeURI(args.titleOrReportKey)),
             sidx:args.sidx ,
             sord:args.sord ,
             costStatus:args.costStatus,
@@ -904,8 +906,8 @@ export const glodBox = function(args){
     ajaxFn({
         url:'partakeActivity/glodBox',
         data:{
-            username:args.username || null,
-            phone:args.phone || null
+            username:args.username || "",
+            phone:args.phone || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -928,7 +930,7 @@ export const getCatalogList = function(args){
     ajaxFn({
         url:'business/getCatalogList',
         data:{
-            searchName:args.searchName || null,
+            searchName:args.searchName || "",
             max:args.max,
             min:args.min,
             catalogId:args.catalogId,
@@ -946,7 +948,7 @@ export const getCatalogInfo = function(args){
     ajaxFn({
         url:'business/getCatalogInfo',
         data:{
-            searchName:args.searchName || null,
+            searchName:args.searchName || "",
             catalogId:args.catalogId,
             tongyongmingZl:args.tongyongmingZl,
             catalogTypeId:args.catalogTypeId,
@@ -983,7 +985,7 @@ export const getEntryPriceSource = function(args){
     ajaxFn({
         url:'business/getEntryPriceSource',
         data:{
-            searchName:args.searchName || null,
+            searchName:args.searchName || "",
             provinceId:args.provinceId,
             pageNo:args.pageNum
         },
@@ -998,7 +1000,7 @@ export const getHQFirstPage = function(args){
     ajaxFn({
         url:'business/getHQFirstPage',
         data:{
-            pageNo:args.pageNo || null
+            pageNo:args.pageNo || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -1010,9 +1012,9 @@ export const getHosInfoDetail = function(args){
     ajaxFn({
         url:'business/getHosInfoDetail',
         data:{
-            id:args.id || null,
-            pageNo:args.pageNo || null,
-            pageSize:args.pageSize || null,
+            id:args.id || "",
+            pageNo:args.pageNo || "",
+            pageSize:args.pageSize || "",
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -1067,11 +1069,12 @@ export const getBusinessFactoryInfo = function(dispatch,args){
             yearMonth:params.yearMonth,
             areaId:params.areaId,
             searchAreaType:params.searchAreaType,
-            breedId:params.breedId || null,
-            pageNo:params.pageNo || null,
-            sord:params.sord || null,
-            sidx:params.sidx || null,
+            breedId:params.breedId || "",
+            pageNo:params.pageNo || "",
+            sord:params.sord || "",
+            sidx:params.sidx || "",
             searchName:params.searchName || "",
+            pageSize:15,
         },
         callBack:(res)=>{
             if(res.state == 1){
@@ -1088,17 +1091,16 @@ export const getBusinessFactoryProdInfo = function(args){
     ajaxFn({
         url:'business/getBusinessFactoryProdInfo',
         data:{
-            parentId:args.parentId || "",
             isCity:args.isCity || "",
-            areaId:args.areaId || null,
-            yearMonth:args.yearMonth || null,
-            breedId:args.breedId || null,
-            pageNo:args.pageNo || null,
+            areaId:args.areaId || "",
+            yearMonth:args.yearMonth || "",
+            breedId:args.breedId || "",
+            pageNo:args.pageNo || "",
             yytj:args.yytj || "",
-            sord:args.sord || null,
-            sidx:args.sidx || null,
-            searchName:args.searchName || "",
-            searchAreaType:args.searchAreaType || null
+            sord:args.sord || "",
+            sidx:args.sidx || "",
+            searchName:encodeURI(encodeURI(args.searchName)) || "",
+            searchAreaType:args.searchAreaType || ""
         },
         callBack:(res)=>{
             args.callBack(res);
@@ -1111,11 +1113,11 @@ export const getBusinessFirstFacProdInfo = function(args){
     ajaxFn({
         url:'business/getBusinessFirstFacProdInfo',
         data:{
-            areaId:args.areaId || null,
-            yearMonth:args.yearMonth || null,
-            pageNo:args.pageNo || null,
-            sord:args.sord || null,
-            sidx:args.sidx || null,
+            areaId:args.areaId || "",
+            yearMonth:args.yearMonth || "",
+            pageNo:args.pageNo || "",
+            sord:args.sord || "",
+            sidx:args.sidx || "",
             searchName:args.searchName || "",
         },
         callBack:(res)=>{
@@ -1298,30 +1300,6 @@ export const saveInvestigation = function(args){
     })
 }
 
-{
-    //"zhaoshang":args.zhaoshang,
-    //"linchuang":args.linchuang,
-    //"zhaobiao": args.zhaobiao,
-    //"otherWork":args.otherWork,
-    //"geshengzhongbiaoshuju": args.geshengzhongbiaoshuju,
-    //"yiyuanxiaoshoushuju": args.yiyuanxiaoshoushuju,
-    //"shengchanqiyezhaoshanrenyuandianhua": args.shengchanqiyezhaoshanrenyuandianhua,
-    //"zhengceheshichangfenxi":args.zhengceheshichangfenxi,
-    //"otherTypeData":args.otherTypeData,
-    //"daxingyiyaohuiyi": args.daxingyiyaohuiyi,
-    //"yaoquanpengyoutuijian": args.yaoquanpengyoutuijian,
-    //"kehujinglijieshao": args.kehujinglijieshao,
-    //"weixinpengyouquan": args.weixinpengyouquan,
-    //"otherCanal": args.otherCanal,
-    //"chenggonganli": args.chenggonganli,
-    //"zhaoshangpinzhongxinxi": args.zhaoshangpinzhongxinxi,
-    //"yaopinzhishiku": args.yaopinzhishiku,
-    //"shiyonggongju": args.shiyonggongju,
-    //"otherService": args.otherService,
-    //remark: args.remark,
-}
-
-
 //是否已开通7天会员接口
 export const isGetSevenDaysVIP = function(args) {
     ajaxFn({
@@ -1346,8 +1324,101 @@ export const openSevenDaysVIP = function(args){
             args.callBack(res);
         }
     })
+};
+//搜索列表
+export const indexList = function(args){
+    ajaxFn({
+        url:'business/solrSearch',
+        data:{
+            searchName:args.searchName || "",
+            pageNo:args.pageNo || ""
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
 }
 
+//搜索列表
+export const getSynopsis = function(args){
+    ajaxFn({
+        url:'pub/getSynopsis',
+        data:{
+            reportId:args.reportId
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//记录搜索信息
+export const saveIndexLog = function(args){
+    ajaxFn({
+        url:'business/saveIndexLog',
+        data:{
+            userId:args.userId || "",
+            searchName:args.searchName || "",
+            smallType:args.smallType || ""
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//历史搜索记录
+export const getIndexHistory = function(args){
+    ajaxFn({
+        url:'business/getIndexHistory',
+        data:{
+            userId:args.userId || "",
+            smallType:args.smallType || "",
+            pageNo:args.pageNo || ""
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//热门搜索
+export const getHotIndex = function(args){
+    ajaxFn({
+        url:'business/getHotIndex',
+        data:{
+            pageNo:args.pageNo || ""
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+//论坛
+export const baseUserSynchronous = function(args){
+    ajaxFn({
+        url:'business/baseUserSynchronous',
+        data:{
+            userId:args.userId
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
+//返回论坛数据
+export const selectBaseBbsList = function(args){
+    ajaxFn({
+        url:'business/selectBaseBbsList',
+        data:{
+            userId:args.userId
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
 //export const getTencentMap = function(los,around,place,callBack){
 //    $.ajax({
 //        url:'http://apis.map.qq.com/ws/place/v1/search?keyword='+encodeURI(place)+'&boundary=nearby('+los.lat+','+los.long+','+around+')&key=3P3BZ-ZO333-QVE3J-YNVJ3-GZ4E6-XQFVR&output=jsonp&callback=posFn',
@@ -1360,6 +1431,7 @@ export const openSevenDaysVIP = function(args){
 
 //请求支付
 export const requestUnifiedorderPayService = function(args){
+    let message='';
     $.ajax({
         type: "POST",
         url:httpAddress+"pay/requestUnifiedorderPayService",
@@ -1399,7 +1471,7 @@ export const requestUnifiedorderPayService = function(args){
 
 function ajaxFn(params){
     var params = {
-        url:params.url || null,
+        url:params.url || "",
         method:params.method || 'POST',
         data:params.data || {},
         callBack:params.callBack || function(){}
@@ -1440,9 +1512,6 @@ function ajaxFn(params){
                 code: url2obj().code
             },
             callBack:(res)=>{
-                //if(res.state == 0){
-                //location.href = httpAddress;
-                //}else{
                 isGetUsering = false;
                 if (res.datas) {
                     if(typeof url2obj().managerId != 'undefined'){
@@ -1457,14 +1526,29 @@ function ajaxFn(params){
                         datas: res.datas
                     });
                     store.dispatch({
-                        type: 'LOGIN',
+                        type: 'LOGIN'
+                    });
+                    store.dispatch({
+                        type: "CHANGE",
+                        areaName: res.datas.areaName,
+                        areaId: res.datas.areaId,
+                        searchAreaType: res.datas.searchAreaType
+                    });
+                    console.log( res.datas.provinceId);
+                    store.dispatch({
+                        type: "CHANGEALLPROVINCEIDNAME",
+                        provinceName: res.datas.provinceName,
+                        provinceId: res.datas.provinceId
+                    });
+                    store.dispatch({
+                        type: "CHANGEDATA",
+                        yearMonth: res.datas.yearMonth
                     });
                     name = res.datas.id;
                     setTimeout(()=>{
                         beginAjax();
                     })
                     }
-                //}
             }
         });
     }else{

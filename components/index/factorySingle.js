@@ -24,7 +24,7 @@ export default class FactorySingle extends Component{
         if(this.props.data){
             const sid = this.props.data.salesId || this.props.data.conceptId;
             return(
-            <Link to={`/market/marketSearch/marketSearchDetail/${encodeURIComponent(encodeURIComponent(this.props.data.factoryAbbrCl))}/${this.props.data.id}`} className="row item" style={{ padding: '10px',fontSize: '.6rem'}}>
+            <Link to={`/market/marketSearch/marketSearchDetail/${encodeURIComponent(this.props.data.factoryAbbrCl)}/${this.props.data.id}`} className="row item" style={{ padding: '10px',fontSize: '.6rem'}}>
                     <h3 className="col"  style={{fontSize: '.6rem'}}>{this.props.data.factoryAbbrCl}</h3>
                     <div className="col text-center">{this.props.data.sales}</div>
                     {changeCost}

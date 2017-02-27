@@ -1,14 +1,15 @@
 /*
     数据-目录分组产品信息
  */
-import React,{Component} from 'react';
-import {connect} from 'react-redux';
-import {getCatalogInfo,getCatalogTypeList} from '../function/ajax';
-import FilterGroupsMes from '../filterPage/filterGroupsMes';
-import {Link} from 'react-router';
-import Loading from '../common/loading';
-import More from './../common/more';
-import EmptyComponent from '../common/emptyComponent';
+import React,{Component} from "react";
+import {connect} from "react-redux";
+import {getCatalogInfo,getCatalogTypeList} from "../function/ajax";
+import FilterGroupsMes from "../filterPage/filterGroupsMes";
+import {Link} from "react-router";
+import Loading from "../common/loading";
+import More from "./../common/more";
+import HeaderBar from "./../common/headerbar.js";
+import EmptyComponent from "../common/emptyComponent";
 class GroupsMes extends Component{
     constructor(props){
         super(props);
@@ -20,16 +21,14 @@ class GroupsMes extends Component{
             catalogId:this.props.params.id,
             catalogTypeId:null,
             tongyongmingZl:encodeURI(encodeURI(this.props.params.searchName))
-        }
-        this._searchHandle = this._searchHandle.bind(this);
+        };
         this._loadData = this._loadData.bind(this);
         this._loadTypes = this._loadTypes.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _toggleFilter(){
-        
-        if(this.props.isVip == '0'){
-            this.context.router.push('/pay/vip');
+        if(this.props.isVip == "0"){
+            this.context.router.push("/pay/vip");
             return false;
         }
         this.setState({
@@ -47,20 +46,20 @@ class GroupsMes extends Component{
         }
     }
 
-    _searchHandle(searchKeys){
-        if(this.props.isVip == '0'){
-            this.context.router.push('/pay/vip');
+    _searchDatas(searchKeys){
+        if(this.props.isVip == "0"){
+            this.context.router.push("/pay/vip");
             return false;
         }
         this.props.dispatch({
-            type:'CHANGEGROUPSMESSEARCHNAME',
+            type:"CHANGEGROUPSMESSEARCHNAME",
             searchName:searchKeys
         });
         this.setState({
             pageNum:1,
             isLoading:true,
             tongyongmingZl:null,
-            catalogId:null,
+            //catalogId:null,
             infinite:true
         });
         setTimeout(()=>{
@@ -69,11 +68,11 @@ class GroupsMes extends Component{
     }
     _fn(args){
         this.props.dispatch({
-            type:'RESETDATAGROUPSMES'
+            type:"RESETDATAGROUPSMES"
         });
         this.setState({
             catalogTypeId:args.catalogTypeId,
-            catalogId:null,
+            //catalogId:null,
             isLoading:true,
             tongyongmingZl:null,
             pageNum:1,
@@ -84,23 +83,38 @@ class GroupsMes extends Component{
             this._loadData();
         });
     }
-    componentDidMount(){
-        this.ele = this.refs.content;
-        this.ele.addEventListener('scroll',this._infiniteScroll);
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: "CHANGESMALLTYPE",smallType:31});
         this.props.dispatch({
-            type:'CHANGEGROUPSMESSEARCHNAME',
-            searchName:this.props.params.searchName
+            type:"CLICKKSEARCH",
+            clickSearch:false
         })
         setTimeout(()=>{
+            this.context.router.push("/search");
+        })
+    }
+    componentDidMount(){
+        this.ele = this.refs.content;
+        this.ele.addEventListener("scroll",this._infiniteScroll);
+        this.props.dispatch({
+            type:"CHANGEGROUPSMESSEARCHNAME",
+            searchName:this.props.params.searchName
+        })
+        this._loadTypes();
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
+        }
+        setTimeout(()=>{
             this._loadData();
-            this._loadTypes();
         });
     }
     _loadTypes(){
         getCatalogTypeList({
             callBack:(res)=>{
                 this.props.dispatch({
-                    type:'LOADGROUPSMESTYPES',
+                    type:"LOADGROUPSMESTYPES",
                     datas:res.datas
                 })
             }
@@ -120,17 +134,17 @@ class GroupsMes extends Component{
                 });
                 if (res){
                     this.props.dispatch({
-                        type:'LOADGTOUPSMESDATA',
-                        datas:res.datas.catalogDatas,
+                        type:"LOADGTOUPSMESDATA",
+                        datas:res.datas.catalogDatas
                     });
                     this.props.dispatch({
-                        type:'LOADGTOUPSMESOTHERDATA',
-                        datas:res.datas.otherDatas,
+                        type:"LOADGTOUPSMESOTHERDATA",
+                        datas:res.datas.otherDatas
                     });
                     setTimeout(()=>{
                         if(res.totalSize <= this.props.groupsMes.otherDatas.length){
                             this.setState({
-                                infinite:false,
+                                infinite:false
                             });
                         }else{
                             this.setState({
@@ -145,19 +159,25 @@ class GroupsMes extends Component{
     }
     componentWillUnmount(){
         this.props.dispatch({
-            type:'RESETGTOUPSMES'
+            type:"RESETGTOUPSMES"
         });
+        if(!this.props.search.searchLinkType){
+            this.props.dispatch({
+                type:"RESETSEARCH"
+            });
+        }
     }
     render(){
+        const dataSource = {datas:this.props.groupsMes.datas,otherDatas:this.props.groupsMes.otherDatas};
         return(
             <div className="root">
-                <Header searchName={this.props.groupsMes.searchName} searchHandle={this._searchHandle} showFilter={this._toggleFilter.bind(this)} {...this.props}/>
+                <HeaderBar {...this.props} titleName={this.props.groupsMes.searchName} showSearch={this.showSearch.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
                 {
                     this.state.isLoading ? <Loading/> : null
                 }
                 <div ref="content" className="scroll-content has-header">
                     {
-                        (this.props.groupsMes.otherDatas.length == 0 && !this.state.isLoading && this.props.groupsMes.datas == 'undefined') ? <EmptyComponent/> : <Main title={this.props.params.searchName} dataSource={{datas:this.props.groupsMes.datas,otherDatas:this.props.groupsMes.otherDatas}}/>
+                        (this.props.groupsMes.otherDatas.length == 0 && !this.state.isLoading && this.props.groupsMes.datas.length == 0) ? <EmptyComponent/> : <Main title={this.props.params.searchName} id={this.props.params.id} dataSource={dataSource}/>
                     }
                 </div>
                 <More {...this.props}/>
@@ -173,29 +193,32 @@ class Main extends Component{
         super(props);
     }
     render(){
+        console.log("a")
         return (
             <div className="product-view">
                 {
-                    (typeof this.props.dataSource.datas != 'object') ? null : 
+                    (typeof this.props.dataSource.datas == "undefined") ? null :
                         <div  className="list">
-                            <h2 className="item item-divider">目录ID:{this.props.dataSource.datas.catalogId}</h2>
+                            {
+                                this.props.dataSource.datas.length == 0 ? null : <h2 className="item item-divider">目录ID:{this.props.id}</h2>
+                            }
                             <div className="list">
                                {
-                                    this.props.dataSource.datas.catalogInfoList.map((ele)=>{
-                                        return <List key={ele.yjProdId} dataSource={ele}/>
+                                    this.props.dataSource.datas.map((ele)=>{
+                                        return <List key={Math.random()} dataSource={ele}/>
                                     })
                                 }
                             </div>
                         </div>
                 }
                 {    
-                    (this.props.dataSource.datas == 'undefined' || this.props.dataSource.otherDatas.length == 0 || typeof this.props.dataSource.datas != 'object') ? null : <h2 className="item item-divider" style={{ backgroundColor:" #f5f5f5"}}>{this.props.title}相关分组</h2>
+                    (this.props.dataSource.datas.length == 0|| this.props.dataSource.otherDatas.length == 0 || typeof this.props.dataSource.datas != "undefined") ? null : <h2 className="item item-divider" style={{ backgroundColor:" #f5f5f5"}}>{this.props.title}相关分组</h2>
                 }
                 <ul className="list">
                     {
                         this.props.dataSource.otherDatas.map((ele, index)=>{
                             return (
-                                <div className="list" key={ele.catalogId}>
+                                <div className="list" key={Math.random()}>
                                     <h2>目录ID:{ele.catalogId}</h2>
                                     {
                                         ele.relatedInfoList.map((e)=>{
@@ -216,10 +239,7 @@ class List extends Component{
         return(
             <li className="item item-text-wrap">
                 <p>药交产品ID：{this.props.dataSource.yjProdId}</p>
-                {
-                    //<p className="item-text-wrap">物价产品ID：{this.props.dataSource.wjProdId}</p>
-                }
-                <p>产品名称：{this.props.dataSource.prodName} <span className="btn" style={{margin:'0 5px',padding:"2px 3px"}}>{this.props.dataSource.iconGeneric}</span></p>
+                <p>产品名称：{this.props.dataSource.prodName} <span className="btn" style={{margin:"0 5px",padding:"2px 3px"}}>{this.props.dataSource.iconGeneric}</span></p>
                 <p>剂型：{this.props.dataSource.dosName}</p>
                 <p>规格：{this.props.dataSource.spec}</p>
                 <p>包装规格：{this.props.dataSource.baozhuangSpec}</p>
@@ -228,7 +248,7 @@ class List extends Component{
                 <p>生产企业：{this.props.dataSource.factoryName}</p>
                 <p>报名企业：{this.props.dataSource.baomingFac}</p>
                 {
-                    (typeof this.props.dataSource.remark == 'undefined') ? null:<p>备注：{this.props.dataSource.remark}</p>
+                    (typeof this.props.dataSource.remark == "undefined") ? null:<p>备注：{this.props.dataSource.remark}</p>
                 }
                 <p>入市价：{this.props.dataSource.entryPrice}（{this.props.dataSource.publishDate}）</p>
                 <p>广东现行采购价：{this.props.dataSource.gdPurchase}</p>
@@ -237,34 +257,11 @@ class List extends Component{
         )
     }
 }
-
-class Header extends Component{
-    _showFilterHandle(){
-        this.props.showFilter()
-    }
-    render(){
-        return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons"  onClick={this._showFilterHandle.bind(this)} style={{ fontSize: '.75rem'}}>
-                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-                    <span  style={{margin:' 0 5px'}}>筛选</span>
-                </div>
-                <label className="item-input-wrapper">
-                    <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="searchName" type="search" placeholder={decodeURI(decodeURI(this.props.searchName))}/>
-                </label>
-                <button className="button button-clear" onClick={()=> this.props.searchHandle(this.refs.searchName.value)}>
-                    搜索
-                </button>
-            </div>
-        )
-    }
-}
-
 function select(state){
     return{
+        search:state.search,
         groupsMes:state.groupsMes,
-        isVip:state.userInfo.isVip,
+        isVip:state.userInfo.isVip
     }
 }
 

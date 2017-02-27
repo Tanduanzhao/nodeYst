@@ -50,6 +50,36 @@ export function OpenProductView(id,cb){
         }
     })
 }
+export function contrastName(name){
+    switch(name){
+        case "分析报告" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:11});
+        case "政策专栏" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:21});
+        case "老吴专栏" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:22});
+        case "华招专栏" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:23});
+        case "目录分组" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:31});
+        case "入市价数据源" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:32});
+        case "政策准入" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:33});
+        case "中标数据" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:34});
+        case "全国限价" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:35});
+        case "产品数据" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:36});
+        case "基药" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:37});
+        case "医保" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:38});
+        case "抗菌药物" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:39});
+        case "低价药" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:40});
+        case "辅助用药" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:41});
+        case "质量层次" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:42});
+        case "广东省医院市场" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:50});
+        case "江苏省医院市场" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:51});
+        case "北京市医院市场" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:52});
+        case "山东省医院市场" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:53});
+        case "山西省医院市场" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:54});
+        case "安徽省医院市场" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:55});
+        case "江西省医院市场" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:56});
+        case "河南省医院市场" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:57});
+        case "湖北省医院市场" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:58});
+        case "湖南省医院市场" : return this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:59});
+    }
+}
 
 export function onBridgeReady(data,cb){
     var appId = data.appId;
@@ -120,7 +150,7 @@ export function authWxcode(_href,infoo,callBack){
                     }
                 });
             });
-            wx.error(()=> {
+           wx.error(()=> {
                 authWxcode(href,info)
             });
         }

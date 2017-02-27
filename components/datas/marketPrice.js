@@ -8,6 +8,7 @@ import Provicen from '../provicen';
 import {Link} from 'react-router';
 import Loading from '../common/loading';
 import More from './../common/more';
+import HeaderBar from './../common/headerbar.js';
 import EmptyComponent from '../common/emptyComponent';
 class MarketPrice extends Component{
     constructor(props){
@@ -28,7 +29,7 @@ class MarketPrice extends Component{
     }
 
     //搜索方法
-    _searchHandle(searchKeys){
+    _searchDatas(searchKeys){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
@@ -88,32 +89,50 @@ class MarketPrice extends Component{
             }
         });
     }
+    //显示简介
+    showIntro(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:35});
+        setTimeout(()=>{this.context.router.push("/market/marketIntro/"+ this.props.search.smallType)});
+    }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:35});
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        })
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
+    }
 
     //渲染完成后调用
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        if(this.props.stores.data.length == 0){
-            this._loadData();
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
         }
+        this._loadData();
     }
 
     //组件移除前调用方法
     componentWillUnmount(){
-        //this.props.dispatch({
-        //    type:'LOADMARKETTDATA',
-        //    data:[],
-        //    pageNo:1
-        //});
-        //this.props.dispatch({
-        //    type:'RESETMARKETPRICE'
-        //});
+        this.props.dispatch({
+            type:'RESETMARKETPRICE'
+        });
+        if(!this.props.search.searchLinkType){
+            this.props.dispatch({
+                type:"RESETSEARCH"
+            });
+        }
     }
 
     render(){
         return(
             <div className="root">
-                <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}/>
+                <HeaderBar {...this.props} titleName="全国限价"  showSearch={this.showSearch.bind(this)} showIntro={this.showIntro.bind(this)} />
                 {
                     this.state.loading?<Loading/>: null
                 }
@@ -205,28 +224,6 @@ class List extends Component{
     }
 }
 
-class HeaderBar extends Component{
-    _changeHandle(){
-        this.props.dispatch({
-            type:'CHANGEBIDLISTTITLEORREPORTKEY',
-            searchName:this.refs.searchName.value
-        })
-    }
-    render(){
-        return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <label className="item-input-wrapper">
-                    <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="searchName" type="search" defaultValue={this.props.stores.searchName} placeholder="请输入搜索关键词"/>
-                </label>
-                <button className="button button-clear" onClick={()=>{this.props.searchHandle(this.refs.searchName.value)}}>
-                    搜索
-                </button>
-            </div>
-        )
-    }
-}
-
 class MarketList extends Component{
     render(){
         return(
@@ -254,6 +251,7 @@ class MarketList extends Component{
 function select(state){
     return{
         uri:state.router.uri,
+        search:state.search,
         stores:state.marketPrice,
         isVip:state.userInfo.isVip
     }

@@ -41,10 +41,14 @@ import riseFactory from './riseFactory';
 
 import managerList from './managerList';
 import clientList from './clientList';
+
+//全局搜索
+import search from './search';
 //合并仓库
 
 const ystReducers = combineReducers({
 	index,
+    search,
     market,
     marketSearch,
     marketSearchDetail,

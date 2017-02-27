@@ -11,9 +11,6 @@ var defaultAssist = {
     provinces:[],
     filters:[],
     datas:[]
-    
-    
-    
 };
 export default function insurance(state=defaultAssist,action){
     switch(action.type){

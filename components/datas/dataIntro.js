@@ -10,7 +10,7 @@ class DataInrto extends Component{
         return(
             <div className="root">
                 <HeaderBar {...this.props}/>
-                <Main/>
+                <Main {...this.props}/>
             </div>
         )
     }
@@ -86,8 +86,6 @@ class Main extends Component{
     }
 }
 function select(state){
-    return{
-
-    }
+    return{}
 }
 export default connect(select)(DataInrto);

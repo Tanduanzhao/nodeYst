@@ -1,12 +1,13 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-//import HeaderBar from './../common/headerBar.js';
-//import Provicen from './../provicen.js';
-import FilterMarket from './../filterPage/filterMarket';
+
 import {loadListBreedProduct} from './../function/ajax.js';
 
-import Loading from './../common/loading';
 import EmptyComponent from './../common/emptyComponent';
+import FilterMarket from './../filterPage/filterMarket';
+import HeaderBar from '../common/headerbar.js';
+import Loading from './../common/loading';
+
 
 import {Link} from 'react-router';
 class RiseBreed extends Component{
@@ -78,7 +79,7 @@ class RiseBreed extends Component{
     }
 
     _fn(args){
-        this._reSet()
+        this._reSet();
         this.props.dispatch({
             type:'CHANGEDATA',
             yearMonth:args.yearMonth
@@ -100,7 +101,7 @@ class RiseBreed extends Component{
                 pageNo:this.state.pageNo,
                 sord:this.state.sord,
                 sidx:this.state.sidx,
-                searchName:encodeURI(encodeURI(this.state.searchName)),
+                searchName:encodeURI(encodeURI(this.props.stores.searchName)),
                 callBack:(res)=>{
                     this.setState({
                         pageNo:this.state.pageNo+1,
@@ -132,7 +133,7 @@ class RiseBreed extends Component{
                 pageNo:this.state.pageNo,
                 sord:this.state.sord,
                 sidx:this.state.sidx,
-                searchName:encodeURI(encodeURI(this.state.searchName)),
+                searchName:encodeURI(encodeURI(this.props.stores.searchName)),
                 callBack:(res)=>{
                     this.setState({
                         pageNo:this.state.pageNo+1,
@@ -159,33 +160,23 @@ class RiseBreed extends Component{
             this._loadData();
         }
     }
-
     //筛选方法
     _showProvicenHandle(){
         this.props.dispatch({
             type:'SHOW'
         });
     }
-
     //搜索方法
-    _searchHandle(searchKeys,storesSearchName,storesData){
+    _searchDatas(searchKeys,storesSearchName,storesData){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
         }else{
             this._reSet();
-            this.setState({
-                loading:true,
-                //data:[],
-                //pageNo:1,
-                searchName:searchKeys == '' && storesData.length !=0  ?storesSearchName:searchKeys
+            this.props.dispatch({
+                type:'RISEBREESSEARCHNAME',
+                searchName:searchKeys
             });
-            if(searchKeys != '' || storesData.length ==0) {
-                this.props.dispatch({
-                    type: 'RISEBREESSEARCHNAME',
-                    searchName: searchKeys
-                });
-            }
             setTimeout(()=> this._loadData());
         }
     }
@@ -196,9 +187,23 @@ class RiseBreed extends Component{
             isShowFilter:!this.state.isShowFilter
         })
     }
+    //显示搜索
+    showSearch(){
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        })
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
+    }
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            return false
+        }
         if(this.props.stores.data.length == 0){
             this._loadData();
             return false
@@ -206,7 +211,7 @@ class RiseBreed extends Component{
         this.setState({
             loading:false
         });
-       
+
     }
     componentWillUnmount(){
         this.props.dispatch({
@@ -217,33 +222,13 @@ class RiseBreed extends Component{
     render(){
         return(
             <div className="root">
-                <HeaderBar {...this.props} searchHandle={this._searchHandle.bind(this)}  showFilter={this._toggleFilter.bind(this)}/>
+                <HeaderBar {...this.props} titleName="品种影响力排行榜" showSearch={this.showSearch.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
                 <div ref="content" className="scroll-content has-header market">
                     <Main data={this.props.stores.data}  sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive}  loading={this.state.loading}/>
                 </div>
                 {
                     this.state.isShowFilter ? <FilterMarket {...this.props}  fn={this._fn.bind(this)}  hideFilter={this._toggleFilter.bind(this)} dataSources={this.props.provicenData}/> :null
                 }
-            </div>
-        )
-    }
-}
-
-class HeaderBar extends Component{
-    render(){
-        return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons" onClick={this.props.showFilter} style={{ fontSize: '.75rem'}}>
-                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-                    <span  style={{margin:' 0 5px'}}>筛选</span>
-                </div>
-                <label className="item-input-wrapper">
-                    <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="searchName"  type="search"  placeholder={this.props.stores.searchName == ''?"多个条件请用空格区分":this.props.stores.searchName}/>
-                </label>
-                <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value,this.props.stores.searchName,this.props.stores.data)}>
-                    搜索
-                </button>
             </div>
         )
     }
@@ -300,7 +285,7 @@ class List extends Component{
             return string;
         })();
         return(
-        <Link to={`/market/MarketSearch/marketSearchDetail/${this.props.dataSources.genericName}/${this.props.dataSources.id}/${this.props.dataSources.icoType}`} className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
+        <Link to={`/market/MarketSearch/marketSearchDetail/${encodeURIComponent(this.props.dataSources.genericName)}/${this.props.dataSources.id}/${this.props.dataSources.icoType}`} className="row item" style={{ padding: '16px 10px',fontSize: '.6rem'}}>
             <div className="col" style={{fontSize: '.6rem'}}>
                 <span className="tag" style={{background: '#16b028'}}> {this.props.dataSources.icoType}</span>
                 {this.props.dataSources.genericName}
@@ -315,7 +300,9 @@ class List extends Component{
 
 function select(state){
 	return{
+        search:state.search,
         stores:state.riseBrees,
+        searchName:state.search.searchName,
 		areaId:state.provicen.areaId,
 		areaName:state.provicen.areaName,
         provicenData:state.provicen.data,
@@ -324,6 +311,9 @@ function select(state){
         //showProvicen:state.index.showProvicen,
         //uri:state.router.uri,
 	}
+}
+RiseBreed.contextTypes = {
+    router:React.PropTypes.object.isRequired
 }
 export default connect(select)(RiseBreed);
 

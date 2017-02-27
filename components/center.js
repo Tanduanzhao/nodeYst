@@ -3,18 +3,24 @@
 */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
+
+import $ from 'jquery';
 import {HTTPURL,WXKEY} from './config.js';
-import {getSign,loadUserInfo,invitationCustomer,getInitWxUser} from './function/ajax';
+import {getSign,loadUserInfo,invitationCustomer,getInitWxUser,baseUserSynchronous,selectBaseBbsList} from './function/ajax';
+
+import FooterBar from './common/footerBar';
+
 class Center extends Component{
     constructor(props){
         super(props);
         this.state={
             showPopup:false,
             mobileNum:0,
-            opacityNum:0
-        }
+            opacityNum:0,
+            discuzData:""
+        };
+        this.intoBBS = this.intoBBS.bind(this);
     }
     counter(){
         this.setState({
@@ -22,6 +28,7 @@ class Center extends Component{
             opacityNum:this.state.opacityNum+0.1
         });
     }
+
     //签到
     _signIn(){
         if(this.props.userInfo.isSign == 0){
@@ -35,7 +42,6 @@ class Center extends Component{
                     });
                     if(this.state.mobileNum<=20){
                         setTimeout(()=>{
-                            console.log(this.state.mobileNum,"mobileNum")
                             this.counter()
                         },10);
                     } else if(this.state.mobileNum>20){
@@ -49,6 +55,20 @@ class Center extends Component{
         }
     }
 
+    //进入社区
+    intoBBS(){
+       baseUserSynchronous({
+            userId:this.props.userInfo.id,
+            callBack:(res)=>{
+                if(res == ""){
+                        this.intoBBS();
+                }else{
+                    $(this.head).append(res);
+                }
+            }
+        });
+    }
+
     //邀请客户
     _invitation(){
         invitationCustomer({
@@ -57,7 +77,6 @@ class Center extends Component{
                 var info = {
                     title:"来自"+res.datas.managerId+"的服务邀请",
                     link: HTTPURL+"?managerId="+res.datas.managerId,
-                    //link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+WXKEY+'&redirect_uri='+encodeURI(HTTPURL+'?recommender='+name+"&managerId="+res.datas.managerId)+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect',
                     imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                     desc: '小伙伴们我已加入药市通客户经理，期待为您服务。'
                 };
@@ -66,9 +85,7 @@ class Center extends Component{
                         title: info.title, // 分享标题
                         link: info.link, // 分享链接
                         imgUrl: info.imgUrl, // 分享图标
-                        success: function() {
-//                                $.toast('分享成功！');
-                        }
+                        success: function() {}
                     });
                     wx.onMenuShareAppMessage({
                         title: info.title,
@@ -77,32 +94,35 @@ class Center extends Component{
                         imgUrl: info.imgUrl, // 分享图标
                         type: '', // 分享类型,music、video或link，不填默认为link
                         dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                        success: function() {
-                            // 用户确认分享后执行的回调函数
-//                                $.toast('分享成功！');
-                        },
+                        success: function() {},
                         trigger:function(){
                             //alert('trigge');
                         }
-                    });
-                    wx.error(()=> {
-                        //authWxcode(info);
                     });
                 });
             }
         })
     }
+
     _showPopup(){
         this._togglePopup();
         this._invitation();
     }
+
     _togglePopup(){
         this.setState({
             showPopup:!this.state.showPopup
         })
     }
+
     // //渲染完成后调用
     componentDidMount(){
+        this.intoBBS();
+        if(this.props.userInfo.datas.isAccountManager == 1){
+            this._invitation()
+        }
+        this.html = document.getElementsByTagName('html')[0];
+        this.head = this.html.getElementsByTagName('head')[0];
         getInitWxUser({
             callBack:(res)=>{
                 this.props.dispatch({
@@ -110,8 +130,14 @@ class Center extends Component{
                     datas: res.datas
                 });
             }
-        });
-        this._invitation()
+        })
+        selectBaseBbsList({
+            callBack:(res)=>{
+                this.setState({
+                    discuzData: res.datas
+                });
+            }
+        })
     }
 
     componentWillUnmount(){
@@ -137,34 +163,10 @@ class Center extends Component{
                 imgUrl: info.imgUrl, // 分享图标
                 desc: info.desc, // 分享描述
                 success: function() {
-                    // 用户确认分享后执行的回调函数
-//                                $.toast('分享成功！');
                 }
             });
         });
-//        wx.error(()=> {
-//            // 分享
-//            wx.onMenuShareTimeline({
-//                title: info.title, // 分享标题
-//                link: info.link, // 分享链接
-//                imgUrl: info.imgUrl, // 分享图标
-//                success: function() {
-////                                $.toast('分享成功！');
-//                }
-//            });
-//            wx.onMenuShareAppMessage({
-//                title: info.title,
-//                link: info.link, // 分享链接
-//                imgUrl: info.imgUrl, // 分享图标
-//                desc: info.desc, // 分享描述
-//                success: function() {
-//                    // 用户确认分享后执行的回调函数
-////                                $.toast('分享成功！');
-//                }
-//            });
-//        });
     }
-
     render(){
         return(
             <div className="root">
@@ -222,18 +224,14 @@ class Center extends Component{
                                     会员数  {this.props.userInfo.datas.vipNumber}
                                 </div>
                             </Link>
-                            <div className="col">
-                                <div  className="module">
+                            <div className="col" >
+                                <Link  className="module" to="/center/community">
                                     <div style={{display: 'flex',alignItems: 'center',marginBottom:' 1px'}}>
                                         <img src="/images/icon_community.png" style={{width: '1.025rem',marginRight:'4px'}}  alt=""/>
                                         <span className="module-title">社区</span>
                                     </div>
-                                    {
-                                    //    {this.props.userInfo.datas.communityTopic} 万话题 <br/>
-                                    //{this.props.userInfo.datas.communityUser} 成员
-                                    }
-                                    暂未开通
-                                </div>
+                                    {this.state.discuzData.postNum}话题  {this.state.discuzData.userNum}成员
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -415,5 +413,8 @@ function select(state){
         stores:state.userInfo,
         userInfo:state.userInfo
     }
+}
+Center.contextTypes = {
+    router:React.PropTypes.object.isRequired
 }
 export default connect(select)(Center);

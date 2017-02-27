@@ -4,7 +4,7 @@ export default class FilterProduce extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      tradeType:this.props.product.tradeType,
+      tradeType:this.props.stores.tradeType,
     };
   }
   _cancelButton(){

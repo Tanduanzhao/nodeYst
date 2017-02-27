@@ -8,6 +8,8 @@ module.exports = function(app) {
         res.end('');
     });
     app.get('/rise/*',index);
+    app.get('/search/*',index);
+    app.get('/search',index);
     app.get('/optional',index);
     app.get('/optional/*',index);
     app.get('/survey',index);
@@ -27,6 +29,7 @@ module.exports = function(app) {
     app.get('/market',index);
     app.get('/market/*',index);
     app.get('/marketAll',index);
+    app.get('/market/marketSearch/marketSearchDetail/*',index);
     app.get('/pay/pdf',index);
     app.get('/pay/pdfs',index);
     app.get('/pay/pdf/*',index);

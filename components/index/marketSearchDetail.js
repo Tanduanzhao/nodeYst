@@ -4,11 +4,12 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-import {getBusinessFactoryProdInfo,getBidAreaInfo,getProjectStatus} from './../function/ajax.js';
+import {getBusinessFactoryProdInfo,loadProvince} from './../function/ajax.js';
 
-import Loading from './../common/loading';
 import EmptyComponent from './../common/emptyComponent';
 import FilterMarket from './../filterPage/filterMarket';
+import HeaderBar from '../common/headerbar.js';
+import Loading from './../common/loading';
 
 class MarketSearchDetail extends Component{
     constructor(props){
@@ -22,24 +23,30 @@ class MarketSearchDetail extends Component{
             sidx:"sales",
             searchName:this.props.stores.searchName || '',
             isCity:null,
-            searchAreaType:""
+            searchAreaType:"",
+            yytj:this.props.params.icoType || "",
+            yearMonth:this.props.yearMonth || ""
         };
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
+    }
+    _reSet(){
+        this.props.dispatch({
+            type:'LOADMARKETSEARCHDETAILDATA',
+            data:[],
+            pageNo:1
+        });
     }
     //加载页面数据
     _loadData(){
         getBusinessFactoryProdInfo({
             areaId:this.props.areaId,
-            yearMonth:this.props.yearMonth,
-            breedId:this.props.params.id,
-            yytj:typeof this.props.params.icoType == undefined ?'':this.props.params.icoType,
+            yearMonth:this.state.yearMonth,
+            breedId:typeof this.props.params.id == undefined ?'':this.props.params.id,
+            yytj: this.state.yytj,
             pageNo:this.props.stores.pageNo,
             searchAreaType:this.state.searchAreaType,
-            parentId:this.props.params.parentId || '',
-            searchName:this.state.searchName=="多个条件请用空格区分"?"":(encodeURI(encodeURI(this.state.searchName)) || ""),
-            //sord:this.state.sord,
-            //sidx:this.state.sidx,
+            searchName:this.props.stores.searchName,
             isCity:this.state.isCity,
             callBack:(res)=>{
                 if(this._calledComponentWillUnmount) return false;
@@ -113,10 +120,10 @@ class MarketSearchDetail extends Component{
             type:'CHANGE',
             areaId:args.areaId,
             areaName:args.areaName,
-            searchAreaType:args.searchAreaType,
+            searchAreaType:args.searchAreaType
         });
         this.setState({
-            //yearMonth:args.yearMonth,
+            yearMonth:args.yearMonth,
             areaId:args.areaId,
             searchAreaType:args.searchAreaType
         });
@@ -127,19 +134,19 @@ class MarketSearchDetail extends Component{
     }
 
     //搜索方法
-    _searchHandle(searchKeys){
+    _searchDatas(searchKeys){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
             return false;
         }else{
             this.setState({
                 isLoading:true,
-                searchName:searchKeys
+                yytj:""
             });
-            //this.props.dispatch({
-            //    type:'CHANGEMARKETSEARCHDETAILSEARCHNAME',
-            //    searchName:searchKeys
-            //});
+            this.props.dispatch({
+                type: 'CHANGEMARKETSEARCHDETAILSEARCHNAME',
+                searchName: searchKeys
+            });
             this.props.dispatch({
                 type:'LOADMARKETSEARCHDETAILDATA',
                 data:[],
@@ -160,17 +167,37 @@ class MarketSearchDetail extends Component{
             this._loadData();
         }
     }
-
+    //显示搜索
+    showSearch(){
+        switch(this.props.areaId){
+            case "ZZOQD0000000000000000000000020" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:50}); break;
+            case "ZZOQD0000000000000000000000011" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:51}); break;
+            case "ZZOQD0000000000000000000000002" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:52}); break;
+            case "ZZOQD0000000000000000000000016" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:53}); break;
+            case "ZZOQD0000000000000000000000005" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:54}); break;
+            case "ZZOQD0000000000000000000000013" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:55}); break;
+            case "ZZOQD0000000000000000000000015" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:56}); break;
+            case "ZZOQD0000000000000000000000017" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:57}); break;
+            case "ZZOQD0000000000000000000000018" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:58}); break;
+            case "ZZOQD0000000000000000000000019" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:59}); break;
+        }
+        this.props.dispatch({
+            type:'CLICKKSEARCH',
+            clickSearch:false
+        });
+        setTimeout(()=>{
+            this.context.router.push('/search');
+        })
+    }
     //渲染完成后调用
     componentDidMount(){
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
-        if(!this.props.params.parentId){
-            if(typeof this.props.params.searchName != 'undefined' ){
-                this.setState({
-                    searchName:decodeURIComponent(decodeURIComponent(this.props.params.searchName))
-                });
-            }
+        if(typeof this.props.params.searchName != 'undefined' ){
+            this.props.dispatch({
+                type: 'CHANGEMARKETSEARCHDETAILSEARCHNAME',
+                searchName:decodeURIComponent(this.props.params.searchName)
+            })
         }
         if(typeof this.props.params.parentId != 'undefined' ){
             this.setState({
@@ -185,6 +212,16 @@ class MarketSearchDetail extends Component{
         this.setState({
             isLoading:true
         });
+        if(this.props.search.searchLinkType){
+            this.setState({
+                yearMonth:this.props.yearMonth
+            });
+        }
+        if(this.props.search.clickSearch){
+            this._searchDatas(this.props.search.searchName);
+            loadProvince(this.props.dispatch);
+            return false
+        }
         setTimeout(()=>{
             this._loadData();
         });
@@ -195,12 +232,17 @@ class MarketSearchDetail extends Component{
         this.props.dispatch({
             type:'RESETMARKETSEARCHDETAIL'
         })
+        if(!this.props.search.searchLinkType){
+            this.props.dispatch({
+                type:"RESETSEARCH"
+            });
+        }
     }
 
     render(){
         return (
             <div className="root" style={{"overflow":"auto"}}>
-                <HeaderBar {...this.props} searchName={this.state.searchName} searchHandle={this._searchHandle.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
+                <HeaderBar {...this.props} titleName={this.props.stores.searchName==""?this.props.params.searchName:this.props.stores.searchName}  icoType={this.state.yytj} showSearch={this.showSearch.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
                 <div ref="content" className="scroll-content has-header item-text-wrap market card " style={{margin:0}}>
                     {
                         (this.props.stores.data.length == 0 && !this.state.isLoading)
@@ -209,7 +251,7 @@ class MarketSearchDetail extends Component{
                     }
                 </div>
                 {
-                    this.state.isShowFilter &&!this.state.isLoading? <FilterMarket {...this.props}  fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)}  dataSources={this.props.provicenData}/> : null
+                    this.state.isShowFilter && !this.state.isLoading? <FilterMarket {...this.props}  fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)}  dataSources={this.props.provicenData}/> : null
                 }
                 {
                     this.state.isLoading ? <Loading/> : null
@@ -237,31 +279,13 @@ class Main extends Component{
         )
     }
 }
-class HeaderBar extends Component{
-    render(){
-        return(
-            <div className="bar bar-header bar-positive item-input-inset">
-                <div className="buttons" onClick={this.props.showFilter} style={{ fontSize: '.75rem'}}>
-                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-                    <span  style={{margin:' 0 5px'}}>筛选</span>
-                </div>
-                <label className="item-input-wrapper">
-                    <i className="icon ion-ios-search placeholder-icon"></i>
-                    <input ref="searchName"  type="search"  placeholder={this.props.searchName}/>
-                </label>
-                <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value)}>
-                    搜索
-                </button>
-            </div>
-        )
-    }
-}
+
 class List extends Component{
     render(){
         return(
             <div className="row item" style={{ padding: '10px',fontSize: ' .6rem'}}>
                 <div className="col text-left col-flex">
-                    <p> {this.props.dataSources.code5Name}</p>
+                    <p>{this.props.dataSources.code5Name}</p>
                     <p>{this.props.dataSources.dosSname}</p>
                     <p> {this.props.dataSources.spec}
                         {
@@ -281,7 +305,9 @@ class List extends Component{
 
 function select(state){
     return{
+        search:state.search,
         areaId:state.provicen.areaId,
+        searchName:state.search.searchName,
         stores:state.marketSearchDetail,
         isVip:state.userInfo.isVip,
         yearMonth:state.data.yearMonth,

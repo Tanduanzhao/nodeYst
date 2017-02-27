@@ -9,7 +9,7 @@ var defaultMarket={
 }
 export default function market(state=defaultMarket,action){
   switch(action.type){
-    case  "LOADMARKETATA" : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
+   // case  "LOADMARKETATA" : return ObjectAssign({},state,{data:action.data,pageNo:action.pageNo});
     case "RESETMARKETATA" :return defaultMarket;
     default : return state;
   }

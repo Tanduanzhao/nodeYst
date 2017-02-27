@@ -1,12 +1,7 @@
-import React, {
-	Component,
-    propsTypes
-}
-from 'react';
+import React,{Component}from 'react';
 
 import FooterBarIcon from './footerBarIcon.js';
-export
-default class FooterBar extends Component {
+export default class FooterBar extends Component {
     componentDidMount(){
         console.dir(this.props.routes);
     }
@@ -18,30 +13,36 @@ default class FooterBar extends Component {
 		}, {
 			uri: 'report',
 			title: '报告',
-			icon: 'cube',
+			icon: 'document-text',
 			fn:()=>{
 				this.props.dispatch({
 					type:'CHANGETYPE',
 					searchType:1,
 					reportType:0
-				});
-				//this.props.dispatch({
-				//	type:'CHAGNGEFIXEDSCROLL',
-				//	fixedScroll:1
-				//})
-				//this.props.dispatch({
-				//	type: 'RESETREPORT'
-				//});
+				})
+				this.props.dispatch({
+					type:'RESETSEARCH'
+				})
 			}
-		}, {
-			uri: 'market',
-			title: '行情',
-			icon: 'earth'
 		}, {
 			uri: 'datas',
 			title: '数据',
-			icon: 'erlenmeyer-flask'
+			icon: 'stats-bars'
 		}, {
+			uri: 'search',
+			title: '搜索',
+			icon: 'search',
+			fn:()=>{
+				this.props.dispatch({
+					type:'CHANGESMALLTYPE',
+					smallType:"搜索首页"
+				});
+				this.props.dispatch({
+					type:'RESETSEARCH'
+				})
+			}
+		},
+			{
 			uri: 'center',
 			title: '个人中心',
 			icon: 'happy',
