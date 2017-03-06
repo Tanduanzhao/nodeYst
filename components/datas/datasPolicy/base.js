@@ -9,6 +9,8 @@ import EmptyComponent from './../../common/emptyComponent';
 import Loading from './../../common/loading';
 import More from './../../common/more';
 import HeaderBar from './../../common/headerbar.js';
+import ScrollLoading from './../../common/scrollLoading';
+
 class Base extends Component{
     constructor(props){
         super(props);
@@ -18,8 +20,9 @@ class Base extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false,
-            isInfinite:false
+            isLoading:true,
+            isLoadData:true,
+            infinite:true
         }
     }
     //加载筛选条件
@@ -34,10 +37,10 @@ class Base extends Component{
         })
     }
     _loadData(){
-        if(this.state.isInfinite) return false;
-        this.setState({
-            isLoading:true
-        });
+        //if(this.state.isInfinite) return false;
+        //this.setState({
+        //    isLoading:true
+        //});
         loadBaseAll({
             searchName:this.props.base.searchName,
             areaId:JSON.stringify(this.props.base.areaId),
@@ -50,12 +53,15 @@ class Base extends Component{
                     datas:res.datas
                 });
                 this.setState({
-                    isLoading:false
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
                 });
                 setTimeout(()=>{
-                    if(this.props.base.datas.length == res.totalSize){
+                    if(this.props.base.datas.length >= res.totalSize){
                         this.setState({
-                            isInfinite:true
+                            infinite:false,
+                            isSrollLoading:false
                         });
                     }else{
                         this.props.dispatch({
@@ -91,7 +97,8 @@ class Base extends Component{
         });
         this._hideFilter();
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         setTimeout(()=>{
             this._loadData();
@@ -117,12 +124,16 @@ class Base extends Component{
             return false
         }
         setTimeout(()=>{
-            this._isNeedLoadData();
+            this._loadData();
         });
     }
      //判断屏幕是否加载满
     _isNeedLoadData(){
-        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && !this.state.isLoading){
+        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
             this._loadData();
         }
     }
@@ -160,7 +171,8 @@ class Base extends Component{
             searchName:key
         });
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         setTimeout(()=>{
             this._loadData();
@@ -180,7 +192,7 @@ class Base extends Component{
                     <div className="list">
                         <div className="card" style={{marginTop:0}}>
                             {
-                                this.props.base.datas.length == 0 ? <EmptyComponent/> :this.props.base.datas.map((ele)=>{
+                                this.props.base.datas.length == 0 && !this.state.isLoading ? <EmptyComponent/> :this.props.base.datas.map((ele)=>{
                                     return(
                                         <div key={Math.random(2)}>
                                             <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",g:ele.catalogEditionName,p:ele.areaName}}/>
@@ -216,13 +228,16 @@ class Base extends Component{
                             }
                         </div>
                     </div>
+                    {
+                        this.props.base.datas.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
                     <More {...this.props}/>
                 </div>
                 {
                     !this.state.isShowFilter ? null : <PolicySonFilter dataSources={this.props.base.filters} areaId={this.props.base.areaId} areaName={this.props.base.areaName} fn={this._fn.bind(this)} cancelButton={this._hideFilter}/>
                 }
                 {
-                    !this.state.isLoading ? null :<Loading/>
+                    this.state.isLoading ? <Loading/> : null
                 }
             </div>
         )

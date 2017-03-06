@@ -8,11 +8,14 @@ import Provicen from '../provicen';
 import {Link} from 'react-router';
 import Loading from '../common/loading';
 import EmptyComponent from '../common/emptyComponent';
+import ScrollLoading from '../common/scrollLoading';
 class ManagerList extends Component{
     constructor(props){
         super(props);
         this.state= {
-            loading: false,
+            loading: true,
+            isSrollLoading:false,
+            isLoadData:true,
             request:true,
             id:null
         }
@@ -23,8 +26,12 @@ class ManagerList extends Component{
 
     //滚动加载
     _infiniteScroll(){
-      if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.stores.infinite  && this.state.request){
-            this._loadData();
+      if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.stores.infinite){
+          if(this.state.isLoadData) return false;
+          this.setState({
+              isLoadData:true
+          });
+          setTimeout(()=> this._loadData())
         }
     }
 
@@ -52,12 +59,12 @@ class ManagerList extends Component{
 
     //加载页面数据
     _loadData(){
-        this.setState({
-            loading:true
-        });
-        this.setState({
-            request:false
-        });
+        //this.setState({
+        //    loading:true
+        //});
+        //this.setState({
+        //    request:false
+        //});
         getAccountManagerlist({
             userId:this.props.userInfo.id,
             searchName:encodeURI(encodeURI(this.props.stores.searchName)) || "",
@@ -65,10 +72,15 @@ class ManagerList extends Component{
             callBack:(res)=>{
                 if(this._calledComponentWillUnmount) return false;
                 this.setState({
-                    loading:false
+                    loading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
                 });
                 if (res){
                     if(res.pageNo >= res.totalPage){
+                        this.setState({
+                            isSrollLoading:false
+                        });
                         this.props.dispatch({
                             type:'UNINFINITEDRUG'
                         });
@@ -91,9 +103,9 @@ class ManagerList extends Component{
                         return;
                     }
                 }
-                this.setState({
-                    request:true
-                });
+                //this.setState({
+                //    request:true
+                //});
             }
         });
     }
@@ -146,6 +158,9 @@ class ManagerList extends Component{
                 <div ref="content" className="scroll-content has-header has-footer">
                     {
                         (this.props.stores.data.length == 0 && !this.state.loading) ? <EmptyComponent/> :  <Main {...this.props} data={this.props.stores.data}  id={this.state.id} index={this.state.index} checkbox={this._checkbox} checked={this.state.checked} loading={this.state.loading}/>
+                    }
+                    {
+                        this.props.stores.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
                     }
                 </div>
                 <a href="javascript:void(0)" className="bar bar-footer bar-assertive row purchase-report" style={{justifyContent: "center",background: '#387ef5'}} onClick={this._determine.bind(this)}>确定</a>

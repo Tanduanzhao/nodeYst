@@ -10,20 +10,54 @@ import {Link} from 'react-router';
 import Loading from '../common/loading';
 import EmptyComponent from '../common/emptyComponent';
 import More from './../common/more';
+import ScrollLoading from '../common/scrollLoading';
 import HeaderBar from './../common/headerbar.js';
 class product extends Component{
     constructor(props){
         super(props);
         this.state= {
-            loading: false,
-            request:true
-        }
+            isLoading:true,
+            infinite:true,
+            isSrollLoading:false,
+            isLoadData:true
+        };
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
+
+    _infiniteScroll(){
+        //全部高度-滚动高度 == 屏幕高度-顶部偏移
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
+            this._loadData();
+        }
+    }
+    _searchDatas(key){
+        if(this.props.isVip == '0'){
+            this.context.router.push('/pay/vip');
+            return false;
+        }
+        this.setState({
+            isLoading:true,
+            infinite:true
+        })
+        this.props.dispatch({
+            type:'CHANGEPRODUCTSEARCHNAME',
+            searchName:encodeURI(encodeURI(key))
+        })
+        this.props.dispatch({
+            type:'LOADPRODUCTDATA',
+            data:[],
+            pageNo:1
+        });
+        setTimeout(()=> this._loadData(),100);
+    }
     _fn(args) {
         this.setState({
-            loading:true
+            isLoading:true
         });
         this.props.dispatch({
             type: 'LOADPRODUCTDATA',
@@ -35,20 +69,13 @@ class product extends Component{
         });
         this.props.dispatch({
             type: 'CHANGETRADETYPE',
-            tradeType: args.tradeType,
+            tradeType: args.tradeType
         });
         setTimeout(()=> {
             this._loadData();
         }, 100);
     }
     _loadData(){
-        this.setState({
-            loading:true
-        });
-        this.setState({
-            request:false
-        });
-        console.log(this.props.stores.searchName,"ddd");
         loadProd({
             tradeType:this.props.stores.tradeType,
             yearMonth:this.props.yearMonth,
@@ -59,35 +86,29 @@ class product extends Component{
             callBack:(res)=>{
                 if(this._calledComponentWillUnmount) return false;
                 this.setState({
-                    loading:false
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
                 });
                 if(res){
-                    if(res.pageNo >= res.totalPage){
-                        this.props.dispatch({
-                            type:'UNINFINITEDRUG'
-                        });
-                    }else{
-                        this.props.dispatch({
-                            type:'INFINITEDRUG'
-                        });
-                    }
                     this.props.dispatch({
                         type:'LOADPRODUCTDATA',
                         data:this.props.stores.data.concat(res.datas),
                         pageNo:this.props.stores.pageNo+1
                     });
-                    this.setState({
-                        request:true
-                    });
-                }
+                    if(res.totalSize <= this.props.stores.data.length){
+                        this.setState({
+                            infinite:false,
+                            isSrollLoading:false
+                        });
+                    }else{
+                        this.setState({
+                            infinite:true
+                        })
+                        }
+                    }
                 }
         });
-    }
-    _infiniteScroll(){
-        //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.stores.infinite  && this.state.request){
-            this._loadData();
-        }
     }
     //显示简介
     showIntro(){
@@ -100,7 +121,7 @@ class product extends Component{
         this.props.dispatch({
             type:'CLICKKSEARCH',
             clickSearch:false
-        })
+        });
         setTimeout(()=>{
             this.context.router.push('/search');
         })
@@ -124,26 +145,6 @@ class product extends Component{
             });
         }
     }
-
-    _searchDatas(key){
-        if(this.props.isVip == '0'){
-            this.context.router.push('/pay/vip');
-            return false;
-        }
-        this.setState({
-            loading:true
-        })
-        this.props.dispatch({
-            type:'CHANGEPRODUCTSEARCHNAME',
-            searchName:encodeURI(encodeURI(key))
-        })
-        this.props.dispatch({
-            type:'LOADPRODUCTDATA',
-            data:[],
-            pageNo:1
-        });
-        setTimeout(()=> this._loadData(),100);
-    }
     _showProvicenHandle(){
         if(this.props.isVip == '0'){
             this.context.router.push('/pay/vip');
@@ -161,15 +162,18 @@ class product extends Component{
                                            showIntro={this.showIntro.bind(this)} />
                 <div ref="content" className="scroll-content has-header">
                     {
-                        (this.props.stores.data.length == 0 && !this.state.loading) ? <EmptyComponent/> : <Main {...this.props} data={this.props.stores.data} loading={this.state.loading}/>
+                        (this.props.stores.data.length == 0 && !this.state.isLoading) ? <EmptyComponent/> : <Main {...this.props} data={this.props.stores.data}/>
                     }
+                    {
+                        this.props.stores.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
+                    <More {...this.props}/>
                 </div>
-                <More {...this.props}/>
                 {
                     this.props.stores.isShowFilter ? <FilterProduct fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.provicenData}/> : null
                 }
                 {
-                    this.state.loading ? <Loading/> : null
+                    this.state.isLoading ? <Loading/> : null
                 }
             </div>
         )
@@ -249,9 +253,6 @@ class TradeBreedId extends Component{
                                                 新目录分组
                                             </td>
                                             <td className="item-text-wrap">
-                                                {
-                                                    //typeof  this.props.dataSources.oldCatalog.catalogId== 'undefined' || typeof  this.props.dataSources.oldCatalog.catalogName== 'undefined' || typeof  this.props.dataSources.oldCatalog.catalogType== 'undefined'
-                                                }
                                                 <p>
                                                     <span className={this.props.dataSources.newCatalog.isCatalogIdNew == 1? "assertive" : null}>目录ID：{this.props.dataSources.newCatalog.catalogIdNew}</span> <br/>
                                                     <span className={this.props.dataSources.newCatalog.isCatalogNameNew == 1? "assertive" : null}> 目录名称：{this.props.dataSources.newCatalog.catalogNameNew}</span> <br/>

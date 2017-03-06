@@ -50,7 +50,9 @@
     "gulp": "^3.9.1",
     "gulp-imagemin": "^3.1.1",
     "jsx-loader": "^0.13.2",
+    "react": "^15.4.2",
     "react-addons": "^0.9.1-deprecated",
+    "react-dom": "^15.4.2",
     "react-router": "^2.7.0",
     "react-slick": "^0.14.4",
     "webpack": "^1.13.2"

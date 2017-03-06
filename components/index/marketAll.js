@@ -24,32 +24,23 @@ class MarketAll extends Component{
             this.props.dispatch({
                 type:'RESETSEARCH'
             });
-            switch(this.props.areaId){
-                case "ZZOQD0000000000000000000000020" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:50}); break;
-                case "ZZOQD0000000000000000000000011" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:51}); break;
-                case "ZZOQD0000000000000000000000002" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:52}); break;
-                case "ZZOQD0000000000000000000000016" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:53}); break;
-                case "ZZOQD0000000000000000000000005" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:54}); break;
-                case "ZZOQD0000000000000000000000013" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:55}); break;
-                case "ZZOQD0000000000000000000000015" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:56}); break;
-                case "ZZOQD0000000000000000000000017" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:57}); break;
-                case "ZZOQD0000000000000000000000018" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:58}); break;
-                case "ZZOQD0000000000000000000000019" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:59}); break;
-            }
+        }
+        switch(this.props.areaId){
+            case "ZZOQD0000000000000000000000020" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:50}); this.props.dispatch({type:'CHANGEDATA', yearMonth:2015}); break;
+            case "ZZOQD0000000000000000000000011" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:51}); this.props.dispatch({type:'CHANGEDATA', yearMonth:2016}); break;
+            case "ZZOQD0000000000000000000000002" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:52}); this.props.dispatch({type:'CHANGEDATA', yearMonth:2016}); break;
+            case "ZZOQD0000000000000000000000016" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:53}); this.props.dispatch({type:'CHANGEDATA', yearMonth:2015}); break;
+            case "ZZOQD0000000000000000000000005" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:54}); this.props.dispatch({type:'CHANGEDATA', yearMonth:2014}); break;
+            case "ZZOQD0000000000000000000000013" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:55}); this.props.dispatch({type:'CHANGEDATA', yearMonth:2014}); break;
+            case "ZZOQD0000000000000000000000015" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:56}); this.props.dispatch({type:'CHANGEDATA', yearMonth:2014}); break;
+            case "ZZOQD0000000000000000000000017" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:57}); this.props.dispatch({type:'CHANGEDATA', yearMonth:2014}); break;
+            case "ZZOQD0000000000000000000000018" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:58}); this.props.dispatch({type:'CHANGEDATA', yearMonth:2013}); break;
+            case "ZZOQD0000000000000000000000019" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:59}); this.props.dispatch({type:'CHANGEDATA', yearMonth:2013}); break;
         }
         this.ele = this.refs.content;
         if(this.props.areaId=="ZZOQD0000000000000000000000013"){
             this.setState({
                 isOther:1
-            });
-            this.props.dispatch({
-                type:'CHANGEDATA',
-                yearMonth:2014
-            });
-        }else{
-            this.props.dispatch({
-                type:'CHANGEDATA',
-                yearMonth:2015
             });
         }
         loadProvince(this.props.dispatch);
@@ -84,13 +75,7 @@ class MarketAll extends Component{
     }
     //显示简介
     showIntro(){
-        switch(this.state.parentName){
-            case "广东省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:50}); break;
-            case "江苏省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:51}); break;
-            case "北京市" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:52}); break;
-            case "山东省" :  this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:53}); break;
-            default : this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:60}); break;
-        }
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:54});
         setTimeout(()=>{
             this.context.router.push("/market/marketIntro/"+ this.props.search.smallType);
         })
@@ -103,7 +88,19 @@ class MarketAll extends Component{
     }
     //切换时间 增加年份
 	_increaseHandle(){
-        if(this.props.yearMonth==2015){return false}
+        switch(this.props.areaId){
+            case "ZZOQD0000000000000000000000020" :  if(this.props.yearMonth == 2015){return false} break;
+            case "ZZOQD0000000000000000000000011" :  if(this.props.yearMonth == 2016){return false} break;
+            case "ZZOQD0000000000000000000000002" :  if(this.props.yearMonth == 2016){return false} break;
+            case "ZZOQD0000000000000000000000016" :  if(this.props.yearMonth == 2015){return false} break;
+            case "ZZOQD0000000000000000000000005" :  if(this.props.yearMonth == 2014){return false} break;
+            case "ZZOQD0000000000000000000000013" :  if(this.props.yearMonth == 2014){return false} break;
+            case "ZZOQD0000000000000000000000015" :  if(this.props.yearMonth == 2014){return false} break;
+            case "ZZOQD0000000000000000000000017" :  if(this.props.yearMonth == 2014){return false} break;
+            case "ZZOQD0000000000000000000000018" :  if(this.props.yearMonth == 2013){return false} break;
+            case "ZZOQD0000000000000000000000019" :  if(this.props.yearMonth == 2013){return false} break;
+        }
+        //if(this.props.yearMonth == 2016){return false}
         this.setState({
             loading:true
         })
@@ -166,6 +163,18 @@ class MarketAll extends Component{
 	}
 
     _fn(arg){
+        switch(arg.areaId){
+            case "ZZOQD0000000000000000000000020" :  if(this.props.yearMonth > 2015){this.props.dispatch({type:'CHANGEDATA', yearMonth:2015});} break;
+            case "ZZOQD0000000000000000000000011" :  if(this.props.yearMonth > 2016){this.props.dispatch({type:'CHANGEDATA', yearMonth:2016});} break;
+            case "ZZOQD0000000000000000000000002" :  if(this.props.yearMonth > 2016){this.props.dispatch({type:'CHANGEDATA', yearMonth:2016});} break;
+            case "ZZOQD0000000000000000000000016" :  if(this.props.yearMonth > 2015){this.props.dispatch({type:'CHANGEDATA', yearMonth:2015});} break;
+            case "ZZOQD0000000000000000000000005" :  if(this.props.yearMonth > 2014){this.props.dispatch({type:'CHANGEDATA', yearMonth:2014});} break;
+            case "ZZOQD0000000000000000000000013" :  if(this.props.yearMonth > 2014){this.props.dispatch({type:'CHANGEDATA', yearMonth:2014});} break;
+            case "ZZOQD0000000000000000000000015" :  if(this.props.yearMonth > 2014){this.props.dispatch({type:'CHANGEDATA', yearMonth:2015});} break;
+            case "ZZOQD0000000000000000000000017" :  if(this.props.yearMonth > 2014){this.props.dispatch({type:'CHANGEDATA', yearMonth:2014});} break;
+            case "ZZOQD0000000000000000000000018" :  if(this.props.yearMonth > 2013){this.props.dispatch({type:'CHANGEDATA', yearMonth:2013});} break;
+            case "ZZOQD0000000000000000000000019" :  if(this.props.yearMonth > 2013){this.props.dispatch({type:'CHANGEDATA', yearMonth:2013});} break;
+        }
         this.setState({
             loading:true,
             isOther:"",

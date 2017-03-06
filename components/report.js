@@ -3,21 +3,24 @@
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
+import {loadNewrepor,loadPicture,insertUserAction,getReportType,loadReportList} from './function/ajax';
+import HeaderBar from './common/headerbar.js';
+import FooterBar from './common/footerBar';
 import FilterReport from './filterPage/filterReport';
 import Loading from './common/loading';
+import ScrollLoading from './common/scrollLoading';
 import EmptyComponent from './common/emptyComponent';
-import {loadNewrepor,loadPicture,insertUserAction,getReportType,loadReportList} from './function/ajax';
 import ReportList from './reportList';
-import HeaderBar from './common/headerbar.js';
 
 class Report extends Component {
     constructor(props) {
         super(props);
         this.state = {
             searchType: this.props.report.searchType,
-            loading: true,
+            isLoading:true,
+            isSrollLoading:false,
+            isLoadData:true,
             request: true,
             isOpacity: true,
             opacityNum: 0,
@@ -25,12 +28,10 @@ class Report extends Component {
         };
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
+        this._getReportType = this._getReportType.bind(this);
     }
 
     _loadData() {
-        this.setState({
-            request: false
-        });
         loadReportList({
             sidx: this.props.report.sidx,
             sord: this.props.report.sord,
@@ -40,12 +41,20 @@ class Report extends Component {
             costStatus: this.props.report.costStatus,
             titleOrReportKey: this.props.report.titleOrReportKey,
             callBack: (res)=> {
+                this.setState({
+                    isLoading: false,
+                    isLoadData:false,
+                    isSrollLoading:true
+                });
                 this.props.dispatch({
                     type: 'LOADPRODUCEDATA',
                     data: this.props.report.data.concat(res.datas),
                     pageNo: this.props.report.pageNo + 1
                 });
                 if (res.totalSize <= this.props.report.data.length) {
+                    this.setState({
+                        isSrollLoading:false
+                    });
                     this.props.dispatch({
                         type: 'UNINFINITE'
                     });
@@ -54,19 +63,20 @@ class Report extends Component {
                         type: 'INFINITE'
                     });
                 }
-                this.setState({
-                    loading: false
-                });
-                this.setState({
-                    request: true
-                });
+                //this.setState({
+                //    request: true
+                //});
             }
         });
     }
 
     _infiniteScroll() {
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if (this.ele.firstChild.clientHeight - this.ele.scrollTop <= document.body.clientHeight - this.ele.offsetTop && !this.props.report.infinite && this.state.request) {
+        if (this.ele.firstChild.clientHeight - this.ele.scrollTop <= document.body.clientHeight - this.ele.offsetTop && !this.props.report.infinite) {
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
             this._loadData();
         }
         if (this.ele.scrollTop >= this.refs.headerImg.clientHeight) {
@@ -101,7 +111,14 @@ class Report extends Component {
             this._searchDatas(this.props.search.searchName);
             return false
         }
-        this._loadData();
+        if(this.props.report.data.length == 0){
+            this._loadData();
+            return false
+        }
+        this.setState({
+            isLoadData:false,
+            isLoading:false
+        });
     }
 
     //显示搜索
@@ -117,9 +134,9 @@ class Report extends Component {
     }
 
     componentWillUnmount() {
-        this.props.dispatch({
-            type: 'RESETREPORT'
-        });
+        //this.props.dispatch({
+        //    type: 'RESETREPORT'
+        //});
     }
 
     _fn(args) {
@@ -133,7 +150,7 @@ class Report extends Component {
             });
         }
         this.setState({
-            loading: true
+            isLoading: true
         });
         this.props.dispatch({
             type: 'LOADPRODUCEDATA',
@@ -160,7 +177,7 @@ class Report extends Component {
 
     _searchDatas(key) {
         this.setState({
-            loading: true
+            isLoading: true
         });
         this.props.dispatch({
             type: 'CHANGETITLEORREPORTKEY',
@@ -171,12 +188,28 @@ class Report extends Component {
             data: [],
             pageNo: 1
         });
-        setTimeout(()=> this._loadData(), 100);
+        setTimeout(()=> this._loadData());
     }
 
     _showProvicenHandle() {
         this.props.dispatch({
             type: 'SHOWFILTERPRODUCE'
+        });
+    }
+    resetReport() {
+        this.state = {
+            searchType: this.props.report.searchType,
+            isLoading:true,
+            isSrollLoading:false,
+            isLoadData:true,
+            request: true,
+            isOpacity: true,
+            opacityNum: 0,
+            reportTag: this.props.report.reportTag
+        };
+        setTimeout(()=> {
+            this._getReportType();
+            this._loadData();
         });
     }
 
@@ -187,15 +220,20 @@ class Report extends Component {
                 <div ref="content" className="scroll-content has-footer scroll-report report-view">
                     <div>
                         {
-                            (this.state.loading) ? <Loading/> : null
+                            (this.state.isLoading) ? <Loading/> : null
                         }
                         <div className="header-img" ref="headerImg">
                             <img width="100%" src="../images/report_bg.jpg"/>
                         </div>
-                        <Main ref="main" {...this.props} reportTag={this.state.reportTag} data={this.props.report.data} loading={this.state.loading}/>
+                        {
+                            this.props.report.data.length == 0 && !this.state.isLoading ? <EmptyComponent/> :  <Main ref="main" {...this.props} reportTag={this.state.reportTag} data={this.props.report.data}/>
+                        }
+                        {
+                            this.props.report.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                        }
                     </div>
                 </div>
-                <FooterBar {...this.props}/>
+                <FooterBar {...this.props} resetReport={this.resetReport.bind(this)}/>
                 {
                     this.props.report.isShowFilter ? <FilterReport fn={this._fn.bind(this)}  {...this.props} dataSources={this.props.report}/> : null
                 }
@@ -210,20 +248,16 @@ class Main extends Component {
     }
 
     render() {
-        if (this.props.data.length != 0) {
-            return (
-                <div>
-                    {this.props.children}
-                    <ul className="list new_report">
-                        {
-                            this.props.data.map((ele, index)=> <ReportList reportTag={this.props.reportTag} dataSources={ele} key={ele.id+Math.random()}/>)
-                        }
-                    </ul>
-                </div>
-            )
-        } else {
-            return <EmptyComponent/>
-        }
+        return (
+            <div>
+                {this.props.children}
+                <ul className="list new_report">
+                    {
+                        this.props.data.map((ele, index)=> <ReportList reportTag={this.props.reportTag} dataSources={ele} key={ele.id+Math.random()}/>)
+                    }
+                </ul>
+            </div>
+        )
     }
 }
 function select(state) {

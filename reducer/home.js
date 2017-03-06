@@ -14,12 +14,15 @@ var defaultData = {
     goldBox:false,
     cashBox:false,
     hasRecord:true,
-    isShowRecord:false
+    isShowRecord:false,
+    publishDate:"",
+    newContent:""
 };
 export default function home(state = defaultData,action){
 	switch(action.type){
 		case LOADHOMEDATA : return ObjectAssign({},state,{data:action.data});
 		case LOADHOMEIMG : return ObjectAssign({},state,{img:action.img});
+        case 'LOADPUBLISHDATE' : return ObjectAssign({},state,{publishDate:action.publishDate,newContent:action.newContent});
         case "LOADHOMEPARSEREPORT" : return ObjectAssign({},state,{ParseReport:action.ParseReport});
         case "LOADHOMECOLUMNLIST" : return ObjectAssign({},state,{ColumnList:action.ColumnList});
         case 'UNSHOWGOLDBOX' : return ObjectAssign({},state,{goldBox:false});

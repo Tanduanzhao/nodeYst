@@ -20,7 +20,7 @@ class Policy extends Component{
         this._hideSlider = this._hideSlider.bind(this);
         this._isNeedLoadData = this._isNeedLoadData.bind(this);
         this.state={
-            isLoading:false,
+            isLoading:true,
             isShowFilter:false,
             isShowSlider:false,
             searchDatas:[],
@@ -37,18 +37,24 @@ class Policy extends Component{
             this._searchDatas(this.props.search.searchName);
             return false
         }
-        //第一屏需要执行两个方法  1、加载模块标签；2、加载第一模块数据
-        if(this.props.policy.modules.length ==0){
-            this._loadData();
-        }
-
         if(this.props.policy.provinces == 0){
             this._loadProvince();
         }
+        //第一屏需要执行两个方法  1、加载模块标签；2、加载第一模块数据
+        if(this.props.policy.modules.length ==0){
+            this._loadData();
+            return false
+        }
+        this.setState({
+            isLoading:false
+        });
     }
     //判断屏幕是否加载满
     _isNeedLoadData(){
         if(this.ele.scrollHeight-this.ele.scrollTop <= (this.ele.clientHeight*3) && this.props.policy.loadState <= 6 && !this.state.isLoading){
+            this.setState({
+                isLoading:true
+            });
             //匹配this.props.policy.loadState分步加载6大模块
             switch(this.props.policy.loadState){
                 case 1 : return this._loadQuality();
@@ -97,9 +103,9 @@ class Policy extends Component{
                     type:'LOADPOLICYMODULES',
                     datas:res.datas
                 });
-                this.setState({
-                    isLoading:false
-                });
+                //this.setState({
+                    //isLoading:false
+               // });
                 setTimeout((res)=>{
                     callBack();
                 },100);
@@ -108,16 +114,16 @@ class Policy extends Component{
     }
     _loadData(callBack){
         var callBack = callBack || this._loadQuality.bind(this);
-        this.setState({
-            isLoading:true
-        });
+        //this.setState({
+            //isLoading:true
+        //});
         this._loadModule(callBack);
     }
     //加载质量层次数据
     _loadQuality(){
-        this.setState({
-            isLoading:true
-        });
+        //this.setState({
+            //isLoading:true
+       // });
         loadQualitySimple({
             searchName:this.props.policy.searchName,
             pageNo:this.props.policy.pageNo,
@@ -148,9 +154,9 @@ class Policy extends Component{
     }
     //加载基药数据
     _loadBase(){
-        this.setState({
-            isLoading:true
-        });
+        //this.setState({
+            //isLoading:true
+        //});
         loadBaseSimple({
             searchName:this.props.policy.searchName,
             catalogEditionId:this.props.policy.modules[1].catalogEditionId || null,
@@ -183,9 +189,9 @@ class Policy extends Component{
     }
     //加载医保数据
     _loadInsurance(){
-        this.setState({
-            isLoading:true
-        });
+       // this.setState({
+          //  isLoading:true
+        //});
         loadInsuranceSimple({
             searchName:this.props.policy.searchName,
             areaId:JSON.stringify(this.props.policy.areaId),
@@ -218,9 +224,9 @@ class Policy extends Component{
     }
     //加载辅助用药数据
     _loadAssist(){
-        this.setState({
-            isLoading:true
-        });
+        //this.setState({
+           // isLoading:true
+        //});
         loadAssistSimple({
             searchName:this.props.policy.searchName,
             areaId:JSON.stringify(this.props.policy.areaId),
@@ -252,9 +258,9 @@ class Policy extends Component{
     }
     //加载低价药数据
     _loadLowPrice(){
-        this.setState({
-            isLoading:true
-        });
+        //this.setState({
+           // isLoading:true
+       // });
         loadLowPriceSimple({
             searchName:this.props.policy.searchName,
             areaId:JSON.stringify(this.props.policy.areaId),
@@ -286,9 +292,9 @@ class Policy extends Component{
     }
     //加载抗菌药物数据
     _loadAnti(){
-        this.setState({
-            isLoading:true
-        });
+        //this.setState({
+           // isLoading:true
+        //});
         loadAntiSimple({
             searchName:this.props.policy.searchName,
             catalogEditionId:this.props.policy.modules[5].catalogEditionId || null,
@@ -325,7 +331,9 @@ class Policy extends Component{
             areaId:[args.areaId],
             areaName:args.areaName
         });
-
+        this.setState({
+            isLoading:true
+        });
         this._cancelButton();
         setTimeout(()=>{
             this._loadData();
@@ -433,14 +441,14 @@ class Policy extends Component{
                         <h3 className="title"><i className="fa fa-cube"></i> {this.props.policy.searchName}</h3>
                     </div>
                     <div ref="main" className="scroll-content has-subheader">
-                        <Main {...this.props}/>
+                        <Main {...this.props} {...this.state}/>
                     </div>
                     <More {...this.props}/>
                 {
                     !this.state.isShowFilter ? null : <FilterPolicy dataSources={this.props.policy.provinces} areaId={this.props.policy.areaId} areaName={this.props.policy.areaName} fn={this._fn.bind(this)} cancelButton={this._cancelButton}/>
                 }
                 {
-                    !this.state.isLoading ? null : <Loading/>
+                    this.state.isLoading ? <Loading/> : null
                 }
             </div>
         )
@@ -448,16 +456,16 @@ class Policy extends Component{
 }
 
 class Main extends Component{
-    render(){
+    render(){console.log(this.props.isLoading,!this.props.isLoading,this.props.policy.quality.length,this.props.policy.quality.length == 0 && !this.props.isLoading);
         return(
             <div className="list">
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[0].title : null}/>
                 {
-                    this.props.policy.quality.length == 0? <EmptyComponent/> :
+                    this.props.policy.quality.length == 0 && !this.props.isLoading ? <EmptyComponent/> :
                         <div className="card" style={{marginTop:0}}>
                             <ul className="list">
                                 {
-                                    typeof this.props.policy.quality[0].lists == 'undefined' ? null : this.props.policy.quality[0].lists.map((ele)=>{
+                                    this.props.policy.quality.length == 0 || typeof this.props.policy.quality[0].lists == 'undefined' ? null : this.props.policy.quality[0].lists.map((ele)=>{
                                         var trandName = (()=>{
                                             var string = "";
                                             if( ele.trandName !="无"|| ele.trandName==null || ele.trandName==undefined){
@@ -523,83 +531,97 @@ class Main extends Component{
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[1].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                     {
-                        this.props.policy.base.length == 0 ? <EmptyComponent/> : this.props.policy.base.map((ele)=>{
-                            return(
-                                <div key={Math.random(2)}>
-                                    <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
-                                    <div className="item" style={{boxSizing:'content-box',padding:'16px 4px'}}>
-                                        <table className="table-border" width="100%">
-                                            <thead>
-                                            <tr>
-                                                <th>药品名称</th>
-                                                <th>剂型</th>
-                                                <th>规格</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {
-                                                ele.lists.map((item)=>{
-                                                    return(
-                                                        <tr key={Math.random(1)}>
-                                                            <td>{item.productName}</td>
-                                                            <td>{item.prepName || null}</td>
-                                                            <td>{item.spec || null}</td>
+                        (()=> {
+                            if(!this.props.isLoading){
+                                return(
+                                    this.props.policy.base.length == 0 ?
+                                        <EmptyComponent/> : this.props.policy.base.map((ele)=> {
+                                        return (
+                                            <div key={Math.random(2)}>
+                                                <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
+                                                <div className="item" style={{boxSizing:'content-box',padding:'16px 4px'}}>
+                                                    <table className="table-border" width="100%">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>药品名称</th>
+                                                            <th>剂型</th>
+                                                            <th>规格</th>
                                                         </tr>
-                                                    )
-                                                })
-                                            }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <MoreBar link={`/datas/policy/base/${ele.gradeId}/${ele.catalogEditionId}`}/>
-                                </div>
-                            )
-                        })
+                                                        </thead>
+                                                        <tbody>
+                                                        {
+                                                            ele.lists.map((item)=> {
+                                                                return (
+                                                                    <tr key={Math.random(1)}>
+                                                                        <td>{item.productName}</td>
+                                                                        <td>{item.prepName || null}</td>
+                                                                        <td>{item.spec || null}</td>
+                                                                    </tr>
+                                                                )
+                                                            })
+                                                        }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <MoreBar link={`/datas/policy/base/${ele.gradeId}/${ele.catalogEditionId}`}/>
+                                            </div>
+                                        )
+                                    })
+                                    )
+                            }})()
                     }
                 </div>
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[2].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                     {
-                        this.props.policy.insurance.length == 0 ? <EmptyComponent/> : this.props.policy.insurance.map((ele)=>{
-                            return(
-                                <div key={Math.random(2)}>
-                                    <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
-                                    <div className="item" style={{boxSizing:'content-box',padding:'16px 2px'}}>
-                                        <table className="table-border" width="100%">
-                                            <thead>
-                                            <tr>
-                                                <th>药品名称</th>
-                                                <th>剂型</th>
-                                                <th>医保类别</th>
-                                                <th>医保编号</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {
-                                                ele.lists.map((item)=>{
-                                                    return(
-                                                        <tr key={Math.random(1)}>
-                                                            <td>{item.productName}</td>
-                                                            <td>{item.prepName || null}</td>
-                                                            <td>{item.pqriType || null}</td>
-                                                            <td>{item.pqriCode || null}</td>
+                        (()=> {
+                            if(!this.props.isLoading){
+                                return(
+                                    this.props.policy.insurance.length == 0 ? <EmptyComponent/> : this.props.policy.insurance.map((ele)=>{
+                                        return(
+                                            <div key={Math.random(2)}>
+                                                <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
+                                                <div className="item" style={{boxSizing:'content-box',padding:'16px 2px'}}>
+                                                    <table className="table-border" width="100%">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>药品名称</th>
+                                                            <th>剂型</th>
+                                                            <th>医保类别</th>
+                                                            <th>医保编号</th>
                                                         </tr>
-                                                    )
-                                                })
-                                            }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <MoreBar link={`/datas/policy/insurance/${ele.gradeId}/${ele.catalogEditionId}`}/>
-                                </div>
-                            )
-                        })
+                                                        </thead>
+                                                        <tbody>
+                                                        {
+                                                            ele.lists.map((item)=>{
+                                                                return(
+                                                                    <tr key={Math.random(1)}>
+                                                                        <td>{item.productName}</td>
+                                                                        <td>{item.prepName || null}</td>
+                                                                        <td>{item.pqriType || null}</td>
+                                                                        <td>{item.pqriCode || null}</td>
+                                                                    </tr>
+                                                                )
+                                                            })
+                                                        }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <MoreBar link={`/datas/policy/insurance/${ele.gradeId}/${ele.catalogEditionId}`}/>
+                                            </div>
+                                        )
+                                    })
+                                )
+                            }})()
                     }
                 </div>
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[3].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                     {
-                        this.props.policy.assist.length == 0 ? <EmptyComponent/> : this.props.policy.assist.map((ele)=>{
+                        (()=> {
+                            if(!this.props.isLoading){
+                                return(
+                                    this.props.policy.assist.length == 0 ? <EmptyComponent/> : this.props.policy.assist.map((ele)=>{
                             return(
                                 <div key={Math.random(2)}>
                                     <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
@@ -635,12 +657,17 @@ class Main extends Component{
                                 </div>
                             )
                         })
+                                )
+                            }})()
                     }
                 </div>
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[4].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                     {
-                        this.props.policy.lowPrice.length == 0 ? <EmptyComponent/> : this.props.policy.lowPrice.map((ele)=>{
+                        (()=> {
+                            if(!this.props.isLoading){
+                                return(
+                                    this.props.policy.lowPrice.length == 0 ? <EmptyComponent/> : this.props.policy.lowPrice.map((ele)=>{
                             return(
                                 <div key={Math.random(2)}>
                                     <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
@@ -670,12 +697,17 @@ class Main extends Component{
                                 </div>
                             )
                         })
+                                )
+                            }})()
                     }
                 </div>
                 <TitleBar title={this.props.policy.modules.length !=0 ? this.props.policy.modules[5].title : null}/>
                 <div className="card" style={{marginTop:0}}>
                     {
-                        this.props.policy.anti.length == 0 ? <EmptyComponent/> : this.props.policy.anti.map((ele)=>{
+                        (()=> {
+                            if(!this.props.isLoading){
+                                return(
+                                    this.props.policy.anti.length == 0 ? <EmptyComponent/> : this.props.policy.anti.map((ele)=>{
                             return(
                                 <div key={Math.random(2)}>
                                     <LinkBar title={`${ele.grade}(${ele.publishDate})`}/>
@@ -705,6 +737,8 @@ class Main extends Component{
                                 </div>
                             )
                         })
+                                )
+                            }})()
                     }
                 </div>
             </div>

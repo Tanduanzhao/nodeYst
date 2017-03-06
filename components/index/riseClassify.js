@@ -6,6 +6,7 @@ import {loadListClassifyProduct} from './../function/ajax.js';
 
 import Loading from './../common/loading';
 import EmptyComponent from './../common/emptyComponent';
+import ScrollLoading from './../common/scrollLoading';
 import {Link} from 'react-router';
 class RiseClassify extends Component{
     constructor(props){
@@ -13,21 +14,38 @@ class RiseClassify extends Component{
         this.state={
             data:[],
             pageNo:1,
-            infinite:false,
-            loading:true,
+            infinite:true,
+            isLoading:true,
+            isSrollLoading:false,
+            isLoadData:true,
             sord:"desc",
             sordActive:0,
             sidx:"sales"
         };
         this._reSet = this._reSet.bind(this);
         this._loadData = this._loadData.bind(this);
-        this._fn = this._fn.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _increaseHandle(){
-        if(this.props.yearMonth==2015){return false}
+        switch(this.props.areaId){
+            case "ZZOQD0000000000000000000000020" :  if(this.props.yearMonth == 2015){return false} break;
+            case "ZZOQD0000000000000000000000011" :  if(this.props.yearMonth == 2016){return false} break;
+            case "ZZOQD0000000000000000000000002" :  if(this.props.yearMonth == 2016){return false} break;
+            case "ZZOQD0000000000000000000000016" :  if(this.props.yearMonth == 2015){return false} break;
+            case "ZZOQD0000000000000000000000005" :  if(this.props.yearMonth == 2014){return false} break;
+            case "ZZOQD0000000000000000000000013" :  if(this.props.yearMonth == 2014){return false} break;
+            case "ZZOQD0000000000000000000000015" :  if(this.props.yearMonth == 2014){return false} break;
+            case "ZZOQD0000000000000000000000017" :  if(this.props.yearMonth == 2014){return false} break;
+            case "ZZOQD0000000000000000000000018" :  if(this.props.yearMonth == 2013){return false} break;
+            case "ZZOQD0000000000000000000000019" :  if(this.props.yearMonth == 2013){return false} break;
+        }
+        this.ele.addEventListener('scroll', this._infiniteScroll);
+        //if(this.props.yearMonth == 2016){return false}
+        this.setState({
+            isLoading:true
+        })
+        this._reSet();
 		this.props.dispatch((dispatch)=>{
-            this._reSet();
             dispatch({
                 type:'INCREASE'
             });
@@ -35,8 +53,12 @@ class RiseClassify extends Component{
         })
 	}
 	_decreaseHandle(){
+        this.ele.addEventListener('scroll', this._infiniteScroll);
+        this.setState({
+            isLoading:true
+        })
+        this._reSet();
 		this.props.dispatch((dispatch)=>{
-            this._reSet();
             dispatch({
                 type:'DECREASE'
             });
@@ -62,43 +84,13 @@ class RiseClassify extends Component{
             });
         }
         this.setState({
-            loading:true,
+            isLoading:true,
             data:[],
             pageNo:1,
             sordActive:sordActive,
             sidx:sidx
         });
         setTimeout(()=> this._loadData());
-    }
-
-    _fn(args){
-        this._reSet();
-        setTimeout(()=> {
-        this.props.dispatch((dispatch, getState)=> {
-            loadListClassifyProduct(dispatch, {
-                yearMonth: getState().data.yearMonth,
-                areaId: args.areaId,
-                salesId: this.props.params.sid,
-                searchAreaType: args.searchAreaType,
-                pageNo: this.state.pageNo,
-                sord: this.state.sord,
-                sidx: this.state.sidx,
-                callBack: (res)=> {
-                    this.setState({
-                        pageNo: this.state.pageNo + 1,
-                        data: res.datas,
-                        infinite: false
-                    })
-                    if (res.totalSize <= this.state.data.length) {
-                        this.ele.removeEventListener('scroll', this._infiniteScroll);
-                    }
-                    this.setState({
-                        loading: false
-                    });
-                }
-            });
-        })
-        });
     }
 
     _loadData(){
@@ -115,26 +107,33 @@ class RiseClassify extends Component{
                     this.setState({
                         pageNo:this.state.pageNo+1,
                         data:this.state.data.concat(res.datas),
-                        infinite:false
+                        //infinite:false,
+                        isSrollLoading:true,
+                        isLoading:false,
+                        isLoadData:false
                     })
-                    if(res.totalSize <= this.state.data.length){
-                        this.ele.removeEventListener('scroll',this._infiniteScroll);
+                    if(this.state.data.length >= res.totalSize ){
+                        this.setState({
+                            infinite:false,
+                            isSrollLoading:false
+                        });
+                    }else {
+                        this.setState({
+                            infinite:true
+                        });
                     }
-                    this.setState({
-                        loading:false
-                    });
                 }
             });
         })
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop){
-            //if(this.state.loading) return false;
-            //this.setState({
-            //    loading:true
-            //});
-            this._loadData();
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
+            setTimeout(()=>this._loadData())
         }
     }
     componentDidMount(){
@@ -154,11 +153,16 @@ class RiseClassify extends Component{
             <div className="root">
                 <HeaderBar {...this.props} decreaseHandle={this._decreaseHandle.bind(this)} increaseHandle={this._increaseHandle.bind(this)} titleName="分类排行榜"/>
                 <div ref="content" className="scroll-content  has-header market">
-                    <Main {...this.props} data={this.state.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
+                    {
+                        this.state.data.length == 0 && !this.state.isLoading ? <EmptyComponent/> : <Main {...this.props} data={this.state.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive}/>
+                    }
+                    {
+                        this.state.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
                 </div>
                 {
-					this.props.showProvicen ? <Provicen fn={this._fn.bind(this)} {...this.props} dataSources={this.props.provicenData}/> :null
-				}
+                    this.state.isLoading ? <Loading/> : null
+                }
             </div>
         )
     }
@@ -169,29 +173,21 @@ class Main extends Component{
         super(props);
     }
     render(){
-        if(this.props.loading) {
-            return <Loading/>
-        }else{
-            if(this.props.data.length != 0){
-                return(
-                <div className="list card item-text-wrap" style={{ margin: '0',wordBreak: 'break-all'}}>
-                    <div className="row item" style={{ padding: '16px 10px',fontSize: ' .6rem',color: '#0894ec'}}>
-                        <div className="col">一级分类</div>
-                        <div className="col text-center" onClick={()=>{this.props.sort(0,"sales")}}>市场规模(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 0) ? styles.active : null}></i></div>
-                        <div className="col text-center" onClick={()=>{this.props.sort(1,"changeCost")}}>增长额(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 1) ? styles.active : null}></i></div>
-                        <div className="col col-flex-last text-center" onClick={()=>{this.props.sort(2,"change")}}>增长率<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 2) ? styles.active : null}></i></div>
-                    </div>
-                    <div className="border horizontal list">
-                        {
-                            this.props.data.map((ele,index)=> <List {...this.props} dataSources={ele} key={Math.random()}/>)
-                        }
-                    </div>
+        return(
+            <div className="list card item-text-wrap" style={{ margin: '0',wordBreak: 'break-all'}}>
+                <div className="row item" style={{ padding: '16px 10px',fontSize: ' .6rem',color: '#0894ec'}}>
+                    <div className="col">一级分类</div>
+                    <div className="col text-center" onClick={()=>{this.props.sort(0,"sales")}}>市场规模(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 0) ? styles.active : null}></i></div>
+                    <div className="col text-center" onClick={()=>{this.props.sort(1,"changeCost")}}>增长额(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 1) ? styles.active : null}></i></div>
+                    <div className="col col-flex-last text-center" onClick={()=>{this.props.sort(2,"change")}}>增长率<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 2) ? styles.active : null}></i></div>
                 </div>
-                )
-            }else{
-                return <EmptyComponent/>
-            }
-        }
+                <div className="border horizontal list">
+                    {
+                        this.props.data.map((ele,index)=> <List {...this.props} dataSources={ele} key={Math.random()}/>)
+                    }
+                </div>
+            </div>
+        )
     }
 }
 

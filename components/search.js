@@ -319,7 +319,7 @@ class Search extends Component{
                     {
                         (()=>{
                             switch(this.props.stores.searchType){
-                                case 1 : return this.state.searchNull ? <EmptyComponent/> : <SearchContent {...this.props} saechLink={this.saechLink.bind(this)}/>;
+                                case 1 : return this.state.searchNull && !this.state.isLoading ? <EmptyComponent/> : <SearchContent {...this.props} saechLink={this.saechLink.bind(this)}/>;
                                 default : return <Main {...this.props} {...this.state} data={this.props.stores.data} clickHistory={this._searchHandle.bind(this)} searchPush={this.searchPush.bind(this)} closeHistory={this.closeHistory.bind(this)} getHotData={this.getHotData.bind(this)} searchPushWord={this._searchHandle.bind(this)} />;
                             }
                         })()

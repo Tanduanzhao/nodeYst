@@ -16,6 +16,7 @@ module.exports = function(app) {
     app.get('/survey/*',index);
     app.get('/report',index);
     app.get('/report/*',index);
+    app.get('/pay/orderInfo/*',index);
 	app.get('/center', index);
     app.get('/datas', index);
     app.get('/datas/*', index);

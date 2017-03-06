@@ -1,15 +1,19 @@
 @function pxTorem($px,$base:20){
     @return ($px / $base ) * 1rem;
 }
+
 body{
     color:#666;
     border-radius:3px;
     display:flex;
     font-size: pxTorem(14);
-
+    font-family: STHeitiSC-Medium;
     .name{
         color:'red';
     }
+}
+.has-footer {
+    bottom: 50px;
 }
 .row.horizontal > .text-center{
     display:flex;
@@ -52,6 +56,9 @@ h3{
     overflow : hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
+}
+.bg-gray{
+    background: #eee;
 }
 .row.horizontal{
     flex-wrap: wrap;
@@ -195,6 +202,65 @@ h3{
         width: 45px;
         height: 45px;
         margin-bottom: 3px;
+    }
+}
+.flex{
+    display: flex;
+    display: -webkit-flex;
+}
+.flex-align {
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+    align-items: center;
+    -webkit-align-items: center;
+}
+.price{
+    font-size: 18px;
+    color: #EE2626;
+    letter-spacing: 0;
+    text-align: right;
+    i{
+        margin-right: 4px;
+    }
+}
+.card-list{
+    font-size: 16px;
+    color: #333333;
+    margin-bottom: 10px;
+    min-height: 50px;
+    padding: 12px 10px;
+    background-color: #fff;
+    .card-list-title{
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        font-size: 16px;
+        color: #333333;
+        line-height: 22px;
+    }
+    .item-right{
+        margin-left: 12px;
+        padding: 4px 0;
+        justify-content: space-between;
+        -webkit-justify-content: space-between;
+    }
+    .item{
+        color: #333333;
+        padding: 16px 10px ;
+        overflow: hidden;
+        .item-note{
+            font-size: 16px;
+            color: #999999;
+            line-height: 20px;
+        }
+    }
+    .vipImg{
+        width: 52px;
+        height: 35px;
+        margin-right: 12px;
+    }
+    .focus{
+        margin: 0 3px;
+        color: #387EF5;
     }
 }
 .row .bg-fff{
@@ -1234,11 +1300,11 @@ table{
                     border-radius: 50%;
                 }
                 .vip-img{
-                    width: 53px;
+                    width: 60px;
                     position: absolute;
-                    top: -4px;
+                    top: -15px;
                     left: 50%;
-                    margin-left: -26.5px;
+                    margin-left: -35px;
                 }
             }
             .user-text{
@@ -2058,6 +2124,66 @@ table{
     }
 
 }
+//订单详情
+.productInfo{
+    .item-note{
+        width: 76.62%;
+    }
+}
+.btn-bar{
+    padding: 0;
+    height: 50px;
+    text-align: center;
+    .btn{
+        height: 100%;
+        line-height: 50px;
+        padding: 0 11px;
+    }
+    .btn-price{
+        height: 100%;
+        color: #333;
+        font-size: 16px;
+        background: #fff;
+        border-radius: 0;
+        .price{
+            font-size: 16px;
+        }
+    }
+}
+.publishDate-popup{
+    border-radius: 5px;
+    width: 80.07%;
+    position: relative;
+    .publishDate-title-img{
+        width: 100%;
+        float: left;
+    }
+    .popup-body{
+        float: left;
+        background: #fff;
+        color: #333333;
+        padding: 0;
+        .popup-title{
+            font-family: BanglaMN-Bold;
+            font-size: 20px;
+            margin: 9px 0;
+        }
+        .popup-content{
+            font-family: STHeitiSC-Light;
+            font-size: 14px;
+            line-height: 22px;
+            width: 77.6%;
+            max-height: 154px;
+            overflow: scroll;
+            margin: 10px auto;
+            text-align: left;
+        }
+    }
+    .popup-btn{
+        width: 61.78%;
+        margin: 11px 0 14px 0;
+    }
+}
 .video {
     position: relative;
     display: inline-block;
@@ -2579,4 +2705,16 @@ table{
 }
 .def-padding{
     padding: 0;
+}
+.clear-padding{
+    padding: 0;
+}
+.tar{
+    text-align: right;
+}
+.tal{
+    text-align: left;
+}
+.taj{
+    text-align: justify;
 }

@@ -254,6 +254,19 @@ export const loadNewrepor = function(args){
         }
     })
 }
+//获取最新更新内容
+export const getNewContent = function(args){
+    ajaxFn({
+        url:'business/getNewContent',
+        data:{
+            publishDate:args.publishDate || ""
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
 //图片
 export const loadPicture = function(args){
     ajaxFn({
@@ -1300,6 +1313,20 @@ export const saveInvestigation = function(args){
     })
 }
 
+//客户积分支付
+export const getCustomerScorePay = function(args){
+    ajaxFn({
+        url:'business/getCustomerScorePay',
+        data:{
+            reportId:args.reportId,
+            productId:args.productId
+        },
+        callBack:(res)=>{
+            args.callBack(res);
+        }
+    })
+}
+
 //是否已开通7天会员接口
 export const isGetSevenDaysVIP = function(args) {
     ajaxFn({
@@ -1419,24 +1446,16 @@ export const selectBaseBbsList = function(args){
         }
     })
 }
-//export const getTencentMap = function(los,around,place,callBack){
-//    $.ajax({
-//        url:'http://apis.map.qq.com/ws/place/v1/search?keyword='+encodeURI(place)+'&boundary=nearby('+los.lat+','+los.long+','+around+')&key=3P3BZ-ZO333-QVE3J-YNVJ3-GZ4E6-XQFVR&output=jsonp&callback=posFn',
-//        method:'GET'
-//    }).then((res)=>{
-//       callBack(res);
-//    })
-//}
-
 
 //请求支付
 export const requestUnifiedorderPayService = function(args){
-    let message='';
+    let message = '';
     $.ajax({
         type: "POST",
         url:httpAddress+"pay/requestUnifiedorderPayService",
         data:{
-            productId:args.id
+            productId:args.id,
+            discount:args.discount
         },
         async: false,
         error: function(request) {
@@ -1534,7 +1553,6 @@ function ajaxFn(params){
                         areaId: res.datas.areaId,
                         searchAreaType: res.datas.searchAreaType
                     });
-                    console.log( res.datas.provinceId);
                     store.dispatch({
                         type: "CHANGEALLPROVINCEIDNAME",
                         provinceName: res.datas.provinceName,

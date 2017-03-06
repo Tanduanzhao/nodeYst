@@ -61,10 +61,11 @@ class Center extends Component{
             userId:this.props.userInfo.id,
             callBack:(res)=>{
                 if(res == ""){
-                        this.intoBBS();
+                    setTimeout(()=>this.intoBBS(),3000)
                 }else{
                     $(this.head).append(res);
                 }
+                $(this.head).append(res);
             }
         });
     }

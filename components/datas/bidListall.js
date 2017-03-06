@@ -9,26 +9,28 @@ import {getAllBidList,getBidAreaInfo,getProjectStatus} from '../function/ajax.js
 import Loading from '../common/loading';
 import EmptyComponent from '../common/emptyComponent';
 import FilterBidList from '../filterPage/filterBidList';
+import ScrollLoading from '../common/scrollLoading';
 
 import More from './../common/more';
 class BidListAll extends Component{
     constructor(props){
         super(props);
         this.state={
-            loading:false,
-            provinceId:this.props.bidList.provinceId
+            loading:true,
+            provinceId:this.props.bidList.provinceId,
+            isSrollLoading:false,
+            isLoadData:true
         };
-
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
     _loadData(){
-        this.setState({
-            loading:true
-        });
-        this.props.dispatch({
-            type:'requestall'
-        });
+        //this.setState({
+        //    loading:true
+        //});
+        //this.props.dispatch({
+        //    type:'requestall'
+        //});
         getAllBidList({
             codeProId:this.props.params.id,
             areaId:JSON.stringify(this.props.bidList.areaId),
@@ -38,13 +40,15 @@ class BidListAll extends Component{
             searchName:this.props.bidList.searchName,
             searchProductStatus:this.props.bidList.searchProductStatus,
             callBack:(res)=>{
-                this.props.dispatch({
-                    type:'requestssall'
-                });
+                //this.props.dispatch({
+                //    type:'requestssall'
+                //});
                 if (res){
                     this.setState({
-                        loading:false
-                    });
+                        loading:false,
+                        isLoadData:false,
+                        isSrollLoading:true
+                    })
                     this.props.dispatch({
                         type:'LOADBIFLISTCONTENTDATAALL',
                         data:this.props.bidList.data.concat(res.datas.items),
@@ -53,6 +57,9 @@ class BidListAll extends Component{
                         pageNo:this.props.bidList.pageNo+1
                     });
                     if(res.totalSize <= this.props.bidList.data.length){
+                        this.setState({
+                            isSrollLoading:false
+                        });
                         this.props.dispatch({
                             type:'UNINFINITE'
                         });
@@ -85,7 +92,7 @@ class BidListAll extends Component{
                 areaId:args.areaId,
                 searchAreaType:args.searchType,
                 active:args.active,
-                searchProductStatus:args.searchProductStatus,
+                searchProductStatus:args.searchProductStatus
             });
             setTimeout(()=>{
                 this._loadData();
@@ -120,8 +127,12 @@ class BidListAll extends Component{
     }
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite && this.props.bidList.request){
-            this._loadData();
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
+            setTimeout(()=> this._loadData())
         }
     }
     componentDidMount(){
@@ -165,7 +176,7 @@ class BidListAll extends Component{
                 callBack: (res)=> {
                     this.props.dispatch({
                         type: 'getProjectStatus',
-                        getProjectStatus: res.datas,
+                        getProjectStatus: res.datas
                     });
                 }
             });
@@ -189,6 +200,9 @@ class BidListAll extends Component{
                 <div ref="content" className="scroll-content has-header marketall">
                     {
                         (this.props.bidList.data.length == 0 && !this.state.loading) ? <EmptyComponent/> : <Main {...this.props} data={this.props.bidList.data} loading={this.state.loading}/>
+                    }
+                    {
+                        this.props.bidList.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
                     }
                 </div>
                 <More {...this.props}/>

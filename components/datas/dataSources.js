@@ -9,6 +9,7 @@ import Loading from '../common/loading';
 import EmptyComponent from '../common/emptyComponent';
 import More from './../common/more';
 import HeaderBar from './../common/headerbar.js';
+import ScrollLoading from './../common/scrollLoading';
 class DataSources extends Component{
     constructor(props){
         super(props);
@@ -20,6 +21,8 @@ class DataSources extends Component{
             isShowFilter:false,
             isLoading:true,
             infinite:true,
+            isSrollLoading:false,
+            isLoadData:true,
             pageNum:1,
             provinceIds:['0']
         }
@@ -37,9 +40,9 @@ class DataSources extends Component{
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
-            if(this.state.isLoading) return false;
+            if(this.state.isLoadData) return false;
             this.setState({
-                isLoading:true
+                isLoadData:true
             });
             this._loadData();
         }
@@ -65,7 +68,7 @@ class DataSources extends Component{
     _fn(args){
         this.props.dispatch({
             type:'RESETDATADATASOURCE'
-        })
+        });
         this.setState({
             provinceIds:args.provinceIds,
             pageNum:1,
@@ -86,28 +89,31 @@ class DataSources extends Component{
                     datas:res.datas
                 });
                 setTimeout(()=>{
-                    console.log(this.props.dataSource);
+                    console.log(this.props.stores);
                 })
             }
         })
     }
     _loadData(){
         getEntryPriceSource({
-            searchName:this.props.dataSource.searchName,
+            searchName:this.props.stores.searchName,
             pageNum:this.state.pageNum,
             provinceId:JSON.stringify(this.state.provinceIds),
             callBack:(res)=>{
                 this.setState({
-                    isLoading:false
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
                 });
                 this.props.dispatch({
                     type:'LOADDATASDATASOURCE',
                     datas:res.datas
                 });
                 setTimeout(()=>{
-                    if(res.totalSize <= this.props.dataSource.datas.length){
+                    if(res.totalSize <= this.props.stores.datas.length){
                         this.setState({
-                            infinite:false
+                            infinite:false,
+                            isSrollLoading:false
                         });
                     }else{
                         this.setState({
@@ -165,12 +171,15 @@ class DataSources extends Component{
                 }
                 <div ref="content" className="scroll-content has-header">
                     {
-                        (this.props.dataSource.datas.length == 0 && !this.state.isLoading) ? <EmptyComponent/> : <Main dataSource={this.props.dataSource.datas}/>
+                        this.props.stores.datas.length == 0 && !this.state.isLoading ? <EmptyComponent/> : <Main dataSource={this.props.stores.datas}/>
+                    }
+                    {
+                        this.props.stores.datas.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
                     }
                 </div>
                 <More {...this.props}/>
                 {
-                    this.state.isShowFilter ? <FilterDataSources provinceIds={this.state.provinceIds} provinces={this.props.dataSource.provinces} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)} /> : null
+                    this.state.isShowFilter ? <FilterDataSources provinceIds={this.state.provinceIds} provinces={this.props.stores.provinces} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)} /> : null
                 }
             </div>
         )
@@ -183,7 +192,7 @@ class Main extends Component{
             <div className="list">
                 {
                     this.props.dataSource.map((ele)=>{
-                        return <List key={ele.id} dataSource={ele}/>
+                        return <List key={ele.id+Math.random()} dataSource={ele}/>
                     })
                 }
             </div>
@@ -218,7 +227,7 @@ class List extends Component{
 function select(state){
     return {
         search:state.search,
-        dataSource:state.dataSources,
+        stores:state.dataSources,
         isVip:state.userInfo.isVip
     }
 }

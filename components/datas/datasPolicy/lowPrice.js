@@ -9,6 +9,8 @@ import EmptyComponent from './../../common/emptyComponent';
 import Loading from './../../common/loading';
 import More from './../../common/more';
 import HeaderBar from './../../common/headerbar.js';
+import ScrollLoading from './../../common/scrollLoading';
+
 class LowPrice extends Component{
     constructor(props){
         super(props);
@@ -18,8 +20,10 @@ class LowPrice extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false,
-            isInfinite:false
+            isLoading:true,
+            isSrollLoading:false,
+            isLoadData:true,
+            infinite:true
         }
     }
     //加载筛选条件
@@ -34,11 +38,6 @@ class LowPrice extends Component{
         })
     }
     _loadData(){
-        if(this.state.isInfinite) return false;
-        this.setState({
-            isLoading:true
-        });
-        
         loadLowPriceAll({
             searchName:this.props.lowPrice.searchName,
             areaId:JSON.stringify(this.props.lowPrice.areaId),
@@ -51,12 +50,15 @@ class LowPrice extends Component{
                     datas:res.datas
                 });
                 this.setState({
-                    isLoading:false
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
                 });
                 setTimeout(()=>{
-                    if(this.props.lowPrice.datas.length == res.totalSize){
+                    if(this.props.lowPrice.datas.length >= res.totalSize){
                         this.setState({
-                            isInfinite:true
+                            infinite:false,
+                            isSrollLoading:false
                         });
                     }else{
                         this.props.dispatch({
@@ -91,7 +93,8 @@ class LowPrice extends Component{
             catalogEditionId:args.catalogEditionId
         });
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         this._hideFilter();
         setTimeout(()=>{
@@ -119,7 +122,7 @@ class LowPrice extends Component{
             return false
         }
         setTimeout((res)=>{
-            this._isNeedLoadData();
+            this._loadData();
         },10);
     }
     //显示简介
@@ -140,7 +143,11 @@ class LowPrice extends Component{
     }
      //判断屏幕是否加载满
     _isNeedLoadData(){
-        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && !this.state.isLoading){
+        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight  && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
             this._loadData();
         }
     }
@@ -159,7 +166,8 @@ class LowPrice extends Component{
             searchName:key
         });
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         setTimeout(()=>{
             this._loadData();
@@ -179,7 +187,7 @@ class LowPrice extends Component{
                     <div className="list">
                         <div className="card" style={{marginTop:0}}>
                             {
-                                this.props.lowPrice.datas.length==0 ? <EmptyComponent/> :this.props.lowPrice.datas.map((ele)=>{
+                                this.props.lowPrice.datas.length==0 && !this.state.isLoading ? <EmptyComponent/> :this.props.lowPrice.datas.map((ele)=>{
                                     return(
                                         <div key={Math.random(2)}>
                                             <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",p:ele.areaName}}/>
@@ -213,6 +221,9 @@ class LowPrice extends Component{
                             }
                         </div>
                     </div>
+                    {
+                        this.props.lowPrice.datas.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
                     <More {...this.props}/>
                 </div>
                 {

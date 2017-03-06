@@ -7,6 +7,7 @@ import {loadBidList} from '../function/ajax';
 import Provicen from '../provicen';
 import {Link} from 'react-router';
 import Loading from '../common/loading';
+import ScrollLoading from '../common/scrollLoading';
 import More from './../common/more';
 import HeaderBar from './../common/headerbar.js';
 import EmptyComponent from '../common/emptyComponent';
@@ -14,16 +15,22 @@ class MarketPrice extends Component{
     constructor(props){
         super(props);
         this.state= {
-            loading: false,
-            request:true
-        }
+            isLoading:true,
+            isSrollLoading:false,
+            isLoadData:true,
+            infinite:true
+        };
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
     }
 
     //滚动加载
     _infiniteScroll(){
-      if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && ! this.props.stores.infinite  && this.state.request){
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
             this._loadData();
         }
     }
@@ -35,12 +42,13 @@ class MarketPrice extends Component{
             return false;
         }else{
             this.setState({
-                loading:true
-            })
+                isLoading:true,
+                infinite:true
+            });
             this.props.dispatch({
                 type:'CHANGEDRUGSEARCHNAME',
                 searchName:searchKeys
-            })
+            });
             this.props.dispatch({
                 type:'LOADMARKETTDATA',
                 data:[],
@@ -59,36 +67,6 @@ class MarketPrice extends Component{
             this.context.router.push(`/bidListall/${encodeURI(encodeURI(productName))}/${encodeURI(encodeURI(prepName))}/${encodeURI(encodeURI(spec))}/${encodeURI(encodeURI(manufacturerName))}/${encodeURI(encodeURI(id))}`);
         }
     }
-
-    //加载页面数据
-    _loadData(){
-        this.setState({
-            loading:true
-        });
-        this.setState({
-            request:false
-        });
-        loadBidList({
-            searchName:encodeURI(encodeURI(this.props.stores.searchName)),
-            pageNo:this.props.stores.pageNo,
-            callBack:(res)=>{
-                if(this._calledComponentWillUnmount) return false;
-                this.setState({
-                    loading:false
-                });
-                if (res){
-                    this.props.dispatch({
-                        type:'LOADMARKETTDATA',
-                        data:this.props.stores.data.concat(res.datas),
-                        pageNo:this.props.stores.pageNo+1
-                    });
-                }
-                this.setState({
-                    request:true
-                });
-            }
-        });
-    }
     //显示简介
     showIntro(){
         this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:35});
@@ -100,10 +78,42 @@ class MarketPrice extends Component{
         this.props.dispatch({
             type:'CLICKKSEARCH',
             clickSearch:false
-        })
+        });
         setTimeout(()=>{
             this.context.router.push('/search');
         })
+    }
+    //加载页面数据
+    _loadData(){
+        loadBidList({
+            searchName:encodeURI(encodeURI(this.props.stores.searchName)),
+            pageNo:this.props.stores.pageNo,
+            callBack:(res)=>{
+                if(this._calledComponentWillUnmount) return false;
+                this.setState({
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
+                });
+                if (res){
+                    this.props.dispatch({
+                        type:'LOADMARKETTDATA',
+                        data:this.props.stores.data.concat(res.datas),
+                        pageNo:this.props.stores.pageNo+1
+                    });
+                    if(res.totalSize <= this.props.stores.data.length){
+                        this.setState({
+                            infinite:false,
+                            isSrollLoading:false
+                        });
+                    }else{
+                        this.setState({
+                            infinite:true
+                        });
+                    }
+                }
+            }
+        });
     }
 
     //渲染完成后调用
@@ -134,12 +144,17 @@ class MarketPrice extends Component{
             <div className="root">
                 <HeaderBar {...this.props} titleName="全国限价"  showSearch={this.showSearch.bind(this)} showIntro={this.showIntro.bind(this)} />
                 {
-                    this.state.loading?<Loading/>: null
+                    this.state.isLoading ? <Loading/> : null
                 }
                 <div ref="content" className="scroll-content has-header">
-                    <Main {...this.props} tobidList={this.tobidList.bind(this)} data={this.props.stores.data} loading={this.state.loading}/>
+                    {
+                        this.props.stores.data.length == 0 && !this.state.isLoading ? <EmptyComponent/> : <Main {...this.props} tobidList={this.tobidList.bind(this)}/>
+                    }
+                    {
+                        this.props.stores.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
+                    <More {...this.props}/>
                 </div>
-                <More {...this.props}/>
             </div>
         )
     }
@@ -150,12 +165,11 @@ class Main extends Component{
     }
     render(){
         return(
-            this.props.data.length == 0 ? <EmptyComponent/>
-                : <ul className="list bid-list">
-                    {
-                        this.props.data.map((ele)=> <List {...this.props} dataSources={ele} key={ele.id+Math.random()}/>)
-                    }
-                </ul>
+            <ul className="list bid-list">
+                {
+                    this.props.stores.data.map((ele)=> <List {...this.props} dataSources={ele} key={Math.random()}/>)
+                }
+            </ul>
         )
     }
 }

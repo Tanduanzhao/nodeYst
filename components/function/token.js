@@ -4,6 +4,7 @@
 import {connect} from 'react-redux';
 import {url2obj,authWxcode} from './common';
 import {WXKEY,HTTPURL} from '../config';
+import {getNewContent} from '../function/ajax';
 var isLogin = false;
 export const Token = function(fn,store){
     if(store.getState().userInfo.isLogin ||url2obj().code){

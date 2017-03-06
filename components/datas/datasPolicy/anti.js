@@ -9,6 +9,7 @@ import EmptyComponent from './../../common/emptyComponent';
 import Loading from './../../common/loading';
 import More from './../../common/more';
 import HeaderBar from './../../common/headerbar.js';
+import ScrollLoading from './../../common/scrollLoading';
 
 class Anti extends Component{
     constructor(props){
@@ -19,8 +20,10 @@ class Anti extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false,
-            isInfinite:false
+            isLoading:true,
+            isSrollLoading:false,
+            isLoadData:true,
+            infinite:true
         }
     }
     //加载筛选条件
@@ -35,10 +38,6 @@ class Anti extends Component{
         })
     }
     _loadData(){
-        if(this.state.isInfinite) return;
-        this.setState({
-            isLoading:true
-        });
         loadAntiAll({
             searchName:this.props.anti.searchName,
             areaId:JSON.stringify(this.props.anti.areaId),
@@ -51,12 +50,15 @@ class Anti extends Component{
                     datas:res.datas
                 });
                 this.setState({
-                    isLoading:false
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
                 });
                 setTimeout(()=>{
-                    if(this.props.anti.datas.length == res.totalSize){
+                    if(this.props.anti.datas.length >= res.totalSize){
                         this.setState({
-                            isInfinite:true
+                            infinite:false,
+                            isSrollLoading:false
                         });
                     }else{
                         this.props.dispatch({
@@ -92,7 +94,8 @@ class Anti extends Component{
         });
         this._hideFilter();
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         setTimeout(()=>{
             this._loadData();
@@ -114,12 +117,10 @@ class Anti extends Component{
             this._isNeedLoadData();
         });
         if(this.props.search.clickSearch){
-            this._searchDatas(this.props.search.searchName)
+            this._searchDatas(this.props.search.searchName);
             return false
         }
-        setTimeout(()=>{
-            this._isNeedLoadData();
-        },10);
+        setTimeout(()=>{this._loadData()});
     }
     //显示简介
     showIntro(){
@@ -128,7 +129,7 @@ class Anti extends Component{
     }
     //显示搜索
     showSearch(){
-        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:39})
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:39});
         this.props.dispatch({
             type:'CLICKKSEARCH',
             clickSearch:false
@@ -139,7 +140,11 @@ class Anti extends Component{
     }
      //判断屏幕是否加载满
     _isNeedLoadData(){
-        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && !this.state.isLoading){
+        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
             this._loadData();
         }
     }
@@ -158,7 +163,8 @@ class Anti extends Component{
             areaId:['0']
         });
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         setTimeout(()=>{
             this._loadData();
@@ -178,7 +184,7 @@ class Anti extends Component{
                     <div className="list">
                         <div className="card" style={{marginTop:0}}>
                             {
-                                this.props.anti.datas.length==0 ? <EmptyComponent/> :this.props.anti.datas.map((ele)=>{
+                                this.props.anti.datas.length == 0 && !this.state.isLoading ? <EmptyComponent/> :this.props.anti.datas.map((ele)=>{
                                     return(
                                         <div key={Math.random(2)}>
                                             <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",g:ele.catalogEditionName,p:ele.areaName}}/>
@@ -212,6 +218,9 @@ class Anti extends Component{
                             }
                         </div>
                     </div>
+                    {
+                        this.props.anti.datas.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
                     <More {...this.props}/>
                 </div>
                 {

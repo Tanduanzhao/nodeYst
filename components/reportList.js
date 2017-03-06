@@ -92,7 +92,7 @@ export default class ReportList extends Component {
 							this.props.collect
 								?<div className="item-right">
 								<h2> {this.props.dataSources.columnName}</h2>
-								<p className="item-nowrap dark">{iconTag} {this.props.dataSources.title}</p>
+								<h3 className="item-nowrap dark">{iconTag} {this.props.dataSources.title}</h3>
 								<div className="item-right-footer">
 									{this.props.dataSources.publishDate}
 								</div>
@@ -115,7 +115,7 @@ export default class ReportList extends Component {
 							this.props.collect
 								?<div className="item-right">
 								<h2> {this.props.dataSources.columnName}</h2>
-								<p className="item-nowrap dark">{iconTag} {this.props.dataSources.title}</p>
+								<h3 className="item-nowrap dark">{iconTag} {this.props.dataSources.title}</h3>
 								<div className="item-right-footer">
 									{this.props.dataSources.publishDate}
 								</div>

@@ -7,15 +7,16 @@ import EmptyComponent from './../common/emptyComponent';
 import FilterMarket from './../filterPage/filterMarket';
 import HeaderBar from '../common/headerbar.js';
 import Loading from './../common/loading';
-
+import ScrollLoading from './../common/scrollLoading';
 class RiseFactory extends Component{
     constructor(props){
         super(props);
         this.state={
-            //data:[],
             pageNo:1,
             infinite:false,
-            loading:true,
+            isLoading:true,
+            isSrollLoading:false,
+            isLoadData:true,
             searchName:"",
             sord:"desc",
             sidx:"sales",
@@ -25,6 +26,17 @@ class RiseFactory extends Component{
         this._reSet = this._reSet.bind(this);
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
+    }
+
+    _infiniteScroll(){
+        //全部高度-滚动高度 == 屏幕高度-顶部偏移
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
+            this._loadData();
+        }
     }
     _increaseHandle(){
 		this.props.dispatch((dispatch)=>{
@@ -67,16 +79,17 @@ class RiseFactory extends Component{
         }
         this._reSet();
         this.setState({
-            loading:true,
-            //data:[],
-            //pageNo:1,
+            isLoading:true,
             sordActive:sordActive,
             sidx:sidx
         });
         setTimeout(()=> this._loadData());
     }
     _fn(args){
-        this._reSet()
+        this.setState({
+            isLoading:true
+        });
+        this._reSet();
         this.props.dispatch({
             type:'CHANGEDATA',
             yearMonth:args.yearMonth
@@ -102,19 +115,25 @@ class RiseFactory extends Component{
                 callBack:(res)=>{
                     this.setState({
                         pageNo:this.state.pageNo+1,
-                        //data:res.datas,
-                        infinite:false
+                        //infinite:false,
+                        isLoading:false,
+                        isLoadData:false,
+                        isSrollLoading:true
                     })
                     this.props.dispatch({
                         type:'LOADFACTORYDATA',
-                        data:res.datas,
+                        data:res.datas
                     });
-                    if(res.totalSize <= this.props.stores.data.length){
-                        this.ele.removeEventListener('scroll',this._infiniteScroll);
+                    if(this.props.stores.data.length >= res.totalSize ){
+                        this.setState({
+                            infinite:false,
+                            isSrollLoading:false
+                        });
+                    }else {
+                        this.setState({
+                            infinite:true
+                        });
                     }
-                    this.setState({
-                        loading:false
-                    });
                 }
             });
         })
@@ -134,28 +153,28 @@ class RiseFactory extends Component{
                 callBack:(res)=>{
                     this.setState({
                         pageNo:this.state.pageNo+1,
-                        //data:this.state.data.concat(res.datas),
-                        infinite:false
+                        //infinite:truee,
+                        isLoading:false,
+                        isLoadData:false,
+                        isSrollLoading:true
                     })
                     this.props.dispatch({
                         type:'LOADFACTORYDATA',
-                        data:this.props.stores.data.concat(res.datas),
+                        data:this.props.stores.data.concat(res.datas)
                     });
-                    if(res.totalSize <= this.props.stores.data.length){
-                        this.ele.removeEventListener('scroll',this._infiniteScroll);
+                    if(this.props.stores.data.length >= res.totalSize ){
+                        this.setState({
+                            infinite:false,
+                            isSrollLoading:false
+                        });
+                    }else {
+                        this.setState({
+                            infinite:true
+                        });
                     }
-                    this.setState({
-                        loading:false
-                    });
                 }
             });
         })
-    }
-    _infiniteScroll(){
-        //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop){
-            this._loadData();
-        }
     }
 
     //筛选方法
@@ -180,7 +199,7 @@ class RiseFactory extends Component{
         }else{
             this._reSet();
             this.setState({
-                loading:true,
+                isLoading:true
             });
             this.props.dispatch({
                 type:'FACTORYSEARCHNAME',
@@ -221,16 +240,19 @@ class RiseFactory extends Component{
                 <HeaderBar {...this.props} titleName="厂家影响力排行榜" showSearch={this.showSearch.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
                 <div ref="content" className="scroll-content has-header market">
                     {
-                        (this.props.stores.data.length == 0 && !this.state.loading)
+                        (this.props.stores.data.length == 0 && !this.state.isLoading)
                             ? <EmptyComponent/>
-                            :  <Main data={this.props.stores.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
+                            :  <Main data={this.props.stores.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive}/>
+                    }
+                    {
+                        this.props.stores.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
                     }
                 </div>
                 {
                     this.state.isShowFilter ? <FilterMarket {...this.props}  fn={this._fn.bind(this)}  hideFilter={this._toggleFilter.bind(this)} dataSources={this.props.provicenData}/> :null
                 }
                 {
-                    this.state.loading ? <Loading/> : null
+                    this.state.isLoading ? <Loading/> : null
                 }
             </div>
         )

@@ -10,6 +10,7 @@ import Loading from '../common/loading';
 import More from './../common/more';
 import HeaderBar from './../common/headerbar.js';
 import EmptyComponent from '../common/emptyComponent';
+import ScrollLoading from '../common/scrollLoading';
 
 class Groups extends Component{
     constructor(props){
@@ -17,7 +18,9 @@ class Groups extends Component{
         this.state={
             isShowFilter:false,
             isLoading:true,
+            isSrollLoading:false,
             infinite:true,
+            isLoadData:true,
             pageNum:1,
             catalogTypeId:null,
             min:null,
@@ -30,9 +33,9 @@ class Groups extends Component{
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
-            if(this.state.isLoading) return false;
+            if(this.state.isLoadData) return false;
             this.setState({
-                isLoading:true
+                isLoadData:true
             });
             this._loadData();
         }
@@ -83,46 +86,6 @@ class Groups extends Component{
             this._loadData();
         });
     }
-    _loadTypes(){
-        getCatalogTypeList({
-            callBack:(res)=>{
-                this.props.dispatch({
-                    type:'LOADGROUPSTYPES',
-                    datas:res.datas
-                })
-            }
-        })
-    }
-    _loadData(){
-        getCatalogList({
-            searchName:this.props.groups.searchName,
-            pageNum:this.state.pageNum,
-            catalogTypeId:this.state.catalogTypeId,
-            max:this.state.max,
-            min:this.state.min,
-            callBack:(res)=>{
-                this.setState({
-                    isLoading:false
-                });
-                this.props.dispatch({
-                    type:'LOADGTOUPSDATA',
-                    datas:res.datas
-                });
-                setTimeout(()=>{
-                    if(res.totalSize <= this.props.groups.datas.length){
-                        this.setState({
-                            infinite:false
-                        });
-                    }else{
-                        this.setState({
-                            infinite:true,
-                            pageNum:this.state.pageNum+1
-                        });
-                    }
-                })
-            }
-        })
-    }
     //显示简介
     showIntro(){
         this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:31});
@@ -137,6 +100,49 @@ class Groups extends Component{
         });
         setTimeout(()=>{
             this.context.router.push('/search');
+        })
+    }
+    _loadTypes(){
+        getCatalogTypeList({
+            callBack:(res)=>{
+                this.props.dispatch({
+                    type:'LOADGROUPSTYPES',
+                    datas:res.datas
+                })
+            }
+        })
+    }
+    _loadData(){
+        getCatalogList({
+            searchName:this.props.stores.searchName,
+            pageNum:this.state.pageNum,
+            catalogTypeId:this.state.catalogTypeId,
+            max:this.state.max,
+            min:this.state.min,
+            callBack:(res)=>{
+                this.setState({
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
+                });
+                this.props.dispatch({
+                    type:'LOADGTOUPSDATA',
+                    datas:res.datas
+                });
+                setTimeout(()=>{
+                    if(res.totalSize <= this.props.stores.datas.length){
+                        this.setState({
+                            infinite:false,
+                            isSrollLoading:false
+                        });
+                    }else{
+                        this.setState({
+                            infinite:true,
+                            pageNum:this.state.pageNum+1
+                        });
+                    }
+                })
+            }
         })
     }
 
@@ -169,12 +175,15 @@ class Groups extends Component{
                 }
                 <div ref="content" className="scroll-content has-header">
                     {
-                        (this.props.groups.datas.length == 0 && !this.state.isLoading) ? <EmptyComponent/> : <Main dataSource={this.props.groups.datas}/>
+                        (this.props.stores.datas.length == 0 && !this.state.isLoading) ? <EmptyComponent/> : <Main dataSource={this.props.stores.datas}/>
+                    }
+                    {
+                        this.props.stores.datas.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
                     }
                 </div>
                 <More {...this.props}/>
                 {
-                    this.state.isShowFilter ? <FilterGroups min={this.state.min} max={this.state.max} catalogTypeId={this.state.catalogTypeId} types={this.props.groups.types} {...this.props} groups={this.state.groups} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)}/> : null
+                    this.state.isShowFilter ? <FilterGroups min={this.state.min} max={this.state.max} catalogTypeId={this.state.catalogTypeId} types={this.props.stores.types} {...this.props} groups={this.state.stores} fn={this._fn.bind(this)} hideFilter={this._toggleFilter.bind(this)}/> : null
                 }
             </div>
         )
@@ -188,7 +197,7 @@ class Main extends Component{
                 <div className="list">
                     {
                         this.props.dataSource.map((ele)=>{
-                            return <List key={ele.catalogId} dataSource={ele}/>
+                            return <List key={ele.catalogId+Math.random()} dataSource={ele}/>
                         })
                     }
                 </div>
@@ -199,7 +208,7 @@ class Main extends Component{
 class List extends Component{
     render(){
         return(
-            <Link to={`/datas/groupsMes/${this.props.dataSource.catalogId}/${this.props.dataSource.tongyongmingZl}`}>
+            <Link to={`/datas/groupsMes/${this.props.dataSource.catalogId}/${encodeURIComponent(this.props.dataSource.tongyongmingZl)}`}>
                 <div className="item item-divider">
                     目录ID:{this.props.dataSource.catalogId}
                     <span className="item-note calm">
@@ -218,7 +227,7 @@ class List extends Component{
 function select(state){
     return{
         search:state.search,
-        groups:state.groups,
+        stores:state.groups,
         isVip:state.userInfo.isVip
     }
 }

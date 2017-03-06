@@ -10,10 +10,14 @@ export default class HeaderBar extends Component {
 	render() {
 		return (
 			<div  ref="headerBar" className={`bar bar-header bar-positive item-input-inset flex-jc-space ${this.props.isOpacity ? 'bar-opacity' : ""}`} style={{zIndex:3,backgroundColor:`rgba(56,126,245,${typeof this.props.opacityNum !== 'undefined' ? this.props.opacityNum:1})`}}>
-				<div className="flex-center" onClick={this.props.showIntro}>
-					{typeof this.props.showIntro != 'undefined' ?<img src="/images/icon_introduce.png" style={{width:'1.125rem',height: '1.125rem',margin:'0 5px'}} /> : null}
-					{this.props.titleName}{typeof this.props.icoType != 'undefined' && this.props.icoType != "" ? "+"+this.props.icoType : ""}
-				</div>
+				{
+					typeof this.props.titleName != 'undefined'
+							? <div className="flex-center" onClick={this.props.showIntro}>
+								{typeof this.props.showIntro != 'undefined' ?<img src="/images/icon_introduce.png" style={{width:'1.125rem',height: '1.125rem',margin:'0 5px'}} /> : null}
+								{this.props.titleName}{typeof this.props.icoType != 'undefined' && this.props.icoType != "" ? "+"+this.props.icoType : ""}
+							  </div>
+							: null
+				}
 				<div className="buttons">
 					{
 						typeof this.props.showFilter != 'undefined'

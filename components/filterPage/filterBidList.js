@@ -7,18 +7,18 @@ export default class FilterProduce extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      produceType:this.props.bidList.produceType,
-      sord:this.props.bidList.sord,
-      sidx:this.props.bidList.sidx,
-      searchProductStatus:this.props.bidList.searchProductStatus,
-      active:this.props.bidList.active,
-      areaId:this.props.bidList.areaId,
+      produceType:this.props.stores.produceType,
+      sord:this.props.stores.sord,
+      sidx:this.props.stores.sidx,
+      searchProductStatus:this.props.stores.searchProductStatus,
+      active:this.props.stores.active,
+      areaId:this.props.stores.areaId,
       keys:[]
     };
   }
   componentDidMount(){
     this.setState({
-      keys:this.state.keys.concat(this.props.bidList.areaId)
+      keys:this.state.keys.concat(this.props.stores.areaId)
     });
   }
   componentWillUnmount(){
@@ -29,7 +29,6 @@ export default class FilterProduce extends Component{
     })
   }
   _sureButton(){
-    console.log(this.state.active);
     this.props.fn(this.state);
   }
   areaIdArr(arr,val){
@@ -44,9 +43,9 @@ export default class FilterProduce extends Component{
     if (index == "0") {
       if (this.state.areaId.indexOf("0") == -1) {
        //let areaId = [];
-        for (var i = 0; i < this.props.bidList.getBidAreaInfo.length; i++) {
+        for (var i = 0; i < this.props.stores.getBidAreaInfo.length; i++) {
           this.setState({
-            keys: this.areaIdArr(this.state.keys,this.props.bidList.getBidAreaInfo[i].id)
+            keys: this.areaIdArr(this.state.keys,this.props.stores.getBidAreaInfo[i].id)
           });
         }
       } else {
@@ -87,7 +86,7 @@ export default class FilterProduce extends Component{
             <div className="list padding">
               <ul className="list-horizontal-block">
                 {
-                  this.props.bidList.getProjectStatus.map((ele,index)=>{
+                  this.props.stores.getProjectStatus.map((ele,index)=>{
                       return(
                       <li key={index} style={(this.state.searchProductStatus == ele.statusNum) ? styles.active : null} onClick={()=>{this.setState({searchProductStatus:ele.statusNum })}}>{ele.statusName}</li>
                       )
@@ -107,7 +106,7 @@ export default class FilterProduce extends Component{
             <div className="list padding">
                 <ul className="list-horizontal-block">
                 {
-                  this.props.bidList.getBidAreaInfo.map((ele,index)=> {
+                  this.props.stores.getBidAreaInfo.map((ele,index)=> {
                     return (<li key={ele.id} style={(this.state.areaId.indexOf(ele.id) != -1) ? styles.active : null} onClick={this._ahandleClick.bind(this,ele.id,index)}>{ele.areaName}</li>)
                   })
                 }

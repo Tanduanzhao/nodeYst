@@ -35,7 +35,7 @@ var defaultReport={
   active:0,
   costStatus:null,
   fixedScroll:0,
-  pdf:false
+  pdf:false,
 }
 export default function report(state=defaultReport,action) {
   switch(action.type){

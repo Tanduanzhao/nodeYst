@@ -9,6 +9,7 @@ import {getReportKeepList,getReportType,cancelKeepReport,requestUnifiedorderPayS
 import FooterBar from './common/footerBar';
 import FilterCollect from './filterPage/filterCollect';
 import Loading from './common/loading';
+import ScrollLoading from './common/scrollLoading';
 import EmptyComponent from './common/emptyComponent';
 import Collectpopup from './collectpopup';
 import ReportList from './reportList';
@@ -21,6 +22,8 @@ class Collect extends Component {
         this.state = {
             searchType: this.props.report.searchType,
             loading: true,
+            isSrollLoading:false,
+            isLoadData:true,
             request: true,
             reportTag: this.props.report.reportTag,
             showPromptMes: false,
@@ -42,12 +45,12 @@ class Collect extends Component {
     }
 
     _loadData() {
-        this.setState({
-            loading: true
-        });
-        this.setState({
-            request: false
-        });
+        //this.setState({
+        //    loading: true
+        //});
+        //this.setState({
+        //    request: false
+        //});
         getReportKeepList({
             sidx: this.props.report.sidx,
             sord: this.props.report.sord,
@@ -58,7 +61,6 @@ class Collect extends Component {
             columnBigType: this.props.report.columnBigType,
             titleOrReportKey: this.props.report.titleOrReportKey,
             callBack: (res)=> {
-                console.log(res);
                 if (this.state.showPrompt) {
                     setTimeout(()=> {
                         this.setState({
@@ -66,12 +68,20 @@ class Collect extends Component {
                         })
                     }, 1000)
                 }
+                this.setState({
+                    loading: false,
+                    isLoadData:false,
+                    isSrollLoading:true
+                });
                 this.props.dispatch({
                     type: 'LOADCOLLECT',
                     data: this.props.report.data.concat(res.datas),
                     pageNo: this.props.report.pageNo + 1
                 });
                 if (res.totalSize <= this.props.report.data.length) {
+                    this.setState({
+                        isSrollLoading:false
+                    });
                     this.props.dispatch({
                         type: 'UNINFINITE'
                     });
@@ -80,19 +90,20 @@ class Collect extends Component {
                         type: 'INFINITE'
                     });
                 }
-                this.setState({
-                    loading: false
-                });
-                this.setState({
-                    request: true
-                });
+                //this.setState({
+                //    request: true
+                //});
             }
         });
     }
 
     _infiniteScroll() {
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if (this.ele.firstChild.clientHeight - this.ele.scrollTop <= document.body.clientHeight - this.ele.offsetTop && !this.props.report.infinite && this.state.request) {
+        if (this.ele.firstChild.clientHeight - this.ele.scrollTop <= document.body.clientHeight - this.ele.offsetTop && !this.props.report.infinite) {
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
             this._loadData();
         }
     }
@@ -237,9 +248,14 @@ class Collect extends Component {
             <div className="root">
                 <HeaderBar {...this.props} titleName="我的收藏" showSearch={this.showSearch.bind(this)} showFilter={this._showFilter.bind(this)}/>
                 <div ref="content" className="scroll-content has-header has-footer">
-                    <Main {...this.props} sandboxPayService={this._sandboxPayService.bind(this)}
-                                          reportTag={this.state.reportTag} data={this.props.report.data}
-                                          loading={this.state.loading}/>
+                    {
+                        this.props.report.data.length == 0 && !this.state.loading ? <EmptyComponent/> :
+                            <Main {...this.props} sandboxPayService={this._sandboxPayService.bind(this)}
+                                                  reportTag={this.state.reportTag} data={this.props.report.data}/>
+                    }
+                    {
+                        this.props.report.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
                 </div>
                 <FooterBar {...this.props}/>
                 {
@@ -270,24 +286,18 @@ class Main extends Component {
         this.state = {
             collect: true
         };
-
     }
 
     render() {
-
-        if (this.props.data.length != 0) {
-            return (
-                <ul className="list new_report">
-                    {
-                        this.props.data.map((ele, index)=> <ReportList  {...this.props}
-                            sandboxPayService={this.props.sandboxPayService} reportTag={this.props.reportTag}
-                            collect={this.state.collect} dataSources={ele} key={ele.id+Math.random()}/>)
-                    }
-                </ul>
-            )
-        } else {
-            return <EmptyComponent/>
-        }
+        return (
+            <ul className="list new_report">
+                {
+                    this.props.data.map((ele, index)=> <ReportList  {...this.props}
+                        sandboxPayService={this.props.sandboxPayService} reportTag={this.props.reportTag}
+                        collect={this.state.collect} dataSources={ele} key={ele.id+Math.random()}/>)
+                }
+            </ul>
+        )
     }
 }
 function select(state) {

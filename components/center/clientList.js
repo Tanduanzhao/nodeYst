@@ -8,12 +8,15 @@ import Provicen from '../provicen';
 import {Link} from 'react-router';
 import Loading from '../common/loading';
 import EmptyComponent from '../common/emptyComponent';
+import ScrollLoading from '../common/scrollLoading';
 class ClientList extends Component{
     constructor(props){
         super(props);
         this.state= {
             isLoading: true,
             //request:true,
+            isSrollLoading:false,
+            isLoadData:true,
             totalSize:0,
             vipNum:0,
             id:null
@@ -26,9 +29,9 @@ class ClientList extends Component{
     //滚动加载
     _infiniteScroll(){
       if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.stores.infinite){
-          if(this.state.isLoading) return false;
+          if(this.state.isLoadData) return false;
           this.setState({
-              isLoading:true
+              isLoadData:true
           });
             this._loadData();
         }
@@ -49,10 +52,15 @@ class ClientList extends Component{
             callBack:(res)=>{
                 if(this._calledComponentWillUnmount) return false;
                 this.setState({
-                    isLoading:false
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
                 });
                 if (res){
                     if(res.pageNo >= res.totalPage){
+                        this.setState({
+                            isSrollLoading:false
+                        });
                         this.props.dispatch({
                             type:'UNINFINITEDRUG'
                         });
@@ -133,6 +141,9 @@ class ClientList extends Component{
                         (this.props.stores.data.length == 0 && !this.state.isLoading)
                             ? <EmptyComponent/>
                             :  <Main {...this.props} data={this.props.stores.data}  id={this.state.id} index={this.state.index} checkbox={this._checkbox} checked={this.state.checked}/>
+                    }
+                    {
+                        this.props.stores.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
                     }
                 </div>
             </div>

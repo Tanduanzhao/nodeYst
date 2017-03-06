@@ -4,9 +4,13 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  font-size: 0.7rem; }
+  font-size: 0.7rem;
+  font-family: STHeitiSC-Medium; }
   body .name {
     color: 'red'; }
+
+.has-footer {
+  bottom: 50px; }
 
 .row.horizontal > .text-center {
   display: -webkit-box;
@@ -54,6 +58,9 @@ h3 {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box; }
+
+.bg-gray {
+  background: #eee; }
 
 .row.horizontal {
   -ms-flex-wrap: wrap;
@@ -209,6 +216,67 @@ h3 {
     width: 45px;
     height: 45px;
     margin-bottom: 3px; }
+
+.flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  display: -webkit-flex; }
+
+.flex-align {
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+              -ms-grid-row-align: center;
+          align-items: center;
+  -webkit-align-items: center; }
+
+.price {
+  font-size: 18px;
+  color: #EE2626;
+  letter-spacing: 0;
+  text-align: right; }
+  .price i {
+    margin-right: 4px; }
+
+.card-list {
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 10px;
+  min-height: 50px;
+  padding: 12px 10px;
+  background-color: #fff; }
+  .card-list .card-list-title {
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    font-size: 16px;
+    color: #333333;
+    line-height: 22px; }
+  .card-list .item-right {
+    margin-left: 12px;
+    padding: 4px 0;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-justify-content: space-between; }
+  .card-list .item {
+    color: #333333;
+    padding: 16px 10px;
+    overflow: hidden; }
+    .card-list .item .item-note {
+      font-size: 16px;
+      color: #999999;
+      line-height: 20px; }
+  .card-list .vipImg {
+    width: 52px;
+    height: 35px;
+    margin-right: 12px; }
+  .card-list .focus {
+    margin: 0 3px;
+    color: #387EF5; }
 
 .row .bg-fff {
   background: #fff; }
@@ -1149,11 +1217,11 @@ table.table-border td, table.table-border th {
           width: 70px;
           border-radius: 50%; }
         .center-top .center-top-user .user .user-logo .vip-img {
-          width: 53px;
+          width: 60px;
           position: absolute;
-          top: -4px;
+          top: -15px;
           left: 50%;
-          margin-left: -26.5px; }
+          margin-left: -35px; }
       .center-top .center-top-user .user .user-text {
         margin-left: 9px; }
         .center-top .center-top-user .user .user-text .time {
@@ -1847,6 +1915,55 @@ table.table-border td, table.table-border th {
     border: none;
     color: #fff; }
 
+.productInfo .item-note {
+  width: 76.62%; }
+
+.btn-bar {
+  padding: 0;
+  height: 50px;
+  text-align: center; }
+  .btn-bar .btn {
+    height: 100%;
+    line-height: 50px;
+    padding: 0 11px; }
+  .btn-bar .btn-price {
+    height: 100%;
+    color: #333;
+    font-size: 16px;
+    background: #fff;
+    border-radius: 0; }
+    .btn-bar .btn-price .price {
+      font-size: 16px; }
+
+.publishDate-popup {
+  border-radius: 5px;
+  width: 80.07%;
+  position: relative; }
+  .publishDate-popup .publishDate-title-img {
+    width: 100%;
+    float: left; }
+  .publishDate-popup .popup-body {
+    float: left;
+    background: #fff;
+    color: #333333;
+    padding: 0; }
+    .publishDate-popup .popup-body .popup-title {
+      font-family: BanglaMN-Bold;
+      font-size: 20px;
+      margin: 9px 0; }
+    .publishDate-popup .popup-body .popup-content {
+      font-family: STHeitiSC-Light;
+      font-size: 14px;
+      line-height: 22px;
+      width: 77.6%;
+      max-height: 154px;
+      overflow: scroll;
+      margin: 10px auto;
+      text-align: left; }
+  .publishDate-popup .popup-btn {
+    width: 61.78%;
+    margin: 11px 0 14px 0; }
+
 .video {
   position: relative;
   display: inline-block;
@@ -2270,3 +2387,15 @@ table.table-border td, table.table-border th {
 
 .def-padding {
   padding: 0; }
+
+.clear-padding {
+  padding: 0; }
+
+.tar {
+  text-align: right; }
+
+.tal {
+  text-align: left; }
+
+.taj {
+  text-align: justify; }

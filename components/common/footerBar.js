@@ -2,9 +2,6 @@ import React,{Component}from 'react';
 
 import FooterBarIcon from './footerBarIcon.js';
 export default class FooterBar extends Component {
-    componentDidMount(){
-        console.dir(this.props.routes);
-    }
 	render() {
 		var menus = [{
 			uri: '/',
@@ -19,7 +16,13 @@ export default class FooterBar extends Component {
 					type:'CHANGETYPE',
 					searchType:1,
 					reportType:0
+				});
+				this.props.dispatch({
+					type:'RESETREPORT'
 				})
+				if(typeof this.props.resetReport != 'undefined'){
+					this.props.resetReport()
+				}
 				this.props.dispatch({
 					type:'RESETSEARCH'
 				})

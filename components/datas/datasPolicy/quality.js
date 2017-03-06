@@ -9,6 +9,7 @@ import EmptyComponent from './../../common/emptyComponent';
 import Loading from './../../common/loading';
 import More from './../../common/more';
 import HeaderBar from './../../common/headerbar.js';
+import ScrollLoading from './../../common/scrollLoading';
 
 class Quality extends Component{
     constructor(props){
@@ -19,8 +20,10 @@ class Quality extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false,
-            isInfinite:false
+            isSrollLoading:false,
+            isLoading:true,
+            isLoadData:true,
+            infinite:true
         }
     }
     //加载筛选条件
@@ -43,11 +46,7 @@ class Quality extends Component{
         })
     }
     _loadData(){
-        if(this.state.isInfinite) return false;
-        this.setState({
-            isLoading:true
-        });
-
+        //if(this.state.isInfinite) return false;
         loadQualityAll({
             searchName:this.props.quality.searchName,
             qualityLevelTypeId:this.props.quality.qualityLevelTypeIds.length == 0 ? "" : JSON.stringify(this.props.quality.qualityLevelTypeIds),
@@ -58,12 +57,15 @@ class Quality extends Component{
                     datas:res.datas
                 });
                 this.setState({
-                    isLoading:false
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
                 });
                 setTimeout(()=>{
-                    if(this.props.quality.datas.length == res.totalSize){
+                    if(this.props.quality.datas.length >= res.totalSize){
                         this.setState({
-                            isInfinite:true
+                            infinite:false,
+                            isSrollLoading:false
                         });
                     }else{
                         this.props.dispatch({
@@ -98,7 +100,8 @@ class Quality extends Component{
         });
         this._hideFilter();
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         setTimeout(()=>{
             this._loadData();
@@ -117,15 +120,15 @@ class Quality extends Component{
         this.ele.addEventListener("scroll",(e)=>{
             this._isNeedLoadData();
         });
-        this.setState({
-            isInfinite:false
-        });
+        //this.setState({
+        //    isInfinite:false
+        //});
         if(this.props.search.clickSearch){
             this._searchDatas(this.props.search.searchName);
             return false
         }
         setTimeout(()=>{
-            this._isNeedLoadData();
+            this._loadData();
         });
     }
     //显示简介
@@ -146,8 +149,12 @@ class Quality extends Component{
     }
      //判断屏幕是否加载满
     _isNeedLoadData(){
-        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && !this.state.isLoading){
-            this._loadData();
+            if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && this.state.infinite){
+                if(this.state.isLoadData) return false;
+                this.setState({
+                    isLoadData:true
+                });
+                this._loadData();
         }
     }
     //搜索点击查询对应数据
@@ -161,7 +168,8 @@ class Quality extends Component{
             searchName:key
         });
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         setTimeout(()=>{
             this._loadData();
@@ -180,7 +188,7 @@ class Quality extends Component{
                 <div ref="main" className="scroll-content has-header">
                     <div className="list">
                         {
-                            this.props.quality.datas.length == 0 ? <EmptyComponent/> : <div className="card" style={{marginTop:0}}>
+                            this.props.quality.datas.length == 0  && !this.state.isLoading ? <EmptyComponent/> : <div className="card" style={{marginTop:0}}>
                                 <ul className="list">
                                     {
                                         this.props.quality.datas.map((ele)=>{
@@ -244,13 +252,16 @@ class Quality extends Component{
                             </div>
                         }
                     </div>
+                    {
+                        this.props.quality.datas.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
                     <More {...this.props}/>
                 </div>
                 {
                     !this.state.isShowFilter ? null : <PolicySonFilter origins={this.props.quality.origins} levels={this.props.quality.levels} qualityLevelTypeIds={this.props.quality.qualityLevelTypeIds} fn={this._fn.bind(this)} cancelButton={this._hideFilter}/>
                 }
                 {
-                    !this.state.isLoading ? null :<Loading/>
+                    this.state.isLoading ? <Loading/> : null
                 }
             </div>
         )

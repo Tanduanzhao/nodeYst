@@ -11,6 +11,7 @@ import EmptyComponent from './../common/emptyComponent';
 import ReportList from './../reportList';
 import {loadProduct,getReportType,loadWx} from './../function/ajax';
 import HeaderBar from './../common/headerbar.js';
+import ScrollLoading from './../common/scrollLoading';
 
 class purchase extends Component {
   constructor(props){
@@ -18,6 +19,8 @@ class purchase extends Component {
     this.state={
       searchType:this.props.purchase.searchType,
       loading:true,
+      isSrollLoading:false,
+      isLoadData:true,
       BuyReportList:true,
       userInfo:this.props.userInfo.userName
     };
@@ -37,7 +40,15 @@ class purchase extends Component {
           data:this.props.purchase.data.concat(res.datas),
           pageNo:this.props.purchase.pageNo+1
         });
+        this.setState({
+          loading: false,
+          isLoadData:false,
+          isSrollLoading:true
+        });
         if(res.totalSize <= this.props.purchase.data.length){
+          this.setState({
+            isSrollLoading:false
+          });
           this.props.dispatch({
             type:'UNINFINITE'
           });
@@ -46,15 +57,16 @@ class purchase extends Component {
             type:'INFINITE'
           });
         }
-        this.setState({
-          loading:false
-        });
       }
     });
   }
   _infiniteScroll(){
     //全部高度-滚动高度 == 屏幕高度-顶部偏移
     if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.purchase.infinite){
+      if(this.state.isLoadData) return false;
+      this.setState({
+        isLoadData:true
+      });
       this._loadData();
     }
   }
@@ -76,7 +88,7 @@ class purchase extends Component {
       callBack:(res)=>{
         this.props.dispatch({
           type:'CHANGEPURCHASETYPE',
-          ReportTypeDate:res.datas,
+          ReportTypeDate:res.datas
         });
       }
     });
@@ -153,9 +165,12 @@ class purchase extends Component {
         <HeaderBar {...this.props} titleName="已购报告" showSearch={this.showSearch.bind(this)} showFilter={this._showFilter.bind(this)}/>
         <div  ref="content"  className="scroll-content has-header has-footer">
           {
-            (this.props.purchase.data.length == 0 && !this.props.userInfo.isLogin)
+            (this.props.purchase.data.length == 0  && !this.state.loading)
                 ? <EmptyComponent/>
                 : <Main data={this.props.purchase.data} loading={this.state.loading} BuyReportList={this.state.BuyReportList}/>
+          }
+          {
+            this.props.purchase.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
           }
         </div>
         <FooterBar {...this.props}/>

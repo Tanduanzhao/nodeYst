@@ -9,6 +9,7 @@ import EmptyComponent from './../../common/emptyComponent';
 import Loading from './../../common/loading';
 import More from './../../common/more';
 import HeaderBar from './../../common/headerbar.js';
+import ScrollLoading from './../../common/scrollLoading';
 
 class Insurance extends Component{
     constructor(props){
@@ -19,8 +20,10 @@ class Insurance extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false,
-            isInfinite:false
+            isSrollLoading:false,
+            isLoading:true,
+            isLoadData:true,
+            infinite:true
         }
     }
     componentWillMount(){
@@ -38,10 +41,10 @@ class Insurance extends Component{
         })
     }
     _loadData(){
-        if(this.state.isInfinite) return false;
-        this.setState({
-            isLoading:true
-        });
+        //if(this.state.isInfinite) return false;
+        //this.setState({
+        //    isLoading:true
+        //});
         loadInsuranceAll({
             searchName:this.props.insurance.searchName,
             areaId:JSON.stringify(this.props.insurance.areaId),
@@ -54,12 +57,15 @@ class Insurance extends Component{
                     datas:res.datas
                 });
                 this.setState({
-                    isLoading:false
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
                 });
                 setTimeout(()=>{
-                    if(this.props.insurance.datas.length == res.totalSize){
+                    if(this.props.insurance.datas.length >= res.totalSize){
                         this.setState({
-                            isInfinite:true
+                            infinite:false,
+                            isSrollLoading:false
                         });
                     }else{
                         this.props.dispatch({
@@ -94,7 +100,8 @@ class Insurance extends Component{
             catalogEditionId:args.catalogEditionId
         });
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         this._hideFilter();
         setTimeout(()=>{
@@ -120,12 +127,16 @@ class Insurance extends Component{
             return false
         }
         setTimeout(()=>{
-            this._isNeedLoadData();
+            this._loadData();
         },10);
     }
      //判断屏幕是否加载满
     _isNeedLoadData(){
-        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && !this.state.isLoading){
+        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
             this._loadData();
         }
     }
@@ -158,10 +169,11 @@ class Insurance extends Component{
         });
         this.props.dispatch({
             type:'CHANGEINSURANCE',
-            areaId:['0'],
+            areaId:['0']
         });
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         setTimeout(()=>{
             this._loadData();
@@ -181,7 +193,7 @@ class Insurance extends Component{
                     <div className="list">
                         <div className="card" style={{marginTop:0}}>
                             {
-                                this.props.insurance.datas.length==0 ? <EmptyComponent/> :this.props.insurance.datas.map((ele)=>{
+                                this.props.insurance.datas.length == 0  && !this.state.isLoading ? <EmptyComponent/> :this.props.insurance.datas.map((ele)=>{
                                     return(
                                         <div key={Math.random(2)}>
                                             <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",g:ele.catalogEditionName,p:ele.areaName}}/>
@@ -236,6 +248,9 @@ class Insurance extends Component{
                             }
                         </div>
                     </div>
+                    {
+                        this.props.insurance.datas.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
                     <More {...this.props}/>
                 </div>
                 {

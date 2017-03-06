@@ -10,6 +10,7 @@ import EmptyComponent from './../common/emptyComponent';
 import FilterMarket from './../filterPage/filterMarket';
 import HeaderBar from '../common/headerbar.js';
 import Loading from './../common/loading';
+import ScrollLoading from './../common/scrollLoading';
 
 
 class OptionalClassify extends Component{
@@ -18,8 +19,10 @@ class OptionalClassify extends Component{
         this.state={
             smallType:false,
             pageNo:1,
-            infinite:false,
-            loading:true,
+            infinite:true,
+            isLoading:true,
+            isSrollLoading:false,
+            isLoadData:true,
             searchName:"",
             sord:"desc",
             sidx:"sales",
@@ -73,7 +76,7 @@ class OptionalClassify extends Component{
         }else{
             this._reSet();
             this.setState({
-                loading:true
+                isLoading:true
             });
             this.props.dispatch({
                 type:'SAVESEARCHNAME',
@@ -96,7 +99,7 @@ class OptionalClassify extends Component{
         }
         this._reSet();
         this.setState({
-            loading:true,
+            isLoading:true,
             sordActive:sordActive,
             sidx:sidx
         });
@@ -114,6 +117,9 @@ class OptionalClassify extends Component{
     }
     //筛选
     _fn(args){
+        this.setState({
+            isLoading:true
+        });
         this._reSet();
         this.props.dispatch({
             type:'CHANGEDATA',
@@ -123,7 +129,7 @@ class OptionalClassify extends Component{
             type:'CHANGE',
             areaId:args.areaId,
             areaName:args.areaName,
-            searchAreaType:args.searchAreaType,
+            searchAreaType:args.searchAreaType
         });
         setTimeout(()=> {
             this._toggleFilter();
@@ -140,19 +146,25 @@ class OptionalClassify extends Component{
                     callBack:(res)=>{
                         this.setState({
                             pageNo:this.state.pageNo+1,
-                            //data:res.datas,
-                            infinite:false
+                            isLoading:false,
+                            //infinite:false,
+                            isSrollLoading:true,
+                            isLoadData:false
                         })
                         this.props.dispatch({
                             type:'LOADOPTIONALCLASSIFYDATA',
-                            data:res.datas,
+                            data:res.datas
                         });
                         if(res.totalSize <= this.props.stores.data.length){
-                            this.ele.removeEventListener('scroll',this._infiniteScroll);
+                            this.setState({
+                                infinite:false,
+                                isSrollLoading:false
+                            });
+                        }else {
+                            this.setState({
+                                infinite:true
+                            });
                         }
-                        this.setState({
-                            loading:false
-                        });
                     }
                 });
             })
@@ -174,18 +186,25 @@ class OptionalClassify extends Component{
                 callBack:(res)=>{
                     this.setState({
                         pageNo:this.state.pageNo+1,
-                        infinite:false
-                    })
+                        //infinite:false,
+                        isLoading:false,
+                        isLoadData:false,
+                        isSrollLoading:true
+                    });
                     this.props.dispatch({
                         type:'LOADOPTIONALCLASSIFYDATA',
                         data: this.props.stores.data.concat(res.datas)
                     });
                     if(res.totalSize <= this.props.stores.data.length){
-                        this.ele.removeEventListener('scroll',this._infiniteScroll);
+                        this.setState({
+                            infinite:false,
+                            isSrollLoading:false
+                        });
+                    }else {
+                        this.setState({
+                            infinite:true
+                        });
                     }
-                    this.setState({
-                        loading:false
-                    });
                 }
             });
         })
@@ -193,7 +212,11 @@ class OptionalClassify extends Component{
 
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop){
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
             this._loadData();
         }
     }
@@ -218,7 +241,8 @@ class OptionalClassify extends Component{
             return false
         }
         this.setState({
-            loading:false
+            isLoadData:false,
+            isLoading:false
         });
     }
     componentWillUnmount(){
@@ -238,43 +262,25 @@ class OptionalClassify extends Component{
                 <HeaderBar {...this.props} titleName={this.props.params.searchName} showSearch={this.showSearch.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
                 <div ref="content" className="scroll-content has-header market">
                     {
-                        (this.props.stores.data.length == 0 && !this.state.loading)
+                        this.props.stores.data.length == 0 && !this.state.isLoading
                             ? <EmptyComponent/>
-                            : <Main data={this.props.stores.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} loading={this.state.loading}/>
+                            : <Main data={this.props.stores.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive}/>
+                    }
+                    {
+                        this.props.stores.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
                     }
                 </div>
                 {
                     this.state.isShowFilter ? <FilterMarket {...this.props}  fn={this._fn.bind(this)}  hideFilter={this._toggleFilter.bind(this)} dataSources={this.props.provicenData}/> :null
 				}
                 {
-                    this.state.loading ? <Loading/> : null
+                    this.state.isLoading ? <Loading/> : null
                 }
             </div>
         )
     }
 }
 
-{
-    //class HeaderBar extends Component{
-    //    render(){
-    //        return(
-    //            <div className="bar bar-header bar-positive">
-    //                <div className="buttons" onClick={this.props.showFilter} style={{ fontSize: '.75rem'}}>
-    //                    <img src="/images/filter.png" style={{width:'1.125rem',height: '1.125rem'}} />
-    //                    <span  style={{margin:' 0 5px'}}>筛选</span>
-    //                </div>
-    //                <label className="item-input-wrapper">
-    //                    <i className="icon ion-ios-search placeholder-icon"></i>
-    //                    <input ref="searchName"  type="search" placeholder={this.props.stores.searchName == ''?this.props.params.searchName:this.props.stores.searchName}/>
-    //                </label>
-    //                <button className="button button-clear" onClick={()=>this.props.searchHandle(this.refs.searchName.value,this.props.stores.searchName,this.props.stores.data)}>
-    //                    搜索
-    //                </button>
-    //            </div>
-    //        )
-    //    }
-    //}
-}
 class Main extends Component{
     constructor(props){
         super(props);
@@ -343,8 +349,6 @@ function select(state){
 		yearMonth:state.data.yearMonth,
         isVip:state.userInfo.isVip,
         searchAreaType:state.provicen.searchAreaType
-        //showProvicen:state.index.showProvicen,
-        //uri:state.router.uri,
 	}
 }
 OptionalClassify.contextTypes = {

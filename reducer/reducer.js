@@ -26,6 +26,7 @@ import subscribePageAll from './subscribePageAll';
 import subscribePageList from './subscribePageList';
 import subscribeContent from './subscribeContent';
 import pdf from './pdf';
+
 import marketProvice from './marketProvice';
 
 import groups from './groups';
@@ -41,6 +42,8 @@ import riseFactory from './riseFactory';
 
 import managerList from './managerList';
 import clientList from './clientList';
+
+import orderInfo from './orderInfo';
 
 //全局搜索
 import search from './search';
@@ -59,6 +62,7 @@ const ystReducers = combineReducers({
 	provicen,
     groups,
     pdf,
+    orderInfo,
     groupsMes,
     dataSources,
 	data,

@@ -10,6 +10,7 @@ import {loadBidListContent,getBidAreaInfo,getProjectStatus} from '../function/aj
 import EmptyComponent from '../common/emptyComponent';
 import HeaderBar from './../common/headerbar.js';
 import Loading from '../common/loading';
+import ScrollLoading from '../common/scrollLoading';
 import FilterBidList from '../filterPage/filterBidList';
 import More from './../common/more';
 
@@ -17,12 +18,25 @@ class BidList extends Component{
     constructor(props){
         super(props);
         this.state={
-            loading:false,
-            provinceId:this.props.bidList.provinceId
+            isLoading:true,
+            isSrollLoading:false,
+            infinite:true,
+            isLoadData:true,
+            provinceId:this.props.stores.provinceId
         };
 
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
+    }
+    _infiniteScroll(){
+        //全部高度-滚动高度 == 屏幕高度-顶部偏移
+         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
+            this._loadData();
+        }
     }
     _reSet(){
         this.props.dispatch({
@@ -31,49 +45,35 @@ class BidList extends Component{
             pageNo:1
         });
     }
-    _loadData(){
-        this.setState({
-            loading:true
-        });
-        this.props.dispatch({
-            type:'request'
-        });
-        loadBidListContent({
-            areaId:JSON.stringify(this.props.bidList.areaId),
-            sidx:this.props.bidList.sidx,
-            sord:this.props.bidList.sord,
-            pageNo:this.props.bidList.pageNo,
-            searchName:this.props.bidList.searchName,
-            searchProductStatus:this.props.bidList.searchProductStatus,
-            callBack:(res)=>{
-                this.setState({
-                    loading:false
-                });
-                this.props.dispatch({
-                    type:'requestss'
-                });
-                if (res){
-                    this.props.dispatch({
-                        type:'LOADBIFLISTCONTENTDATA',
-                        data:this.props.bidList.data.concat(res.datas),
-                        pageNo:this.props.bidList.pageNo+1
-                    });
-                    if(res.totalSize <= this.props.bidList.data.length){
-                        this.props.dispatch({
-                            type:'UNINFINITE'
-                        });
-                    }else{
-                        this.props.dispatch({
-                            type:'INFINITE'
-                        });
-                    }
-                }
-            }
-        });
+    //搜索方法
+    _searchDatas(key){
+        if(this.props.isVip == '0'){
+            this.context.router.push('/pay/vip');
+            return false;
+        }else{
+            this.setState({
+                isLoading:true,
+                infinite:true
+            });
+            this.props.dispatch({
+                type:'RESETBIDLISTAREAId',
+                areaId:["0"]
+            });
+            this.props.dispatch({
+                type:'CHANGEBIDLISTTITLEORREPORTKEY',
+                searchName:encodeURI(encodeURI(key))
+            });
+            this.props.dispatch({
+                type:'LOADBIFLISTCONTENTDATA',
+                data:[],
+                pageNo:1
+            });
+            setTimeout(()=> this._loadData(),100);
+        }
     }
     _fn(args){
         this.setState({
-            loading:true
+            isLoading:true
         });
         this.props.dispatch((dispatch) => {
             dispatch({
@@ -98,29 +98,39 @@ class BidList extends Component{
             },100);
         })
     }
-    _searchDatas(key){
-        if(this.props.isVip == '0'){
-            this.context.router.push('/pay/vip');
-            return false;
-        }else{
-            this.setState({
-                loading:true
-            });
-            this.props.dispatch({
-                type:'RESETBIDLISTAREAId',
-                areaId:["0"]
-            });
-            this.props.dispatch({
-            type:'CHANGEBIDLISTTITLEORREPORTKEY',
-            searchName:encodeURI(encodeURI(key))
-        })
-            this.props.dispatch({
-                type:'LOADBIFLISTCONTENTDATA',
-                data:[],
-                pageNo:1
-            });
-            setTimeout(()=> this._loadData(),100);
-        }
+    _loadData(){
+        loadBidListContent({
+            areaId:JSON.stringify(this.props.stores.areaId),
+            sidx:this.props.stores.sidx,
+            sord:this.props.stores.sord,
+            pageNo:this.props.stores.pageNo,
+            searchName:this.props.stores.searchName,
+            searchProductStatus:this.props.stores.searchProductStatus,
+            callBack:(res)=>{
+                this.setState({
+                    isLoadData:false,
+                    isLoading:false,
+                    isSrollLoading:true
+                });
+                if (res){
+                    this.props.dispatch({
+                        type:'LOADBIFLISTCONTENTDATA',
+                        data:this.props.stores.data.concat(res.datas),
+                        pageNo:this.props.stores.pageNo+1
+                    });
+                    if(res.totalSize <= this.props.stores.data.length){
+                        this.setState({
+                            infinite:false,
+                            isSrollLoading:false
+                        });
+                    }else{
+                        this.setState({
+                            infinite:true
+                        });
+                    }
+                }
+            }
+        });
     }
     _showProvicenHandle(){
         if(this.props.isVip == '0'){
@@ -148,12 +158,6 @@ class BidList extends Component{
             this.context.router.push('/search');
         })
     }
-    _infiniteScroll(){
-        //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && !this.props.bidList.infinite && this.props.bidList.request){
-            this._loadData();
-        }
-    }
     componentDidMount(){
         if(this.props.params.productName){
             this.props.dispatch({
@@ -176,8 +180,8 @@ class BidList extends Component{
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll',this._infiniteScroll);
         getBidAreaInfo({
-            pageNo: this.props.bidList.pageNo,
-            searchName: this.props.bidList.searchName,
+            pageNo: this.props.stores.pageNo,
+            searchName: this.props.stores.searchName,
             callBack: (res)=> {
                 this.props.dispatch({
                     type: 'getBidAreaInfo',
@@ -204,17 +208,17 @@ class BidList extends Component{
     componentWillUnmount(){
         this.props.dispatch({
             type:'UNSHOWFILTERPBIDLIST'
-        })
+        });
         this.ele.removeEventListener('scroll',this._infiniteScroll);
         this.props.dispatch({
             type:'UNSHOWFILTERPRODUCE'
         });
         this.props.dispatch({
             type:'UNCHANGEBIDLISTTITLEORREPORTKEY'
-        })
+        });
         this.props.dispatch({
             type:'RESETBIDLIST'
-        })
+        });
         if(!this.props.search.searchLinkType){
             this.props.dispatch({
                 type:"RESETSEARCH"
@@ -226,15 +230,20 @@ class BidList extends Component{
         return (
             <div className="root" style={{"overflow":"auto"}}>
                 <HeaderBar {...this.props} titleName="中标数据"  showSearch={this.showSearch.bind(this)} showFilter={this._showProvicenHandle.bind(this)} showIntro={this.showIntro.bind(this)} />
+                {
+                    this.state.isLoading ? <Loading/> : null
+                }
                 <div ref="content" className="scroll-content has-header">
-                    <Main data={this.props.bidList.data} loading={this.state.loading}/>
+                    {
+                        this.props.stores.data.length == 0 && !this.state.isLoading ? <EmptyComponent/> : <Main {...this.props} data={this.props.stores.data}/>
+                    }
+                    {
+                        this.props.stores.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
                     <More {...this.props}/>
                 </div>
                 {
-                    this.props.bidList.isShowFilter && !this.state.loading? <FilterBidList fn={this._fn.bind(this)} {...this.props}/> : null
-                }
-                {
-                    this.state.loading ? <Loading/> : null
+                    this.props.stores.isShowFilter && !this.state.isLoading ? <FilterBidList {...this.props} fn={this._fn.bind(this)}/> : null
                 }
             </div>
         )
@@ -245,12 +254,10 @@ class Main extends Component{
         super(props);
     }
     render(){
-        var bidList = 0;
         return(
-        this.props.data.length == 0 ? <EmptyComponent/>
-            : <ul className="bidList-view">
+            <ul className="bidList-view">
                 {
-                    this.props.data.map((ele,index)=> <List dataSources={ele} key={`bidList_${bidList++}+${ele.id}`}/>)
+                    this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id+Math.random()}/>)
                 }
             </ul>
         )
@@ -262,7 +269,6 @@ class List extends Component{
         return this.props.value !== nextProps.value;
     }
     render(){
-        console.log("a");
         return(
             <div>
                 <h2 className="title">产品名称：{this.props.dataSources.productName}</h2>
@@ -286,7 +292,7 @@ class List extends Component{
 
 function select(state){
     return{
-        bidList:state.bidList,
+        stores:state.bidList,
         search:state.search,
         isVip:state.userInfo.isVip
     }

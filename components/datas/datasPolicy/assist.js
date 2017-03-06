@@ -9,6 +9,7 @@ import EmptyComponent from './../../common/emptyComponent';
 import Loading from './../../common/loading';
 import More from './../../common/more';
 import HeaderBar from './../../common/headerbar.js';
+import ScrollLoading from './../../common/scrollLoading';
 
 class Assist extends Component{
     constructor(props){
@@ -19,8 +20,10 @@ class Assist extends Component{
         this._loadData = this._loadData.bind(this);
         this.state={
             isShowFilter:false,
-            isLoading:false,
-            isInfinite:false
+            isLoading:true,
+            isSrollLoading:false,
+            isLoadData:true,
+            infinite:true
         }
     }
     componentWillMount(){
@@ -46,10 +49,10 @@ class Assist extends Component{
         })
     }
     _loadData(){
-        if(this.state.isInfinite) return false;
-        this.setState({
-            isLoading:true
-        });
+        //if(this.state.isInfinite) return false;
+        //this.setState({
+        //    isLoading:true
+        //});
         loadAssistAll({
             searchName:this.props.assist.searchName,
             areaId:JSON.stringify(this.props.assist.areaId),
@@ -62,12 +65,15 @@ class Assist extends Component{
                     datas:res.datas
                 });
                 this.setState({
-                    isLoading:false
+                    isLoading:false,
+                    isLoadData:false,
+                    isSrollLoading:true
                 });
                 setTimeout(()=>{
-                    if(this.props.assist.datas.length == res.totalSize){
+                    if(this.props.assist.datas.length >= res.totalSize){
                         this.setState({
-                            isInfinite:true
+                            infinite:false,
+                            isSrollLoading:false
                         });
                     }else{
                         this.props.dispatch({
@@ -103,7 +109,8 @@ class Assist extends Component{
         });
         this._hideFilter();
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         setTimeout(()=>{
             this._loadData();
@@ -119,7 +126,7 @@ class Assist extends Component{
             this._searchDatas(this.props.search.searchName)
             return false
         }
-        this._isNeedLoadData()
+        this._loadData();
     }
     //显示简介
     showIntro(){
@@ -128,7 +135,7 @@ class Assist extends Component{
     }
     //显示搜索
     showSearch(){
-        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:41})
+        this.props.dispatch({type: 'CHANGESMALLTYPE',smallType:41});
         this.props.dispatch({
             type:'CLICKKSEARCH',
             clickSearch:false
@@ -139,7 +146,11 @@ class Assist extends Component{
     }
      //判断屏幕是否加载满
     _isNeedLoadData(){
-        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && !this.state.isLoading){
+        if(this.ele.scrollHeight-this.ele.scrollTop <= this.ele.clientHeight && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
             this._loadData();
         }
     }
@@ -159,7 +170,8 @@ class Assist extends Component{
             areaId:['0']
         });
         this.setState({
-            isInfinite:false
+            isLoading:true,
+            infinite:true
         });
         setTimeout(()=>{
             this._loadData();
@@ -179,7 +191,7 @@ class Assist extends Component{
                     <div className="list">
                         <div className="card" style={{marginTop:0}}>
                             {
-                                this.props.assist.datas.length==0 ? <EmptyComponent/> :this.props.assist.datas.map((ele)=>{
+                                this.props.assist.datas.length==0  && !this.state.isLoading ? <EmptyComponent/> :this.props.assist.datas.map((ele)=>{
                                     return(
                                         <div key={Math.random(2)}>
                                             <LinkBar title={{c:ele.grade +" ("+ele.publishDate+")",p:ele.areaName}}/>
@@ -219,6 +231,9 @@ class Assist extends Component{
                             }
                         </div>
                     </div>
+                    {
+                        this.props.assist.datas.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
                     <More {...this.props}/>
                 </div>
                 {

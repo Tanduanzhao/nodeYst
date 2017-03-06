@@ -33,10 +33,17 @@ class Vip extends Component{
     //支付方法
     _sandboxPayService(id,self){
         if(!this.refs.checkbox.checked){
-            alert("请同意服务协议")
+            alert("请同意服务协议");
             return false
         }
-        requestUnifiedorderPayService({id:id, fun:()=>{this._fun()}, callBack:onBridgeReady})
+        switch (id){
+            case "pxFGiwzFAD8mjP9sPRv416VBs3Is" : this.props.dispatch({type: 'VIPLEVEL', vipLevel: 1});break ;
+            case "pxFGiw7CWclXnIvqF6JqlcguRc-8" : this.props.dispatch({type: 'VIPLEVEL', vipLevel: 2});break ;
+            case "pxFGiwyfqw59qONiyD5Gq5Ro__2g" : this.props.dispatch({type: 'VIPLEVEL', vipLevel: 3});break ;
+            case "pxFGiw0W8xkgzT7NNtqB5wUoZfGQ" : this.props.dispatch({type: 'VIPLEVEL', vipLevel: 4});break ;
+        }
+        this.context.router.push('/pay/orderInfo/'+id);
+        //requestUnifiedorderPayService({id:id, fun:()=>{this._fun()}, callBack:onBridgeReady})
 }
     render(){
         return(

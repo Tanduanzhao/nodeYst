@@ -21,6 +21,7 @@ import SubtrainPageAll from "./components/subscribePage/subtrainPageAll";
 //报告
 import report from "./components/report";
 import Pdf from "./components/pay/pdf";
+import OrderInfo from "./components/pay/orderInfo";
 
 //数据
 import Datas from "./components/datas.js";
@@ -219,10 +220,13 @@ export class Reactrouter extends Component {
                         <Route path="subtrainPageAll/:id">
                             <IndexRoute component={SubtrainPageAll}/>
                         </Route>
-                        <Route path="pay/pdf/:id" component={Pdf}></Route>
-                        <Route path="picture/:url" component={Picture}></Route>
-                        <Route path="pay/vip">
-                            <IndexRoute component={vip}/>
+                        <Route path="picture/:url">
+                            <IndexRoute component={Picture}/>
+                        </Route>
+                        <Route path="pay">
+                            <Route path="vip" component={vip}/>
+                            <Route path="pdf/:id" component={Pdf}/>
+                            <Route path="orderInfo/:id" component={OrderInfo}/>
                             <Route path="protocol" component={protocol}/>
                         </Route>
                     </Route>

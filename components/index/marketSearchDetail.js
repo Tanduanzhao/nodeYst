@@ -10,6 +10,7 @@ import EmptyComponent from './../common/emptyComponent';
 import FilterMarket from './../filterPage/filterMarket';
 import HeaderBar from '../common/headerbar.js';
 import Loading from './../common/loading';
+import ScrollLoading from './../common/scrollLoading';
 
 class MarketSearchDetail extends Component{
     constructor(props){
@@ -18,6 +19,8 @@ class MarketSearchDetail extends Component{
             isLoading:true,
             infinite:true,
             isShowFilter:false,
+            isSrollLoading:false,
+            isLoadData:true,
             sord:"desc",
             sordActive:0,
             sidx:"sales",
@@ -52,7 +55,9 @@ class MarketSearchDetail extends Component{
                 if(this._calledComponentWillUnmount) return false;
                 if (res){
                     this.setState({
-                        isLoading:false
+                        isLoadData:false,
+                        isLoading:false,
+                        isSrollLoading:true
                     });
                     this.props.dispatch({
                         type:'LOADMARKETSEARCHDETAILDATA',
@@ -62,7 +67,8 @@ class MarketSearchDetail extends Component{
                     setTimeout(()=>{
                         if(res.totalSize <= this.props.stores.data.length){
                             this.setState({
-                                infinite:false
+                                infinite:false,
+                                isSrollLoading:false
                             });
                         }else{
                             this.setState({
@@ -160,9 +166,9 @@ class MarketSearchDetail extends Component{
     _infiniteScroll(){
         //全部高度-滚动高度 == 屏幕高度-顶部偏移
         if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
-            if(this.state.isLoading) return false;
+            if(this.state.isLoadData) return false;
             this.setState({
-                isLoading:true
+                isLoadData:true
             });
             this._loadData();
         }
@@ -248,6 +254,9 @@ class MarketSearchDetail extends Component{
                         (this.props.stores.data.length == 0 && !this.state.isLoading)
                             ? <EmptyComponent/>
                             : <Main  {...this.props} data={this.props.stores.data} sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive} isLoading={this.state.isLoading}/>
+                    }
+                    {
+                        this.props.stores.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
                     }
                 </div>
                 {

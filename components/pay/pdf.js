@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import $ from 'jquery';
 import {loadReport,loadJssdk,keepReport,cancelKeepReport,requestUnifiedorderPayService,selectReportReplys,insertReplyReport,insertLikeReport} from './../function/ajax';
 import {HTTPURL,WXKEY} from './../config';
+import {Link} from 'react-router';
 import Loading from './../common/loading';
-import {OpenProductView,onBridgeReady,authWxcode} from './../function/common';
+import {onBridgeReady} from './../function/common';
 import SideBar from './../common/sideBar';
 import CollectPrompt from './../collectPrompt';
 class Pdf extends Component{
@@ -75,40 +76,12 @@ class Pdf extends Component{
         })
     }
 
-    //componentDidUpdate(){
-    //    let images = document.querySelectorAll('.nestedHTML img');
-    //    if(images.length == 0){
-    //        return false;
-    //    }
-    //
-    //    //console.log();
-    //    //$(".nestedHTML a").lightbox();
-    //    $('.nestedHTML img').each((index,ele)=>{
-    //        $(ele).replaceWith('<a href="'+ele.src+'" data-lightbox="image-1">'+ele.outerHTML+'</a>');
-    //    })
-    //
-    //    //console.log(document.querySelectorAll('.nestedHTML img'),'i mages');
-    //}
     componentDidUpdate(){
         let images = document.querySelectorAll('.nestedHTML img');
-        if(images.length == 0){
-            return false;
-        }
+        if(images.length == 0){return false}
         let imgArr = [];
         let imgShowArr = [];
         let index = 0;
-        //$('.nestedHTML img').each((_index,ele)=>{
-        //    imgArr.push(ele.src);
-        //}).on('click',(e)=>{
-        //    index = imgArr.indexOf(e.target.src);
-        //    imgShowArr.push(imgArr[index]);
-        //    imgShowArr = imgShowArr.concat(imgArr.slice(0,index));
-        //    imgShowArr = imgShowArr.concat(imgArr.slice(index+1));
-        //    wx.previewImage({
-        //        current: imgShowArr[0],
-        //        urls: imgShowArr
-        //    });
-        //})
         $('.nestedHTML').on('click','img',function(event){
             var imgArray = [];
             var curImageSrc = $(this).attr('src');
@@ -221,12 +194,8 @@ class Pdf extends Component{
     }
 
     componentDidMount(){
-        //this.html=document.getElementsByTagName('html')[0]
-        //this.head= this.html.getElementsByTagName('head')[0]
-        //this.head.getElementsByTagName('meta')[0].setAttribute('content', 'width=device-width,initial-scale=1, user-scalable=yes, minimal-ui');
         this.ele = this.refs.content;
         this.ele.addEventListener('scroll', this._infiniteScroll);
-        //authWxcode(location.href);
         this.setState({
             isLoading:true
         });
@@ -243,12 +212,10 @@ class Pdf extends Component{
                     likeNum: res.datas.likeNum,
                     buyReport:res.datas.buyReport
                 });
-                //let URL = HTTPURL+'/pay/pdf/'+this.props.params.id+"?recommender="+name+"&reportId="+this.props.params.id;
                 let URL = HTTPURL+'/pay/pdf/'+this.props.params.id+"?recommender="+name;
                 var info = {
                     title:res.datas.title,
                     link: URL,
-                    //link:'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+WXKEY+'&redirect_uri='+encodeURIComponent(URL)+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect',
                     imgUrl: HTTPURL+'/pub/resources/sysres/logo.jpg',
                     desc: '小伙伴们和我一起去逛逛医药圈的信息分享平台--药市通~'
                 };
@@ -276,9 +243,6 @@ class Pdf extends Component{
                             //alert('trigge');
                         }
                     });
-                    wx.error(()=> {
-                        //authWxcode(info);
-                    });
                 });
             }
         });
@@ -287,7 +251,6 @@ class Pdf extends Component{
     }
 
     componentWillUnmount(){
-        //this.head.getElementsByTagName('meta')[0].setAttribute('content', 'width='+window.screen.width+',initial-scale=1,minimum-scale=1, maximum-scale=1,user-scalable=no');
         var info = {
             title: '药市通-首个医药圈的信息分享平台',
             link: HTTPURL,
@@ -331,8 +294,6 @@ class Pdf extends Component{
                 imgUrl: info.imgUrl, // 分享图标
                 desc: info.desc, // 分享描述
                 success: function() {
-                    // 用户确认分享后执行的回调函数
-//                                $.toast('分享成功！');
                 }
             });
         });
@@ -407,11 +368,11 @@ class Pdf extends Component{
                     </div>
                 </div>
                 {
-                    this.state.buyReport=="0"&& this.state.reportVersion=="brief"
-                        ?<div onClick={this._sandboxPayService.bind(this,this.props.params.id)} className="bar bar-footer bar-assertive row purchase-report ">
-                        <button className="button-clear col-50 purchase-price">¥{this.state.report.price}</button>
-                        <button className="button-clear col-50">报告购买</button>
-                    </div>
+                    this.state.buyReport=="0"&& this.state.reportVersion=="brief" ?
+                       <Link to={`/pay/orderInfo/${this.props.params.id}`} className="bar bar-footer bar-assertive row purchase-report ">
+                            <button className="button-clear col-50 purchase-price">¥{this.state.report.price}</button>
+                            <button className="button-clear col-50">报告购买</button>
+                        </Link>
                         :  null
                 }
                 {

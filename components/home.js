@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import FooterBar from './common/footerBar';
 import {Link} from 'react-router';
-import {loadWx,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent,loadReportList,getCiReportColumnList,subscribeColumn} from './function/ajax';
+import {loadWx,loadNewrepor,loadPicture,loadJoinActivity,loadRecordContent,loadReportList,getCiReportColumnList,subscribeColumn,getNewContent} from './function/ajax';
 import Box from './common/box';
 import Loading from './common/loading';
 import ReportList from './reportList';
@@ -20,12 +20,33 @@ class Home extends Component{
 			isSubscribe:"",
 			phonePrompt:0,
 			popupTitle:"",
-			showPopupVIP:0
+			showPopupVIP:0,
+			showPublishDate:false
 		};
 		this._loadData = this._loadData.bind(this);
 		this._loadRecordContent = this._loadRecordContent.bind(this);
 	}
 	_loadData(){
+		wx.ready(()=>{
+			getNewContent({
+				publishDate:typeof localStorage.getItem("publishDate") == 'undefined' ? this.props.home.publishDate : localStorage.getItem("publishDate"),
+				callBack:(res)=>{
+					if(res){
+						if(res.datas.isNew == 1){
+							this.props.dispatch({
+								type:'LOADPUBLISHDATE',
+								publishDate: res.datas.newContent.publishDate,
+								newContent: res.datas.newContent
+							});
+							this.setState({
+								showPublishDate:true
+							});
+							localStorage.setItem("publishDate", res.datas.newContent.publishDate);
+						}
+					}
+				}
+			})
+		})
 		//读取首页热门和最新报告
 		loadNewrepor({
 			yearMonth:this.props.yearMonth,
@@ -184,10 +205,14 @@ class Home extends Component{
 			this._togglePopup();
 		})
 	}
-
+	showPublishDate(){
+		this.setState({
+			showPublishDate:false
+		})
+	}
 	resetShearch(){
 		this.props.dispatch({
-			type:'RESETSEARCH'
+			type:'RESETREPORT'
 		})
 	}
 
@@ -200,6 +225,9 @@ class Home extends Component{
 	render(){
 		return(
 			<div className="root home">
+				{
+					this.state.showPublishDate ? <PublishDate {...this.props} showPublishDate={this.showPublishDate.bind(this)}/> : null
+				}
 				{
 					this.state.showPopup ?<Popup  {...this.props}  popupTitle={this.state.popupTitle} phonePrompt={this.state.phonePrompt} popupSure={this._popupSure.bind(this)} close={this._togglePopup.bind(this)}/>:null
 				}
@@ -225,6 +253,9 @@ class Main extends Component{
 	}
 	newReportMap(){
 		this.props.dispatch({
+		    type: 'RESETREPORT'
+		});
+		this.props.dispatch({
 			type:'GOREPORT',
 			data:[],
 			searchType: 0,
@@ -235,6 +266,9 @@ class Main extends Component{
 		});
 	}
 	hotReportMap(){
+		this.props.dispatch({
+			type: 'RESETREPORT'
+		});
 		this.props.dispatch({
 			type:'GOREPORT',
 			data:[],
@@ -327,19 +361,19 @@ class Column extends Component{
 					<img src="/images/column01.jpg" alt=""/>
 					分析报告
 				</Link>
-				<Link to="/datas/groups"  onClick={this.props.resetShearch}>
+				<Link to="/datas/groups" >
 					<img src="/images/datas_groups.jpg" alt=""/>
 					<b className="assertive">目录分组</b>
 				</Link>
-                <Link to="/datas/dataSources"  onClick={this.props.resetShearch}>
+                <Link to="/datas/dataSources">
 					<img src="/images/datas_dataSources.jpg" alt=""/>
 					<b className="assertive">入市价数据源</b>
 				</Link>
-				<Link to="/datas/marketPrice"  onClick={this.props.resetShearch}>
+				<Link to="/datas/marketPrice">
 					<img src="/images/column07.jpg" alt="" className="price-icon"/>
 					全国限价
 				</Link>
-				<Link to="/datas/bidList"  onClick={this.props.resetShearch}>
+				<Link to="/datas/bidList">
 					<img src="/images/column02.jpg" alt=""/>
 					中标数据
 				</Link>
@@ -350,6 +384,9 @@ class Column extends Component{
 
 class Subscribe extends Component{
 	free(nub){
+		this.props.dispatch({
+			type: 'RESETREPORT'
+		});
 		this.props.dispatch({
 			type:'GOREPORTTYPE',
 			data:[],
@@ -389,6 +426,9 @@ class Subscribe extends Component{
 
 class ParseReport extends Component{
 	freeReport(nub) {
+		this.props.dispatch({
+			type: 'RESETREPORT'
+		});
 		this.props.dispatch({
 			type: 'GOREPORTFREE',
 			data: [],
@@ -457,6 +497,31 @@ class Record extends Component{
 		return(
 			<div style={{position:'absolute',left:'0',top:'0',zIndex:'98',width:'100%',paddingLeft:'10px',lineHeight:'2',fontSize:'12px',backgroundColor:'rgba(255,255,255,.7)'}}>
 				{this.props.dataSources}
+			</div>
+		)
+	}
+}
+
+class PublishDate extends Component{
+	render(){
+		return(
+			<div style={{width:'100%',height:'100%'}}>
+				<div className="backdrop visible active"></div>
+				<div className="popup-container popup-showing active">
+					<div className="publishDate-popup"  style={{borderRadius: '5px',width: '80.07%'}}>
+						<div>
+							<img  className="publishDate-title-img" src="/images/publishDate_img.png" alt=""/>
+						</div>
+						<div className="popup-body"  style={{ textAlign: 'center'}}>
+							<div className="popup-title">版本更新</div>
+							<div className="popup-content" dangerouslySetInnerHTML={{__html:this.props.home.newContent.content}}>
+							</div>
+							<div style={{textAlign:'center'}}>
+								<img className="popup-btn" onClick={this.props.showPublishDate}  src="/images/publishDate_btn.png" alt=""/>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		)
 	}

@@ -1,23 +1,22 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-
+import {Link} from 'react-router';
 import {loadListBreedProduct} from './../function/ajax.js';
-
 import EmptyComponent from './../common/emptyComponent';
 import FilterMarket from './../filterPage/filterMarket';
 import HeaderBar from '../common/headerbar.js';
 import Loading from './../common/loading';
+import ScrollLoading from './../common/scrollLoading';
 
-
-import {Link} from 'react-router';
 class RiseBreed extends Component{
     constructor(props){
         super(props);
         this.state={
-            //data:[],
             pageNo:1,
-            infinite:false,
-            loading:true,
+            infinite:true,
+            isLoading:true,
+            isSrollLoading:false,
+            isLoadData:true,
             searchName:"",
             sord:"desc",
             sordActive:0,
@@ -27,6 +26,16 @@ class RiseBreed extends Component{
         this._reSet = this._reSet.bind(this);
         this._loadData = this._loadData.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
+    }
+    _infiniteScroll(){
+        //全部高度-滚动高度 == 屏幕高度-顶部偏移
+        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop && this.state.infinite){
+            if(this.state.isLoadData) return false;
+            this.setState({
+                isLoadData:true
+            });
+            this._loadData();
+        }
     }
     _increaseHandle(){
 		this.props.dispatch((dispatch)=>{
@@ -49,8 +58,7 @@ class RiseBreed extends Component{
     _reSet(){
         this.setState({
             pageNo:1
-            //data:[]
-        })
+        });
         this.props.dispatch({
             type:'LOADRISEBREESDATA',
             data:[]
@@ -69,9 +77,7 @@ class RiseBreed extends Component{
         }
         this._reSet();
         this.setState({
-            loading:true,
-            //data:[],
-            //pageNo:1,
+            isLoading:true,
             sordActive:sordActive,
             sidx:sidx
         });
@@ -79,6 +85,9 @@ class RiseBreed extends Component{
     }
 
     _fn(args){
+        this.setState({
+            isLoading:true
+        });
         this._reSet();
         this.props.dispatch({
             type:'CHANGEDATA',
@@ -88,7 +97,7 @@ class RiseBreed extends Component{
             type:'CHANGE',
             areaId:args.areaId,
             areaName:args.areaName,
-            searchAreaType:args.searchAreaType,
+            searchAreaType:args.searchAreaType
         });
         setTimeout(()=> {
             this._toggleFilter();
@@ -105,19 +114,25 @@ class RiseBreed extends Component{
                 callBack:(res)=>{
                     this.setState({
                         pageNo:this.state.pageNo+1,
-                        //data:res.datas,
-                        infinite:false
+                        //infinite:false,
+                        isLoading:false,
+                        isLoadData:false,
+                        isSrollLoading:true
                     })
                     this.props.dispatch({
                         type:'LOADRISEBREESDATA',
-                        data:res.datas,
+                        data:res.datas
                     });
-                    if(res.totalSize <= this.props.stores.data.length){
-                        this.ele.removeEventListener('scroll',this._infiniteScroll);
+                    if(this.props.stores.data.length >= res.totalSize ){
+                        this.setState({
+                            infinite:false,
+                            isSrollLoading:false
+                        });
+                    }else {
+                        this.setState({
+                            infinite:true
+                        });
                     }
-                    this.setState({
-                        loading:false
-                    });
                 }
             });
         })
@@ -138,27 +153,28 @@ class RiseBreed extends Component{
                     this.setState({
                         pageNo:this.state.pageNo+1,
                         //data:this.state.data.concat(res.datas),
-                        infinite:false
+                        //infinite:false,
+                        isLoading:false,
+                        isLoadData:false,
+                        isSrollLoading:true
                     })
                     this.props.dispatch({
                         type:'LOADRISEBREESDATA',
                         data:this.props.stores.data.concat(res.datas)
                     });
-                    if(res.totalSize <= this.props.stores.data.length){
-                        this.ele.removeEventListener('scroll',this._infiniteScroll);
+                    if(this.props.stores.data.length >= res.totalSize ){
+                        this.setState({
+                            infinite:false,
+                            isSrollLoading:false
+                        });
+                    }else {
+                        this.setState({
+                            infinite:true
+                        });
                     }
-                    this.setState({
-                        loading:false
-                    });
                 }
             });
         })
-    }
-    _infiniteScroll(){
-        //全部高度-滚动高度 == 屏幕高度-顶部偏移
-        if(this.ele.firstChild.clientHeight-this.ele.scrollTop <= document.body.clientHeight-this.ele.offsetTop){
-            this._loadData();
-        }
     }
     //筛选方法
     _showProvicenHandle(){
@@ -209,7 +225,8 @@ class RiseBreed extends Component{
             return false
         }
         this.setState({
-            loading:false
+            isLoadData:false,
+            isLoading:false
         });
 
     }
@@ -224,10 +241,21 @@ class RiseBreed extends Component{
             <div className="root">
                 <HeaderBar {...this.props} titleName="品种影响力排行榜" showSearch={this.showSearch.bind(this)} showFilter={this._toggleFilter.bind(this)}/>
                 <div ref="content" className="scroll-content has-header market">
-                    <Main data={this.props.stores.data}  sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive}  loading={this.state.loading}/>
+                    {
+                        this.props.stores.data.length == 0 && !this.state.isLoading
+                            ?  <EmptyComponent/>
+                            :  <Main data={this.props.stores.data}  sort={this.sort.bind(this)} sord={this.state.sord} sordActive={this.state.sordActive}/>
+
+                    }
+                    {
+                        this.props.stores.data.length != 0 && this.state.isSrollLoading ? <ScrollLoading {...this.props}/> : null
+                    }
                 </div>
                 {
                     this.state.isShowFilter ? <FilterMarket {...this.props}  fn={this._fn.bind(this)}  hideFilter={this._toggleFilter.bind(this)} dataSources={this.props.provicenData}/> :null
+                }
+                {
+                    this.state.isLoading ? <Loading/> : null
                 }
             </div>
         )
@@ -239,27 +267,19 @@ class Main extends Component{
         super(props);
     }
     render(){
-        if(this.props.loading) {
-            return <Loading/>
-        }else{
-            if(this.props.data.length != 0){
-                return(
-                    <div  className="list card item-text-wrap" style={{ margin: '0',wordBreak: 'break-all'}}>
-                        <div className="row item" style={{ padding: '16px 10px',fontSize: ' .6rem',color: '#0894ec'}}>
-                            <div className="col">通用名</div>
-                            <div className="col text-center"  onClick={()=>{this.props.sort(0,"sales")}}>市场规模(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 0) ? styles.active : null}></i></div>
-                            <div className="col text-center"  onClick={()=>{this.props.sort(1,"changeCost")}}>增长额(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 1) ? styles.active : null}></i></div>
-                            <div className="col col-flex-last text-center"  onClick={()=>{this.props.sort(2,"change")}}>增长率<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 2) ? styles.active : null}></i></div>
-                        </div>
-                        {
-                            this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id+Math.random(1)}/>)
-                        }
-                    </div>
-                )
-            }else{
-                return <EmptyComponent/>;
-            }
-        }
+        return(
+            <div  className="list card item-text-wrap" style={{ margin: '0',wordBreak: 'break-all'}}>
+                <div className="row item" style={{ padding: '16px 10px',fontSize: ' .6rem',color: '#0894ec'}}>
+                    <div className="col">通用名</div>
+                    <div className="col text-center"  onClick={()=>{this.props.sort(0,"sales")}}>市场规模(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 0) ? styles.active : null}></i></div>
+                    <div className="col text-center"  onClick={()=>{this.props.sort(1,"changeCost")}}>增长额(万)<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 1) ? styles.active : null}></i></div>
+                    <div className="col col-flex-last text-center"  onClick={()=>{this.props.sort(2,"change")}}>增长率<i className={this.props.sord=="desc" ?"fa fa-sort-desc":"fa fa-sort-up"} style={(this.props.sordActive == 2) ? styles.active : null}></i></div>
+                </div>
+                {
+                    this.props.data.map((ele,index)=> <List dataSources={ele} key={ele.id+Math.random(1)}/>)
+                }
+            </div>
+        )
     }
 }
 
@@ -307,9 +327,7 @@ function select(state){
 		areaName:state.provicen.areaName,
         provicenData:state.provicen.data,
 		yearMonth:state.data.yearMonth,
-        searchAreaType:state.provicen.searchAreaType,
-        //showProvicen:state.index.showProvicen,
-        //uri:state.router.uri,
+        searchAreaType:state.provicen.searchAreaType
 	}
 }
 RiseBreed.contextTypes = {
