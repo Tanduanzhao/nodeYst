@@ -2,7 +2,7 @@ import React, {
 	Component
 }
 from 'react';
-require('../../scss/style.scss');
+require('../../public/scss/style.scss');
 
 import {loadIndex} from './../function/ajax.js';
 export

@@ -230,7 +230,7 @@ h3 {
     margin-top: 10px; }
 
 .data-views {
-  background: url(/images/bg_datas.jpg) center center;
+  background: url(../images/4f811edd51d33e45da017de4d0b07e9f.bg_datas.jpg) center center;
   background-size: 100% 100%;
   ms-flex-line-pack: start;
   -ms-flex-line-pack: start;
@@ -636,7 +636,7 @@ h3 {
       min-height: 20px;
       vertical-align: middle;
       min-width: 50px;
-      background: url(/images/icon_tag.png) center 1px no-repeat;
+      background: url(../images/6d71cb9ac573b465b4ebc53ad8932ed4.icon_tag.png) center 1px no-repeat;
       background-size: contain; }
   .item-right .title {
     -webkit-box-pack: justify;
@@ -794,7 +794,7 @@ h3 {
       width: 1.3rem;
       height: 1.3rem;
       border-width: 0;
-      background: url(/images/icon_close_vip.png) center center no-repeat;
+      background: url(../images/ad9437c08f12d92b7a0a297eb7d9257c.icon_close_vip.png) center center no-repeat;
       background-size: contain; }
   .vip .level {
     padding: 0 1.2rem;
@@ -984,19 +984,19 @@ h3 {
   .function .gotop {
     width: 1.6rem;
     height: 1.6rem;
-    background: url(/images/gotop.png) center no-repeat;
+    background: url(../images/9723d1601790a1e67db2f7354e3bc027.gotop.png) center no-repeat;
     background-size: 100%; }
   .function .collect {
     width: 1.6rem;
     height: 1.6rem;
     margin-top: 23px;
-    background: url(/images/iscollect.png) center no-repeat;
+    background: url(../images/384bfe01f70f09cc4c9996b4ce0fb8cb.iscollect.png) center no-repeat;
     background-size: 100%; }
   .function .unCollect {
     width: 1.6rem;
     height: 1.6rem;
     margin-top: 23px;
-    background: url(/images/collect.png) center no-repeat;
+    background: url(../images/f5d229a856949af74b76d5979394da64.collect.png) center no-repeat;
     background-size: 100%; }
 
 .bidList-view .item {
@@ -1067,7 +1067,7 @@ h3 {
     width: 100%;
     padding-top: 20px;
     height: 109.5px;
-    background: url(/images/giftBag.jpg) center bottom no-repeat;
+    background: url(../images/52cb9e0204a7490efed4f9219422e275.giftBag.jpg) center bottom no-repeat;
     background-size: 100%; }
     .boxContont .boxMain .get {
       padding: 2px 15px;
@@ -1086,7 +1086,7 @@ h3 {
     height: 100%;
     margin: 0;
     padding-bottom: 48.5px;
-    background: url(/images/giftBag.jpg) center bottom no-repeat;
+    background: url(../images/52cb9e0204a7490efed4f9219422e275.giftBag.jpg) center bottom no-repeat;
     background-size: 100%; }
     .boxContont .silver-bg .list {
       padding: 0 10.5% 20px 8%; }
@@ -1118,7 +1118,7 @@ table.table-border td, table.table-border th {
   height: 176px;
   padding-top: 18px;
   position: relative;
-  background: url(/images/center_top_bg.jpg) center top no-repeat;
+  background: url(../images/7803875f7fc5a63bea3ee8b1a882a93a.center_top_bg.jpg) center top no-repeat;
   background-size: 100% 100%; }
   .center-top .center-top-user {
     margin: 0 20px 0 35px;
@@ -1323,7 +1323,7 @@ table.table-border td, table.table-border th {
   display: inline-block;
   width: 19px;
   height: 15px;
-  background: url("/images/icon_help.jpg") no-repeat center;
+  background: url(../images/811d842c73dca1d2aeff2e41446dd5dd.icon_help.jpg) no-repeat center;
   background-size: 100%; }
 
 .center-secondary .contribute-footer {
@@ -1437,14 +1437,14 @@ table.table-border td, table.table-border th {
     display: inline-block;
     width: 1rem;
     height: .7rem;
-    background: url("/images/report_writeComment_icon.png") no-repeat;
+    background: url(../images/bcaa6923aa1103b4d27bc7ba7f3815a0.report_writeComment_icon.png) no-repeat;
     background-size: 100%;
     vertical-align: middle; }
   .foot .list-title .comment_icon {
     display: inline-block;
     width: 1rem;
     height: .7rem;
-    background: url("/images/report_comment_icon.png") no-repeat;
+    background: url(../images/e08291db082e27928ea443b8563c1bca.report_comment_icon.png) no-repeat;
     background-size: 100%; }
 
 .product-details-collect {
@@ -1601,13 +1601,13 @@ table.table-border td, table.table-border th {
   .market-item-top a {
     color: #fff; }
   .market-item-top .breed_icon {
-    background: url(/images/breed_icon.png) no-repeat;
+    background: url(../images/eb6b48b7a7e836310b3b355250cfd416.breed_icon.png) no-repeat;
     background-size: 100%; }
   .market-item-top .factory_icon {
-    background: url(/images/factory_icon.png) no-repeat;
+    background: url(../images/5c194c1ee0afbe353999b3d1ed39b743.factory_icon.png) no-repeat;
     background-size: 100%; }
   .market-item-top .classify_icon {
-    background: url(/images/classify_icon.png) no-repeat;
+    background: url(../images/7071b1fe2e7cd549bdea1ae87f364c15.classify_icon.png) no-repeat;
     background-size: 100%; }
   .market-item-top i {
     width: 0.975rem;
@@ -1617,11 +1617,11 @@ table.table-border td, table.table-border th {
     margin-right: 2px; }
 
 .blue-bg {
-  background: url(/images/market_list_blue_bg.jpg) no-repeat;
+  background: url(../images/b8b57199a5e54c3844aa93ff59bd5fd2.market_list_blue_bg.jpg) no-repeat;
   background-size: 100%; }
 
 .orange-bg {
-  background: url(/images/market_list_orange_bg.jpg) no-repeat;
+  background: url(../images/424fbbdf7b0365528ce686f4bc68baa8.market_list_orange_bg.jpg) no-repeat;
   background-size: 100%; }
 
 .market-item-center {
@@ -1642,7 +1642,7 @@ table.table-border td, table.table-border th {
     width: .775rem;
     vertical-align: middle;
     height: 0.475rem;
-    background: url(/images/eye-icon.png) no-repeat;
+    background: url(../images/5f3ec9ce9fa58e1254ca9ca995dc8c71.eye-icon.png) no-repeat;
     background-size: 100%;
     margin-right: 4px; }
 
@@ -2129,7 +2129,7 @@ table.table-border td, table.table-border th {
 
 .christmas .module-bar {
   color: #fff;
-  background: url(/images/header_bg.jpg) no-repeat;
+  background: url(../images/f6cfb5431153b1677fec0ae0458ebf0b.header_bg.jpg) no-repeat;
   background-size: 100%; }
   .christmas .module-bar a, .christmas .module-bar i {
     color: #fff; }
@@ -2137,7 +2137,7 @@ table.table-border td, table.table-border th {
 .christmas .tabs {
   color: #fff;
   height: auto;
-  background: url(/images/christmas_tabs_bg.jpg) no-repeat;
+  background: url(../images/e21bfe8efa575ffab26ac3f4a9e40d10.christmas_tabs_bg.jpg) no-repeat;
   background-size: 100% 100%; }
   .christmas .tabs .tab-item {
     opacity: 1; }
@@ -2158,22 +2158,22 @@ table.table-border td, table.table-border th {
   .christmas .tabs .icon:before {
     content: initial !important; }
   .christmas .tabs .ion-ios-home {
-    background: url(/images/home_icon.png) no-repeat; }
+    background: url(../images/0d09cdb084e8fc7fddb886263ceae50b.home_icon.png) no-repeat; }
   .christmas .tabs .ion-cube {
-    background: url(/images/report_icon.png) no-repeat; }
+    background: url(../images/86379b8f6724a0e7be68f505c3cf8be5.report_icon.png) no-repeat; }
   .christmas .tabs .ion-earth {
-    background: url(/images/market_icon.png) no-repeat; }
+    background: url(../images/637a64a6505c74d4b9f934ecca398f1a.market_icon.png) no-repeat; }
   .christmas .tabs .ion-erlenmeyer-flask {
-    background: url(/images/data_icon.png) no-repeat; }
+    background: url(../images/98f8846c097c6e261eebaa80987101e9.data_icon.png) no-repeat; }
   .christmas .tabs .ion-happy {
-    background: url(/images/center_icon.png) no-repeat; }
+    background: url(../images/0d7fef3363130cde25c1f44ccf4cfabf.center_icon.png) no-repeat; }
 
 .NewYear .has-footer {
   bottom: 51px; }
 
 .NewYear .module-bar {
   color: #50281c;
-  background: url(/images/NewYear_header_bg.jpg) no-repeat;
+  background: url(../images/dcdc4d4d993d95c33eb271e845e018b4.NewYear_header_bg.jpg) no-repeat;
   background-size: 100%; }
   .NewYear .module-bar strong, .NewYear .module-bar a, .NewYear .module-bar i {
     color: #50281c; }
@@ -2181,7 +2181,7 @@ table.table-border td, table.table-border th {
 .NewYear .tabs {
   color: #fff;
   height: auto;
-  background: url(/images/NewYear_tabs_bg.jpg) no-repeat;
+  background: url(../images/374eb929f499ba4414edd4433c9f39bd.NewYear_tabs_bg.jpg) no-repeat;
   background-size: 100% 100%; }
   .NewYear .tabs .tab-item {
     opacity: 1;
@@ -2197,15 +2197,15 @@ table.table-border td, table.table-border th {
   .NewYear .tabs .icon:before {
     content: initial !important; }
   .NewYear .tabs .ion-ios-home {
-    background: url(/images/NewYear_home_icon.png) no-repeat; }
+    background: url(../images/3ee356467f0d7b4ef5381bb33a762b44.NewYear_home_icon.png) no-repeat; }
   .NewYear .tabs .ion-cube {
-    background: url(/images/NewYear_report_icon.png) no-repeat; }
+    background: url(../images/7b20374182f1233f70d2b916a7fe33d3.NewYear_report_icon.png) no-repeat; }
   .NewYear .tabs .ion-earth {
-    background: url(/images/NewYear_market_icon.png) no-repeat; }
+    background: url(../images/c5cdd75e8bd2f1d6e854383705408b88.NewYear_market_icon.png) no-repeat; }
   .NewYear .tabs .ion-erlenmeyer-flask {
-    background: url(/images/NewYear_data_icon.png) no-repeat; }
+    background: url(../images/28d6688b50f14f7c5c882dd9eb60152e.NewYear_data_icon.png) no-repeat; }
   .NewYear .tabs .ion-happy {
-    background: url(/images/NewYear_center_icon.png) no-repeat; }
+    background: url(../images/12fc69a72fdc245f116cd1b837ceae8c.NewYear_center_icon.png) no-repeat; }
 
 .defmargin {
   margin: 0; }
