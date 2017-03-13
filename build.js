@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import ReactDOM from "react/lib/ReactDOM";
-require('./scss/style.scss');
+require('./public/scss/style.scss');
 import {Router,Route,browserHistory,IndexRoute,useRouterHistory} from "react-router";
 import {Provider} from "react-redux";
 
